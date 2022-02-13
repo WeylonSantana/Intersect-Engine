@@ -1,6 +1,9 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Net.Http;
+using System.Web.Http;
 
 using Intersect.Server.General;
+using Intersect.Server.Metrics;
 using Intersect.Server.Web.RestApi.Attributes;
 
 namespace Intersect.Server.Web.RestApi.Routes.V1
@@ -40,6 +43,13 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             return Options.Instance;
         }
 
+        [Route("config/stats")]
+        [HttpGet]
+        public object CombatStats()
+        {
+            return Enum.GetNames(typeof(Enums.Stats));
+        }
+
         [Route("stats")]
         [HttpGet]
         public object Stats()
@@ -53,6 +63,15 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             };
         }
 
+        [Route("metrics")]
+        [HttpGet]
+        public object StatsMetrics()
+        {
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(MetricsRoot.Instance.Metrics, System.Text.Encoding.UTF8, "application/json")
+            };
+        }
     }
 
 }

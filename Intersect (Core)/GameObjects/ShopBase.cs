@@ -29,6 +29,8 @@ namespace Intersect.GameObjects
         }
 
         public bool BuyingWhitelist { get; set; } = true;
+        
+        public bool TagWhitelist { get; set; } = true;
 
         //Spawn Info
         [Column("DefaultCurrency")]
@@ -59,8 +61,24 @@ namespace Intersect.GameObjects
             set => SellingItems = JsonConvert.DeserializeObject<List<ShopItem>>(value);
         }
 
+        public string BuySound { get; set; } = null;
+
+        public string SellSound { get; set; } = null;
+
         /// <inheritdoc />
         public string Folder { get; set; } = "";
+
+        public float BuyMultiplier { get; set; } = 1.0f;
+
+        [NotMapped] public List<string> BuyingTags = new List<string>();
+
+        [Column("BuyingTags")]
+        [JsonIgnore]
+        public string JsonBuyingTags
+        {
+            get => JsonConvert.SerializeObject(BuyingTags);
+            set => BuyingTags = JsonConvert.DeserializeObject<List<string>>(value);
+        }
 
     }
 

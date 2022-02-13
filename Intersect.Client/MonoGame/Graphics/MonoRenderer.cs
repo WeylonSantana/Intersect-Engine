@@ -8,10 +8,7 @@ using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
-using Intersect.Client.Interface;
 using Intersect.Client.Localization;
-
-using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -26,7 +23,7 @@ namespace Intersect.Client.MonoGame.Graphics
     public class MonoRenderer : GameRenderer
     {
 
-        [NotNull] private readonly List<MonoTexture> mAllTextures = new List<MonoTexture>();
+        private readonly List<MonoTexture> mAllTextures = new List<MonoTexture>();
 
         private BasicEffect mBasicEffect;
 
@@ -60,7 +57,7 @@ namespace Intersect.Client.MonoGame.Graphics
 
         private Game mGame;
 
-        [NotNull] private GameWindow mGameWindow;
+        private GameWindow mGameWindow;
 
         private GraphicsDeviceManager mGraphics;
 
@@ -92,7 +89,7 @@ namespace Intersect.Client.MonoGame.Graphics
 
         private GameRenderTexture mWhiteTexture;
 
-        public MonoRenderer(GraphicsDeviceManager graphics, ContentManager contentManager, [NotNull] Game monoGame)
+        public MonoRenderer(GraphicsDeviceManager graphics, ContentManager contentManager, Game monoGame)
         {
             mGame = monoGame;
             mGraphics = graphics;
@@ -305,22 +302,27 @@ namespace Intersect.Client.MonoGame.Graphics
                         blend = mNormalState;
 
                         break;
+
                     case GameBlendModes.Alpha:
                         blend = BlendState.AlphaBlend;
 
                         break;
+
                     case GameBlendModes.Multiply:
                         blend = mMultiplyState;
 
                         break;
+
                     case GameBlendModes.Add:
                         blend = BlendState.Additive;
 
                         break;
+
                     case GameBlendModes.Opaque:
                         blend = BlendState.Opaque;
 
                         break;
+
                     case GameBlendModes.Cutout:
                         blend = mCutoutState;
 
@@ -733,7 +735,6 @@ namespace Intersect.Client.MonoGame.Graphics
 
             var allowedResolutions = new[]
             {
-                new Resolution(800, 600),
                 new Resolution(1024, 768),
                 new Resolution(1024, 720),
                 new Resolution(1280, 720),
@@ -745,7 +746,8 @@ namespace Intersect.Client.MonoGame.Graphics
                 new Resolution(1440, 900),
                 new Resolution(1600, 900),
                 new Resolution(1680, 1050),
-                new Resolution(1920, 1080)
+                new Resolution(1920, 1080),
+                new Resolution(2560, 1440)
             };
 
             var displayWidth = mGraphicsDevice?.DisplayMode?.Width;
@@ -795,13 +797,15 @@ namespace Intersect.Client.MonoGame.Graphics
             }
 
             var targetVideoMode = validVideoModes?[targetResolution];
-            var resolution = Resolution.Parse(targetVideoMode);
-            mGraphics.PreferredBackBufferWidth = resolution.X;
-            mGraphics.PreferredBackBufferHeight = resolution.Y;
+            if (Resolution.TryParse(targetVideoMode, out var resolution))
+            {
+                PreferredResolution = resolution;
+            }
 
-            UpdateGraphicsState(
-                mGraphics?.PreferredBackBufferWidth ?? 800, mGraphics?.PreferredBackBufferHeight ?? 600, true
-            );
+            mGraphics.PreferredBackBufferWidth = PreferredResolution.X;
+            mGraphics.PreferredBackBufferHeight = PreferredResolution.Y;
+
+            UpdateGraphicsState(ActiveResolution.X, ActiveResolution.Y, true);
 
             if (mWhiteTexture == null)
             {
@@ -871,6 +875,10 @@ namespace Intersect.Client.MonoGame.Graphics
             return tex;
         }
 
+        /// <inheritdoc />
+        public override GameTexture LoadTexture(string assetName, Func<Stream> createStream) =>
+            new MonoTexture(mGraphicsDevice, assetName, createStream);
+
         public override Pointf MeasureText(string text, GameFont gameFont, float fontScale)
         {
             if (gameFont == null)
@@ -901,8 +909,7 @@ namespace Intersect.Client.MonoGame.Graphics
         {
             mCurrentView = view;
 
-            Matrix projection;
-            Matrix.CreateOrthographicOffCenter(0, view.Width, view.Height, 0, 0f, -1, out projection);
+            Matrix.CreateOrthographicOffCenter(0, view.Width, view.Height, 0, 0f, -1, out var projection);
             projection.M41 += -0.5f * projection.M11;
             projection.M42 += -0.5f * projection.M22;
             mBasicEffect.Projection = projection;

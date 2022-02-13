@@ -7,8 +7,6 @@ using Intersect.Client.Localization;
 using Intersect.Enums;
 using Intersect.GameObjects;
 
-using JetBrains.Annotations;
-
 namespace Intersect.Client.Interface.Game
 {
 
@@ -18,7 +16,7 @@ namespace Intersect.Client.Interface.Game
         ImagePanel mDescWindow;
 
         public ItemDescWindow(
-            [NotNull] ItemBase item,
+            ItemBase item,
             int amount,
             int x,
             int y,
@@ -84,6 +82,11 @@ namespace Intersect.Client.Interface.Game
                     itemType.TextColorOverride.G = rarity.G;
                     itemType.TextColorOverride.B = rarity.B;
                     itemType.TextColorOverride.A = rarity.A;
+
+                    itemName.TextColorOverride.R = rarity.R;
+                    itemName.TextColorOverride.G = rarity.G;
+                    itemName.TextColorOverride.B = rarity.B;
+                    itemName.TextColorOverride.A = rarity.A;
                 }
 
                 var itemDesc = new RichLabel(mDescWindow, "ItemDescription");
@@ -161,7 +164,7 @@ namespace Intersect.Client.Interface.Game
 
                     if (statBuffs != null)
                     {
-                        for (var i = 0; i < Options.MaxStats; i++)
+                        for (var i = 0; i < (int)Stats.StatCount; i++)
                         {
                             var flatStat = item.StatsGiven[i] + statBuffs[i];
                             var bonus = flatStat.ToString();
@@ -212,6 +215,7 @@ namespace Intersect.Client.Interface.Game
                 if (itemTex != null)
                 {
                     icon.Texture = itemTex;
+                    icon.RenderColor = item.Color;
                 }
 
                 itemDesc.SizeToChildren(false, true);

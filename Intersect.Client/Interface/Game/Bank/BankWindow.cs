@@ -8,6 +8,8 @@ using Intersect.Client.Framework.Gwen.Control;
 using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.GameObjects;
+using Intersect.Client.Networking;
+using Intersect.Client.Framework.Gwen.Control.EventArguments;
 
 namespace Intersect.Client.Interface.Game.Bank
 {
@@ -28,6 +30,10 @@ namespace Intersect.Client.Interface.Game.Bank
 
         private List<Label> mValues = new List<Label>();
 
+        private Button mSortButton;
+
+        private Label mValueLabel;
+
         //Location
         public int X;
 
@@ -36,13 +42,21 @@ namespace Intersect.Client.Interface.Game.Bank
         //Init
         public BankWindow(Canvas gameCanvas)
         {
-            mBankWindow = new WindowControl(gameCanvas, Strings.Bank.title, false, "BankWindow");
+            mBankWindow = new WindowControl(gameCanvas, Globals.GuildBank ? Strings.Guilds.Bank.ToString(Globals.Me?.Guild) : Strings.Bank.title.ToString(), false, "BankWindow");
             mBankWindow.DisableResizing();
             Interface.InputBlockingElements.Add(mBankWindow);
 
             mItemContainer = new ScrollControl(mBankWindow, "ItemContainer");
             mItemContainer.EnableScroll(false, true);
 
+            mSortButton = new Button(mBankWindow, "SortButton");
+            mSortButton.SetText(Strings.Bank.sort);
+            mSortButton.Clicked += sort_Clicked;
+
+            mValueLabel = new Label(mBankWindow, "ValueLabel");
+            mValueLabel.SetText(Strings.Bank.bankvalue.ToString(Strings.FormatQuantityAbbreviated(Globals.BankValue)));
+            mValueLabel.SetToolTipText(Strings.Bank.bankvalue.ToString(Globals.BankValue.ToString("N0").Replace(",", Strings.Numbers.comma)));
+            
             mBankWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
             InitItemContainer();
         }
@@ -69,9 +83,11 @@ namespace Intersect.Client.Interface.Game.Bank
                 return;
             }
 
+            mValueLabel.SetText(Strings.Bank.bankvalue.ToString(Strings.FormatQuantityAbbreviated(Globals.BankValue)));
+            mValueLabel.SetToolTipText(Strings.Bank.bankvaluefull.ToString(Globals.BankValue.ToString("N0").Replace(",", Strings.Numbers.comma)));
             X = mBankWindow.X;
             Y = mBankWindow.Y;
-            for (var i = 0; i < Options.MaxBankSlots; i++)
+            for (var i = 0; i < Globals.BankSlots; i++)
             {
                 if (Globals.Bank[i] != null && Globals.Bank[i].ItemId != Guid.Empty)
                 {
@@ -81,8 +97,8 @@ namespace Intersect.Client.Interface.Game.Bank
                         Items[i].Pnl.IsHidden = false;
                         if (item.IsStackable)
                         {
-                            mValues[i].IsHidden = false;
-                            mValues[i].Text = Globals.Bank[i].Quantity.ToString();
+                            mValues[i].IsHidden = Globals.Bank[i].Quantity <= 1;
+                            mValues[i].Text = Strings.FormatQuantityAbbreviated(Globals.Bank[i].Quantity);
                         }
                         else
                         {
@@ -106,9 +122,16 @@ namespace Intersect.Client.Interface.Game.Bank
             }
         }
 
+        void sort_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            if (mBankWindow.IsHidden) return;
+
+            PacketSender.SendBankSortPacket();
+        }
+
         private void InitItemContainer()
         {
-            for (var i = 0; i < Options.MaxBankSlots; i++)
+            for (var i = 0; i < Globals.BankSlots; i++)
             {
                 Items.Add(new BankItem(this, i));
                 Items[i].Container = new ImagePanel(mItemContainer, "BankItem");

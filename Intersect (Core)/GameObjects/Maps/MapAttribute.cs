@@ -37,6 +37,8 @@ namespace Intersect.GameObjects.Maps
                     return new MapGrappleStoneAttribute();
                 case MapAttributes.Slide:
                     return new MapSlideAttribute();
+                case MapAttributes.Critter:
+                    return new MapCritterAttribute();
             }
 
             return null;
@@ -58,6 +60,16 @@ namespace Intersect.GameObjects.Maps
     {
 
         public override MapAttributes Type { get; } = MapAttributes.Blocked;
+
+        public override MapAttribute Clone()
+        {
+            var att = (MapBlockedAttribute) base.Clone();
+            att.GroundLevel = GroundLevel;
+
+            return att;
+        }
+
+        public bool GroundLevel { get; set; }
 
     }
 
@@ -121,6 +133,12 @@ namespace Intersect.GameObjects.Maps
 
         public WarpDirection Direction { get; set; } = WarpDirection.Retain;
 
+        public bool FadeOnWarp { get; set; } = false;
+
+        public bool ChangeInstance { get; set; } = false;
+
+        public MapInstanceType InstanceType { get; set; } = MapInstanceType.Overworld;
+
         public override MapAttribute Clone()
         {
             var att = (MapWarpAttribute) base.Clone();
@@ -128,7 +146,9 @@ namespace Intersect.GameObjects.Maps
             att.X = X;
             att.Y = Y;
             att.Direction = Direction;
-
+            att.FadeOnWarp = FadeOnWarp;
+            att.ChangeInstance = ChangeInstance;
+            att.InstanceType = InstanceType;
             return att;
         }
 
@@ -143,11 +163,14 @@ namespace Intersect.GameObjects.Maps
 
         public byte Distance { get; set; }
 
+        public int LoopInterval { get; set; }
+
         public override MapAttribute Clone()
         {
             var att = (MapSoundAttribute) base.Clone();
             att.File = File;
             att.Distance = Distance;
+            att.LoopInterval = LoopInterval;
 
             return att;
         }
@@ -181,10 +204,13 @@ namespace Intersect.GameObjects.Maps
 
         public Guid AnimationId { get; set; }
 
+        public bool IsBlock { get; set; }
+
         public override MapAttribute Clone()
         {
             var att = (MapAnimationAttribute) base.Clone();
             att.AnimationId = AnimationId;
+            att.IsBlock = IsBlock;
 
             return att;
         }
@@ -213,6 +239,51 @@ namespace Intersect.GameObjects.Maps
             return att;
         }
 
+    }
+
+    public class MapCritterAttribute : MapAttribute
+    {
+        public override MapAttributes Type { get; } = MapAttributes.Critter;
+
+        public string Sprite { get; set; }
+
+        public Guid AnimationId { get; set; }
+
+        //Movement types will mimic npc options?
+        //Random
+        //Turn
+        //Still
+        public byte Movement { get; set; }
+
+        //Time in MS to traverse a tile once moving
+        public int Speed { get; set; }
+
+        //Time in MS between movements?
+        public int Frequency { get; set; }
+
+        //Lower, Middle, Upper
+        public byte Layer { get; set; }
+
+        public byte Direction { get; set; }
+
+        public bool IgnoreNpcAvoids { get; set; }
+
+        public bool BlockPlayers { get; set; }
+
+        public override MapAttribute Clone()
+        {
+            var att = (MapCritterAttribute)base.Clone();
+            att.Sprite = Sprite;
+            att.AnimationId = AnimationId;
+            att.Movement = Movement;
+            att.Speed = Speed;
+            att.Frequency = Frequency;
+            att.Layer = Layer;
+            att.IgnoreNpcAvoids = IgnoreNpcAvoids;
+
+
+            return att;
+        }
     }
 
 }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Linq;
 using Intersect.Collections;
-
-using JetBrains.Annotations;
 
 using Newtonsoft.Json;
 
@@ -23,7 +21,6 @@ namespace Intersect.GameObjects.Maps.MapList
 
         public static MapList List { get; set; } = new MapList();
 
-        [NotNull]
         public static List<MapListMap> OrderedMaps { get; } = new List<MapListMap>();
 
         [JsonIgnore]
@@ -344,9 +341,10 @@ namespace Intersect.GameObjects.Maps.MapList
         public Guid FindFirstMap()
         {
             var lowestMap = Guid.Empty;
+
             if (OrderedMaps.Count > 0)
             {
-                lowestMap = OrderedMaps[0].MapId;
+                lowestMap = OrderedMaps.OrderBy(m => m.TimeCreated).FirstOrDefault().MapId;
             }
 
             return lowestMap;

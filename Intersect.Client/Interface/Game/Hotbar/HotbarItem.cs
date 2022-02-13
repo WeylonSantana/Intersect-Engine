@@ -330,7 +330,12 @@ namespace Intersect.Client.Interface.Game.Hotbar
                 }
             }
 
-            if (updateDisplay) //Item on cd and fade is incorrect
+            if (Globals.Me.InVehicle != mIsFaded)
+            {
+                updateDisplay = true;
+            }
+
+            if (updateDisplay) //Item on cd and/or fade is incorrect
             {
                 if (mCurrentItem != null)
                 {
@@ -425,13 +430,34 @@ namespace Intersect.Client.Interface.Game.Hotbar
                     mCooldownLabel.IsHidden = true;
                 }
 
+                if (Globals.Me.InVehicle)
+                {
+                    mIsFaded = true;
+                }
+
                 if (mIsFaded)
                 {
-                    mContentPanel.RenderColor = new Color(100, 255, 255, 255);
+                    if (mCurrentSpell != null)
+                    {
+                        mContentPanel.RenderColor = new Color(100, 255, 255, 255);
+                    }
+                    
+                    if (mCurrentItem != null)
+                    {
+                        mContentPanel.RenderColor = new Color(100, mCurrentItem.Color.R, mCurrentItem.Color.G, mCurrentItem.Color.B);
+                    } 
                 }
                 else
                 {
-                    mContentPanel.RenderColor = Color.White;
+                    if (mCurrentSpell != null)
+                    {
+                        mContentPanel.RenderColor = Color.White;
+                    }
+                    
+                    if (mCurrentItem != null)
+                    {
+                        mContentPanel.RenderColor = mCurrentItem.Color;
+                    }
                 }
             }
 
@@ -476,7 +502,7 @@ namespace Intersect.Client.Interface.Game.Hotbar
                                         IsDragging = true;
                                         mDragIcon = new Draggable(
                                             Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseX,
-                                            Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, mContentPanel.Texture
+                                            Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, mContentPanel.Texture, mContentPanel.RenderColor
                                         );
 
                                         //SOMETHING SHOULD BE RENDERED HERE, RIGHT?

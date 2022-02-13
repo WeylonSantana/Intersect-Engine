@@ -20,7 +20,37 @@
 
         PVPDeath,
 
-        PlayerInteract
+        PlayerInteract,
+
+        EquipChange,
+
+        PlayerVariableChange,
+
+        ServerVariableChange,
+
+        GuildMemberJoined,
+
+        GuildMemberLeft,
+
+        GuildMemberKicked, 
+
+        ComboUp,
+
+        ComboEnd,
+
+        InventoryChanged,
+
+        MapChanged,
+
+        InstanceVariableChange,
+
+        ClassRankIncreased,
+
+        NpcsDefeated,
+
+        ResourcesGathered,
+
+        CraftsCreated,
 
     }
 

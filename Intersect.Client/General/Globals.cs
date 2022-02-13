@@ -8,11 +8,11 @@ using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.Framework.Sys;
 using Intersect.Client.Items;
+using Intersect.Client.Plugins.Interfaces;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using Intersect.GameObjects.QuestBoard;
 using Intersect.Network.Packets.Server;
-
-using JetBrains.Annotations;
 
 namespace Intersect.Client.General
 {
@@ -30,6 +30,9 @@ namespace Intersect.Client.General
 
         //Bank
         public static Item[] Bank;
+        public static bool GuildBank;
+        public static int BankSlots;
+        public static int BankValue;
 
         public static bool ConnectionLost;
 
@@ -38,7 +41,7 @@ namespace Intersect.Client.General
 
         public static int CurrentMap = -1;
 
-        [NotNull] public static GameDatabase Database;
+        public static GameDatabase Database;
 
         //Entities and stuff
         //public static List<Entity> Entities = new List<Entity>();
@@ -58,8 +61,43 @@ namespace Intersect.Client.General
         //Only need 1 shop, and that is the one we see at a given moment in time.
         public static ShopBase GameShop;
 
+        //Game Quest Board
+        //Only need 1 shop, and that is the one we see at a given moment in time.
+        public static QuestBoardBase QuestBoard;
+
+        public static Dictionary<Guid, bool> QuestBoardRequirements;
+
         //Crucial game variables
-        public static GameStates GameState = GameStates.Intro; //0 for Intro, 1 to Menu, 2 for in game
+
+        internal static List<IClientLifecycleHelper> ClientLifecycleHelpers { get; } =
+            new List<IClientLifecycleHelper>();
+
+        internal static void OnLifecycleChangeState()
+        {
+            ClientLifecycleHelpers.ForEach(
+                clientLifecycleHelper => clientLifecycleHelper?.OnLifecycleChangeState(GameState)
+            );
+        }
+
+        internal static void OnGameUpdate()
+        {
+            ClientLifecycleHelpers.ForEach(
+                clientLifecycleHelper => clientLifecycleHelper?.OnGameUpdate(GameState)
+            );
+        }
+
+        private static GameStates mGameState = GameStates.Intro;
+
+        /// <see cref="GameStates" />
+        public static GameStates GameState
+        {
+            get => mGameState;
+            set
+            {
+                mGameState = value;
+                OnLifecycleChangeState();
+            }
+        }
 
         public static List<Guid> GridMaps = new List<Guid>();
 
@@ -68,6 +106,8 @@ namespace Intersect.Client.General
         public static bool InBag = false;
 
         public static bool InBank = false;
+        
+        public static bool InQuestBoard = false;
 
         //Crafting station
         public static bool InCraft = false;
@@ -78,7 +118,7 @@ namespace Intersect.Client.General
 
         public static bool CanCloseInventory => !(InBag || InBank || InCraft || InShop || InTrade);
 
-        [NotNull] public static GameInput InputManager;
+        public static GameInput InputManager;
 
         public static bool IntroComing = true;
 
@@ -114,23 +154,34 @@ namespace Intersect.Client.General
             new Dictionary<Guid, Dictionary<Guid, EventEntityPacket>>();
 
         //Event Show Pictures
-        public static string Picture;
-
-        public static bool PictureClickable;
-
-        public static int PictureSize;
+        public static ShowPicturePacket Picture;
 
         public static List<Guid> QuestOffers = new List<Guid>();
 
+        public static int QuestOfferIndex = 0; // Index of current quest offer we're looking at
+
         public static Random Random = new Random();
 
-        [NotNull] public static GameSystem System;
+        public static GameSystem System;
 
         //Trading (Only 2 people can trade at once)
         public static Item[,] Trade;
 
         //Scene management
         public static bool WaitingOnServer = false;
+
+        public static bool InMapTransition = false;
+
+        // Used for when a warp is using a transition - we want to transition them AFTER the client has "faded out"
+        public static Guid futureWarpMapId;
+
+        public static float futureWarpX;
+
+        public static float futureWarpY;
+
+        public static byte futureWarpDir;
+
+        public static MapInstanceType futureWarpInstanceType = MapInstanceType.NoChange;
 
         public static Entity GetEntity(Guid id, EntityTypes type)
         {

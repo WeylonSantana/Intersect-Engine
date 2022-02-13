@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-
+using Intersect.Config;
 using Intersect.Editor.Content;
 using Intersect.Editor.General;
 using Intersect.Editor.Localization;
@@ -12,9 +12,8 @@ using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Maps;
 using Intersect.GameObjects.Maps.MapList;
+using Intersect.Localization;
 using Intersect.Utilities;
-
-using JetBrains.Annotations;
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -43,12 +42,12 @@ namespace Intersect.Editor.Forms.DockingElements
 
         public LayerTabs CurrentTab = LayerTabs.Tiles;
 
-        public List<bool> LayerVisibility = new List<bool>();
+        public Dictionary<string, bool> LayerVisibility = new Dictionary<string,bool>();
 
         //MonoGame Swap Chain
         private SwapChainRenderTarget mChain;
 
-        private int mLastTileLayer;
+        private string mLastTileLayer;
 
         private List<PictureBox> mMapLayers = new List<PictureBox>();
 
@@ -57,30 +56,72 @@ namespace Intersect.Editor.Forms.DockingElements
         public FrmMapLayers()
         {
             InitializeComponent();
-            mMapLayers.Add(picGround);
-            LayerVisibility.Add(true);
-            mMapLayers.Add(picMask);
-            LayerVisibility.Add(true);
-            mMapLayers.Add(picMask2);
-            LayerVisibility.Add(true);
-            mMapLayers.Add(picFringe);
-            LayerVisibility.Add(true);
-            mMapLayers.Add(picFringe2);
-            LayerVisibility.Add(true);
+            mMapLayers.Add(picLayer1);
+            mMapLayers.Add(picLayer2);
+            mMapLayers.Add(picLayer3);
+            mMapLayers.Add(picLayer4);
+            mMapLayers.Add(picLayer5);
+
+            this.Icon = Properties.Resources.Icon;
         }
 
         public void Init()
         {
             cmbAutotile.SelectedIndex = 0;
-            SetLayer(0);
+
+            //See if we can use the old style icons instead of a combobox
+            if (Options.Instance.MapOpts.Layers.All.Count <= mMapLayers.Count)
+            {
+                //Hide combobox...
+                cmbMapLayer.Hide();
+                for (int i = 0; i < mMapLayers.Count; i++)
+                {
+                    if (i < Options.Instance.MapOpts.Layers.All.Count)
+                    {
+                        Strings.Tiles.maplayers.TryGetValue(Options.Instance.MapOpts.Layers.All[i].ToLower(), out LocalizedString layerName);
+                        if (layerName == null) layerName = Options.Instance.MapOpts.Layers.All[i];
+                        mMapLayers[i].Text = layerName;
+                        mMapLayers[i].Show();
+                    }
+                    else
+                    {
+                        mMapLayers[i].Hide();
+                    }
+                }
+            }
+            else
+            {
+                foreach(var layer in mMapLayers)
+                {
+                    layer.Hide();
+                }
+                //Show Combobox
+                cmbMapLayer.Show();
+                cmbMapLayer.Items.AddRange(Options.Instance.MapOpts.Layers.All.ToArray());
+                cmbMapLayer.SelectedIndex = 0;
+            }
+
+            foreach (var layer in Options.Instance.MapOpts.Layers.All)
+            {
+                LayerVisibility.Add(layer, true);
+            }
+
+            SetLayer(Options.Instance.MapOpts.Layers.All[0]);
             if (cmbTilesets.Items.Count > 0)
             {
                 SetTileset(cmbTilesets.Items[0].ToString());
             }
 
-            grpZDimension.Visible = Options.ZDimensionVisible;
             rbZDimension.Visible = Options.ZDimensionVisible;
             grpZResource.Visible = Options.ZDimensionVisible;
+            grpInstanceSettings.Visible = chkChangeInstance.Checked;
+
+            cmbInstanceType.Items.Clear();
+            // We do not want to iterate over the "NoChange" enum - so we subtract 1 from the iterating maximum
+            for (var i = 0; i < Enum.GetNames(typeof(MapInstanceType)).Length - 1; i++)
+            {
+                cmbInstanceType.Items.Add(Enum.GetName(typeof(MapInstanceType), i));
+            }
         }
 
         //Tiles Tab
@@ -303,48 +344,102 @@ namespace Intersect.Editor.Forms.DockingElements
             }
         }
 
-        public void SetLayer(int index)
+        public void SetLayer(string name)
         {
-            Globals.CurrentLayer = index;
-            if (index < Options.LayerCount)
+            Globals.CurrentLayer = name;
+
+            var index = Options.Instance.MapOpts.Layers.All.IndexOf(name);
+
+            if (!cmbMapLayer.Visible)
             {
                 for (var i = 0; i < mMapLayers.Count; i++)
                 {
-                    if (i == index)
+                    if (mMapLayers[i].BackgroundImage != null)
                     {
-                        if (!LayerVisibility[i])
-                        {
-                            mMapLayers[i].BackgroundImage =
-                                (Bitmap) Properties.Resources.ResourceManager.GetObject("_" + (i + 1) + "_A_Hide");
-                        }
-                        else
-                        {
-                            mMapLayers[i].BackgroundImage =
-                                (Bitmap) Properties.Resources.ResourceManager.GetObject("_" + (i + 1) + "_A");
-                        }
+                        mMapLayers[i].BackgroundImage.Dispose();
+                        mMapLayers[i].BackgroundImage = null;
                     }
-                    else
-                    {
-                        if (!LayerVisibility[i])
-                        {
-                            mMapLayers[i].BackgroundImage =
-                                (Bitmap) Properties.Resources.ResourceManager.GetObject("_" + (i + 1) + "_B_Hide");
-                        }
-                        else
-                        {
-                            mMapLayers[i].BackgroundImage =
-                                (Bitmap) Properties.Resources.ResourceManager.GetObject("_" + (i + 1) + "_B");
-                        }
-                    }
+                    mMapLayers[i].BackgroundImage = DrawLayerImage(i, i == index, !LayerVisibility[Options.Instance.MapOpts.Layers.All[i]]);
                 }
-
-                mLastTileLayer = index;
             }
             else
             {
+                if (cmbMapLayer.Items.IndexOf(name) > -1)
+                {
+                    cmbMapLayer.SelectedIndex = cmbMapLayer.Items.IndexOf(name);
+                }
             }
 
+            mLastTileLayer = name;
+
             Core.Graphics.TilePreviewUpdated = true;
+        }
+
+        private Bitmap DrawLayerImage(int layerIndex, bool selected, bool hidden)
+        {
+            var img = new Bitmap(32, 32);
+            img.MakeTransparent(img.GetPixel(0, 0));
+
+            var g = Graphics.FromImage(img);
+
+            var layer = (Bitmap)Properties.Resources.ResourceManager.GetObject("layer");
+            var layerSel = (Bitmap)Properties.Resources.ResourceManager.GetObject("layer_sel");
+            var face = (Bitmap)Properties.Resources.ResourceManager.GetObject("layer_face");
+            var faceSel = (Bitmap)Properties.Resources.ResourceManager.GetObject("layer_face_sel");
+            var hiddenIcon = (Bitmap)Properties.Resources.ResourceManager.GetObject("layer_hidden");
+            var drawFace = selected ? faceSel : face;
+
+            var drawIndex = 0;
+
+            //Draw Lower & Middle Layers
+            foreach (var l in Options.Instance.MapOpts.Layers.LowerLayers)
+            {
+                var drawImg = layer;
+                if (drawIndex == layerIndex)
+                {
+                    drawImg = layerSel;
+                }
+                g.DrawImage(drawImg, new PointF(3, 23 - ((drawIndex) * (layer.Height - 4))));
+                drawIndex++;
+            }
+
+
+            //If this image for is an upper layer, render the face below the next layers
+            if (!Options.Instance.MapOpts.Layers.LowerLayers.Contains(Options.Instance.MapOpts.Layers.All[layerIndex]))
+            {
+                g.DrawImage(drawFace, new PointF(13, 13));
+            }
+
+
+            //Draw Upper Layers
+            var middleUpperLayers = Options.Instance.MapOpts.Layers.LowerLayers.ToList();
+            middleUpperLayers.AddRange(Options.Instance.MapOpts.Layers.MiddleLayers);
+            foreach (var l in middleUpperLayers)
+            {
+                var drawImg = layer;
+                if (drawIndex == layerIndex)
+                {
+                    drawImg = layerSel;
+                }
+                g.DrawImage(drawImg, new PointF(3, 23 - ((drawIndex) * (layer.Height - 4))));
+                drawIndex++;
+            }
+
+            //If this image for is a lower layer, render the face above everything
+            if (Options.Instance.MapOpts.Layers.LowerLayers.Contains(Options.Instance.MapOpts.Layers.All[layerIndex]))
+            {
+                g.DrawImage(drawFace, new PointF(13, 13));
+            }
+
+
+            //Draw Hidden Icon
+            if (hidden)
+            {
+                g.DrawImage(hiddenIcon, new PointF(32 - hiddenIcon.Width, 0));
+            }
+
+            g.Dispose();
+            return img;
         }
 
         //Mapping Attribute Functions
@@ -353,6 +448,7 @@ namespace Intersect.Editor.Forms.DockingElements
         /// </summary>
         private void HideAttributeMenus()
         {
+            grpBlock.Visible = false;
             grpItem.Visible = false;
             grpZDimension.Visible = false;
             grpWarp.Visible = false;
@@ -360,6 +456,7 @@ namespace Intersect.Editor.Forms.DockingElements
             grpResource.Visible = false;
             grpAnimation.Visible = false;
             grpSlide.Visible = false;
+            grpCritter.Visible = false;
         }
 
         private void rbItem_CheckedChanged(object sender, EventArgs e)
@@ -377,6 +474,8 @@ namespace Intersect.Editor.Forms.DockingElements
         private void rbBlocked_CheckedChanged(object sender, EventArgs e)
         {
             HideAttributeMenus();
+            grpBlock.Visible = true;
+            chkGroundLevel.Checked = false;
         }
 
         private void rbNPCAvoid_CheckedChanged(object sender, EventArgs e)
@@ -510,6 +609,10 @@ namespace Intersect.Editor.Forms.DockingElements
             {
                 return (int) MapAttributes.Slide;
             }
+            else if (rbCritter.Checked == true)
+            {
+                return (int) MapAttributes.Critter;
+            }
 
             return (int) MapAttributes.Walkable;
         }
@@ -568,12 +671,16 @@ namespace Intersect.Editor.Forms.DockingElements
                     return MapAttributes.Slide;
                 }
 
+                if (rbCritter.Checked)
+                {
+                    return MapAttributes.Critter;
+                }
+
                 return (MapAttributes) byte.MaxValue;
             }
         }
 
         [Obsolete("The entire switch statement should be implemented as a parameterized CreateAttribute().")]
-        [NotNull]
         public MapAttribute CreateAttribute()
         {
             var attributeType = SelectedMapAttributeType;
@@ -581,9 +688,12 @@ namespace Intersect.Editor.Forms.DockingElements
             switch (SelectedMapAttributeType)
             {
                 case MapAttributes.Walkable:
-                case MapAttributes.Blocked:
                 case MapAttributes.GrappleStone:
                 case MapAttributes.NpcAvoid:
+                    break;
+                case MapAttributes.Blocked:
+                    var blockAttribute = attribute as MapBlockedAttribute;
+                    blockAttribute.GroundLevel = chkGroundLevel.Checked;
                     break;
 
                 case MapAttributes.Item:
@@ -604,12 +714,16 @@ namespace Intersect.Editor.Forms.DockingElements
                     warpAttribute.X = (byte)nudWarpX.Value;
                     warpAttribute.Y = (byte)nudWarpY.Value;
                     warpAttribute.Direction = (WarpDirection)cmbDirection.SelectedIndex;
+                    warpAttribute.FadeOnWarp = chkMapFade.Checked;
+                    warpAttribute.ChangeInstance = chkChangeInstance.Checked;
+                    warpAttribute.InstanceType = (MapInstanceType)cmbInstanceType.SelectedIndex;
                     break;
 
                 case MapAttributes.Sound:
                     var soundAttribute = attribute as MapSoundAttribute;
                     soundAttribute.Distance = (byte)nudSoundDistance.Value;
                     soundAttribute.File = TextUtils.SanitizeNone(cmbMapAttributeSound.Text);
+                    soundAttribute.LoopInterval = (int)nudSoundLoopInterval.Value;
                     break;
 
                 case MapAttributes.Resource:
@@ -621,11 +735,25 @@ namespace Intersect.Editor.Forms.DockingElements
                 case MapAttributes.Animation:
                     var animationAttribute = attribute as MapAnimationAttribute;
                     animationAttribute.AnimationId = AnimationBase.IdFromList(cmbAnimationAttribute.SelectedIndex);
+                    animationAttribute.IsBlock = chkAnimationBlock.Checked;
                     break;
 
                 case MapAttributes.Slide:
                     var slideAttribute = attribute as MapSlideAttribute;
                     slideAttribute.Direction = (byte)cmbSlideDir.SelectedIndex;
+                    break;
+
+                case MapAttributes.Critter:
+                    var critterAttribute = attribute as MapCritterAttribute;
+                    critterAttribute.Sprite = cmbCritterSprite.Text;
+                    critterAttribute.AnimationId = AnimationBase.IdFromList(cmbCritterAnimation.SelectedIndex - 1);
+                    critterAttribute.Movement = (byte)cmbCritterMovement.SelectedIndex;
+                    critterAttribute.Layer = (byte)cmbCritterLayer.SelectedIndex;
+                    critterAttribute.Speed = (int)nudCritterMoveSpeed.Value;
+                    critterAttribute.Frequency = (int)nudCritterMoveFrequency.Value;
+                    critterAttribute.IgnoreNpcAvoids = chkCritterIgnoreNpcAvoids.Checked;
+                    critterAttribute.BlockPlayers = chkCritterBlockPlayers.Checked;
+                    critterAttribute.Direction = (byte)cmbCritterDirection.SelectedIndex;
                     break;
 
                 default:
@@ -712,10 +840,12 @@ namespace Intersect.Editor.Forms.DockingElements
                 n.X = -1;
                 n.Y = -1;
                 n.Direction = NpcSpawnDirection.Random;
+                n.RequiredPlayersToSpawn = (int)nudInstanceSpawnLimit.Value;
 
                 Globals.CurrentMap.Spawns.Add(n);
                 lstMapNpcs.Items.Add(NpcBase.GetName(n.NpcId));
                 lstMapNpcs.SelectedIndex = lstMapNpcs.Items.Count - 1;
+                Globals.SelectedMapNpc = lstMapNpcs.SelectedIndex;
             }
         }
 
@@ -736,16 +866,32 @@ namespace Intersect.Editor.Forms.DockingElements
                 if (lstMapNpcs.Items.Count > 0)
                 {
                     lstMapNpcs.SelectedIndex = 0;
+                    NpcSpawn spawn = Globals.CurrentMap.Spawns[lstMapNpcs.SelectedIndex];
+                    cmbNpc.SelectedIndex = NpcBase.ListIndex(spawn.NpcId);
+                    cmbDir.SelectedIndex = (int)spawn.Direction;
+                    nudInstanceSpawnLimit.Value = spawn.RequiredPlayersToSpawn;
+                    if (Globals.CurrentMap.Spawns[lstMapNpcs.SelectedIndex].X >= 0)
+                    {
+                        rbDeclared.Checked = true;
+                    }
+                    else
+                    {
+                        rbRandom.Checked = true;
+                    }
                 }
+                Globals.SelectedMapNpc = lstMapNpcs.SelectedIndex;
             }
         }
 
         private void lstMapNpcs_Click(object sender, EventArgs e)
         {
+            Globals.SelectedMapNpc = lstMapNpcs.SelectedIndex;
             if (lstMapNpcs.Items.Count > 0 && lstMapNpcs.SelectedIndex > -1)
             {
-                cmbNpc.SelectedIndex = NpcBase.ListIndex(Globals.CurrentMap.Spawns[lstMapNpcs.SelectedIndex].NpcId);
-                cmbDir.SelectedIndex = (int) Globals.CurrentMap.Spawns[lstMapNpcs.SelectedIndex].Direction;
+                NpcSpawn spawn = Globals.CurrentMap.Spawns[lstMapNpcs.SelectedIndex];
+                cmbNpc.SelectedIndex = NpcBase.ListIndex(spawn.NpcId);
+                cmbDir.SelectedIndex = (int)spawn.Direction;
+                nudInstanceSpawnLimit.Value = spawn.RequiredPlayersToSpawn;
                 if (Globals.CurrentMap.Spawns[lstMapNpcs.SelectedIndex].X >= 0)
                 {
                     rbDeclared.Checked = true;
@@ -849,6 +995,37 @@ namespace Intersect.Editor.Forms.DockingElements
             grpAnimation.Visible = true;
         }
 
+        private void rbCritter_CheckedChanged(object sender, EventArgs e)
+        {
+            cmbCritterAnimation.Items.Clear();
+            cmbCritterAnimation.Items.Add(Strings.General.none);
+            cmbCritterAnimation.Items.AddRange(AnimationBase.Names);
+            cmbCritterAnimation.SelectedIndex = 0;
+
+            cmbCritterSprite.Items.Clear();
+            cmbCritterSprite.Items.Add(Strings.General.none);
+            cmbCritterSprite.Items.AddRange(GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Entity));
+            cmbCritterSprite.SelectedIndex = 0;
+
+            if (nudCritterMoveFrequency.Value == 0)
+            {
+                nudCritterMoveFrequency.Value = 1000;
+            }
+
+            if (nudCritterMoveSpeed.Value == 0)
+            {
+                nudCritterMoveSpeed.Value = 400;
+            }
+
+            if (!rbCritter.Checked)
+            {
+                return;
+            }
+
+            HideAttributeMenus();
+            grpCritter.Visible = true;
+        }
+
         private void frmMapLayers_Load(object sender, EventArgs e)
         {
             CreateSwapChain();
@@ -892,10 +1069,16 @@ namespace Intersect.Editor.Forms.DockingElements
             rbAnimation.Text = Strings.Attributes.mapanimation;
             rbGrappleStone.Text = Strings.Attributes.grapple;
             rbSlide.Text = Strings.Attributes.slide;
+            rbCritter.Text = Strings.Attributes.critter;
+
+            //Block Groupbox
+            grpBlock.Text = Strings.Attributes.blocked;
+            chkGroundLevel.Text = Strings.Attributes.groundlevel;
 
             //Map Animation Groupbox
             grpAnimation.Text = Strings.Attributes.mapanimation;
             lblAnimation.Text = Strings.Attributes.mapanimation;
+            chkAnimationBlock.Text = Strings.Attributes.mapanimationblock;
 
             //Slide Groupbox
             grpSlide.Text = Strings.Attributes.slide;
@@ -938,6 +1121,9 @@ namespace Intersect.Editor.Forms.DockingElements
             {
                 cmbDirection.Items.Add(Strings.Directions.dir[i]);
             }
+            lblInstance.Text = Strings.Warping.instanceType;
+            chkChangeInstance.Text = Strings.Warping.changeInstance;
+            grpInstanceSettings.Text = Strings.Warping.mapInstancingGroup;
 
             btnVisualMapSelector.Text = Strings.Warping.visual;
 
@@ -947,6 +1133,40 @@ namespace Intersect.Editor.Forms.DockingElements
             grpZResource.Text = Strings.Attributes.zdimension;
             rbLevel1.Text = Strings.Attributes.zlevel1;
             rbLevel2.Text = Strings.Attributes.zlevel2;
+
+            //Critter
+            grpCritter.Text = Strings.Attributes.critter;
+            lblCritterSprite.Text = Strings.Attributes.crittersprite;
+            lblCritterAnimation.Text = Strings.Attributes.critteranimation;
+            lblCritterMovement.Text = Strings.Attributes.crittermovement;
+            lblCritterLayer.Text = Strings.Attributes.critterlayer;
+            lblCritterMoveSpeed.Text = Strings.Attributes.critterspeed;
+            lblCritterMoveFrequency.Text = Strings.Attributes.critterfrequency;
+            chkCritterIgnoreNpcAvoids.Text = Strings.Attributes.critterignorenpcavoids;
+            chkCritterBlockPlayers.Text = Strings.Attributes.critterblockplayers;
+            lblCritterDirection.Text = Strings.Attributes.critterdirection;
+
+            cmbCritterDirection.Items.Clear();
+            cmbCritterDirection.Items.Add(Strings.NpcSpawns.randomdirection);
+            for (var i = 0; i < 4; i++)
+            {
+                cmbCritterDirection.Items.Add(Strings.Directions.dir[i]);
+            }
+            cmbCritterDirection.SelectedIndex = 0;
+
+            cmbCritterMovement.Items.Clear();
+            for (var i = 0; i < Strings.Attributes.crittermovements.Count; i++)
+            {
+                cmbCritterMovement.Items.Add(Strings.Attributes.crittermovements[i]);
+            }
+            cmbCritterMovement.SelectedIndex = 0;
+
+            cmbCritterLayer.Items.Clear();
+            for (var i = 0; i < Strings.Attributes.critterlayers.Count; i++)
+            {
+                cmbCritterLayer.Items.Add(Strings.Attributes.critterlayers[i]);
+            }
+            cmbCritterLayer.SelectedIndex = 1;
 
             //NPCS Tab
             grpSpawnLoc.Text = rbDeclared.Checked ? Strings.NpcSpawns.spawndeclared : Strings.NpcSpawns.spawnrandom;
@@ -963,14 +1183,10 @@ namespace Intersect.Editor.Forms.DockingElements
             grpNpcList.Text = Strings.NpcSpawns.addremove;
             btnAddMapNpc.Text = Strings.NpcSpawns.add;
             btnRemoveMapNpc.Text = Strings.NpcSpawns.remove;
+            lblInstanceLimit.Text = Strings.NpcSpawns.minimumininstance;
 
             lblEventInstructions.Text = Strings.MapLayers.eventinstructions;
             lblLightInstructions.Text = Strings.MapLayers.lightinstructions;
-
-            for (var i = 0; i < mMapLayers.Count; i++)
-            {
-                mMapLayers[i].Text = Strings.Tiles.layers[i];
-            }
         }
 
         public void InitMapLayers()
@@ -1015,6 +1231,7 @@ namespace Intersect.Editor.Forms.DockingElements
         private void lstMapNpcs_MouseDown(object sender, MouseEventArgs e)
         {
             lstMapNpcs.SelectedIndex = lstMapNpcs.IndexFromPoint(e.Location);
+            Globals.SelectedMapNpc = lstMapNpcs.SelectedIndex;
         }
 
         private void ChangeTab()
@@ -1029,6 +1246,7 @@ namespace Intersect.Editor.Forms.DockingElements
             pnlLights.Hide();
             pnlEvents.Hide();
             pnlNpcs.Hide();
+            Globals.SelectedMapNpc = -1;
 
             //Force Game Object Lists to Refresh
             rbAnimation_CheckedChanged(null, null);
@@ -1056,7 +1274,7 @@ namespace Intersect.Editor.Forms.DockingElements
         {
             Globals.CurrentTool = Globals.SavedTool;
             ChangeTab();
-            Globals.CurrentLayer = Options.LayerCount;
+            Globals.CurrentLayer = LayerOptions.Attributes;
             Core.Graphics.TilePreviewUpdated = true;
             btnAttributeHeader.BackColor = System.Drawing.Color.FromArgb(90, 90, 90);
             CurrentTab = LayerTabs.Attributes;
@@ -1065,13 +1283,13 @@ namespace Intersect.Editor.Forms.DockingElements
 
         public void btnLightsHeader_Click(object sender, EventArgs e)
         {
-            if (Globals.CurrentLayer < Options.LayerCount + 1)
+            if (Globals.CurrentLayer != LayerOptions.Lights && Globals.CurrentLayer != LayerOptions.Events && Globals.CurrentLayer != LayerOptions.Npcs)
             {
                 Globals.SavedTool = Globals.CurrentTool;
             }
 
             ChangeTab();
-            Globals.CurrentLayer = Options.LayerCount + 1;
+            Globals.CurrentLayer = LayerOptions.Lights;
             Core.Graphics.TilePreviewUpdated = true;
             btnLightsHeader.BackColor = System.Drawing.Color.FromArgb(90, 90, 90);
             CurrentTab = LayerTabs.Lights;
@@ -1080,13 +1298,13 @@ namespace Intersect.Editor.Forms.DockingElements
 
         private void btnEventsHeader_Click(object sender, EventArgs e)
         {
-            if (Globals.CurrentLayer < Options.LayerCount + 1)
+            if (Globals.CurrentLayer != LayerOptions.Lights && Globals.CurrentLayer != LayerOptions.Events && Globals.CurrentLayer != LayerOptions.Npcs)
             {
                 Globals.SavedTool = Globals.CurrentTool;
             }
 
             ChangeTab();
-            Globals.CurrentLayer = Options.LayerCount + 2;
+            Globals.CurrentLayer = LayerOptions.Events;
             Core.Graphics.TilePreviewUpdated = true;
             btnEventsHeader.BackColor = System.Drawing.Color.FromArgb(90, 90, 90);
             CurrentTab = LayerTabs.Events;
@@ -1095,25 +1313,30 @@ namespace Intersect.Editor.Forms.DockingElements
 
         private void btnNpcsHeader_Click(object sender, EventArgs e)
         {
-            if (Globals.CurrentLayer < Options.LayerCount + 1)
+            if (Globals.CurrentLayer != LayerOptions.Lights && Globals.CurrentLayer != LayerOptions.Events && Globals.CurrentLayer != LayerOptions.Npcs)
             {
                 Globals.SavedTool = Globals.CurrentTool;
             }
 
             ChangeTab();
-            Globals.CurrentLayer = Options.LayerCount + 3;
+            Globals.CurrentLayer = LayerOptions.Npcs;
             Core.Graphics.TilePreviewUpdated = true;
             RefreshNpcList();
             btnNpcsHeader.BackColor = System.Drawing.Color.FromArgb(90, 90, 90);
             CurrentTab = LayerTabs.Npcs;
             pnlNpcs.Show();
+            Globals.SelectedMapNpc = lstMapNpcs.SelectedIndex;
         }
 
         private void picMapLayer_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                SetLayer(mMapLayers.IndexOf((PictureBox) sender));
+                var index = mMapLayers.IndexOf((PictureBox)sender);
+                if (index > -1 && index < Options.Instance.MapOpts.Layers.All.Count)
+                {
+                    SetLayer(Options.Instance.MapOpts.Layers.All[index]);
+                }
             }
             else
             {
@@ -1123,14 +1346,18 @@ namespace Intersect.Editor.Forms.DockingElements
 
         private void ToggleLayerVisibility(int index)
         {
-            LayerVisibility[index] = !LayerVisibility[index];
-            SetLayer(Globals.CurrentLayer);
+            if (index > -1 && index < Options.Instance.MapOpts.Layers.All.Count)
+            {
+                LayerVisibility[Options.Instance.MapOpts.Layers.All[index]] = !LayerVisibility[Options.Instance.MapOpts.Layers.All[index]];
+                SetLayer(Globals.CurrentLayer);
+            }
+            
         }
 
         private void picMapLayer_MouseHover(object sender, EventArgs e)
         {
             var tt = new ToolTip();
-            tt.SetToolTip((PictureBox) sender, Strings.Tiles.layers[mMapLayers.IndexOf((PictureBox) sender)]);
+            tt.SetToolTip((PictureBox) sender, Options.Instance.MapOpts.Layers.All[mMapLayers.IndexOf((PictureBox)sender)]);
         }
 
         private void cmbTilesets_MouseDown(object sender, MouseEventArgs e)
@@ -1146,6 +1373,26 @@ namespace Intersect.Editor.Forms.DockingElements
             nudItemQuantity.Value = Math.Max(1, nudItemQuantity.Value);
         }
 
+        private void cmbMapLayer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbMapLayer.SelectedIndex > -1)
+            {
+                SetLayer(Options.Instance.MapOpts.Layers.All[cmbMapLayer.SelectedIndex]);
+            }
+        }
+
+        private void chkChangeInstance_CheckedChanged(object sender, EventArgs e)
+        {
+            grpInstanceSettings.Visible = chkChangeInstance.Checked;
+        }
+
+        private void nudInstanceSpawnLimit_ValueChanged(object sender, EventArgs e)
+        {
+            if (lstMapNpcs.SelectedIndex >= 0)
+            {
+                Globals.CurrentMap.Spawns[lstMapNpcs.SelectedIndex].RequiredPlayersToSpawn = (int) nudInstanceSpawnLimit.Value;
+            }
+        }
     }
 
 }

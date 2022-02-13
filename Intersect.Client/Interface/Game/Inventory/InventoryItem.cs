@@ -81,6 +81,7 @@ namespace Intersect.Client.Interface.Game.Inventory
             EquipLabel.IsHidden = true;
             EquipLabel.Text = Strings.Inventory.equippedicon;
             EquipLabel.TextColor = new Color(0, 255, 255, 255);
+            Container.RenderColor = Color.Transparent; // Alex: "Unequipped" display
             mCooldownLabel = new Label(Pnl, "InventoryItemCooldownLabel");
             mCooldownLabel.IsHidden = true;
             mCooldownLabel.TextColor = new Color(0, 255, 255, 255);
@@ -103,7 +104,7 @@ namespace Intersect.Client.Interface.Game.Inventory
             }
             else if (Globals.InBag)
             {
-                Globals.Me.TryStoreBagItem(mMySlot);
+                Globals.Me.TryStoreBagItem(mMySlot, -1);
             }
             else if (Globals.InTrade)
             {
@@ -189,14 +190,13 @@ namespace Intersect.Client.Interface.Game.Inventory
                 }
                 else if (shopItem == null)
                 {
-                    var hoveredItem = ItemBase.Get(invItem.ItemId);
                     var costItem = Globals.GameShop.DefaultCurrency;
-                    if (hoveredItem != null && costItem != null && Globals.Me.Inventory[mMySlot]?.Base != null)
+                    if (invItem.Base != null && costItem != null && Globals.Me.Inventory[mMySlot]?.Base != null)
                     {
                         mDescWindow = new ItemDescWindow(
                             Globals.Me.Inventory[mMySlot].Base, Globals.Me.Inventory[mMySlot].Quantity,
                             mInventoryWindow.X, mInventoryWindow.Y, Globals.Me.Inventory[mMySlot].StatBuffs, "",
-                            Strings.Shop.sellsfor.ToString(hoveredItem.Price, costItem.Name)
+                            Strings.Shop.sellsfor.ToString(invItem.Base.Price.ToString(), costItem.Name)
                         );
                     }
                 }
@@ -240,6 +240,7 @@ namespace Intersect.Client.Interface.Game.Inventory
             }
 
             var item = ItemBase.Get(Globals.Me.Inventory[mMySlot].ItemId);
+
             if (Globals.Me.Inventory[mMySlot].ItemId != mCurrentItemId ||
                 Globals.Me.Inventory[mMySlot].Quantity != mCurrentAmt ||
                 equipped != mIsEquipped ||
@@ -251,8 +252,17 @@ namespace Intersect.Client.Interface.Game.Inventory
                 mCurrentItemId = Globals.Me.Inventory[mMySlot].ItemId;
                 mCurrentAmt = Globals.Me.Inventory[mMySlot].Quantity;
                 mIsEquipped = equipped;
+                // Alex: Commented out to ALWAYS hide equip panel/label, in favor of displaying a texture for equipped items
+                /*
                 EquipPanel.IsHidden = !mIsEquipped;
                 EquipLabel.IsHidden = !mIsEquipped;
+                */
+                
+                // Alex: This is my addition - also note that InventoryWindow has some new logic as well in its update loop
+                Container.RenderColor = mIsEquipped ? Color.White : Color.Transparent;
+                EquipPanel.IsHidden = true; // Alex: Don't want, at the moment
+                EquipLabel.IsHidden = true;
+
                 mCooldownLabel.IsHidden = true;
                 if (item != null)
                 {
@@ -262,11 +272,11 @@ namespace Intersect.Client.Interface.Game.Inventory
                         Pnl.Texture = itemTex;
                         if (Globals.Me.ItemOnCd(mMySlot))
                         {
-                            Pnl.RenderColor = new Color(100, 255, 255, 255);
+                            Pnl.RenderColor = new Color(100, item.Color.R, item.Color.G, item.Color.B);
                         }
                         else
                         {
-                            Pnl.RenderColor = new Color(255, 255, 255, 255);
+                            Pnl.RenderColor = item.Color;
                         }
                     }
                     else
@@ -350,7 +360,7 @@ namespace Intersect.Client.Interface.Game.Inventory
                                     IsDragging = true;
                                     mDragIcon = new Draggable(
                                         Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseX,
-                                        Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, Pnl.Texture
+                                        Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, Pnl.Texture, Pnl.RenderColor
                                     );
                                 }
                             }
@@ -435,12 +445,38 @@ namespace Intersect.Client.Interface.Game.Inventory
                             Globals.Me.AddToHotbar((byte) bestIntersectIndex, 0, mMySlot);
                         }
                     }
+                    else if (Globals.InBag)
+                    {
+                        var bagWindow = Interface.GameUi.GetBag();
+                        if (bagWindow.RenderBounds().IntersectsWith(dragRect))
+                        {
+                            for (var i = 0; i < Globals.Bag.Length; i++)
+                            {
+                                if (bagWindow.Items[i].RenderBounds().IntersectsWith(dragRect))
+                                {
+                                    if (FloatRect.Intersect(bagWindow.Items[i].RenderBounds(), dragRect).Width *
+                                        FloatRect.Intersect(bagWindow.Items[i].RenderBounds(), dragRect).Height >
+                                        bestIntersect)
+                                    {
+                                        bestIntersect =
+                                            FloatRect.Intersect(bagWindow.Items[i].RenderBounds(), dragRect).Width *
+                                            FloatRect.Intersect(bagWindow.Items[i].RenderBounds(), dragRect).Height;
+
+                                        bestIntersectIndex = i;
+                                    }
+                                }
+                            }
+
+                            if (bestIntersectIndex > -1)
+                            {
+                                Globals.Me.TryStoreBagItem(mMySlot, bestIntersectIndex);
+                            }
+                        }
+                    }
 
                     mDragIcon.Dispose();
                 }
             }
         }
-
     }
-
 }

@@ -70,7 +70,7 @@ namespace Intersect.Client.Interface.Game.Bag
         {
             if (Globals.InBag)
             {
-                Globals.Me.TryRetreiveBagItem(mMySlot);
+                Globals.Me.TryRetreiveBagItem(mMySlot, -1);
             }
         }
 
@@ -147,6 +147,7 @@ namespace Intersect.Client.Interface.Game.Bag
                     if (itemTex != null)
                     {
                         Pnl.Texture = itemTex;
+                        Pnl.RenderColor = item.Color;
                     }
                     else
                     {
@@ -202,7 +203,7 @@ namespace Intersect.Client.Interface.Game.Bag
                                     IsDragging = true;
                                     mDragIcon = new Draggable(
                                         Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseX,
-                                        Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, Pnl.Texture
+                                        Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, Pnl.Texture, Pnl.RenderColor
                                     );
                                 }
                             }
@@ -251,6 +252,35 @@ namespace Intersect.Client.Interface.Game.Bag
                             {
                                 //Try to swap....
                                 PacketSender.SendMoveBagItems(bestIntersectIndex, mMySlot);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var invWindow = Interface.GameUi.GameMenu.GetInventoryWindow();
+
+                        if (invWindow.RenderBounds().IntersectsWith(dragRect))
+                        {
+                            for (var i = 0; i < Options.MaxInvItems; i++)
+                            {
+                                if (invWindow.Items[i].RenderBounds().IntersectsWith(dragRect))
+                                {
+                                    if (FloatRect.Intersect(invWindow.Items[i].RenderBounds(), dragRect).Width *
+                                        FloatRect.Intersect(invWindow.Items[i].RenderBounds(), dragRect).Height >
+                                        bestIntersect)
+                                    {
+                                        bestIntersect =
+                                            FloatRect.Intersect(invWindow.Items[i].RenderBounds(), dragRect).Width *
+                                            FloatRect.Intersect(invWindow.Items[i].RenderBounds(), dragRect).Height;
+
+                                        bestIntersectIndex = i;
+                                    }
+                                }
+                            }
+
+                            if (bestIntersectIndex > -1)
+                            {
+                                Globals.Me.TryRetreiveBagItem(mMySlot, bestIntersectIndex);
                             }
                         }
                     }

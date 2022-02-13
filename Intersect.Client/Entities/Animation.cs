@@ -11,7 +11,7 @@ using Intersect.GameObjects;
 namespace Intersect.Client.Entities
 {
 
-    public class Animation
+    public partial class Animation
     {
 
         public bool AutoRotate;
@@ -75,7 +75,10 @@ namespace Intersect.Client.Entities
                 InfiniteLoop = loopForever;
                 AutoRotate = autoRotate;
                 mZDimension = zDimension;
-                mSound = Audio.AddMapSound(MyBase.Sound, 0, 0, Guid.Empty, loopForever, 12, parent);
+                if (displayBasedOnBrightness(MyBase))
+                {
+                    mSound = Audio.AddMapSound(MyBase.Sound, 0, 0, Guid.Empty, loopForever, 0, 12, parent);
+                }
                 lock (Graphics.AnimationLock)
                 {
                     Graphics.LiveAnimations.Add(this);
@@ -89,7 +92,7 @@ namespace Intersect.Client.Entities
 
         public void Draw(bool upper = false, bool alternate = false)
         {
-            if (Hidden)
+            if (Hidden || !displayBasedOnBrightness(MyBase))
             {
                 return;
             }
@@ -326,9 +329,14 @@ namespace Intersect.Client.Entities
 
         public void Update()
         {
+            if (disposed)
+            {
+                return;
+            }
+
             if (MyBase != null)
             {
-                if (mSound != null)
+                if (mSound != null && displayBasedOnBrightness(MyBase))
                 {
                     mSound.Update();
                 }
@@ -339,34 +347,36 @@ namespace Intersect.Client.Entities
                 //Lower
                 if (MyBase.Lower.FrameCount > 0 && MyBase.Lower.FrameSpeed > 0)
                 {
+                    var realFrameCount = Math.Min(MyBase.Lower.FrameCount, MyBase.Lower.XFrames * MyBase.Lower.YFrames);
                     var lowerFrame = (int) Math.Floor(elapsedTime / (float) MyBase.Lower.FrameSpeed);
-                    var lowerLoops = (int) Math.Floor(lowerFrame / (float) MyBase.Lower.FrameCount);
+                    var lowerLoops = (int) Math.Floor(lowerFrame / (float) realFrameCount);
                     if (lowerLoops > mLowerLoop && !InfiniteLoop)
                     {
                         mShowLower = false;
                     }
                     else
                     {
-                        mLowerFrame = lowerFrame - lowerLoops * MyBase.Lower.FrameCount;
+                        mLowerFrame = lowerFrame - lowerLoops * realFrameCount;
                     }
                 }
 
                 //Upper
                 if (MyBase.Upper.FrameCount > 0 && MyBase.Upper.FrameSpeed > 0)
                 {
+                    var realFrameCount = Math.Min(MyBase.Upper.FrameCount, MyBase.Upper.XFrames * MyBase.Upper.YFrames);
                     var upperFrame = (int) Math.Floor(elapsedTime / (float) MyBase.Upper.FrameSpeed);
-                    var upperLoops = (int) Math.Floor(upperFrame / (float) MyBase.Upper.FrameCount);
+                    var upperLoops = (int) Math.Floor(upperFrame / (float) realFrameCount);
                     if (upperLoops > mUpperLoop && !InfiniteLoop)
                     {
                         mShowUpper = false;
                     }
                     else
                     {
-                        mUpperFrame = upperFrame - upperLoops * MyBase.Upper.FrameCount;
+                        mUpperFrame = upperFrame - upperLoops * realFrameCount;
                     }
                 }
 
-                if (!mShowLower && !mShowUpper)
+                if ((!mShowLower && !mShowUpper) || !displayBasedOnBrightness(MyBase))
                 {
                     Dispose();
                 }
@@ -455,6 +465,35 @@ namespace Intersect.Client.Entities
             mRenderDir = dir;
         }
 
+        public static bool displayBasedOnBrightness(AnimationBase animBase)
+        {
+            if (animBase != null)
+            {
+                int thresh = animBase.BrightnessThreshold;
+                var map = Globals.Me?.MapInstance;
+                if (map == null) return false;
+                if (map.IsIndoors)
+                {
+                    if (thresh < map.Brightness)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (thresh < Time.GetBrightnessFromAlpha())
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            } else
+            {
+                return false;
+            }
+            
+        }
     }
 
 }

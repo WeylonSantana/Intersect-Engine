@@ -20,6 +20,8 @@ namespace Intersect.Config
             "Weapon",
             "Shield",
             "Boots",
+            "Accessory",
+            "Prayer"
         };
 
         public List<string> ToolTypes = new List<string>()
@@ -31,6 +33,10 @@ namespace Intersect.Config
         };
 
         public int WeaponSlot = 2;
+
+        public int PrayerSlot = 6;
+
+        public int HelmetSlot = 0;
 
         [OnDeserializing]
         internal void OnDeserializingMethod(StreamingContext context)
@@ -58,8 +64,6 @@ namespace Intersect.Config
             {
                 throw new Exception("Config Error: (ShieldSlot) was out of bounds!");
             }
-
-            Paperdoll.Validate(this);
         }
 
     }

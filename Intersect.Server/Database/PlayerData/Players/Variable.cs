@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Intersect.GameObjects;
 using Intersect.GameObjects.Switches_and_Variables;
 using Intersect.Server.Entities;
-
-using JetBrains.Annotations;
 
 using Newtonsoft.Json;
 
@@ -27,8 +25,10 @@ namespace Intersect.Server.Database.PlayerData.Players
         public Guid VariableId { get; protected set; }
 
         [NotMapped]
+        public string VariableName => PlayerVariableBase.GetName(VariableId);
+
+        [NotMapped]
         [JsonIgnore]
-        [NotNull]
         public VariableValue Value { get; set; } = new VariableValue();
 
         [NotMapped]

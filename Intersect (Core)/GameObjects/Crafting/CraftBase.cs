@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using Intersect.Models;
+using Intersect.GameObjects.Events;
+using Intersect.GameObjects.Conditions;
 
 using Newtonsoft.Json;
 
@@ -13,6 +15,9 @@ namespace Intersect.GameObjects.Crafting
     {
 
         [NotMapped] public List<CraftIngredient> Ingredients = new List<CraftIngredient>();
+
+        [NotMapped]
+        public ConditionLists Requirements { get; set; } = new ConditionLists();
 
         [JsonConstructor]
         public CraftBase(Guid id) : base(id)
@@ -45,6 +50,29 @@ namespace Intersect.GameObjects.Crafting
 
         /// <inheritdoc />
         public string Folder { get; set; } = "";
+
+        public long Experience { get; set; }
+
+        [Column("Event")]
+        [JsonProperty]
+        public Guid EventId { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public EventBase Event
+        {
+            get => EventBase.Get(EventId);
+            set => EventId = value?.Id ?? Guid.Empty;
+        }
+
+        //Requirements - Store with json
+        [Column("Requirements")]
+        [JsonIgnore]
+        public string JsonRequirements
+        {
+            get => Requirements.Data();
+            set => Requirements.Load(value);
+        }
 
     }
 

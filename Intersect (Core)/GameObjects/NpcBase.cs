@@ -8,12 +8,52 @@ using Intersect.GameObjects.Events;
 using Intersect.Models;
 using Intersect.Utilities;
 
-using JetBrains.Annotations;
-
 using Newtonsoft.Json;
 
 namespace Intersect.GameObjects
 {
+    /// <summary>
+    /// Enumeration of the different immunity options
+    /// </summary>
+    public enum Immunities
+    {
+        /// <summary>
+        /// Whether the NPC can be affected by knockback
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Whether the NPC can be affected by knockback
+        /// </summary>
+        Knockback,
+        /// <summary>
+        /// Whether the NPC can be affected by silence
+        /// </summary>
+        Silence,
+        /// <summary>
+        /// Whether the NPC can be affected by stun
+        /// </summary>
+        Stun,
+        /// <summary>
+        /// Whether the NPC can be affected by snare
+        /// </summary>
+        Snare,
+        /// <summary>
+        /// Whether the NPC can be affected by blind
+        /// </summary>
+        Blind,
+        /// <summary>
+        /// Whether the NPC can be affected by transform
+        /// </summary>
+        Transform,
+        /// <summary>
+        /// Whether the NPC can be affected by sleep
+        /// </summary>
+        Sleep,
+        /// <summary>
+        /// Whether the NPC can be affected by taunt
+        /// </summary>
+        Taunt
+    }
 
     public class NpcBase : DatabaseObject<NpcBase>, IFolderable
     {
@@ -31,6 +71,24 @@ namespace Intersect.GameObjects
         [NotMapped] public int[] Stats = new int[(int) Enums.Stats.StatCount];
 
         [NotMapped] public int[] VitalRegen = new int[(int) Vitals.VitalCount];
+
+        [NotMapped]
+        public Dictionary<Immunities, bool> Immunities = new Dictionary<Immunities, bool>();
+
+        [JsonIgnore]
+        [Column("Immunities")]
+        public string ImmunitiesJson
+        {
+            get => JsonConvert.SerializeObject(Immunities);
+            set
+            {
+                Immunities = JsonConvert.DeserializeObject<Dictionary<Immunities, bool>>(value ?? "");
+                if (Immunities == null)
+                {
+                    Immunities = new Dictionary<Immunities, bool>();
+                }
+            }
+        }
 
         [JsonConstructor]
         public NpcBase(Guid id) : base(id)
@@ -68,6 +126,17 @@ namespace Intersect.GameObjects
             set => AttackAnimationId = value?.Id ?? Guid.Empty;
         }
 
+        [Column("DeathAnimation")]
+        public Guid DeathAnimationId { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public AnimationBase DeathAnimation
+        {
+            get => AnimationBase.Get(DeathAnimationId);
+            set => DeathAnimationId = value?.Id ?? Guid.Empty;
+        }
+
         //Behavior
         public bool Aggressive { get; set; }
 
@@ -78,6 +147,8 @@ namespace Intersect.GameObjects
         public byte FleeHealthPercentage { get; set; }
 
         public bool FocusHighestDamageDealer { get; set; } = true;
+
+        public int ResetRadius { get; set; }
 
         //Conditions
         [Column("PlayerFriendConditions")]
@@ -112,6 +183,8 @@ namespace Intersect.GameObjects
         public int CritChance { get; set; }
 
         public double CritMultiplier { get; set; } = 1.5;
+
+        public double Tenacity { get; set; } = 0.0;
 
         public int AttackSpeedModifier { get; set; }
 
@@ -148,6 +221,11 @@ namespace Intersect.GameObjects
             get => JsonConvert.SerializeObject(Drops);
             set => Drops = JsonConvert.DeserializeObject<List<NpcDrop>>(value);
         }
+
+        /// <summary>
+        /// If true this npc will drop individual loot for all of those who helped slay it.
+        /// </summary>
+        public bool IndividualizedLoot { get; set; }
 
         public long Experience { get; set; }
 
@@ -190,6 +268,23 @@ namespace Intersect.GameObjects
 
         public string Sprite { get; set; } = "";
 
+        /// <summary>
+        /// The database compatible version of <see cref="Color"/>
+        /// </summary>
+        [Column("Color")]
+        [JsonIgnore]
+        public string JsonColor
+        {
+            get => JsonConvert.SerializeObject(Color);
+            set => Color = !string.IsNullOrWhiteSpace(value) ? JsonConvert.DeserializeObject<Color>(value) : Color.White;
+        }
+
+        /// <summary>
+        /// Defines the ARGB color settings for this Npc.
+        /// </summary>
+        [NotMapped]
+        public Color Color { get; set; } = new Color(255, 255, 255, 255);
+
         [Column("Stats")]
         [JsonIgnore]
         public string JsonStat
@@ -210,7 +305,7 @@ namespace Intersect.GameObjects
         /// <inheritdoc />
         public string Folder { get; set; } = "";
 
-        public SpellBase GetRandomSpell([NotNull] Random random)
+        public SpellBase GetRandomSpell(Random random)
         {
             if (Spells == null || Spells.Count == 0)
             {

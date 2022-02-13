@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.Server.Database.PlayerData.Players;
-using Intersect.Server.General;
 using Intersect.Utilities;
-
-using JetBrains.Annotations;
 
 using Newtonsoft.Json;
 
@@ -52,7 +47,10 @@ namespace Intersect.Server.Database
             for (var i = 0; i < (int) Stats.StatCount; i++)
             {
                 // TODO: What the fuck?
-                StatBuffs[i] = Randomization.Next(-descriptor.StatGrowth, descriptor.StatGrowth + 1);
+                if (!descriptor.StatLocks.ContainsKey((Stats) i) || !descriptor.StatLocks[(Stats) i])
+                {
+                    StatBuffs[i] = Randomization.Next(-descriptor.StatGrowth, descriptor.StatGrowth + 1);
+                } 
             }
         }
 
@@ -62,6 +60,8 @@ namespace Intersect.Server.Database
             {
                 StatBuffs[i] = item.StatBuffs[i];
             }
+
+            DropChance = item.DropChance;
         }
         
         // TODO: THIS SHOULD NOT BE A NULLABLE. This needs to be fixed.
@@ -71,6 +71,9 @@ namespace Intersect.Server.Database
         public virtual Bag Bag { get; set; }
 
         public Guid ItemId { get; set; } = Guid.Empty;
+
+        [NotMapped]
+        public string ItemName => ItemBase.GetName(ItemId);
 
         public int Quantity { get; set; }
 
@@ -118,7 +121,6 @@ namespace Intersect.Server.Database
         /// </summary>
         /// <param name="bag">the bag if there is one associated with this <see cref="Item"/></param>
         /// <returns>if <paramref name="bag"/> is not <see langword="null"/></returns>
-        [ContractAnnotation(" => true, bag:notnull; => false, bag:null")]
         public bool TryGetBag(out Bag bag)
         {
             bag = Bag;
@@ -130,8 +132,9 @@ namespace Intersect.Server.Database
                 // ReSharper disable once InvertIf Justification: Do not introduce two different return points that assert a value state
                 if (descriptor?.ItemType == ItemTypes.Bag)
                 {
-                    bag = DbInterface.GetBag(BagId ?? Guid.Empty);
+                    bag = Bag.GetBag(BagId ?? Guid.Empty);
                     bag?.ValidateSlots();
+                    Bag = bag;
                 }
             }
 

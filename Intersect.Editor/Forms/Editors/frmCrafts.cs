@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 using DarkUI.Forms;
@@ -10,6 +11,7 @@ using Intersect.Editor.Networking;
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
+using Intersect.GameObjects.Events;
 using Intersect.Models;
 
 namespace Intersect.Editor.Forms.Editors
@@ -24,8 +26,6 @@ namespace Intersect.Editor.Forms.Editors
 
         private CraftBase mEditorItem;
 
-        private List<string> mExpandedFolders = new List<string>();
-
         private List<string> mKnownFolders = new List<string>();
 
         private bool updatingIngedients = false;
@@ -34,14 +34,25 @@ namespace Intersect.Editor.Forms.Editors
         {
             ApplyHooks();
             InitializeComponent();
-            lstCrafts.LostFocus += itemList_FocusChanged;
-            lstCrafts.GotFocus += itemList_FocusChanged;
+            lstGameObjects.LostFocus += itemList_FocusChanged;
+            lstGameObjects.GotFocus += itemList_FocusChanged;
             cmbResult.Items.Clear();
             cmbResult.Items.Add(Strings.General.none);
             cmbResult.Items.AddRange(ItemBase.Names);
             cmbIngredient.Items.Clear();
             cmbIngredient.Items.Add(Strings.General.none);
             cmbIngredient.Items.AddRange(ItemBase.Names);
+            cmbEvent.Items.Clear();
+            cmbEvent.Items.Add(Strings.General.none);
+            cmbEvent.Items.AddRange(EventBase.Names);
+            btnDynamicRequirements.Click += buttonRequirements_clicked;
+
+            lstGameObjects.Init(UpdateToolStripItems, AssignEditorItem, toolStripItemNew_Click, toolStripItemCopy_Click, toolStripItemUndo_Click, toolStripItemPaste_Click, toolStripItemDelete_Click);
+        }
+        private void AssignEditorItem(Guid id)
+        {
+            mEditorItem = CraftBase.Get(id);
+            UpdateEditor();
         }
 
         protected override void GameObjectUpdatedDelegate(GameObjectType type)
@@ -112,6 +123,18 @@ namespace Intersect.Editor.Forms.Editors
                     mChanged.Add(mEditorItem);
                     mEditorItem.MakeBackup();
                 }
+
+                cmbEvent.SelectedIndex = EventBase.ListIndex(mEditorItem.EventId) + 1;
+
+                nudExp.Value = mEditorItem.Experience;
+
+                int craftCost = 0;
+                mEditorItem.Ingredients.ForEach(ing =>
+                {
+                    craftCost += ItemBase.Get(ing.ItemId).Price;
+                });
+
+                lblCost.Text = $"Item Cost: {ItemBase.Get(mEditorItem.ItemId).Price}; Craft Cost: {craftCost}";
             }
             else
             {
@@ -123,14 +146,8 @@ namespace Intersect.Editor.Forms.Editors
 
         private void txtName_TextChanged(object sender, EventArgs e)
         {
-            mChangingName = true;
             mEditorItem.Name = txtName.Text;
-            if (lstCrafts.SelectedNode != null && lstCrafts.SelectedNode.Tag != null)
-            {
-                lstCrafts.SelectedNode.Text = txtName.Text;
-            }
-
-            mChangingName = false;
+            lstGameObjects.UpdateText(txtName.Text);
         }
 
         private void nudQuantity_ValueChanged(object sender, EventArgs e)
@@ -218,7 +235,7 @@ namespace Intersect.Editor.Forms.Editors
 
         private void toolStripItemDelete_Click(object sender, EventArgs e)
         {
-            if (mEditorItem != null && lstCrafts.Focused)
+            if (mEditorItem != null && lstGameObjects.Focused)
             {
                 if (DarkMessageBox.ShowWarning(
                         Strings.CraftsEditor.deleteprompt, Strings.CraftsEditor.deletetitle, DarkDialogButton.YesNo,
@@ -233,7 +250,7 @@ namespace Intersect.Editor.Forms.Editors
 
         private void toolStripItemCopy_Click(object sender, EventArgs e)
         {
-            if (mEditorItem != null && lstCrafts.Focused)
+            if (mEditorItem != null && lstGameObjects.Focused)
             {
                 mCopiedItem = mEditorItem.JsonData;
                 toolStripItemPaste.Enabled = true;
@@ -242,7 +259,7 @@ namespace Intersect.Editor.Forms.Editors
 
         private void toolStripItemPaste_Click(object sender, EventArgs e)
         {
-            if (mEditorItem != null && mCopiedItem != null && lstCrafts.Focused)
+            if (mEditorItem != null && mCopiedItem != null && lstGameObjects.Focused)
             {
                 mEditorItem.Load(mCopiedItem, true);
                 UpdateEditor();
@@ -293,10 +310,10 @@ namespace Intersect.Editor.Forms.Editors
 
         private void UpdateToolStripItems()
         {
-            toolStripItemCopy.Enabled = mEditorItem != null && lstCrafts.Focused;
-            toolStripItemPaste.Enabled = mEditorItem != null && mCopiedItem != null && lstCrafts.Focused;
-            toolStripItemDelete.Enabled = mEditorItem != null && lstCrafts.Focused;
-            toolStripItemUndo.Enabled = mEditorItem != null && lstCrafts.Focused;
+            toolStripItemCopy.Enabled = mEditorItem != null && lstGameObjects.Focused;
+            toolStripItemPaste.Enabled = mEditorItem != null && mCopiedItem != null && lstGameObjects.Focused;
+            toolStripItemDelete.Enabled = mEditorItem != null && lstGameObjects.Focused;
+            toolStripItemUndo.Enabled = mEditorItem != null && lstGameObjects.Focused;
         }
 
         private void itemList_FocusChanged(object sender, EventArgs e)
@@ -427,12 +444,13 @@ namespace Intersect.Editor.Forms.Editors
             grpIngredients.Text = Strings.CraftsEditor.ingredients;
             lblIngredient.Text = Strings.CraftsEditor.ingredientitem;
             lblQuantity.Text = Strings.CraftsEditor.ingredientquantity;
+            lblCommonEvent.Text = Strings.CraftsEditor.commonevent;
             btnAdd.Text = Strings.CraftsEditor.newingredient;
             btnRemove.Text = Strings.CraftsEditor.deleteingredient;
             btnDupIngredient.Text = Strings.CraftsEditor.duplicateingredient;
 
             //Searching/Sorting
-            btnChronological.ToolTipText = Strings.CraftsEditor.sortchronologically;
+            btnAlphabetical.ToolTipText = Strings.CraftsEditor.sortalphabetically;
             txtSearch.Text = Strings.CraftsEditor.searchplaceholder;
             lblFolder.Text = Strings.CraftsEditor.folderlabel;
 
@@ -446,20 +464,22 @@ namespace Intersect.Editor.Forms.Editors
             nudCraftQuantity.Value = Math.Max(1, nudCraftQuantity.Value);
             mEditorItem.Quantity = (int) nudCraftQuantity.Value;
         }
+        
+        private void cmbEvent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Event = EventBase.Get(EventBase.IdFromList(cmbEvent.SelectedIndex - 1));
+        }
+
+        private void buttonRequirements_clicked(object sender, EventArgs e)
+        {
+            var frm = new FrmDynamicRequirements(mEditorItem.Requirements, RequirementType.Craft);
+            frm.ShowDialog();
+        }
 
         #region "Item List - Folders, Searching, Sorting, Etc"
 
         public void InitEditor()
         {
-            var selectedId = Guid.Empty;
-            var folderNodes = new Dictionary<string, TreeNode>();
-            if (lstCrafts.SelectedNode != null && lstCrafts.SelectedNode.Tag != null)
-            {
-                selectedId = (Guid) lstCrafts.SelectedNode.Tag;
-            }
-
-            lstCrafts.Nodes.Clear();
-
             //Collect folders
             var mFolders = new List<string>();
             foreach (var itm in CraftBase.Lookup)
@@ -481,70 +501,9 @@ namespace Intersect.Editor.Forms.Editors
             cmbFolder.Items.Add("");
             cmbFolder.Items.AddRange(mKnownFolders.ToArray());
 
-            lstCrafts.Sorted = !btnChronological.Checked;
-
-            if (!btnChronological.Checked && !CustomSearch())
-            {
-                foreach (var folder in mFolders)
-                {
-                    var node = lstCrafts.Nodes.Add(folder);
-                    node.ImageIndex = 0;
-                    node.SelectedImageIndex = 0;
-                    folderNodes.Add(folder, node);
-                }
-            }
-
-            foreach (var itm in CraftBase.ItemPairs)
-            {
-                var node = new TreeNode(itm.Value);
-                node.Tag = itm.Key;
-                node.ImageIndex = 1;
-                node.SelectedImageIndex = 1;
-
-                var folder = CraftBase.Get(itm.Key).Folder;
-                if (!string.IsNullOrEmpty(folder) && !btnChronological.Checked && !CustomSearch())
-                {
-                    var folderNode = folderNodes[folder];
-                    folderNode.Nodes.Add(node);
-                    if (itm.Key == selectedId)
-                    {
-                        folderNode.Expand();
-                    }
-                }
-                else
-                {
-                    lstCrafts.Nodes.Add(node);
-                }
-
-                if (CustomSearch())
-                {
-                    if (!node.Text.ToLower().Contains(txtSearch.Text.ToLower()))
-                    {
-                        node.Remove();
-                    }
-                }
-
-                if (itm.Key == selectedId)
-                {
-                    lstCrafts.SelectedNode = node;
-                }
-            }
-
-            var selectedNode = lstCrafts.SelectedNode;
-
-            if (!btnChronological.Checked)
-            {
-                lstCrafts.Sort();
-            }
-
-            lstCrafts.SelectedNode = selectedNode;
-            foreach (var node in mExpandedFolders)
-            {
-                if (folderNodes.ContainsKey(node))
-                {
-                    folderNodes[node].Expand();
-                }
-            }
+            var items = CraftBase.Lookup.OrderBy(p => p.Value?.Name).Select(pair => new KeyValuePair<Guid, KeyValuePair<string, string>>(pair.Key,
+                new KeyValuePair<string, string>(((CraftBase)pair.Value)?.Name ?? Models.DatabaseObject<CraftBase>.Deleted, ((CraftBase)pair.Value)?.Folder ?? ""))).ToArray();
+            lstGameObjects.Repopulate(items, mFolders, btnAlphabetical.Checked, CustomSearch(), txtSearch.Text);
         }
 
         private void btnAddFolder_Click(object sender, EventArgs e)
@@ -560,73 +519,11 @@ namespace Intersect.Editor.Forms.Editors
                 if (!cmbFolder.Items.Contains(folderName))
                 {
                     mEditorItem.Folder = folderName;
-                    mExpandedFolders.Add(folderName);
+                    lstGameObjects.ExpandFolder(folderName);
                     InitEditor();
                     cmbFolder.Text = folderName;
                 }
             }
-        }
-
-        private void lstCrafts_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            var node = e.Node;
-            if (node != null)
-            {
-                if (e.Button == MouseButtons.Right)
-                {
-                    if (e.Node.Tag != null && e.Node.Tag.GetType() == typeof(Guid))
-                    {
-                        Clipboard.SetText(e.Node.Tag.ToString());
-                    }
-                }
-
-                var hitTest = lstCrafts.HitTest(e.Location);
-                if (hitTest.Location != TreeViewHitTestLocations.PlusMinus)
-                {
-                    if (node.Nodes.Count > 0)
-                    {
-                        if (node.IsExpanded)
-                        {
-                            node.Collapse();
-                        }
-                        else
-                        {
-                            node.Expand();
-                        }
-                    }
-                }
-
-                if (node.IsExpanded)
-                {
-                    if (!mExpandedFolders.Contains(node.Text))
-                    {
-                        mExpandedFolders.Add(node.Text);
-                    }
-                }
-                else
-                {
-                    if (mExpandedFolders.Contains(node.Text))
-                    {
-                        mExpandedFolders.Remove(node.Text);
-                    }
-                }
-            }
-        }
-
-        private void lstCrafts_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (mChangingName)
-            {
-                return;
-            }
-
-            if (lstCrafts.SelectedNode == null || lstCrafts.SelectedNode.Tag == null)
-            {
-                return;
-            }
-
-            mEditorItem = CraftBase.Get((Guid) lstCrafts.SelectedNode.Tag);
-            UpdateEditor();
         }
 
         private void cmbFolder_SelectedIndexChanged(object sender, EventArgs e)
@@ -635,9 +532,9 @@ namespace Intersect.Editor.Forms.Editors
             InitEditor();
         }
 
-        private void btnChronological_Click(object sender, EventArgs e)
+        private void btnAlphabetical_Click(object sender, EventArgs e)
         {
-            btnChronological.Checked = !btnChronological.Checked;
+            btnAlphabetical.Checked = !btnAlphabetical.Checked;
             InitEditor();
         }
 
@@ -681,6 +578,10 @@ namespace Intersect.Editor.Forms.Editors
 
         #endregion
 
+        private void nudExp_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Experience = (long)nudExp.Value;
+        }
     }
 
 }

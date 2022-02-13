@@ -35,9 +35,14 @@ namespace Intersect.Editor.Forms.Editors
             this.grpShops = new DarkUI.Controls.DarkGroupBox();
             this.btnClearSearch = new DarkUI.Controls.DarkButton();
             this.txtSearch = new DarkUI.Controls.DarkTextBox();
-            this.lstShops = new System.Windows.Forms.TreeView();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.lstGameObjects = new Intersect.Editor.Forms.Controls.GameObjectList();
             this.grpGeneral = new DarkUI.Controls.DarkGroupBox();
+            this.nudBuyMultiplier = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblBuyMultiplier = new System.Windows.Forms.Label();
+            this.lblSellSound = new System.Windows.Forms.Label();
+            this.cmbSellSound = new DarkUI.Controls.DarkComboBox();
+            this.lblBuySound = new System.Windows.Forms.Label();
+            this.cmbBuySound = new DarkUI.Controls.DarkComboBox();
             this.btnAddFolder = new DarkUI.Controls.DarkButton();
             this.lblFolder = new System.Windows.Forms.Label();
             this.cmbFolder = new DarkUI.Controls.DarkComboBox();
@@ -46,6 +51,10 @@ namespace Intersect.Editor.Forms.Editors
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new DarkUI.Controls.DarkTextBox();
             this.grpItemsSold = new DarkUI.Controls.DarkGroupBox();
+            this.lblBuyItemPriceNum = new System.Windows.Forms.Label();
+            this.lblSellItemCost = new System.Windows.Forms.Label();
+            this.btnItemDown = new DarkUI.Controls.DarkButton();
+            this.btnItemUp = new DarkUI.Controls.DarkButton();
             this.nudSellCost = new DarkUI.Controls.DarkNumericUpDown();
             this.cmbSellFor = new DarkUI.Controls.DarkComboBox();
             this.lblSellFor = new System.Windows.Forms.Label();
@@ -56,6 +65,8 @@ namespace Intersect.Editor.Forms.Editors
             this.lblAddSoldItem = new System.Windows.Forms.Label();
             this.lstSoldItems = new System.Windows.Forms.ListBox();
             this.grpItemsBought = new DarkUI.Controls.DarkGroupBox();
+            this.lblSellItemPriceNum = new System.Windows.Forms.Label();
+            this.lblBuyItemCost = new System.Windows.Forms.Label();
             this.nudBuyAmount = new DarkUI.Controls.DarkNumericUpDown();
             this.cmbBuyFor = new DarkUI.Controls.DarkComboBox();
             this.lblBuyFor = new System.Windows.Forms.Label();
@@ -68,6 +79,14 @@ namespace Intersect.Editor.Forms.Editors
             this.rdoBuyBlacklist = new DarkUI.Controls.DarkRadioButton();
             this.rdoBuyWhitelist = new DarkUI.Controls.DarkRadioButton();
             this.pnlContainer = new System.Windows.Forms.Panel();
+            this.grpTagsBought = new DarkUI.Controls.DarkGroupBox();
+            this.btnRemoveTag = new DarkUI.Controls.DarkButton();
+            this.btnAddTag = new DarkUI.Controls.DarkButton();
+            this.cmbTags = new DarkUI.Controls.DarkComboBox();
+            this.lblTag = new System.Windows.Forms.Label();
+            this.lstBoughtTags = new System.Windows.Forms.ListBox();
+            this.tdoTagBlacklist = new DarkUI.Controls.DarkRadioButton();
+            this.rdoTagWhitelist = new DarkUI.Controls.DarkRadioButton();
             this.btnCancel = new DarkUI.Controls.DarkButton();
             this.btnSave = new DarkUI.Controls.DarkButton();
             this.toolStrip = new DarkUI.Controls.DarkToolStrip();
@@ -75,19 +94,22 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemDelete = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnChronological = new System.Windows.Forms.ToolStripButton();
+            this.btnAlphabetical = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemCopy = new System.Windows.Forms.ToolStripButton();
             this.toolStripItemPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
+            this.btnNuke = new DarkUI.Controls.DarkButton();
             this.grpShops.SuspendLayout();
             this.grpGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBuyMultiplier)).BeginInit();
             this.grpItemsSold.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSellCost)).BeginInit();
             this.grpItemsBought.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBuyAmount)).BeginInit();
             this.pnlContainer.SuspendLayout();
+            this.grpTagsBought.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,11 +119,11 @@ namespace Intersect.Editor.Forms.Editors
             this.grpShops.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.grpShops.Controls.Add(this.btnClearSearch);
             this.grpShops.Controls.Add(this.txtSearch);
-            this.grpShops.Controls.Add(this.lstShops);
+            this.grpShops.Controls.Add(this.lstGameObjects);
             this.grpShops.ForeColor = System.Drawing.Color.Gainsboro;
             this.grpShops.Location = new System.Drawing.Point(12, 34);
             this.grpShops.Name = "grpShops";
-            this.grpShops.Size = new System.Drawing.Size(203, 467);
+            this.grpShops.Size = new System.Drawing.Size(203, 620);
             this.grpShops.TabIndex = 15;
             this.grpShops.TabStop = false;
             this.grpShops.Text = "Shops";
@@ -131,35 +153,31 @@ namespace Intersect.Editor.Forms.Editors
             this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
             this.txtSearch.Leave += new System.EventHandler(this.txtSearch_Leave);
             // 
-            // lstShops
+            // lstGameObjects
             // 
-            this.lstShops.AllowDrop = true;
-            this.lstShops.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.lstShops.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstShops.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lstShops.HideSelection = false;
-            this.lstShops.ImageIndex = 0;
-            this.lstShops.ImageList = this.imageList;
-            this.lstShops.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.lstShops.Location = new System.Drawing.Point(6, 46);
-            this.lstShops.Name = "lstShops";
-            this.lstShops.SelectedImageIndex = 0;
-            this.lstShops.Size = new System.Drawing.Size(191, 415);
-            this.lstShops.TabIndex = 35;
-            this.lstShops.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstShops_AfterSelect);
-            this.lstShops.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.lstShops_NodeMouseClick);
-            // 
-            // imageList
-            // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "folder_Open_16xLG.png");
-            this.imageList.Images.SetKeyName(1, "LegacyPackage_16x.png");
+            this.lstGameObjects.AllowDrop = true;
+            this.lstGameObjects.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstGameObjects.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstGameObjects.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstGameObjects.HideSelection = false;
+            this.lstGameObjects.ImageIndex = 0;
+            this.lstGameObjects.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.lstGameObjects.Location = new System.Drawing.Point(6, 46);
+            this.lstGameObjects.Name = "lstGameObjects";
+            this.lstGameObjects.SelectedImageIndex = 0;
+            this.lstGameObjects.Size = new System.Drawing.Size(191, 565);
+            this.lstGameObjects.TabIndex = 35;
             // 
             // grpGeneral
             // 
             this.grpGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpGeneral.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpGeneral.Controls.Add(this.nudBuyMultiplier);
+            this.grpGeneral.Controls.Add(this.lblBuyMultiplier);
+            this.grpGeneral.Controls.Add(this.lblSellSound);
+            this.grpGeneral.Controls.Add(this.cmbSellSound);
+            this.grpGeneral.Controls.Add(this.lblBuySound);
+            this.grpGeneral.Controls.Add(this.cmbBuySound);
             this.grpGeneral.Controls.Add(this.btnAddFolder);
             this.grpGeneral.Controls.Add(this.lblFolder);
             this.grpGeneral.Controls.Add(this.cmbFolder);
@@ -170,10 +188,104 @@ namespace Intersect.Editor.Forms.Editors
             this.grpGeneral.ForeColor = System.Drawing.Color.Gainsboro;
             this.grpGeneral.Location = new System.Drawing.Point(-1, 2);
             this.grpGeneral.Name = "grpGeneral";
-            this.grpGeneral.Size = new System.Drawing.Size(523, 67);
+            this.grpGeneral.Size = new System.Drawing.Size(787, 104);
             this.grpGeneral.TabIndex = 16;
             this.grpGeneral.TabStop = false;
             this.grpGeneral.Text = "General";
+            // 
+            // nudBuyMultiplier
+            // 
+            this.nudBuyMultiplier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudBuyMultiplier.DecimalPlaces = 2;
+            this.nudBuyMultiplier.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudBuyMultiplier.Location = new System.Drawing.Point(610, 13);
+            this.nudBuyMultiplier.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            131072});
+            this.nudBuyMultiplier.Name = "nudBuyMultiplier";
+            this.nudBuyMultiplier.Size = new System.Drawing.Size(171, 20);
+            this.nudBuyMultiplier.TabIndex = 50;
+            this.nudBuyMultiplier.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            65536});
+            this.nudBuyMultiplier.ValueChanged += new System.EventHandler(this.darkNumericUpDown1_ValueChanged);
+            // 
+            // lblBuyMultiplier
+            // 
+            this.lblBuyMultiplier.AutoSize = true;
+            this.lblBuyMultiplier.Location = new System.Drawing.Point(535, 17);
+            this.lblBuyMultiplier.Name = "lblBuyMultiplier";
+            this.lblBuyMultiplier.Size = new System.Drawing.Size(72, 13);
+            this.lblBuyMultiplier.TabIndex = 50;
+            this.lblBuyMultiplier.Text = "Buy Multiplier:";
+            // 
+            // lblSellSound
+            // 
+            this.lblSellSound.AutoSize = true;
+            this.lblSellSound.Location = new System.Drawing.Point(270, 76);
+            this.lblSellSound.Name = "lblSellSound";
+            this.lblSellSound.Size = new System.Drawing.Size(61, 13);
+            this.lblSellSound.TabIndex = 59;
+            this.lblSellSound.Text = "Sell Sound:";
+            // 
+            // cmbSellSound
+            // 
+            this.cmbSellSound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbSellSound.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbSellSound.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbSellSound.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbSellSound.DrawDropdownHoverOutline = false;
+            this.cmbSellSound.DrawFocusRectangle = false;
+            this.cmbSellSound.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSellSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSellSound.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbSellSound.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbSellSound.FormattingEnabled = true;
+            this.cmbSellSound.Items.AddRange(new object[] {
+            "None"});
+            this.cmbSellSound.Location = new System.Drawing.Point(338, 72);
+            this.cmbSellSound.Name = "cmbSellSound";
+            this.cmbSellSound.Size = new System.Drawing.Size(179, 21);
+            this.cmbSellSound.TabIndex = 58;
+            this.cmbSellSound.Text = "None";
+            this.cmbSellSound.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbSellSound.SelectedIndexChanged += new System.EventHandler(this.cmbSellSound_SelectedIndexChanged);
+            // 
+            // lblBuySound
+            // 
+            this.lblBuySound.AutoSize = true;
+            this.lblBuySound.Location = new System.Drawing.Point(270, 49);
+            this.lblBuySound.Name = "lblBuySound";
+            this.lblBuySound.Size = new System.Drawing.Size(62, 13);
+            this.lblBuySound.TabIndex = 57;
+            this.lblBuySound.Text = "Buy Sound:";
+            // 
+            // cmbBuySound
+            // 
+            this.cmbBuySound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbBuySound.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbBuySound.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbBuySound.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbBuySound.DrawDropdownHoverOutline = false;
+            this.cmbBuySound.DrawFocusRectangle = false;
+            this.cmbBuySound.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbBuySound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBuySound.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbBuySound.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbBuySound.FormattingEnabled = true;
+            this.cmbBuySound.Items.AddRange(new object[] {
+            "None"});
+            this.cmbBuySound.Location = new System.Drawing.Point(338, 45);
+            this.cmbBuySound.Name = "cmbBuySound";
+            this.cmbBuySound.Size = new System.Drawing.Size(179, 21);
+            this.cmbBuySound.TabIndex = 56;
+            this.cmbBuySound.Text = "None";
+            this.cmbBuySound.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbBuySound.SelectedIndexChanged += new System.EventHandler(this.cmbBuySound_SelectedIndexChanged);
             // 
             // btnAddFolder
             // 
@@ -200,7 +312,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbFolder.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.cmbFolder.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
             this.cmbFolder.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbFolder.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbFolder.ButtonIcon")));
             this.cmbFolder.DrawDropdownHoverOutline = false;
             this.cmbFolder.DrawFocusRectangle = false;
             this.cmbFolder.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -222,7 +333,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbDefaultCurrency.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.cmbDefaultCurrency.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
             this.cmbDefaultCurrency.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbDefaultCurrency.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbDefaultCurrency.ButtonIcon")));
             this.cmbDefaultCurrency.DrawDropdownHoverOutline = false;
             this.cmbDefaultCurrency.DrawFocusRectangle = false;
             this.cmbDefaultCurrency.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -271,6 +381,10 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpItemsSold.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpItemsSold.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpItemsSold.Controls.Add(this.lblBuyItemPriceNum);
+            this.grpItemsSold.Controls.Add(this.lblSellItemCost);
+            this.grpItemsSold.Controls.Add(this.btnItemDown);
+            this.grpItemsSold.Controls.Add(this.btnItemUp);
             this.grpItemsSold.Controls.Add(this.nudSellCost);
             this.grpItemsSold.Controls.Add(this.cmbSellFor);
             this.grpItemsSold.Controls.Add(this.lblSellFor);
@@ -281,12 +395,50 @@ namespace Intersect.Editor.Forms.Editors
             this.grpItemsSold.Controls.Add(this.lblAddSoldItem);
             this.grpItemsSold.Controls.Add(this.lstSoldItems);
             this.grpItemsSold.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpItemsSold.Location = new System.Drawing.Point(0, 75);
+            this.grpItemsSold.Location = new System.Drawing.Point(0, 112);
             this.grpItemsSold.Name = "grpItemsSold";
-            this.grpItemsSold.Size = new System.Drawing.Size(258, 390);
+            this.grpItemsSold.Size = new System.Drawing.Size(258, 437);
             this.grpItemsSold.TabIndex = 17;
             this.grpItemsSold.TabStop = false;
             this.grpItemsSold.Text = "Items Sold";
+            // 
+            // lblBuyItemPriceNum
+            // 
+            this.lblBuyItemPriceNum.AutoSize = true;
+            this.lblBuyItemPriceNum.Location = new System.Drawing.Point(102, 365);
+            this.lblBuyItemPriceNum.Name = "lblBuyItemPriceNum";
+            this.lblBuyItemPriceNum.Size = new System.Drawing.Size(13, 13);
+            this.lblBuyItemPriceNum.TabIndex = 48;
+            this.lblBuyItemPriceNum.Text = "0";
+            // 
+            // lblSellItemCost
+            // 
+            this.lblSellItemCost.AutoSize = true;
+            this.lblSellItemCost.Location = new System.Drawing.Point(6, 365);
+            this.lblSellItemCost.Name = "lblSellItemCost";
+            this.lblSellItemCost.Size = new System.Drawing.Size(57, 13);
+            this.lblSellItemCost.TabIndex = 47;
+            this.lblSellItemCost.Text = "Item Price:";
+            // 
+            // btnItemDown
+            // 
+            this.btnItemDown.Location = new System.Drawing.Point(233, 190);
+            this.btnItemDown.Name = "btnItemDown";
+            this.btnItemDown.Padding = new System.Windows.Forms.Padding(5);
+            this.btnItemDown.Size = new System.Drawing.Size(22, 40);
+            this.btnItemDown.TabIndex = 46;
+            this.btnItemDown.Text = "▼";
+            this.btnItemDown.Click += new System.EventHandler(this.btnItemDown_Click);
+            // 
+            // btnItemUp
+            // 
+            this.btnItemUp.Location = new System.Drawing.Point(233, 20);
+            this.btnItemUp.Name = "btnItemUp";
+            this.btnItemUp.Padding = new System.Windows.Forms.Padding(5);
+            this.btnItemUp.Size = new System.Drawing.Size(22, 40);
+            this.btnItemUp.TabIndex = 45;
+            this.btnItemUp.Text = "▲";
+            this.btnItemUp.Click += new System.EventHandler(this.btnItemUp_Click);
             // 
             // nudSellCost
             // 
@@ -313,7 +465,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbSellFor.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.cmbSellFor.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
             this.cmbSellFor.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbSellFor.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbSellFor.ButtonIcon")));
             this.cmbSellFor.DrawDropdownHoverOutline = false;
             this.cmbSellFor.DrawFocusRectangle = false;
             this.cmbSellFor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -348,7 +499,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnDelSoldItem
             // 
-            this.btnDelSoldItem.Location = new System.Drawing.Point(135, 357);
+            this.btnDelSoldItem.Location = new System.Drawing.Point(135, 396);
             this.btnDelSoldItem.Name = "btnDelSoldItem";
             this.btnDelSoldItem.Padding = new System.Windows.Forms.Padding(5);
             this.btnDelSoldItem.Size = new System.Drawing.Size(117, 23);
@@ -358,7 +509,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnAddSoldItem
             // 
-            this.btnAddSoldItem.Location = new System.Drawing.Point(6, 357);
+            this.btnAddSoldItem.Location = new System.Drawing.Point(6, 396);
             this.btnAddSoldItem.Name = "btnAddSoldItem";
             this.btnAddSoldItem.Padding = new System.Windows.Forms.Padding(5);
             this.btnAddSoldItem.Size = new System.Drawing.Size(117, 23);
@@ -372,7 +523,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbAddSoldItem.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.cmbAddSoldItem.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
             this.cmbAddSoldItem.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbAddSoldItem.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbAddSoldItem.ButtonIcon")));
             this.cmbAddSoldItem.DrawDropdownHoverOutline = false;
             this.cmbAddSoldItem.DrawFocusRectangle = false;
             this.cmbAddSoldItem.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -386,6 +536,7 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbAddSoldItem.TabIndex = 2;
             this.cmbAddSoldItem.Text = null;
             this.cmbAddSoldItem.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbAddSoldItem.SelectedIndexChanged += new System.EventHandler(this.cmbAddSoldItem_SelectedIndexChanged);
             // 
             // lblAddSoldItem
             // 
@@ -404,13 +555,16 @@ namespace Intersect.Editor.Forms.Editors
             this.lstSoldItems.FormattingEnabled = true;
             this.lstSoldItems.Location = new System.Drawing.Point(7, 20);
             this.lstSoldItems.Name = "lstSoldItems";
-            this.lstSoldItems.Size = new System.Drawing.Size(245, 210);
+            this.lstSoldItems.Size = new System.Drawing.Size(223, 210);
             this.lstSoldItems.TabIndex = 0;
             // 
             // grpItemsBought
             // 
             this.grpItemsBought.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpItemsBought.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpItemsBought.Controls.Add(this.btnNuke);
+            this.grpItemsBought.Controls.Add(this.lblSellItemPriceNum);
+            this.grpItemsBought.Controls.Add(this.lblBuyItemCost);
             this.grpItemsBought.Controls.Add(this.nudBuyAmount);
             this.grpItemsBought.Controls.Add(this.cmbBuyFor);
             this.grpItemsBought.Controls.Add(this.lblBuyFor);
@@ -423,12 +577,30 @@ namespace Intersect.Editor.Forms.Editors
             this.grpItemsBought.Controls.Add(this.rdoBuyBlacklist);
             this.grpItemsBought.Controls.Add(this.rdoBuyWhitelist);
             this.grpItemsBought.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpItemsBought.Location = new System.Drawing.Point(264, 75);
+            this.grpItemsBought.Location = new System.Drawing.Point(264, 112);
             this.grpItemsBought.Name = "grpItemsBought";
-            this.grpItemsBought.Size = new System.Drawing.Size(258, 390);
+            this.grpItemsBought.Size = new System.Drawing.Size(258, 437);
             this.grpItemsBought.TabIndex = 18;
             this.grpItemsBought.TabStop = false;
             this.grpItemsBought.Text = "Items Bought (Whitelist - Buy Listed Items)";
+            // 
+            // lblSellItemPriceNum
+            // 
+            this.lblSellItemPriceNum.AutoSize = true;
+            this.lblSellItemPriceNum.Location = new System.Drawing.Point(126, 365);
+            this.lblSellItemPriceNum.Name = "lblSellItemPriceNum";
+            this.lblSellItemPriceNum.Size = new System.Drawing.Size(13, 13);
+            this.lblSellItemPriceNum.TabIndex = 49;
+            this.lblSellItemPriceNum.Text = "0";
+            // 
+            // lblBuyItemCost
+            // 
+            this.lblBuyItemCost.AutoSize = true;
+            this.lblBuyItemCost.Location = new System.Drawing.Point(7, 365);
+            this.lblBuyItemCost.Name = "lblBuyItemCost";
+            this.lblBuyItemCost.Size = new System.Drawing.Size(57, 13);
+            this.lblBuyItemCost.TabIndex = 48;
+            this.lblBuyItemCost.Text = "Item Price:";
             // 
             // nudBuyAmount
             // 
@@ -455,7 +627,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbBuyFor.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.cmbBuyFor.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
             this.cmbBuyFor.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbBuyFor.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbBuyFor.ButtonIcon")));
             this.cmbBuyFor.DrawDropdownHoverOutline = false;
             this.cmbBuyFor.DrawFocusRectangle = false;
             this.cmbBuyFor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -490,7 +661,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnDelBoughtItem
             // 
-            this.btnDelBoughtItem.Location = new System.Drawing.Point(138, 357);
+            this.btnDelBoughtItem.Location = new System.Drawing.Point(129, 396);
             this.btnDelBoughtItem.Name = "btnDelBoughtItem";
             this.btnDelBoughtItem.Padding = new System.Windows.Forms.Padding(5);
             this.btnDelBoughtItem.Size = new System.Drawing.Size(117, 23);
@@ -500,7 +671,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnAddBoughtItem
             // 
-            this.btnAddBoughtItem.Location = new System.Drawing.Point(9, 357);
+            this.btnAddBoughtItem.Location = new System.Drawing.Point(6, 396);
             this.btnAddBoughtItem.Name = "btnAddBoughtItem";
             this.btnAddBoughtItem.Padding = new System.Windows.Forms.Padding(5);
             this.btnAddBoughtItem.Size = new System.Drawing.Size(117, 23);
@@ -514,7 +685,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbAddBoughtItem.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.cmbAddBoughtItem.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
             this.cmbAddBoughtItem.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbAddBoughtItem.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbAddBoughtItem.ButtonIcon")));
             this.cmbAddBoughtItem.DrawDropdownHoverOutline = false;
             this.cmbAddBoughtItem.DrawFocusRectangle = false;
             this.cmbAddBoughtItem.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -528,6 +698,7 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbAddBoughtItem.TabIndex = 3;
             this.cmbAddBoughtItem.Text = null;
             this.cmbAddBoughtItem.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbAddBoughtItem.SelectedIndexChanged += new System.EventHandler(this.cmbAddBoughtItem_SelectedIndexChanged);
             // 
             // lblItemBought
             // 
@@ -573,19 +744,121 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // pnlContainer
             // 
+            this.pnlContainer.Controls.Add(this.grpTagsBought);
             this.pnlContainer.Controls.Add(this.grpItemsBought);
             this.pnlContainer.Controls.Add(this.grpGeneral);
             this.pnlContainer.Controls.Add(this.grpItemsSold);
             this.pnlContainer.Location = new System.Drawing.Point(222, 34);
             this.pnlContainer.Name = "pnlContainer";
-            this.pnlContainer.Size = new System.Drawing.Size(522, 467);
+            this.pnlContainer.Size = new System.Drawing.Size(845, 565);
             this.pnlContainer.TabIndex = 19;
             this.pnlContainer.Visible = false;
+            // 
+            // grpTagsBought
+            // 
+            this.grpTagsBought.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpTagsBought.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpTagsBought.Controls.Add(this.btnRemoveTag);
+            this.grpTagsBought.Controls.Add(this.btnAddTag);
+            this.grpTagsBought.Controls.Add(this.cmbTags);
+            this.grpTagsBought.Controls.Add(this.lblTag);
+            this.grpTagsBought.Controls.Add(this.lstBoughtTags);
+            this.grpTagsBought.Controls.Add(this.tdoTagBlacklist);
+            this.grpTagsBought.Controls.Add(this.rdoTagWhitelist);
+            this.grpTagsBought.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpTagsBought.Location = new System.Drawing.Point(528, 112);
+            this.grpTagsBought.Name = "grpTagsBought";
+            this.grpTagsBought.Size = new System.Drawing.Size(258, 437);
+            this.grpTagsBought.TabIndex = 50;
+            this.grpTagsBought.TabStop = false;
+            this.grpTagsBought.Text = "Tags Bought";
+            // 
+            // btnRemoveTag
+            // 
+            this.btnRemoveTag.Location = new System.Drawing.Point(129, 281);
+            this.btnRemoveTag.Name = "btnRemoveTag";
+            this.btnRemoveTag.Padding = new System.Windows.Forms.Padding(5);
+            this.btnRemoveTag.Size = new System.Drawing.Size(117, 23);
+            this.btnRemoveTag.TabIndex = 6;
+            this.btnRemoveTag.Text = "Remove Selected";
+            this.btnRemoveTag.Click += new System.EventHandler(this.btnRemoveTag_Click);
+            // 
+            // btnAddTag
+            // 
+            this.btnAddTag.Location = new System.Drawing.Point(6, 281);
+            this.btnAddTag.Name = "btnAddTag";
+            this.btnAddTag.Padding = new System.Windows.Forms.Padding(5);
+            this.btnAddTag.Size = new System.Drawing.Size(117, 23);
+            this.btnAddTag.TabIndex = 5;
+            this.btnAddTag.Text = "Add Selected";
+            this.btnAddTag.Click += new System.EventHandler(this.btnAddTag_Click);
+            // 
+            // cmbTags
+            // 
+            this.cmbTags.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbTags.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbTags.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbTags.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbTags.DrawDropdownHoverOutline = false;
+            this.cmbTags.DrawFocusRectangle = false;
+            this.cmbTags.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTags.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTags.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbTags.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbTags.FormattingEnabled = true;
+            this.cmbTags.Location = new System.Drawing.Point(8, 254);
+            this.cmbTags.Name = "cmbTags";
+            this.cmbTags.Size = new System.Drawing.Size(246, 21);
+            this.cmbTags.TabIndex = 3;
+            this.cmbTags.Text = null;
+            this.cmbTags.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblTag
+            // 
+            this.lblTag.AutoSize = true;
+            this.lblTag.Location = new System.Drawing.Point(6, 240);
+            this.lblTag.Name = "lblTag";
+            this.lblTag.Size = new System.Drawing.Size(74, 13);
+            this.lblTag.TabIndex = 2;
+            this.lblTag.Text = "Add Item Tag:";
+            // 
+            // lstBoughtTags
+            // 
+            this.lstBoughtTags.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstBoughtTags.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstBoughtTags.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstBoughtTags.FormattingEnabled = true;
+            this.lstBoughtTags.Location = new System.Drawing.Point(8, 20);
+            this.lstBoughtTags.Name = "lstBoughtTags";
+            this.lstBoughtTags.Size = new System.Drawing.Size(245, 210);
+            this.lstBoughtTags.TabIndex = 2;
+            // 
+            // tdoTagBlacklist
+            // 
+            this.tdoTagBlacklist.AutoSize = true;
+            this.tdoTagBlacklist.Location = new System.Drawing.Point(189, 236);
+            this.tdoTagBlacklist.Name = "tdoTagBlacklist";
+            this.tdoTagBlacklist.Size = new System.Drawing.Size(64, 17);
+            this.tdoTagBlacklist.TabIndex = 1;
+            this.tdoTagBlacklist.Text = "Blacklist";
+            this.tdoTagBlacklist.CheckedChanged += new System.EventHandler(this.tdoTagBlacklist_CheckedChanged);
+            // 
+            // rdoTagWhitelist
+            // 
+            this.rdoTagWhitelist.AutoSize = true;
+            this.rdoTagWhitelist.Checked = true;
+            this.rdoTagWhitelist.Location = new System.Drawing.Point(118, 236);
+            this.rdoTagWhitelist.Name = "rdoTagWhitelist";
+            this.rdoTagWhitelist.Size = new System.Drawing.Size(65, 17);
+            this.rdoTagWhitelist.TabIndex = 0;
+            this.rdoTagWhitelist.TabStop = true;
+            this.rdoTagWhitelist.Text = "Whitelist";
+            this.rdoTagWhitelist.CheckedChanged += new System.EventHandler(this.rdoTagWhitelist_CheckedChanged);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(554, 509);
+            this.btnCancel.Location = new System.Drawing.Point(548, 618);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Padding = new System.Windows.Forms.Padding(5);
             this.btnCancel.Size = new System.Drawing.Size(190, 27);
@@ -595,7 +868,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(358, 509);
+            this.btnSave.Location = new System.Drawing.Point(357, 618);
             this.btnSave.Name = "btnSave";
             this.btnSave.Padding = new System.Windows.Forms.Padding(5);
             this.btnSave.Size = new System.Drawing.Size(190, 27);
@@ -613,7 +886,7 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripSeparator1,
             this.toolStripItemDelete,
             this.toolStripSeparator2,
-            this.btnChronological,
+            this.btnAlphabetical,
             this.toolStripSeparator4,
             this.toolStripItemCopy,
             this.toolStripItemPaste,
@@ -622,7 +895,7 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
-            this.toolStrip.Size = new System.Drawing.Size(751, 25);
+            this.toolStrip.Size = new System.Drawing.Size(1079, 25);
             this.toolStrip.TabIndex = 50;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -663,16 +936,16 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // btnChronological
+            // btnAlphabetical
             // 
-            this.btnChronological.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnChronological.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnChronological.Image = ((System.Drawing.Image)(resources.GetObject("btnChronological.Image")));
-            this.btnChronological.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnChronological.Name = "btnChronological";
-            this.btnChronological.Size = new System.Drawing.Size(23, 22);
-            this.btnChronological.Text = "Order Chronologically";
-            this.btnChronological.Click += new System.EventHandler(this.btnChronological_Click);
+            this.btnAlphabetical.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAlphabetical.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnAlphabetical.Image = ((System.Drawing.Image)(resources.GetObject("btnAlphabetical.Image")));
+            this.btnAlphabetical.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAlphabetical.Name = "btnAlphabetical";
+            this.btnAlphabetical.Size = new System.Drawing.Size(23, 22);
+            this.btnAlphabetical.Text = "Order Chronologically";
+            this.btnAlphabetical.Click += new System.EventHandler(this.btnAlphabetical_Click);
             // 
             // toolStripSeparator4
             // 
@@ -724,13 +997,23 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo.Text = "Undo";
             this.toolStripItemUndo.Click += new System.EventHandler(this.toolStripItemUndo_Click);
             // 
+            // btnNuke
+            // 
+            this.btnNuke.Location = new System.Drawing.Point(171, 360);
+            this.btnNuke.Name = "btnNuke";
+            this.btnNuke.Padding = new System.Windows.Forms.Padding(5);
+            this.btnNuke.Size = new System.Drawing.Size(75, 23);
+            this.btnNuke.TabIndex = 50;
+            this.btnNuke.Text = "Nuke";
+            this.btnNuke.Click += new System.EventHandler(this.btnNuke_Click);
+            // 
             // FrmShop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(751, 540);
+            this.ClientSize = new System.Drawing.Size(1079, 657);
             this.ControlBox = false;
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.btnCancel);
@@ -738,7 +1021,6 @@ namespace Intersect.Editor.Forms.Editors
             this.Controls.Add(this.grpShops);
             this.Controls.Add(this.pnlContainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FrmShop";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -749,6 +1031,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpShops.PerformLayout();
             this.grpGeneral.ResumeLayout(false);
             this.grpGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBuyMultiplier)).EndInit();
             this.grpItemsSold.ResumeLayout(false);
             this.grpItemsSold.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSellCost)).EndInit();
@@ -756,6 +1039,8 @@ namespace Intersect.Editor.Forms.Editors
             this.grpItemsBought.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBuyAmount)).EndInit();
             this.pnlContainer.ResumeLayout(false);
+            this.grpTagsBought.ResumeLayout(false);
+            this.grpTagsBought.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -806,12 +1091,32 @@ namespace Intersect.Editor.Forms.Editors
         private DarkNumericUpDown nudBuyAmount;
         private DarkButton btnClearSearch;
         private DarkTextBox txtSearch;
-        public System.Windows.Forms.TreeView lstShops;
-        private System.Windows.Forms.ImageList imageList;
         private DarkButton btnAddFolder;
         private System.Windows.Forms.Label lblFolder;
         private DarkComboBox cmbFolder;
-        private System.Windows.Forms.ToolStripButton btnChronological;
+        private System.Windows.Forms.ToolStripButton btnAlphabetical;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private Controls.GameObjectList lstGameObjects;
+        private DarkButton btnItemDown;
+        private DarkButton btnItemUp;
+        private System.Windows.Forms.Label lblSellSound;
+        private DarkComboBox cmbSellSound;
+        private System.Windows.Forms.Label lblBuySound;
+        private DarkComboBox cmbBuySound;
+        private System.Windows.Forms.Label lblBuyItemPriceNum;
+        private System.Windows.Forms.Label lblSellItemCost;
+        private System.Windows.Forms.Label lblSellItemPriceNum;
+        private System.Windows.Forms.Label lblBuyItemCost;
+        private System.Windows.Forms.Label lblBuyMultiplier;
+        private DarkGroupBox grpTagsBought;
+        private DarkButton btnRemoveTag;
+        private DarkButton btnAddTag;
+        private DarkComboBox cmbTags;
+        private System.Windows.Forms.Label lblTag;
+        private System.Windows.Forms.ListBox lstBoughtTags;
+        private DarkRadioButton tdoTagBlacklist;
+        private DarkRadioButton rdoTagWhitelist;
+        private DarkNumericUpDown nudBuyMultiplier;
+        private DarkButton btnNuke;
     }
 }

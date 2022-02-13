@@ -5,6 +5,7 @@ using Intersect.Client.Core;
 using Intersect.Client.Core.Controls;
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.GenericClasses;
+using Intersect.Client.Framework.Graphics;
 using Intersect.Client.Framework.Gwen;
 using Intersect.Client.Framework.Gwen.Control;
 using Intersect.Client.Framework.Gwen.Control.EventArguments;
@@ -23,6 +24,16 @@ namespace Intersect.Client.Interface.Shared
         private Button mApplyKeybindingsButton;
 
         private LabeledCheckBox mAutocloseWindowsCheckbox;
+
+        private LabeledCheckBox mTapToTurnCheckbox;
+
+        private LabeledCheckBox mFaceTargetOnLock;
+        
+        private LabeledCheckBox mLeftClickTargetCheckbox;
+        
+        private LabeledCheckBox mCombatFlashCheckbox;
+        
+        private LabeledCheckBox mCombatShakeCheckbox;
 
         private Button mBackBtn;
 
@@ -82,10 +93,14 @@ namespace Intersect.Client.Interface.Shared
         private ComboBox mResolutionList;
 
         private Button mRestoreKeybindingsButton;
+        
+        private LabeledCheckBox mEnableScanlines;
 
         private Label mSoundLabel;
 
         private HorizontalSlider mSoundSlider;
+
+        private MenuItem mCustomResolutionMenuItem;
 
         //Init
         public OptionsWindow(Canvas parent, MainMenu mainMenu, ImagePanel parentPanel)
@@ -148,6 +163,36 @@ namespace Intersect.Client.Interface.Shared
             mAutocloseWindowsCheckbox = new LabeledCheckBox(mOptionsContainer, "AutocloseWindowsCheckbox")
             {
                 Text = Strings.Options.AutocloseWindows
+            };
+
+            mTapToTurnCheckbox = new LabeledCheckBox(mOptionsContainer, "TapToTurnCheckbox")
+            {
+                Text = Strings.Options.taptoturn
+            };
+
+            mLeftClickTargetCheckbox = new LabeledCheckBox(mOptionsContainer, "LeftClickTarget")
+            {
+                Text = Strings.Options.leftclicktarget
+            };
+
+            mFaceTargetOnLock = new LabeledCheckBox(mOptionsContainer, "FaceTargetOnLockCheckbox")
+            {
+                Text = Strings.Options.faceonlock
+            };
+
+            mCombatFlashCheckbox = new LabeledCheckBox(mOptionsContainer, "CombatFlashCheckbox")
+            {
+                Text = Strings.Options.combatflash
+            };
+
+            mCombatShakeCheckbox = new LabeledCheckBox(mOptionsContainer, "CombatShakeCheckbox")
+            {
+                Text = Strings.Options.combatshake
+            };
+
+            mEnableScanlines = new LabeledCheckBox(mOptionsContainer, "DisableScanlinesCheckbox")
+            {
+                Text = Strings.Options.enablescanlines
             };
 
             mEditKeybindingsBtn = new Button(mOptionsContainer, "KeybindingsButton") {Text = Strings.Controls.edit};
@@ -214,21 +259,21 @@ namespace Intersect.Client.Interface.Shared
                 {
                     Text = "",
                     AutoSizeToContents = false,
-                    UserData = control,
+                    UserData = new KeyValuePair<Control, int>(control, 1),
                     Font = defaultFont
                 };
 
-                key1.Clicked += Key1_Clicked;
+                key1.Clicked += Key_Clicked;
 
                 var key2 = new Button(mControlsContainer, $"Control{Enum.GetName(typeof(Control), control)}Button2")
                 {
                     Text = "",
                     AutoSizeToContents = false,
-                    UserData = control,
+                    UserData = new KeyValuePair<Control, int>(control, 2),
                     Font = defaultFont
                 };
 
-                key2.Clicked += Key2_Clicked;
+                key2.Clicked += Key_Clicked;
 
                 mKeyButtons.Add(control, new[] {key1, key2});
 
@@ -256,26 +301,21 @@ namespace Intersect.Client.Interface.Shared
             CloseKeybindings();
         }
 
-        private void Key2_Clicked(Base sender, ClickedEventArgs arguments)
+        private void Key_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            EditKeyPressed((Button) sender, 2);
+            EditKeyPressed((Button) sender);
         }
 
-        private void Key1_Clicked(Base sender, ClickedEventArgs arguments)
-        {
-            EditKeyPressed((Button) sender, 1);
-        }
-
-        private void EditKeyPressed(Button sender, int keyNum)
+        private void EditKeyPressed(Button sender)
         {
             if (mEdittingButton == null)
             {
                 sender.Text = Strings.Controls.listening;
-                mEdittingKey = keyNum;
-                mEdittingControl = (Control) sender.UserData;
+                mEdittingKey = ((KeyValuePair<Control, int>)sender.UserData).Value;
+                mEdittingControl = ((KeyValuePair<Control, int>) sender.UserData).Key;
                 mEdittingButton = sender;
                 Interface.GwenInput.HandleInput = false;
-                mListeningTimer = Globals.System.GetTimeMs() + 5000;
+                mListeningTimer = Globals.System.GetTimeMs() + 3000;
             }
         }
 
@@ -361,6 +401,31 @@ namespace Intersect.Client.Interface.Shared
                                 .ToLower()];
                 }
 
+                if (key != Keys.None) {
+                    foreach (var control in mEdittingControls.ControlMapping)
+                    {
+                        if (control.Key != mEdittingControl)
+                        {
+                            if (control.Value.Key1 == key)
+                            {
+                                //Remove this mapping
+                                mEdittingControls.UpdateControl(control.Key, 1, Keys.None);
+
+                                //Update UI
+                                mKeyButtons[control.Key][0].Text = Strings.Keys.keydict[Enum.GetName(typeof(Keys), Keys.None).ToLower()];
+                            }
+                            if (control.Value.Key2 == key)
+                            {
+                                //Remove this mapping
+                                mEdittingControls.UpdateControl(control.Key, 2, Keys.None);
+
+                                //Update UI
+                                mKeyButtons[control.Key][1].Text = Strings.Keys.keydict[Enum.GetName(typeof(Keys), Keys.None).ToLower()];
+                            }
+                        }
+                    }
+                }
+
                 mEdittingButton.PlayHoverSound();
                 mEdittingButton = null;
                 Interface.GwenInput.HandleInput = true;
@@ -388,7 +453,24 @@ namespace Intersect.Client.Interface.Shared
             mEdittingControls = new Controls(Controls.ActiveControls);
             if (Graphics.Renderer.GetValidVideoModes().Count > 0)
             {
-                mResolutionList.SelectByText(Graphics.Renderer.GetValidVideoModes()[Globals.Database.TargetResolution]);
+                string resolutionLabel;
+                if (Graphics.Renderer.HasOverrideResolution)
+                {
+                    resolutionLabel = Strings.Options.ResolutionCustom;
+
+                    if (mCustomResolutionMenuItem == null)
+                    {
+                        mCustomResolutionMenuItem = mResolutionList.AddItem(Strings.Options.ResolutionCustom);
+                    }
+
+                    mCustomResolutionMenuItem.Show();
+                }
+                else
+                {
+                    resolutionLabel = Graphics.Renderer.GetValidVideoModes()[Globals.Database.TargetResolution];
+                }
+
+                mResolutionList.SelectByText(resolutionLabel);
             }
 
             switch (Globals.Database.TargetFps)
@@ -424,6 +506,12 @@ namespace Intersect.Client.Interface.Shared
             }
 
             mAutocloseWindowsCheckbox.IsChecked = Globals.Database.HideOthersOnWindowOpen;
+            mTapToTurnCheckbox.IsChecked = Globals.Database.TapToTurn;
+            mFaceTargetOnLock.IsChecked = Globals.Database.FaceOnLock;
+            mLeftClickTargetCheckbox.IsChecked = Globals.Database.LeftClickTarget;
+            mCombatFlashCheckbox.IsChecked = Globals.Database.CombatFlash;
+            mCombatShakeCheckbox.IsChecked = Globals.Database.CombatShake;
+            mEnableScanlines.IsChecked = Globals.Database.EnableScanlines;
             mFullscreen.IsChecked = Globals.Database.FullScreen;
             mMusicSlider.Value = Globals.Database.MusicVolume;
             mSoundSlider.Value = Globals.Database.SoundVolume;
@@ -482,21 +570,22 @@ namespace Intersect.Client.Interface.Shared
         {
             var shouldReset = false;
             var resolution = mResolutionList.SelectedItem;
-            var myModes = Graphics.Renderer.GetValidVideoModes();
-            for (var i = 0; i < myModes.Count; i++)
+            var validVideoModes = Graphics.Renderer.GetValidVideoModes();
+            var targetResolution = validVideoModes?.FindIndex(videoMode => string.Equals(videoMode, resolution.Text)) ?? -1;
+            if (targetResolution > -1)
             {
-                if (resolution.Text == myModes[i])
-                {
-                    if (Globals.Database.TargetResolution != i)
-                    {
-                        shouldReset = true;
-                    }
-
-                    Globals.Database.TargetResolution = i;
-                }
+                shouldReset = Globals.Database.TargetResolution != targetResolution || Graphics.Renderer.HasOverrideResolution;
+                Globals.Database.TargetResolution = targetResolution;
             }
 
             Globals.Database.HideOthersOnWindowOpen = mAutocloseWindowsCheckbox.IsChecked;
+            Globals.Database.TapToTurn = mTapToTurnCheckbox.IsChecked;
+            Globals.Database.FaceOnLock = mFaceTargetOnLock.IsChecked;
+            Globals.Database.LeftClickTarget = mLeftClickTargetCheckbox.IsChecked;
+            Globals.Database.CombatShake = mCombatShakeCheckbox.IsChecked;
+            Globals.Database.CombatFlash = mCombatFlashCheckbox.IsChecked;
+            Globals.Database.EnableScanlines = mEnableScanlines.IsChecked;
+
             if (Globals.Database.FullScreen != mFullscreen.IsChecked)
             {
                 Globals.Database.FullScreen = mFullscreen.IsChecked;
@@ -537,6 +626,8 @@ namespace Intersect.Client.Interface.Shared
             Globals.Database.SavePreferences();
             if (shouldReset)
             {
+                mCustomResolutionMenuItem?.Hide();
+                Graphics.Renderer.OverrideResolution = Resolution.Empty;
                 Graphics.Renderer.Init();
             }
 

@@ -4,6 +4,8 @@ using Intersect.Client.Framework.Gwen.Control;
 using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.Client.Maps;
+using Intersect.Extensions;
+using System.Linq;
 
 namespace Intersect.Client.Interface.Game
 {
@@ -39,6 +41,8 @@ namespace Intersect.Client.Interface.Game
         private Label mYLabel;
 
         private Label mZLabel;
+
+        private Label mInterfaceObjectsLabel;
 
         //Init
         public DebugMenu(Canvas gameCanvas)
@@ -89,10 +93,18 @@ namespace Intersect.Client.Interface.Game
 
             mTimeLabel = new Label(mDebugWindow);
             mTimeLabel.SetPosition(4, 148);
+
+            mInterfaceObjectsLabel = new Label(mDebugWindow);
+            mInterfaceObjectsLabel.SetPosition(4, 160);
         }
 
         public void Update()
         {
+            if (mDebugWindow.IsHidden)
+            {
+                return;
+            }
+
             mFpsLabel.Text = Strings.Debug.fps.ToString(Graphics.Renderer.GetFps());
             mPingLabel.Text = Strings.Debug.ping.ToString(Networking.Network.Ping);
             mDrawsLabel.Text = Strings.Debug.draws.ToString(Graphics.DrawCalls);
@@ -124,6 +136,9 @@ namespace Intersect.Client.Interface.Game
         public void Show()
         {
             mDebugWindow.IsHidden = false;
+
+            //This linq query takes too long and hurts fps, so let's only update this label when opening the debug menu
+            mInterfaceObjectsLabel.Text = Strings.Debug.interfaceobjects.ToString(Interface.GameUi.GameCanvas.Children.ToArray().SelectManyRecursive(x => x.Children).ToArray().Length);
         }
 
         public bool IsVisible()

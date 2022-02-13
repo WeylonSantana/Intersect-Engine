@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using Intersect.Enums;
 using Intersect.Localization;
-using JetBrains.Annotations;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Intersect.Client.Localization
 {
 
-    public static class Strings
+    public static partial class Strings
     {
 
         private static char[] mQuantityTrimChars = new char[] {'.', '0'};
@@ -309,6 +309,12 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString withdrawitemprompt = @"How many/much {00} would you like to withdraw?";
 
+            public static LocalizedString sort = @"Sort";
+
+            public static LocalizedString bankvalue = @"Bank Value: {00}";
+
+            public static LocalizedString bankvaluefull = @"{00} Gold Coins";
+
         }
 
         public struct BanMute
@@ -375,6 +381,39 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString title = @"Character";
 
+            public static LocalizedString crafting = @"Crafting:";
+            
+            public static LocalizedString miningtier = @"Mining Tier: {00}";
+            
+            public static LocalizedString fishingtier = @"Fishing Tier: {00}";
+            
+            public static LocalizedString woodcuttingtier = @"Woodcutting Tier: {00}";
+
+            public static LocalizedString classrank = @"{00} Class Rank: {01}";
+
+            public static LocalizedString attacktip = @"Attack-scaling damage, max HP, physical accuracy";
+
+            public static LocalizedString defensetip = @"Physical defense, physical evasion";
+
+            public static LocalizedString agilitytip = @"Movement speed, agility-scaling damage, physical evasion, attunement, resistance & accuracy";
+
+            public static LocalizedString resisttip = @"Magical defense, magical resistance";
+            
+            public static LocalizedString abilitypowertip = @"Ability power-scaling damage, attunement, maximum MP";
+
+            public static LocalizedString addattacktip = @"Add Attack";
+
+            public static LocalizedString addphysicaldefensetip = @"Add Physical Defense";
+
+            public static LocalizedString addmagicdefense = @"Add Magical Defense";
+
+            public static LocalizedString addagilitytip = @"Add Agility";
+
+            public static LocalizedString addabilitypowertip = @"Add Ability Power";
+            
+            public static LocalizedString classranktip = @"Your Class Rank(s). This can be increased at a Class Guild Hall.";
+            
+            public static LocalizedString calculatestats = @"Calculate Stats?";
         }
 
         public struct CharacterCreation
@@ -402,6 +441,18 @@ namespace Intersect.Client.Localization
             public static LocalizedString name = @"Char Name:";
 
             public static LocalizedString title = @"Create Character";
+
+            public static LocalizedString skincolor = @"Skin Color";
+
+            public static LocalizedString hair = @"Hair";
+
+            public static LocalizedString eyes = @"Eyes";
+            
+            public static LocalizedString clothes = @"Clothes";
+
+            public static LocalizedString extra = @"Extra";
+
+            public static LocalizedString beard = @"Beard";
 
         }
 
@@ -441,6 +492,7 @@ namespace Intersect.Client.Localization
                 {0, @"local"},
                 {1, @"global"},
                 {2, @"party"},
+                {3, @"guild"}
             };
 
             public static LocalizedString channeladmin = @"admin";
@@ -457,7 +509,15 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString toofast = @"You are chatting too fast!";
 
-            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static Dictionary<ChatboxTab, LocalizedString> ChatTabButtons = new Dictionary<Enums.ChatboxTab, LocalizedString>() {
+                { ChatboxTab.All, @"All" },
+                { ChatboxTab.Local, @"Local" },
+                { ChatboxTab.Party, @"Party" },
+                { ChatboxTab.Global, @"Global" },
+                { ChatboxTab.Guild, @"Guild" },
+                { ChatboxTab.System, @"System" },
+            };
+
             public static LocalizedString UnableToCopy = @"It appears you are not able to copy/paste on this platform. Please make sure you have either the 'xclip' or 'wl-clipboard' packages installed if you are running Linux.";
 
         }
@@ -517,6 +577,11 @@ namespace Intersect.Client.Localization
             public static LocalizedString warningexitdesktop =
                 @"You are about to exit while in combat! Your character will remain in-game until combat has ended! Are you sure you want to quit now?";
 
+            public static LocalizedString combo = @"Combo";
+
+            public static LocalizedString notenoughmp = @"Not enough MP!";
+
+            public static LocalizedString lowhealth = @"HP LOW!";
         }
 
         public struct Controls
@@ -551,10 +616,14 @@ namespace Intersect.Client.Localization
                 {"openparties", @"Open Parties:"},
                 {"openspells", @"Open Spells:"},
                 {"openfriends", @"Open Friends:"},
+                {"openguild", @"Open Guild:"},
                 {"opensettings", @"Open Settings:"},
                 {"opendebugger", @"Open Debugger:"},
                 {"openadminpanel", @"Open Admin Panel:"},
-                {"togglegui", @"Toggle Interface:"}
+                {"togglegui", @"Toggle Interface:"},
+                {"turnclockwise", @"Turn Clockwise:"},
+                {"turncounterclockwise", @"Turn Counter Clockwise:"},
+                {"facetarget", @"Face Target:"}
             };
 
             public static LocalizedString edit = @"Edit Controls";
@@ -568,18 +637,33 @@ namespace Intersect.Client.Localization
         public struct Crafting
         {
 
-            public static LocalizedString craft = @"Craft";
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString craft = @"Craft 1";
 
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString craftall = @"Craft {00}";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString craftstop = "Stop";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString incorrectresources =
                 @"You do not have the correct resources to craft this item.";
 
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString ingredients = @"Requires:";
 
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString product = @"Crafting:";
 
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString recipes = @"Recipes:";
 
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString title = @"Crafting Table";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString recipe = @"{01}";
 
         }
 
@@ -622,6 +706,8 @@ namespace Intersect.Client.Localization
             public static LocalizedString y = @"Y: {00}";
 
             public static LocalizedString z = @"Z: {00}";
+
+            public static LocalizedString interfaceobjects = @"Interface Objects: {00}";
 
         }
 
@@ -747,6 +833,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString addfriendprompt = @"Who would you like to add as a friend?";
 
+            public static LocalizedString infight = @"You are currently fighting!";
+
             public static LocalizedString removefriend = @"Remove Friend";
 
             public static LocalizedString removefriendprompt = @"Do you wish to remove {00} from your friends list?";
@@ -783,6 +871,76 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString none = @"None";
 
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString MapItemStackable = @"{01} {00}";
+
+        }
+
+        public struct Guilds
+        {
+            public static LocalizedString Guild = @"Guild";
+
+            public static LocalizedString guildtip = "Send {00} an invite to your guild.";
+
+            public static LocalizedString Invite = @"Invite";
+
+            public static LocalizedString NotInGuild = @"You are not currently in a guild!";
+
+            public static LocalizedString InviteMemberTitle = @"Invite Player";
+
+            public static LocalizedString InviteMemberPrompt = @"Who would you like to invite to {00}?";
+
+            public static LocalizedString InviteRequestTitle = @"Guild Invite";
+
+            public static LocalizedString InviteRequestPrompt = @"{00} would like to invite you to join their guild, {01}. Do you accept?";
+
+            public static LocalizedString Leave = "Leave";
+
+            public static LocalizedString LeaveTitle = @"Leave Guild";
+
+            public static LocalizedString LeavePrompt = @"Are you sure you would like to leave your guild?";
+
+            public static LocalizedString Promote = @"Promote to {00}";
+
+            public static LocalizedString Demote = @"Demote to {00}";
+
+            public static LocalizedString Kick = @"Kick";
+
+            public static LocalizedString PM = @"PM";
+
+            public static LocalizedString Transfer = @"Transfer";
+
+            public static LocalizedString OnlineListEntry = @"[{00}] {01} - {02}";
+
+            public static LocalizedString OfflineListEntry = @"[{00}] {01} - {02}";
+
+            public static LocalizedString Tooltip = @"Lv. {00} {01}";
+
+            public static LocalizedString KickTitle = @"Kick Guild Member";
+
+            public static LocalizedString KickPrompt = @"Are you sure you would like to kick {00}?";
+
+            public static LocalizedString PromoteTitle = @"Promote Guild Member";
+
+            public static LocalizedString PromotePrompt = @"Are you sure you would like promote {00} to rank {01}?";
+
+            public static LocalizedString DemoteTitle = @"Demote Guild Member";
+
+            public static LocalizedString DemotePrompt = @"Are you sure you would like to demote {00} to rank {01}?";
+
+            public static LocalizedString TransferTitle = @"Transfer Guild";
+
+            public static LocalizedString TransferPrompt = @"This action will completely transfer all ownership of your guild to {00} and you will lose your rank of {01}. If you are sure you want to hand over your guild enter '{02}' below.";
+
+            public static LocalizedString Bank = @"{00} Guild Bank";
+
+            public static LocalizedString NotAllowedWithdraw = @"You do not have permission to withdraw from {00}'s guild bank!";
+
+            public static LocalizedString NotAllowedDeposit = @"You do not have permission to deposit items into {00}'s guild bank!";
+
+            public static LocalizedString NotAllowedSwap = @"You do not have permission to swap items around within {00}'s guild bank!";
+
+            public static LocalizedString InviteAlreadyInGuild = @"The player you're trying to invite is already in a guild or has a pending invite.";
         }
 
         public struct InputBox
@@ -798,6 +956,16 @@ namespace Intersect.Client.Localization
 
         }
 
+        public struct MapItemWindow
+        {
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString Title = @"Loot";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString LootButton = @"Loot All";
+
+        }
+
         public struct Inventory
         {
 
@@ -808,6 +976,12 @@ namespace Intersect.Client.Localization
             public static LocalizedString dropitemprompt = @"How many/much {00} do you want to drop?";
 
             public static LocalizedString dropprompt = @"Do you wish to drop the item: {00}?";
+
+            public static LocalizedString destroyitem = @"Destroy Item";
+
+            public static LocalizedString destroyitemprompt = @"How many/much {00} do you want to DESTROY? (Note: Item destruction is permanent)";
+
+            public static LocalizedString destroyprompt = @"Do you wish to DESTROY the item: {00}? (Note: Item destruction is permanent)";
 
             public static LocalizedString equippedicon = "E";
 
@@ -1150,6 +1324,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString resolution = @"Resolution:";
 
+            public static LocalizedString ResolutionCustom = @"Custom Resolution";
+
             public static LocalizedString restore = @"Restore Defaults";
 
             public static LocalizedString soundvolume = @"Sound Volume: {00}%";
@@ -1161,11 +1337,24 @@ namespace Intersect.Client.Localization
             public static LocalizedString unlimitedfps = @"No Limit";
 
             public static LocalizedString vsync = @"V-Sync";
+            
+            public static LocalizedString taptoturn = @"Tap-to-Turn";
+
+            public static LocalizedString enablescanlines = @"Enable Scanlines";
+
+            public static LocalizedString faceonlock = @"Face Target on Lock";
+            
+            public static LocalizedString leftclicktarget = @"Left Click Target";
+            
+            public static LocalizedString combatflash = @"Combat Screen Flashes";
+            
+            public static LocalizedString combatshake = @"Combat Shake";
 
         }
 
         public struct Parties
         {
+            public static LocalizedString infight = @"You are currently fighting!";
 
             public static LocalizedString inviteprompt = @"{00} has invited you to their party. Do you accept?";
 
@@ -1222,6 +1411,10 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString title = @"Quest Log";
 
+            public static LocalizedString questpoints = @"Unspent Quest Points: {00}";
+
+            public static LocalizedString lifetimequestpoints = @"Quest Points: {00}";
+
         }
 
         public struct QuestOffer
@@ -1233,6 +1426,15 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString title = @"Quest Offer";
 
+            public static LocalizedString backtoboard = @"Back";
+            
+            public static LocalizedString questamount = @"{00} / {01}";
+
+        }
+
+        public struct QuestBoard
+        {
+            public static LocalizedString cancel = @"Cancel";
         }
 
         public struct Regex
@@ -1459,6 +1661,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString accept = @"Accept";
 
+            public static LocalizedString infight = @"You are currently fighting!";
+
             public static LocalizedString offeritem = @"Offer Item";
 
             public static LocalizedString offeritemprompt = @"How many/much {00} would you like to offer?";
@@ -1535,6 +1739,12 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString Percent = @"{00}%";
 
+        }
+
+        public struct GameWindow
+        {
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString EntityNameAndLevel = @"{00} [Lv. {01}]";
         }
 
     }

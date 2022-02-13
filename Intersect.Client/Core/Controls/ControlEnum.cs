@@ -56,6 +56,8 @@
 
         OpenSpells,
 
+        OpenGuild,
+
         OpenFriends,
 
         OpenSettings,
@@ -64,8 +66,13 @@
 
         OpenAdminPanel,
 
-        ToggleGui
+        ToggleGui,
+        
+        TurnClockwise,
+        
+        TurnCounterClockwise,
 
+        FaceTarget
     }
 
 }

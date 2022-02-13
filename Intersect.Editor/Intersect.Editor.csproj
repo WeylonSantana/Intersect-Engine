@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
+  <Import Project="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props" Condition="Exists('..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" />
   <Import Project="..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
-  <Import Project="$(SolutionDir)\scripts\Intersect.targets" />
+  <Import Project="..\targets\Intersect.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -15,13 +20,13 @@
     <AssemblyName>Intersect Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -30,6 +35,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -87,6 +94,84 @@
     <Compile Include="Core\Preferences.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Entities\Animation.cs" />
+    <Compile Include="Forms\Controls\GameObjectList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\GameObjectList.Designer.cs">
+      <DependentUpon>GameObjectList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_AddInspiration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_AddInspiration.Designer.cs">
+      <DependentUpon>EventCommand_AddInspiration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_FlashScreen.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_FlashScreen.Designer.cs">
+      <DependentUpon>EventCommand_FlashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_NPCGuildManagement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_NPCGuildManagement.Designer.cs">
+      <DependentUpon>EventCommand_NPCGuildManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_OpenQuestBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_OpenQuestBoard.Designer.cs">
+      <DependentUpon>EventCommand_OpenQuestBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_RandomQuest.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_RandomQuest.Designer.cs">
+      <DependentUpon>EventCommand_RandomQuest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetGuildBankSlots.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetGuildBankSlots.Designer.cs">
+      <DependentUpon>EventCommand_SetGuildBankSlots.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangePlayerColor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangePlayerColor.Designer.cs">
+      <DependentUpon>EventCommand_ChangePlayerColor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeName.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeName.Designer.cs">
+      <DependentUpon>EventCommand_ChangeName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.Designer.cs">
+      <DependentUpon>EventCommand_CreateGuild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetVehicle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetVehicle.Designer.cs">
+      <DependentUpon>EventCommand_SetVehicle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\frmQuestBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\frmQuestBoard.Designer.cs">
+      <DependentUpon>frmQuestBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\frmQuestList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\frmQuestList.Designer.cs">
+      <DependentUpon>frmQuestList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -550,13 +635,13 @@
     <Reference Include="DarkUI">
       <HintPath>.\DarkUI.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="Lidgren.Network, Version=1.7.7518.2930, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AscensionGameDev.Lidgren.Network.1.7.7518.2930-debug\lib\net46\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.Validation, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Validation.15.5.31\lib\netstandard2.0\Microsoft.VisualStudio.Validation.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Data.Sqlite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\lib\net4\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
@@ -621,68 +706,17 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="Resources\Shaders\radialgradient_editor.xnb" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Forms\Controls\LightEditorCtrl.resx">
-      <DependentUpon>LightEditorCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\MapTreeList.resx">
-      <DependentUpon>MapTreeList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\SearchableDarkTreeView.resx">
-      <DependentUpon>SearchableDarkTreeView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DockingElements\frmMapEditor.resx">
-      <DependentUpon>frmMapEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DockingElements\frmMapGrid.resx">
-      <DependentUpon>frmMapGrid.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Controls\GameObjectList.resx">
+      <DependentUpon>GameObjectList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DockingElements\frmMapLayers.resx">
       <DependentUpon>frmMapLayers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DockingElements\frmMapList.resx">
-      <DependentUpon>frmMapList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DockingElements\frmMapProperties.resx">
-      <DependentUpon>frmMapProperties.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\EditorForm.resx">
-      <DependentUpon>EditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeFace.resx">
-      <DependentUpon>EventCommand_ChangeFace.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeGender.resx">
-      <DependentUpon>EventCommand_ChangeGender.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeVital.resx">
-      <DependentUpon>EventCommand_ChangeVital.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangePlayerLabel.resx">
-      <DependentUpon>EventCommand_ChangePlayerLabel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeNameColor.resx">
-      <DependentUpon>EventCommand_ChangeNameColor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_EquipItem.resx">
-      <DependentUpon>EventCommand_EquipItem.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_AddInspiration.resx">
+      <DependentUpon>EventCommand_AddInspiration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeItems.resx">
       <DependentUpon>EventCommand_ChangeItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeLevel.resx">
-      <DependentUpon>EventCommand_ChangeLevel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeSpells.resx">
-      <DependentUpon>EventCommand_ChangeSpells.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeSprite.resx">
-      <DependentUpon>EventCommand_ChangeSprite.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChatboxText.resx">
-      <DependentUpon>EventCommand_ChatboxText.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_CompleteQuestTask.resx">
       <DependentUpon>EventCommand_CompleteQuestTask.cs</DependentUpon>
@@ -690,83 +724,50 @@
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ConditionalBranch.resx">
       <DependentUpon>EventCommand_ConditionalBranch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_EndQuest.resx">
-      <DependentUpon>EventCommand_EndQuest.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_FlashScreen.resx">
+      <DependentUpon>EventCommand_FlashScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_GiveExperience.resx">
       <DependentUpon>EventCommand_GiveExperience.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_GotoLabel.resx">
-      <DependentUpon>EventCommand_GotoLabel.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_NPCGuildManagement.resx">
+      <DependentUpon>EventCommand_NPCGuildManagement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_Label.resx">
-      <DependentUpon>EventCommand_Label.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_OpenQuestBoard.resx">
+      <DependentUpon>EventCommand_OpenQuestBoard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_OpenCrafting.resx">
-      <DependentUpon>EventCommand_OpenCrafting.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_RandomQuest.resx">
+      <DependentUpon>EventCommand_RandomQuest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_OpenShop.resx">
-      <DependentUpon>EventCommand_OpenShop.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_Options.resx">
-      <DependentUpon>EventCommand_Options.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_PlayAnimation.resx">
-      <DependentUpon>EventCommand_PlayAnimation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_PlayBgm.resx">
-      <DependentUpon>EventCommand_PlayBgm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_PlayBgs.resx">
-      <DependentUpon>EventCommand_PlayBgs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SelfSwitch.resx">
-      <DependentUpon>EventCommand_SelfSwitch.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SetAccess.resx">
-      <DependentUpon>EventCommand_SetAccess.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SetClass.resx">
-      <DependentUpon>EventCommand_SetClass.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ShowPicture.resx">
-      <DependentUpon>EventCommand_ShowPicture.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnNpc.resx">
-      <DependentUpon>EventCommand_SpawnNpc.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_StartCommonEvent.resx">
-      <DependentUpon>EventCommand_StartCommonEvent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_StartQuest.resx">
-      <DependentUpon>EventCommand_StartQuest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_Input.resx">
-      <DependentUpon>EventCommand_Input.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_Text.resx">
-      <DependentUpon>EventCommand_Text.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SetVehicle.resx">
+      <DependentUpon>EventCommand_SetVehicle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_Variable.resx">
       <DependentUpon>EventCommand_Variable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_Wait.resx">
-      <DependentUpon>EventCommand_Wait.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_WaitForRouteCompletion.resx">
-      <DependentUpon>EventCommand_WaitForRouteCompletion.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_Warp.resx">
       <DependentUpon>EventCommand_Warp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\Event_GraphicSelector.resx">
-      <DependentUpon>Event_GraphicSelector.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\frmQuestBoard.resx">
+      <DependentUpon>frmQuestBoard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\Event_MoveRouteAnimationSelector.resx">
-      <DependentUpon>Event_MoveRouteAnimationSelector.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\frmQuestList.resx">
+      <DependentUpon>frmQuestList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\Event_MoveRouteDesigner.resx">
-      <DependentUpon>Event_MoveRouteDesigner.cs</DependentUpon>
+    <EmbeddedResource Include="Resources\Shaders\radialgradient_editor.xnb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\Controls\MapTreeList.resx">
+      <DependentUpon>MapTreeList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\SearchableDarkTreeView.resx">
+      <DependentUpon>SearchableDarkTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DockingElements\frmMapGrid.resx">
+      <DependentUpon>frmMapGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DockingElements\frmMapList.resx">
+      <DependentUpon>frmMapList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\frmAnimation.resx">
       <DependentUpon>frmAnimation.cs</DependentUpon>
@@ -782,9 +783,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\frmCraftingTables.resx">
       <DependentUpon>frmCraftingTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\frmDynamicRequirements.resx">
-      <DependentUpon>frmDynamicRequirements.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\frmEvent.resx">
       <DependentUpon>frmEvent.cs</DependentUpon>
@@ -816,9 +814,6 @@
     <EmbeddedResource Include="Forms\Editors\Quest\frmQuest.resx">
       <DependentUpon>frmQuest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Quest\Quest_TaskEditor.resx">
-      <DependentUpon>Quest_TaskEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </EmbeddedResource>
@@ -832,12 +827,6 @@
       <DependentUpon>frmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmOptions.resx">
-      <DependentUpon>frmOptions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmProgress.resx">
-      <DependentUpon>frmProgress.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmWarpSelection.resx">
       <DependentUpon>frmWarpSelection.cs</DependentUpon>
     </EmbeddedResource>
@@ -847,30 +836,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\layer_sel.png" />
+    <None Include="Resources\layer_face.png" />
+    <None Include="Resources\layer_face_sel.png" />
+    <None Include="Resources\layer_hidden.png" />
+    <None Include="Resources\layer.png" />
     <None Include="FodyWeavers.xml" />
     <Content Include="Icon.ico" />
     <EmbeddedResource Include="$(NetworkHandshakePublicKey)" />
     <None Include="packages.config" />
-    <None Include="Resources\1_A.png" />
-    <None Include="Resources\1_B Hide.png" />
-    <None Include="Resources\1_B.png" />
-    <None Include="Resources\2_A Hide.png" />
-    <None Include="Resources\2_A.png" />
-    <None Include="Resources\2_B Hide.png" />
-    <None Include="Resources\2_B.png" />
-    <None Include="Resources\3_A Hide.png" />
-    <None Include="Resources\3_A.png" />
-    <None Include="Resources\3_B Hide.png" />
-    <None Include="Resources\3_B.png" />
-    <None Include="Resources\4_A Hide.png" />
-    <None Include="Resources\4_A.png" />
-    <None Include="Resources\4_B Hide.png" />
-    <None Include="Resources\4_B.png" />
-    <None Include="Resources\5_A Hide.png" />
-    <None Include="Resources\5_A.png" />
-    <None Include="Resources\5_B Hide.png" />
-    <None Include="Resources\5_B.png" />
-    <None Include="Resources\1_A Hide.png" />
     <EmbeddedResource Include="Resources\sqlite3x64.dll" />
     <EmbeddedResource Include="Resources\sqlite3x86.dll" />
   </ItemGroup>
@@ -884,7 +858,17 @@
       <Name>Intersect.Network</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\Microsoft.CodeAnalysis.VersionCheckAnalyzer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Humanizer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetCore.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -901,6 +885,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props'))" />
     <Error Condition="!Exists('..\packages\Fody.4.2.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.4.2.1\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props'))" />
     <Error Condition="!Exists('..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Framework.WindowsDX.3.8.0.1641\build\MonoGame.Framework.WindowsDX.targets'))" />
   </Target>
   <Import Project="..\packages\Fody.4.2.1\build\Fody.targets" Condition="Exists('..\packages\Fody.4.2.1\build\Fody.targets')" />

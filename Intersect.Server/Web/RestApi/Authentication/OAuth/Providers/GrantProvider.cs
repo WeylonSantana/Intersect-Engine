@@ -10,8 +10,6 @@ using Intersect.Server.Database;
 using Intersect.Server.Database.PlayerData;
 using Intersect.Server.Web.RestApi.Configuration;
 
-using JetBrains.Annotations;
-
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 
@@ -21,12 +19,11 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth.Providers
     internal class GrantProvider : OAuthAuthorizationServerProvider
     {
 
-        public GrantProvider([NotNull] ApiConfiguration configuration)
+        public GrantProvider(ApiConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        [NotNull]
         private ApiConfiguration Configuration { get; }
 
         public override Task AuthorizationEndpointResponse(OAuthAuthorizationEndpointResponseContext context)
@@ -60,7 +57,7 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth.Providers
         }
 
         public override async Task GrantResourceOwnerCredentials(
-            [NotNull] OAuthGrantResourceOwnerCredentialsContext context
+            OAuthGrantResourceOwnerCredentialsContext context
         )
         {
             var owinContext = context.OwinContext;
@@ -89,7 +86,7 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth.Providers
 
             username = username.Trim();
 
-            var user = DbInterface.GetUser(username);
+            var user = User.Find(username);
             if (!user?.IsPasswordValid(password.ToUpper().Trim()) ?? true)
             {
                 context.SetError("credentials_invalid");
@@ -181,7 +178,7 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth.Providers
         }
 
         public override async Task ValidateClientAuthentication(
-            [NotNull] OAuthValidateClientAuthenticationContext context
+            OAuthValidateClientAuthenticationContext context
         )
         {
             var parameters = context.Parameters;

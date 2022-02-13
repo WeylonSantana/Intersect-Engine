@@ -181,6 +181,9 @@ namespace Intersect.GameObjects.Events.Commands
 
         public string Text { get; set; } = "";
 
+        // TODO: Expose this option to the user?
+        public ChatMessageType MessageType { get; set; } = ChatMessageType.Notice;
+
         public string Color { get; set; } = "";
 
         public ChatboxChannel Channel { get; set; } = ChatboxChannel.Player;
@@ -336,6 +339,21 @@ namespace Intersect.GameObjects.Events.Commands
 
         public long Exp { get; set; }
 
+        /// <summary>
+        /// Defines whether this event command will use a variable for processing or not.
+        /// </summary>
+        public bool UseVariable { get; set; } = false;
+
+        /// <summary>
+        /// Defines whether the variable used is a Player or Global variable.
+        /// </summary>
+        public VariableTypes VariableType { get; set; } = VariableTypes.PlayerVariable;
+
+        /// <summary>
+        /// The Variable Id to use.
+        /// </summary>
+        public Guid VariableId { get; set; }
+
     }
 
     public class ChangeLevelCommand : EventCommand
@@ -434,6 +452,21 @@ namespace Intersect.GameObjects.Events.Commands
         /// </summary>
         public ItemHandling ItemHandling { get; set; } = ItemHandling.Normal;
 
+        /// <summary>
+        /// Defines whether this event command will use a variable for processing or not.
+        /// </summary>
+        public bool UseVariable { get; set; } = false;
+
+        /// <summary>
+        /// Defines whether the variable used is a Player or Global variable.
+        /// </summary>
+        public VariableTypes VariableType { get; set; } = VariableTypes.PlayerVariable;
+
+        /// <summary>
+        /// The Variable Id to use.
+        /// </summary>
+        public Guid VariableId { get; set; }
+
         public int Quantity { get; set; }
 
         public Guid[] BranchIds { get; set; } =
@@ -478,6 +511,8 @@ namespace Intersect.GameObjects.Events.Commands
         public override EventCommandType Type { get; } = EventCommandType.EquipItem;
 
         public Guid ItemId { get; set; }
+
+        public bool Unequip { get; set; }
 
     }
 
@@ -558,6 +593,17 @@ namespace Intersect.GameObjects.Events.Commands
 
         public WarpDirection Direction { get; set; } = WarpDirection.Retain;
 
+        public bool FadeOnWarp { get; set; } = false;
+
+        /// <summary>
+        /// Whether or not the warp event will change a player's map instance settings
+        /// </summary>
+        public bool ChangeInstance { get; set; } = false;
+
+        /// <summary>
+        /// The <see cref="MapInstanceType"/> we are going to be warping to
+        /// </summary>
+        public MapInstanceType InstanceType { get; set; } = MapInstanceType.Overworld;
     }
 
     public class SetMoveRouteCommand : EventCommand
@@ -696,11 +742,30 @@ namespace Intersect.GameObjects.Events.Commands
 
         public override EventCommandType Type { get; } = EventCommandType.ShowPicture;
 
+        /// <summary>
+        /// Picture filename to show.
+        /// </summary>
         public string File { get; set; } = "";
 
+        /// <summary>
+        /// How the picture is rendered on the screen.
+        /// </summary>
         public int Size { get; set; } //Original = 0, Full Screen, Half Screen, Stretch To Fit  //TODO Enum this?
 
+        /// <summary>
+        /// If true the picture will close upon being clicked
+        /// </summary>
         public bool Clickable { get; set; }
+
+        /// <summary>
+        /// If not 0 the picture will go away after shown for the time below
+        /// </summary>
+        public int HideTime { get; set; } = 0;
+
+        /// <summary>
+        /// If true this event won't continue with commands until this picture is closed.
+        /// </summary>
+        public bool WaitUntilClosed { get; set; }
 
     }
 
@@ -709,6 +774,18 @@ namespace Intersect.GameObjects.Events.Commands
 
         public override EventCommandType Type { get; } = EventCommandType.HidePicture;
 
+    }
+
+
+    public class FlashScreenCommand : EventCommand
+    {
+        public override EventCommandType Type { get; } = EventCommandType.FlashScreen;
+
+        public float Duration { get; set; } = 200f;
+
+        public float Intensity { get; set; } = 255f;
+        
+        public Color FlashColor { get; set; }
     }
 
     public class WaitCommand : EventCommand
@@ -835,4 +912,249 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    /// <summary>
+    /// Defines the Event command class for the Change Player Color command.
+    /// </summary>
+    public class ChangePlayerColorCommand : EventCommand
+    {
+
+        /// <summary>
+        /// The <see cref="EventCommandType"/> of this command.
+        /// </summary>
+        public override EventCommandType Type { get; } = EventCommandType.ChangePlayerColor;
+
+        /// <summary>
+        /// The <see cref="Color"/> to apply to the player.
+        /// </summary>
+        public Color Color { get; set; } = new Color(255, 255, 255, 255);
+
+    }
+
+    public class ChangeNameCommand : EventCommand
+    {
+        //For Json Deserialization
+        public ChangeNameCommand()
+        {
+        }
+
+        public ChangeNameCommand(Dictionary<Guid, List<EventCommand>> commandLists)
+        {
+            for (var i = 0; i < BranchIds.Length; i++)
+            {
+                BranchIds[i] = Guid.NewGuid();
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
+            }
+        }
+
+        public override EventCommandType Type { get; } = EventCommandType.ChangeName;
+
+        public Guid VariableId { get; set; }
+
+        public Guid[] BranchIds { get; set; } =
+            new Guid[2]; //Branch[0] is the event commands to execute when given/taken successfully, Branch[1] is for when they're not.
+
+        public override string GetCopyData(
+            Dictionary<Guid, List<EventCommand>> commandLists,
+            Dictionary<Guid, List<EventCommand>> copyLists
+        )
+        {
+            foreach (var branch in BranchIds)
+            {
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
+                {
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
+                    {
+                        cmd.GetCopyData(commandLists, copyLists);
+                    }
+                }
+            }
+
+            return base.GetCopyData(commandLists, copyLists);
+        }
+
+
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
+        {
+            for (var i = 0; i < BranchIds.Length; i++)
+            {
+                if (idDict.ContainsKey(BranchIds[i]))
+                {
+                    BranchIds[i] = idDict[BranchIds[i]];
+                }
+            }
+        }
+    }
+
+    public class CreateGuildCommand : EventCommand
+    {
+
+        //For Json Deserialization
+        public CreateGuildCommand()
+        {
+        }
+
+        public CreateGuildCommand(Dictionary<Guid, List<EventCommand>> commandLists)
+        {
+            for (var i = 0; i < BranchIds.Length; i++)
+            {
+                BranchIds[i] = Guid.NewGuid();
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
+            }
+        }
+
+        public override EventCommandType Type { get; } = EventCommandType.CreateGuild;
+
+        public Guid VariableId { get; set; }
+
+        public Guid[] BranchIds { get; set; } =
+            new Guid[2]; //Branch[0] is the event commands to execute when quest is started successfully, Branch[1] is for when it's not.
+
+        public override string GetCopyData(
+            Dictionary<Guid, List<EventCommand>> commandLists,
+            Dictionary<Guid, List<EventCommand>> copyLists
+        )
+        {
+            foreach (var branch in BranchIds)
+            {
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
+                {
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
+                    {
+                        cmd.GetCopyData(commandLists, copyLists);
+                    }
+                }
+            }
+
+            return base.GetCopyData(commandLists, copyLists);
+        }
+    }
+
+    public class DisbandGuildCommand : EventCommand
+    {
+
+        //For Json Deserialization
+        public DisbandGuildCommand()
+        {
+        }
+
+        public DisbandGuildCommand(Dictionary<Guid, List<EventCommand>> commandLists)
+        {
+            for (var i = 0; i < BranchIds.Length; i++)
+            {
+                BranchIds[i] = Guid.NewGuid();
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
+            }
+        }
+
+        public override EventCommandType Type { get; } = EventCommandType.DisbandGuild;
+
+        public Guid[] BranchIds { get; set; } =
+            new Guid[2]; //Branch[0] is the event commands to execute when quest is started successfully, Branch[1] is for when it's not.
+
+        public override string GetCopyData(
+            Dictionary<Guid, List<EventCommand>> commandLists,
+            Dictionary<Guid, List<EventCommand>> copyLists
+        )
+        {
+            foreach (var branch in BranchIds)
+            {
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
+                {
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
+                    {
+                        cmd.GetCopyData(commandLists, copyLists);
+                    }
+                }
+            }
+
+            return base.GetCopyData(commandLists, copyLists);
+        }
+
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
+        {
+            for (var i = 0; i < BranchIds.Length; i++)
+            {
+                if (idDict.ContainsKey(BranchIds[i]))
+                {
+                    BranchIds[i] = idDict[BranchIds[i]];
+                }
+            }
+        }
+
+    }
+
+    public class OpenGuildBankCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.OpenGuildBank;
+
+    }
+
+    public class SetGuildBankSlotsCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.SetGuildBankSlots;
+
+        public VariableTypes VariableType { get; set; }
+
+        public Guid VariableId { get; set; }
+
+    }
+
+    public class ResetStatPointAllocationsCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.ResetStatPointAllocations;
+
+    }
+
+    public class RandomQuestCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.RandomQuest;
+
+        public Guid QuestListId { get; set; }
+    }
+
+    public class OpenQuestBoardCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.OpenQuestBoard;
+
+        public Guid QuestBoardId { get; set; }
+    }
+
+    public class SetVehicleCommand : EventCommand
+    {
+        public override EventCommandType Type { get; } = EventCommandType.SetVehicle;
+
+        public bool InVehicle { get; set; }
+
+        public string VehicleSprite { get; set; }
+
+        public long VehicleSpeed { get; set; }
+    }
+
+    public class NPCGuildManagementCommand : EventCommand
+    {
+        public override EventCommandType Type { get; } = EventCommandType.NPCGuildManagement;
+
+        public Guid ClassId { get; set; }
+
+        public NPCGuildManagementSelection Selection { get; set; }
+
+        public bool SelectionValue { get; set; }
+        
+        public int NewRank { get; set; }
+    }
+
+    public class AddInspirationCommand : EventCommand
+    {
+        public override EventCommandType Type { get; } = EventCommandType.AddInspiration;
+
+        public long Seconds { get; set; }
+    }
 }

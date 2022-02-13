@@ -65,6 +65,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             chkHasElse.Checked = refCommand.ElseEnabled;
             SetupFormValues((dynamic) refCommand);
             mLoading = false;
+            nudPartySize.Maximum = Options.Party.MaximumMembers;
         }
 
         private void InitLocalization()
@@ -86,6 +87,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpSelectVariable.Text = Strings.EventConditional.selectvariable;
             rdoPlayerVariable.Text = Strings.EventConditional.playervariable;
             rdoGlobalVariable.Text = Strings.EventConditional.globalvariable;
+            rdoInstanceVariable.Text = Strings.EventConditional.instancevariable;
 
             //Numeric Variable
             grpNumericVariable.Text = Strings.EventConditional.numericvariable;
@@ -93,6 +95,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             rdoVarCompareStaticValue.Text = Strings.EventConditional.value;
             rdoVarComparePlayerVar.Text = Strings.EventConditional.playervariablevalue;
             rdoVarCompareGlobalVar.Text = Strings.EventConditional.globalvariablevalue;
+            rdoVarCompareInstanceVar.Text = Strings.EventConditional.instancevariablevalue;
             cmbNumericComparitor.Items.Clear();
             for (var i = 0; i < Strings.EventConditional.comparators.Count; i++)
             {
@@ -111,6 +114,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             optBooleanFalse.Text = Strings.EventConditional.False;
             optBooleanGlobalVariable.Text = Strings.EventConditional.globalvariablevalue;
             optBooleanPlayerVariable.Text = Strings.EventConditional.playervariablevalue;
+            optBooleanInstanceVariable.Text = Strings.EventConditional.instancevariablevalue;
 
             //String Variable
             grpStringVariable.Text = Strings.EventConditional.stringvariable;
@@ -125,10 +129,20 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             lblStringComparatorValue.Text = Strings.EventConditional.value;
             lblStringTextVariables.Text = Strings.EventConditional.stringtip;
 
-            //Has Item
-            grpHasItem.Text = Strings.EventConditional.hasitem;
+            //Has Item + Has Free Inventory Slots
+            grpInventoryConditions.Text = Strings.EventConditional.hasitem;
             lblItemQuantity.Text = Strings.EventConditional.hasatleast;
             lblItem.Text = Strings.EventConditional.item;
+            lblInvVariable.Text = Strings.EventConditional.VariableLabel;
+            grpAmountType.Text = Strings.EventConditional.AmountType;
+            rdoManual.Text = Strings.EventConditional.Manual;
+            rdoVariable.Text = Strings.EventConditional.VariableLabel;
+            grpManualAmount.Text = Strings.EventConditional.Manual;
+            grpVariableAmount.Text = Strings.EventConditional.VariableLabel;
+            rdoInvPlayerVariable.Text = Strings.EventConditional.playervariable;
+            rdoInvGlobalVariable.Text = Strings.EventConditional.globalvariable;
+            rdoInvInstanceVariable.Text = Strings.EventConditional.instancevariable;
+            chkBank.Text = Strings.EventConditional.checkbank;
 
             //Has Item Equipped
             grpEquippedItem.Text = Strings.EventConditional.hasitemequipped;
@@ -220,10 +234,32 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpMapIs.Text = Strings.EventConditional.mapis;
             btnSelectMap.Text = Strings.EventConditional.selectmap;
 
-            // Free Inventory Slots
-            grpFreeInventorySlots.Text = Strings.EventConditional.FreeInventorySlots;
-            lblFreeInventorySlotAmount.Text = Strings.EventConditional.hasatleast;
+            //In Guild With At Least Rank
+            grpInGuild.Text = Strings.EventConditional.inguild;
+            lblRank.Text = Strings.EventConditional.rank;
+            cmbRank.Items.Clear();
+            foreach (var rank in Options.Instance.Guild.Ranks)
+            {
+                cmbRank.Items.Add(rank.Title);
+            }
 
+            // Map Zone Type
+            grpMapZoneType.Text = Strings.EventConditional.MapZoneTypeIs;
+            lblMapZoneType.Text = Strings.EventConditional.MapZoneTypeLabel;
+            cmbMapZoneType.Items.Clear();
+            for (var i = 0; i < Strings.MapProperties.zones.Count; i++)
+            {
+                cmbMapZoneType.Items.Add(Strings.MapProperties.zones[i]);
+            }
+
+            // Tag checks (in inv/bank/equipped)
+            grpTag.Text = Strings.EventConditional.taggroup;
+            lblTag.Text = Strings.EventConditional.taglabel;
+            chkTagBank.Text = Strings.EventConditional.checkbank;
+
+            // Equip in Slot
+            grpEquipmentSlot.Text = Strings.EventConditional.equipinslotgroup;
+            lblSlot.Text = Strings.EventConditional.equipinslotlabel;
 
             btnSave.Text = Strings.EventConditional.okay;
             btnCancel.Text = Strings.EventConditional.cancel;
@@ -339,10 +375,98 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     break;
                 case ConditionTypes.HasFreeInventorySlots:
                     Condition = new HasFreeInventorySlots();
-                    nudFreeInventorySlots.Value = 1;
+                    
 
                     break;
+                case ConditionTypes.InGuildWithRank:
+                    Condition = new InGuildWithRank();
+                    cmbRank.SelectedIndex = 0;
 
+                    break;
+                case ConditionTypes.MapZoneTypeIs:
+                    Condition = new MapZoneTypeIs();
+                    if (cmbMapZoneType.Items.Count > 0)
+                    {
+                        cmbMapZoneType.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.HasItemWithTag:
+                    Condition = new InventoryTagCondition();
+                    if (cmbTags.Items.Count > 0)
+                    {
+                        cmbTags.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.ItemEquippedWithTag:
+                    Condition = new EquipmentTagCondition();
+                    if (cmbTags.Items.Count > 0)
+                    {
+                        cmbTags.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.EquipmentInSlot:
+                    Condition = new EquipmentInSlotCondition();
+                    if (cmbSlots.Items.Count > 0)
+                    {
+                        cmbSlots.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.InVehicle:
+                    Condition = new InVehicleCondition();
+
+                    break;
+                case ConditionTypes.InPartyWith:
+                    Condition = new InPartyWithCondition();
+
+                    break;
+                case ConditionTypes.InNpcGuildWithRank:
+                    Condition = new InNpcGuildWithRankCondition();
+                    if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.HasSpecialAssignmentForClass:
+                    Condition = new HasSpecialAssignmentForClassCondition();
+                    if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.IsOnGuildTaskForClass:
+                    Condition = new IsOnGuildTaskForClassCondition();
+                    if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.HasTaskCompletedForClass:
+                    Condition = new HasTaskCompletedForClassCondition();
+                    if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.TaskIsOnCooldownForClass:
+                    Condition = new TaskIsOnCooldownForClassCondition();
+                    if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
+
+                    break;
+                case ConditionTypes.HighestClassRankIs:
+                    Condition = new HighestClassRankIs();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -351,7 +475,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         private void UpdateFormElements(ConditionTypes type)
         {
             grpVariable.Hide();
-            grpHasItem.Hide();
+            grpInventoryConditions.Hide();
             grpSpell.Hide();
             grpClass.Hide();
             grpLevelStat.Hide();
@@ -364,7 +488,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpGender.Hide();
             grpMapIs.Hide();
             grpEquippedItem.Hide();
-            grpFreeInventorySlots.Hide();
+            grpInGuild.Hide();
+            grpMapZoneType.Hide();
+            grpTag.Hide();
+            grpEquipmentSlot.Hide();
+            grpInPartyWith.Hide();
+            lblClassRank.Hide();
+            nudClassRank.Hide();
             switch (type)
             {
                 case ConditionTypes.VariableIs:
@@ -374,17 +504,25 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     cmbCompareGlobalVar.Items.AddRange(ServerVariableBase.Names);
                     cmbComparePlayerVar.Items.Clear();
                     cmbComparePlayerVar.Items.AddRange(PlayerVariableBase.Names);
+                    cmbCompareInstanceVar.Items.Clear();
+                    cmbCompareInstanceVar.Items.AddRange(InstanceVariableBase.Names);
 
                     cmbBooleanGlobalVariable.Items.Clear();
                     cmbBooleanGlobalVariable.Items.AddRange(ServerVariableBase.Names);
                     cmbBooleanPlayerVariable.Items.Clear();
                     cmbBooleanPlayerVariable.Items.AddRange(PlayerVariableBase.Names);
+                    cmbBooleanInstanceVariable.Items.Clear();
+                    cmbBooleanInstanceVariable.Items.AddRange(InstanceVariableBase.Names);
 
                     break;
                 case ConditionTypes.HasItem:
-                    grpHasItem.Show();
+                    grpInventoryConditions.Show();
+                    grpInventoryConditions.Text = Strings.EventConditional.hasitem;
+                    lblItem.Visible = true;
+                    cmbItem.Visible = true;
                     cmbItem.Items.Clear();
                     cmbItem.Items.AddRange(ItemBase.Names);
+                    SetupAmountInput();
 
                     break;
                 case ConditionTypes.ClassIs:
@@ -462,12 +600,90 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     break;
 
                 case ConditionTypes.HasFreeInventorySlots:
-                    grpFreeInventorySlots.Show();
+                    grpInventoryConditions.Show();
+                    grpInventoryConditions.Text = Strings.EventConditional.FreeInventorySlots;
+                    lblItem.Visible = false;
+                    cmbItem.Visible = false;
+                    cmbItem.Items.Clear();
+                    SetupAmountInput();
+
+                    break;
+                case ConditionTypes.InGuildWithRank:
+                    grpInGuild.Show();
+
+                    break;
+                case ConditionTypes.MapZoneTypeIs:
+                    grpMapZoneType.Show();
+
+                    break;
+                case ConditionTypes.HasItemWithTag:
+                    InitializeTags();
+                    chkTagBank.Show();
+
+                    break;
+                case ConditionTypes.ItemEquippedWithTag:
+                    InitializeTags();
+                    chkTagBank.Hide();
+
+                    break;
+                case ConditionTypes.EquipmentInSlot:
+                    var options = new Config.EquipmentOptions();
+                    cmbSlots.Items.Clear();
+                    foreach (string slot in options.Slots)
+                    {
+                        cmbSlots.Items.Add(slot);
+                    }
+
+                    grpEquipmentSlot.Show();
+
+                    break;
+                case ConditionTypes.InVehicle:
+
+                    break;
+                case ConditionTypes.InPartyWith:
+                    grpInPartyWith.Show();
+
+                    break;
+                case ConditionTypes.InNpcGuildWithRank:
+                    grpClass.Show();
+                    cmbClass.Items.Clear();
+                    cmbClass.Items.AddRange(ClassBase.Names);
+                    if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
+
+                    nudClassRank.Show();
+                    nudClassRank.Maximum = Options.MaxClassRank;
+                    break;
+                case ConditionTypes.HighestClassRankIs:
+                    grpClass.Show();
+                    cmbClass.Hide();
+                    nudClassRank.Show();
+                    break;
+                case ConditionTypes.HasSpecialAssignmentForClass:
+                case ConditionTypes.IsOnGuildTaskForClass:
+                case ConditionTypes.HasTaskCompletedForClass:
+                case ConditionTypes.TaskIsOnCooldownForClass:
+                    grpClass.Show();
+                    cmbClass.Items.Clear();
+                    cmbClass.Items.AddRange(ClassBase.Names);
+                    if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
 
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void InitializeTags()
+        {
+            grpTag.Show();
+            cmbTags.Items.Clear();
+            cmbTags.Items.AddRange(ItemBase.GetTags());
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -586,6 +802,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             nudVariableValue.Enabled = rdoVarCompareStaticValue.Checked;
             cmbComparePlayerVar.Enabled = rdoVarComparePlayerVar.Checked;
             cmbCompareGlobalVar.Enabled = rdoVarCompareGlobalVar.Checked;
+            cmbCompareInstanceVar.Enabled = rdoVarCompareInstanceVar.Checked;
         }
 
         private void UpdateVariableElements()
@@ -610,6 +827,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 else if (rdoGlobalVariable.Checked)
                 {
                     var serverVar = ServerVariableBase.FromList(cmbVariable.SelectedIndex);
+                    if (serverVar != null)
+                    {
+                        varType = (byte) serverVar.Type;
+                    }
+                }
+                else if (rdoInstanceVariable.Checked)
+                {
+                    var serverVar = InstanceVariableBase.FromList(cmbVariable.SelectedIndex);
                     if (serverVar != null)
                     {
                         varType = (byte) serverVar.Type;
@@ -673,10 +898,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                         optBooleanPlayerVariable.Checked = true;
                         cmbBooleanPlayerVariable.SelectedIndex = PlayerVariableBase.ListIndex(com.CompareVariableId);
                     }
-                    else
+                    else if (com.CompareVariableType == VariableTypes.ServerVariable)
                     {
                         optBooleanGlobalVariable.Checked = true;
                         cmbBooleanGlobalVariable.SelectedIndex = ServerVariableBase.ListIndex(com.CompareVariableId);
+                    }
+                    else if (com.CompareVariableType == VariableTypes.InstanceVariable)
+                    {
+                        optBooleanInstanceVariable.Checked = true;
+                        cmbBooleanInstanceVariable.SelectedIndex = InstanceVariableBase.ListIndex(com.CompareVariableId);
                     }
                 }
             }
@@ -702,10 +932,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                         rdoVarComparePlayerVar.Checked = true;
                         cmbComparePlayerVar.SelectedIndex = PlayerVariableBase.ListIndex(com.CompareVariableId);
                     }
-                    else
+                    else if (com.CompareVariableType == VariableTypes.ServerVariable)
                     {
                         rdoVarCompareGlobalVar.Checked = true;
                         cmbCompareGlobalVar.SelectedIndex = ServerVariableBase.ListIndex(com.CompareVariableId);
+                    }
+                    else if (com.CompareVariableType == VariableTypes.InstanceVariable)
+                    {
+                        rdoVarCompareInstanceVar.Checked = true;
+                        cmbCompareInstanceVar.SelectedIndex = InstanceVariableBase.ListIndex(com.CompareVariableId);
                     }
                 }
                 else
@@ -744,10 +979,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 cmbVariable.Items.AddRange(PlayerVariableBase.Names);
                 cmbVariable.SelectedIndex = PlayerVariableBase.ListIndex(variableId);
             }
-            else
+            else if (rdoGlobalVariable.Checked)
             {
                 cmbVariable.Items.AddRange(ServerVariableBase.Names);
                 cmbVariable.SelectedIndex = ServerVariableBase.ListIndex(variableId);
+            }
+            else if (rdoInstanceVariable.Checked)
+            {
+                cmbVariable.Items.AddRange(InstanceVariableBase.Names);
+                cmbVariable.SelectedIndex = InstanceVariableBase.ListIndex(variableId);
             }
 
             mLoading = false;
@@ -775,6 +1015,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             {
                 comp.CompareVariableType = VariableTypes.PlayerVariable;
                 comp.CompareVariableId = PlayerVariableBase.IdFromList(cmbBooleanPlayerVariable.SelectedIndex);
+            }
+            else if (optBooleanInstanceVariable.Checked)
+            {
+                comp.CompareVariableType = VariableTypes.InstanceVariable;
+                comp.CompareVariableId = InstanceVariableBase.IdFromList(cmbBooleanInstanceVariable.SelectedIndex);
             }
 
             return comp;
@@ -806,6 +1051,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             {
                 comp.CompareVariableType = VariableTypes.PlayerVariable;
                 comp.CompareVariableId = PlayerVariableBase.IdFromList(cmbComparePlayerVar.SelectedIndex);
+            }
+            else if (rdoVarCompareInstanceVar.Checked)
+            {
+                comp.CompareVariableType = VariableTypes.InstanceVariable;
+                comp.CompareVariableId = InstanceVariableBase.IdFromList(cmbCompareInstanceVar.SelectedIndex);
             }
 
             return comp;
@@ -845,6 +1095,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             }
         }
 
+        private void rdoInstanceVariable_CheckedChanged(object sender, EventArgs e)
+        {
+            InitVariableElements(Guid.Empty);
+            if (!mLoading && cmbVariable.Items.Count > 0)
+            {
+                cmbVariable.SelectedIndex = 0;
+            }
+        }
+
         private void cmbVariable_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (mLoading)
@@ -859,6 +1118,10 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             else if (rdoGlobalVariable.Checked)
             {
                 InitVariableElements(ServerVariableBase.IdFromList(cmbVariable.SelectedIndex));
+            }
+            else if (rdoInstanceVariable.Checked)
+            {
+                InitVariableElements(InstanceVariableBase.IdFromList(cmbVariable.SelectedIndex));
             }
 
             UpdateVariableElements();
@@ -876,6 +1139,140 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             nudItemAmount.Value = Math.Max(1, nudItemAmount.Value);
         }
 
+        private void rdoManual_CheckedChanged(object sender, EventArgs e)
+        {
+            SetupAmountInput();
+        }
+
+        private void rdoVariable_CheckedChanged(object sender, EventArgs e)
+        {
+            SetupAmountInput();
+        }
+
+        private void rdoInvPlayerVariable_CheckedChanged(object sender, EventArgs e)
+        {
+            SetupAmountInput();
+        }
+
+        private void rdoInvGlobalVariable_CheckedChanged(object sender, EventArgs e)
+        {
+            SetupAmountInput();
+        }
+
+        private void rdoInvInstanceVariable_CheckedChanged(object sender, EventArgs e)
+        {
+            SetupAmountInput();
+        }
+
+        private void SetupAmountInput()
+        {
+            grpManualAmount.Visible = rdoManual.Checked;
+            grpVariableAmount.Visible = !rdoManual.Checked;
+
+            VariableTypes conditionVariableType;
+            Guid conditionVariableId;
+            int ConditionQuantity;
+
+            switch (Condition.Type)
+            {
+                case ConditionTypes.HasFreeInventorySlots:
+                    conditionVariableType = ((HasFreeInventorySlots)Condition).VariableType;
+                    conditionVariableId = ((HasFreeInventorySlots)Condition).VariableId;
+                    ConditionQuantity = ((HasFreeInventorySlots)Condition).Quantity;
+                    break;
+                case ConditionTypes.HasItem:
+                    conditionVariableType = ((HasItemCondition)Condition).VariableType;
+                    conditionVariableId = ((HasItemCondition)Condition).VariableId;
+                    ConditionQuantity = ((HasItemCondition)Condition).Quantity;
+                    break;
+                default:
+                    conditionVariableType = VariableTypes.PlayerVariable;
+                    conditionVariableId = Guid.Empty;
+                    ConditionQuantity = 0;
+                    return;
+            }
+
+            cmbInvVariable.Items.Clear();
+            if (rdoInvPlayerVariable.Checked)
+            {
+                cmbInvVariable.Items.AddRange(PlayerVariableBase.GetNamesByType(VariableDataTypes.Integer));
+                // Do not update if the wrong type of variable is saved
+                if (conditionVariableType == VariableTypes.PlayerVariable)
+                {
+                    var index = PlayerVariableBase.ListIndex(conditionVariableId, VariableDataTypes.Integer);
+                    if (index > -1)
+                    {
+                        cmbInvVariable.SelectedIndex = index;
+                    }
+                    else
+                    {
+                        VariableBlank();
+                    }
+                }
+                else
+                {
+                    VariableBlank();
+                }
+            }
+            else if (rdoInvGlobalVariable.Checked)
+            {
+                cmbInvVariable.Items.AddRange(ServerVariableBase.GetNamesByType(VariableDataTypes.Integer));
+                // Do not update if the wrong type of variable is saved
+                if (conditionVariableType == VariableTypes.ServerVariable)
+                {
+                    var index = ServerVariableBase.ListIndex(conditionVariableId, VariableDataTypes.Integer);
+                    if (index > -1)
+                    {
+                        cmbInvVariable.SelectedIndex = index;
+                    }
+                    else
+                    {
+                        VariableBlank();
+                    }
+                }
+                else
+                {
+                    VariableBlank();
+                }
+            }
+            else if (rdoInvInstanceVariable.Checked)
+            {
+                cmbInvVariable.Items.AddRange(InstanceVariableBase.GetNamesByType(VariableDataTypes.Integer));
+                // Do not update if the wrong type of variable is saved
+                if (conditionVariableType == VariableTypes.InstanceVariable)
+                {
+                    var index = InstanceVariableBase.ListIndex(conditionVariableId, VariableDataTypes.Integer);
+                    if (index > -1)
+                    {
+                        cmbInvVariable.SelectedIndex = index;
+                    }
+                    else
+                    {
+                        VariableBlank();
+                    }
+                }
+                else
+                {
+                    VariableBlank();
+                }
+            }
+
+            nudItemAmount.Value = Math.Max(1, ConditionQuantity);
+        }
+
+        private void VariableBlank()
+        {
+            if (cmbInvVariable.Items.Count > 0)
+            {
+                cmbInvVariable.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbInvVariable.SelectedIndex = -1;
+                cmbInvVariable.Text = "";
+            }
+        }
+
         #region "SetupFormValues"
 
         private void SetupFormValues(VariableIsCondition condition)
@@ -884,9 +1281,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             {
                 rdoPlayerVariable.Checked = true;
             }
-            else
+            else if (condition.VariableType == VariableTypes.ServerVariable)
             {
                 rdoGlobalVariable.Checked = true;
+            }
+            else if (condition.VariableType == VariableTypes.InstanceVariable)
+            {
+                rdoInstanceVariable.Checked = true;
             }
 
             InitVariableElements(condition.VariableId);
@@ -898,6 +1299,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             cmbItem.SelectedIndex = ItemBase.ListIndex(condition.ItemId);
             nudItemAmount.Value = condition.Quantity;
+            rdoVariable.Checked = condition.UseVariable;
+            rdoInvGlobalVariable.Checked = condition.VariableType == VariableTypes.ServerVariable;
+            rdoInvInstanceVariable.Checked = condition.VariableType == VariableTypes.InstanceVariable;
+            chkBank.Checked = condition.CheckBank;
+            SetupAmountInput();
         }
 
         private void SetupFormValues(ClassIsCondition condition)
@@ -993,9 +1399,89 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private void SetupFormValues(HasFreeInventorySlots condition)
         {
-            nudFreeInventorySlots.Value = condition.Quantity;
+            nudItemAmount.Value = condition.Quantity;
+            rdoVariable.Checked = condition.UseVariable;
+            rdoInvGlobalVariable.Checked = condition.VariableType == VariableTypes.ServerVariable;
+            rdoInvInstanceVariable.Checked = condition.VariableType == VariableTypes.InstanceVariable;
+            SetupAmountInput();
         }
 
+        private void SetupFormValues(InGuildWithRank condition)
+        {
+            cmbRank.SelectedIndex = Math.Max(0, Math.Min(Options.Instance.Guild.Ranks.Length - 1, condition.Rank));
+        }
+
+        private void SetupFormValues(MapZoneTypeIs condition)
+        {
+            if (cmbMapZoneType.Items.Count > 0)
+            {
+                cmbMapZoneType.SelectedIndex = (int)condition.ZoneType;
+            }
+        }
+
+        private void SetupFormValues(InventoryTagCondition condition)
+        {
+            cmbTags.SelectedItem = condition.Tag;
+            chkTagBank.Checked = condition.IncludeBank;
+        }
+
+        private void SetupFormValues(EquipmentTagCondition condition)
+        {
+            cmbTags.SelectedItem = condition.Tag;
+        }
+
+        private void SetupFormValues(EquipmentInSlotCondition condition)
+        {
+            cmbSlots.SelectedIndex = condition.slot;
+        }
+
+        private void SetupFormValues(InVehicleCondition condition)
+        {
+            // There are no additional parameters for this guy
+        }
+
+        private void SetupFormValues(InPartyWithCondition condition)
+        {
+            nudPartySize.Value = condition.Members;
+        }
+
+        private void SetupFormValues(InNpcGuildWithRankCondition condition)
+        {
+            cmbClass.SelectedIndex = ClassBase.ListIndex(condition.ClassId);
+            if (condition.ClassRank > Options.MaxClassRank)
+            {
+                nudClassRank.Value = Options.MaxClassRank;
+            }
+            else
+            {
+                nudClassRank.Value = condition.ClassRank;
+            }
+        }
+
+        private void SetupFormValues(HasSpecialAssignmentForClassCondition condition)
+        {
+            cmbClass.SelectedIndex = ClassBase.ListIndex(condition.ClassId);
+        }
+
+        private void SetupFormValues(IsOnGuildTaskForClassCondition condition)
+        {
+            cmbClass.SelectedIndex = ClassBase.ListIndex(condition.ClassId);
+        }
+
+        private void SetupFormValues(HasTaskCompletedForClassCondition condition)
+        {
+            cmbClass.SelectedIndex = ClassBase.ListIndex(condition.ClassId);
+        }
+
+        private void SetupFormValues(TaskIsOnCooldownForClassCondition condition)
+        {
+            cmbClass.SelectedIndex = ClassBase.ListIndex(condition.ClassId);
+        }
+        
+        private void SetupFormValues(HighestClassRankIs condition)
+        {
+            nudClassRank.Value = condition.ClassRank;
+        }
 
         #endregion
 
@@ -1008,10 +1494,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 condition.VariableType = VariableTypes.ServerVariable;
                 condition.VariableId = ServerVariableBase.IdFromList(cmbVariable.SelectedIndex);
             }
-            else
+            else if (rdoPlayerVariable.Checked)
             {
                 condition.VariableType = VariableTypes.PlayerVariable;
                 condition.VariableId = PlayerVariableBase.IdFromList(cmbVariable.SelectedIndex);
+            }
+            else if (rdoInstanceVariable.Checked)
+            {
+                condition.VariableType = VariableTypes.InstanceVariable;
+                condition.VariableId = InstanceVariableBase.IdFromList(cmbVariable.SelectedIndex);
             }
 
             if (grpBooleanVariable.Visible)
@@ -1036,6 +1527,24 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             condition.ItemId = ItemBase.IdFromList(cmbItem.SelectedIndex);
             condition.Quantity = (int) nudItemAmount.Value;
+            if (rdoInvPlayerVariable.Checked)
+            {
+                condition.VariableType = VariableTypes.PlayerVariable;
+                condition.VariableId = PlayerVariableBase.IdFromList(cmbInvVariable.SelectedIndex, VariableDataTypes.Integer);
+            }
+            else if (rdoInvGlobalVariable.Checked)
+            {
+                condition.VariableType = VariableTypes.ServerVariable;
+                condition.VariableId = ServerVariableBase.IdFromList(cmbInvVariable.SelectedIndex, VariableDataTypes.Integer);
+            }
+            else if (rdoInvInstanceVariable.Checked)
+            {
+                condition.VariableType = VariableTypes.InstanceVariable;
+                condition.VariableId = InstanceVariableBase.IdFromList(cmbInvVariable.SelectedIndex, VariableDataTypes.Integer);
+            }
+
+            condition.UseVariable = !rdoManual.Checked;
+            condition.CheckBank = chkBank.Checked;
         }
 
         private void SaveFormValues(ClassIsCondition condition)
@@ -1129,8 +1638,95 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private void SaveFormValues(HasFreeInventorySlots condition)
         {
-            condition.Quantity = (int) nudFreeInventorySlots.Value;
+            condition.Quantity = (int) nudItemAmount.Value;
+            if (rdoInvPlayerVariable.Checked)
+            {
+                condition.VariableType = VariableTypes.PlayerVariable;
+                condition.VariableId = PlayerVariableBase.IdFromList(cmbInvVariable.SelectedIndex, VariableDataTypes.Integer);
+            }
+            else if (rdoInvGlobalVariable.Checked)
+            {
+                condition.VariableType = VariableTypes.ServerVariable;
+                condition.VariableId = ServerVariableBase.IdFromList(cmbInvVariable.SelectedIndex, VariableDataTypes.Integer);
+            }
+            else if (rdoInvInstanceVariable.Checked)
+            {
+                condition.VariableType = VariableTypes.InstanceVariable;
+                condition.VariableId = InstanceVariableBase.IdFromList(cmbInvVariable.SelectedIndex, VariableDataTypes.Integer);
+            }
+            condition.UseVariable = !rdoManual.Checked;
         }
+
+        private void SaveFormValues(InGuildWithRank condition)
+        {
+            condition.Rank = Math.Max(cmbRank.SelectedIndex, 0);
+        }
+
+        private void SaveFormValues(MapZoneTypeIs condition)
+        {
+            if (cmbMapZoneType.Items.Count > 0)
+            {
+                condition.ZoneType = (MapZones)cmbMapZoneType.SelectedIndex;
+            }
+        }
+
+        private void SaveFormValues(InventoryTagCondition condition)
+        {
+            condition.Tag = (string)cmbTags.SelectedItem;
+            condition.IncludeBank = chkTagBank.Checked;
+        }
+
+        private void SaveFormValues(EquipmentTagCondition condition)
+        {
+            condition.Tag = (string)cmbTags.SelectedItem;
+        }
+
+        private void SaveFormValues(EquipmentInSlotCondition condition)
+        {
+            condition.slot = cmbSlots.SelectedIndex;
+        }
+
+        private void SaveFormValues(InVehicleCondition condition)
+        {
+            // Intentionally blank
+        }
+
+        private void SaveFormValues(InPartyWithCondition condition)
+        {
+            condition.Members = (int) nudPartySize.Value;
+        }
+
+        private void SaveFormValues(InNpcGuildWithRankCondition condition)
+        {
+            condition.ClassId = ClassBase.IdFromList(cmbClass.SelectedIndex);
+            condition.ClassRank = (int)nudClassRank.Value;
+        }
+
+        private void SaveFormValues(HasSpecialAssignmentForClassCondition condition)
+        {
+            condition.ClassId = ClassBase.IdFromList(cmbClass.SelectedIndex);
+        }
+
+        private void SaveFormValues(IsOnGuildTaskForClassCondition condition)
+        {
+            condition.ClassId = ClassBase.IdFromList(cmbClass.SelectedIndex);
+        }
+
+        private void SaveFormValues(HasTaskCompletedForClassCondition condition)
+        {
+            condition.ClassId = ClassBase.IdFromList(cmbClass.SelectedIndex);
+        }
+
+        private void SaveFormValues(TaskIsOnCooldownForClassCondition condition)
+        {
+            condition.ClassId = ClassBase.IdFromList(cmbClass.SelectedIndex);
+        }
+
+        private void SaveFormValues(HighestClassRankIs condition)
+        {
+            condition.ClassRank = (int) nudClassRank.Value;
+        }
+
         #endregion
     }
 

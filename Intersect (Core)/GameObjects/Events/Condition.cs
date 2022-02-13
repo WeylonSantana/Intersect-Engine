@@ -40,6 +40,32 @@ namespace Intersect.GameObjects.Events
 
         HasFreeInventorySlots,
 
+        InGuildWithRank,
+
+        MapZoneTypeIs,
+
+        HasItemWithTag,
+
+        ItemEquippedWithTag,
+
+        EquipmentInSlot,
+
+        InVehicle,
+
+        InPartyWith,
+
+        InNpcGuildWithRank,
+
+        HasSpecialAssignmentForClass,
+
+        IsOnGuildTaskForClass,
+
+        HasTaskCompletedForClass,
+
+        TaskIsOnCooldownForClass,
+
+        HighestClassRankIs,
+
     }
 
     public class Condition
@@ -77,6 +103,23 @@ namespace Intersect.GameObjects.Events
         public Guid ItemId { get; set; }
 
         public int Quantity { get; set; }
+
+        /// <summary>
+        /// Defines whether this event command will use a variable for processing or not.
+        /// </summary>
+        public bool UseVariable { get; set; } = false;
+
+        /// <summary>
+        /// Defines whether the variable used is a Player or Global variable.
+        /// </summary>
+        public VariableTypes VariableType { get; set; } = VariableTypes.PlayerVariable;
+
+        /// <summary>
+        /// The Variable Id to use.
+        /// </summary>
+        public Guid VariableId { get; set; }
+
+        public bool CheckBank { get; set; }
 
     }
 
@@ -223,6 +266,154 @@ namespace Intersect.GameObjects.Events
         /// Defines the amount of inventory slots that need to be free to clear this condition.
         /// </summary>
         public int Quantity { get; set; }
+
+        /// <summary>
+        /// Defines whether this event command will use a variable for processing or not.
+        /// </summary>
+        public bool UseVariable { get; set; } = false;
+
+        /// <summary>
+        /// Defines whether the variable used is a Player or Global variable.
+        /// </summary>
+        public VariableTypes VariableType { get; set; } = VariableTypes.PlayerVariable;
+
+        /// <summary>
+        /// The Variable Id to use.
+        /// </summary>
+        public Guid VariableId { get; set; }
+
+    }
+
+    /// <summary>
+    /// Defines the condition class used when checking whether a player is in a guild with at least a specified rank
+    /// </summary>
+    public class InGuildWithRank : Condition
+    {
+        /// <summary>
+        /// Defines the type of condition
+        /// </summary>
+        public override ConditionTypes Type { get; } = ConditionTypes.InGuildWithRank;
+
+        /// <summary>
+        /// The guild rank the condition checks for as a minimum
+        /// </summary>
+        public int Rank { get; set; }
+    }
+
+    /// <summary>
+    /// Defines the condition class used when checking whether a player is on a specific map zone type.
+    /// </summary>
+    public class MapZoneTypeIs : Condition
+    {
+        /// <summary>
+        /// Defines the type of condition.
+        /// </summary>
+        public override ConditionTypes Type { get; } = ConditionTypes.MapZoneTypeIs;
+
+        /// <summary>
+        /// Defines the map Zone Type to compare to.
+        /// </summary>
+        public MapZones ZoneType { get; set; }
+    }
+
+    /// <summary>
+    /// Defines the condition class used when checking whether a player has some item in their inventory with a given tag
+    /// </summary>
+    public class InventoryTagCondition : Condition
+    {
+        /// <summary>
+        /// Defines the type of condition.
+        /// </summary>
+        public override ConditionTypes Type { get; } = ConditionTypes.HasItemWithTag;
+
+        /// <summary>
+        /// Defines the tag to check for.
+        /// </summary>
+        public string Tag { get; set; }
+
+        /// <summary>
+        /// Defines whether or not to include bank in the search.
+        /// </summary>
+        public bool IncludeBank { get; set; }
+    }
+
+    /// <summary>
+    /// Defines the condition class used when checking whether a player has some item equipped with a given tag
+    /// </summary>
+    public class EquipmentTagCondition : Condition
+    {
+        /// <summary>
+        /// Defines the type of condition.
+        /// </summary>
+        public override ConditionTypes Type { get; } = ConditionTypes.HasItemWithTag;
+
+        /// <summary>
+        /// Defines the tag to check for.
+        /// </summary>
+        public string Tag { get; set; }
+    }
+
+    public class EquipmentInSlotCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.EquipmentInSlot;
+
+        public int slot { get; set; }
+    }
+
+    public class InVehicleCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.InVehicle;
+    }
+
+    public class InPartyWithCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.InPartyWith;
+
+        public int Members { get; set; }
+    }
+
+    public class InNpcGuildWithRankCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.InNpcGuildWithRank;
+
+        public Guid ClassId { get; set; }
+
+        public int ClassRank { get; set; }
+    }
+
+    public class HasSpecialAssignmentForClassCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.HasSpecialAssignmentForClass;
+
+        public Guid ClassId { get; set; }
+    }
+
+    public class IsOnGuildTaskForClassCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.IsOnGuildTaskForClass;
+
+        public Guid ClassId { get; set; }
+    }
+
+    public class HasTaskCompletedForClassCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.HasTaskCompletedForClass;
+
+        public Guid ClassId { get; set; }
+    }
+
+    public class TaskIsOnCooldownForClassCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.TaskIsOnCooldownForClass;
+
+        public Guid ClassId { get; set; }
+    }
+
+    public class HighestClassRankIs : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.HighestClassRankIs;
+
+        public int ClassRank { get; set; }
     }
 
     public class VariableCompaison

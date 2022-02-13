@@ -4,13 +4,15 @@ using Intersect.GameObjects;
 using Intersect.Server.Entities;
 using Intersect.Server.Entities.Events;
 using Intersect.Server.General;
+using Intersect.Enums;
 using Intersect.Server.Maps;
 
 namespace Intersect.Server.Classes.Maps
 {
 
-    public class MapTrapInstance
+    public partial class MapTrapInstance
     {
+        public Guid Id { get; } = Guid.NewGuid();
 
         private long Duration;
 
@@ -28,7 +30,7 @@ namespace Intersect.Server.Classes.Maps
 
         public byte Z;
 
-        public MapTrapInstance(Entity owner, SpellBase parentSpell, Guid mapId, byte x, byte y, byte z)
+        public MapTrapInstance(Entity owner, SpellBase parentSpell, Guid mapId, Guid mapLayerId, byte x, byte y, byte z)
         {
             Owner = owner;
             ParentSpell = parentSpell;
@@ -62,7 +64,7 @@ namespace Intersect.Server.Classes.Maps
                         return;
                     }
 
-                    Owner.TryAttack(entity, ParentSpell, false, true);
+                    Owner.TryAttackSpell(entity, ParentSpell, out var miss, out var block, (sbyte) Directions.Up, false, true);
                     Triggered = true;
                 }
             }
@@ -70,14 +72,17 @@ namespace Intersect.Server.Classes.Maps
 
         public void Update()
         {
-            if (Triggered)
+            if (MapController.TryGetInstanceFromMap(MapId, Owner.MapInstanceId, out var mapInstance))
             {
-                MapInstance.Get(MapId).RemoveTrap(this);
-            }
+                if (Triggered)
+                {
+                    mapInstance.RemoveTrap(this);
+                }
 
-            if (Globals.Timing.Milliseconds > Duration)
-            {
-                MapInstance.Get(MapId).RemoveTrap(this);
+                if (Globals.Timing.Milliseconds > Duration)
+                {
+                    mapInstance.RemoveTrap(this);
+                }
             }
         }
 

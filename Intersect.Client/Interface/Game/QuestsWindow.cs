@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Intersect.Client.Core;
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.Gwen;
@@ -11,6 +11,7 @@ using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using Intersect.Utilities;
 
 namespace Intersect.Client.Interface.Game
 {
@@ -35,6 +36,8 @@ namespace Intersect.Client.Interface.Game
 
         private Label mQuestTitle;
 
+        private Label mLifetimeQuestPoints;
+
         private Button mQuitButton;
 
         private QuestBase mSelectedQuest;
@@ -44,6 +47,8 @@ namespace Intersect.Client.Interface.Game
         {
             mQuestsWindow = new WindowControl(gameCanvas, Strings.QuestLog.title, false, "QuestsWindow");
             mQuestsWindow.DisableResizing();
+
+            mLifetimeQuestPoints = new Label(mQuestsWindow, "LifetimeQuestPointLabel");
 
             mQuestList = new ListBox(mQuestsWindow, "QuestList");
             mQuestList.EnableScroll(false, true);
@@ -108,6 +113,8 @@ namespace Intersect.Client.Interface.Game
                 return;
             }
 
+            mLifetimeQuestPoints.SetText(Strings.QuestLog.lifetimequestpoints.ToString(Globals.Me.LifetimeQuestPoints));
+
             if (mSelectedQuest != null)
             {
                 if (Globals.Me.QuestProgress.ContainsKey(mSelectedQuest.Id))
@@ -154,54 +161,120 @@ namespace Intersect.Client.Interface.Game
             if (Globals.Me != null)
             {
                 var quests = QuestBase.Lookup.Values;
+
+                var dict = new Dictionary<string, List<Tuple<QuestBase, int, Color>>>();
+
                 foreach (QuestBase quest in quests)
                 {
                     if (quest != null)
                     {
-                        if (Globals.Me.QuestProgress.ContainsKey(quest.Id))
+                        AddQuestToDict(dict, quest);
+                    }
+                }
+
+
+                foreach (var category in Options.Instance.Quest.Categories)
+                {
+                    if (dict.ContainsKey(category))
+                    {
+                        AddCategoryToList(category, Color.White);
+                        var sortedList = dict[category].OrderBy(l => l.Item2).ThenBy(l => l.Item1.OrderValue).ToList();
+                        foreach (var qst in sortedList)
                         {
-                            if (Globals.Me.QuestProgress[quest.Id].TaskId != Guid.Empty)
-                            {
-                                AddQuestToList(quest.Name, Color.Yellow, quest.Id);
-                            }
-                            else
-                            {
-                                if (Globals.Me.QuestProgress[quest.Id].Completed)
-                                {
-                                    if (quest.LogAfterComplete)
-                                    {
-                                        AddQuestToList(quest.Name, Color.Green, quest.Id);
-                                    }
-                                }
-                                else
-                                {
-                                    if (quest.LogBeforeOffer)
-                                    {
-                                        AddQuestToList(quest.Name, Color.Red, quest.Id);
-                                    }
-                                }
-                            }
+                            AddQuestToList(qst.Item1.Name, qst.Item3, qst.Item1.Id, true);
                         }
-                        else
+                    }
+                }
+
+                if (dict.ContainsKey(""))
+                {
+                    var sortedList = dict[""].OrderBy(l => l.Item2).ThenBy(l => l.Item1.OrderValue).ToList();
+                    foreach (var qst in sortedList)
+                    {
+                        AddQuestToList(qst.Item1.Name, qst.Item3, qst.Item1.Id, false);
+                    }
+                }
+
+            }
+        }
+
+        private void AddQuestToDict(Dictionary<string, List<Tuple<QuestBase, int, Color>>> dict, QuestBase quest)
+        {
+            var category = "";
+            var add = false;
+            var color = Color.White;
+            var orderVal = -1;
+            if (Globals.Me.QuestProgress.ContainsKey(quest.Id))
+            {
+                if (Globals.Me.QuestProgress[quest.Id].TaskId != Guid.Empty)
+                {
+                    add = true;
+                    category = !TextUtils.IsNone(quest.InProgressCategory) ? quest.InProgressCategory : "";
+                    color = CustomColors.Quests.Started;
+                    orderVal = 1;
+                }
+                else
+                {
+                    if (Globals.Me.QuestProgress[quest.Id].Completed)
+                    {
+                        if (quest.LogAfterComplete)
                         {
-                            if (quest.LogBeforeOffer)
-                            {
-                                AddQuestToList(quest.Name, Color.Red, quest.Id);
-                            }
+                            add = true;
+                            category = !TextUtils.IsNone(quest.CompletedCategory) ? quest.CompletedCategory : "";
+                            color = CustomColors.Quests.Completed;
+                            orderVal = 3;
+                        }
+                    }
+                    else
+                    {
+                        if (quest.LogBeforeOffer && !Globals.Me.HiddenQuests.Contains(quest.Id))
+                        {
+                            add = true;
+                            category = !TextUtils.IsNone(quest.UnstartedCategory) ? quest.UnstartedCategory : "";
+                            color = CustomColors.Quests.Abandoned;
+                            orderVal = 2;
                         }
                     }
                 }
             }
+            else
+            {
+                if (quest.LogBeforeOffer && !Globals.Me.HiddenQuests.Contains(quest.Id))
+                {
+                    add = true;
+                    category = !TextUtils.IsNone(quest.UnstartedCategory) ? quest.UnstartedCategory : "";
+                    color = CustomColors.Quests.Abandoned;
+                    orderVal = 2;
+                }
+            }
+
+            if (add)
+            {
+                if (!dict.ContainsKey(category))
+                {
+                    dict.Add(category, new List<Tuple<QuestBase, int, Color>>());
+                }
+
+                dict[category].Add(new Tuple<QuestBase, int, Color>(quest, orderVal, color));
+            }
         }
 
-        private void AddQuestToList(string name, Color clr, Guid questId)
+        private void AddQuestToList(string name, Color clr, Guid questId, bool indented = true)
         {
-            var item = mQuestList.AddRow(name);
+            var item = mQuestList.AddRow((indented ? "\t\t\t" : "") + name);
             item.UserData = questId;
             item.Clicked += QuestListItem_Clicked;
             item.Selected += Item_Selected;
             item.SetTextColor(clr);
             item.RenderColor = new Color(50, 255, 255, 255);
+        }
+
+        private void AddCategoryToList(string name, Color clr)
+        {
+            var item = mQuestList.AddRow(name);
+            item.MouseInputEnabled = false;
+            item.SetTextColor(clr);
+            item.RenderColor = new Color(0, 255, 255, 255);
         }
 
         private void Item_Selected(Base sender, ItemSelectedEventArgs arguments)
@@ -227,6 +300,7 @@ namespace Intersect.Client.Interface.Game
             if (mSelectedQuest == null)
             {
                 mQuestList.Show();
+                mLifetimeQuestPoints.Show();
                 mQuestTitle.Hide();
                 mQuestDescArea.Hide();
                 mQuestStatus.Hide();
@@ -246,7 +320,7 @@ namespace Intersect.Client.Interface.Game
                     {
                         //In Progress
                         mQuestStatus.SetText(Strings.QuestLog.inprogress);
-                        mQuestStatus.SetTextColor(Color.Yellow, Label.ControlState.Normal);
+                        mQuestStatus.SetTextColor(CustomColors.Quests.Started, Label.ControlState.Normal);
                         if (mSelectedQuest.InProgressDescription.Length > 0)
                         {
                             mQuestDescLabel.AddText(
@@ -311,7 +385,7 @@ namespace Intersect.Client.Interface.Game
                             if (mSelectedQuest.LogAfterComplete)
                             {
                                 mQuestStatus.SetText(Strings.QuestLog.completed);
-                                mQuestStatus.SetTextColor(Color.Green, Label.ControlState.Normal);
+                                mQuestStatus.SetTextColor(CustomColors.Quests.Completed, Label.ControlState.Normal);
                                 mQuestDescLabel.AddText(
                                     mSelectedQuest.EndDescription, Color.White, Alignments.Left,
                                     mQuestDescTemplateLabel.Font
@@ -324,7 +398,7 @@ namespace Intersect.Client.Interface.Game
                             if (mSelectedQuest.LogBeforeOffer)
                             {
                                 mQuestStatus.SetText(Strings.QuestLog.notstarted);
-                                mQuestStatus.SetTextColor(Color.Red, Label.ControlState.Normal);
+                                mQuestStatus.SetTextColor(CustomColors.Quests.Abandoned, Label.ControlState.Normal);
                                 mQuestDescLabel.AddText(
                                     mSelectedQuest.BeforeDescription, Color.White, Alignments.Left,
                                     mQuestDescTemplateLabel.Font
@@ -341,7 +415,7 @@ namespace Intersect.Client.Interface.Game
                     if (mSelectedQuest.LogBeforeOffer)
                     {
                         mQuestStatus.SetText(Strings.QuestLog.notstarted);
-                        mQuestStatus.SetTextColor(Color.Red, Label.ControlState.Normal);
+                        mQuestStatus.SetTextColor(CustomColors.Quests.Declined, Label.ControlState.Normal);
                         mQuestDescLabel.AddText(
                             mSelectedQuest.BeforeDescription, Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
                         );
@@ -357,6 +431,7 @@ namespace Intersect.Client.Interface.Game
                 mQuestStatus.Show();
                 mBackButton.Show();
                 mQuitButton.Show();
+                mLifetimeQuestPoints.Hide();
             }
         }
 

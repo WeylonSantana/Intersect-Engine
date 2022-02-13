@@ -15,6 +15,7 @@ using Intersect.Editor.Maps;
 using Intersect.Editor.Networking;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using Intersect.GameObjects.Crafting;
 using Intersect.GameObjects.Events;
 using Intersect.GameObjects.Events.Commands;
 using Intersect.GameObjects.Maps;
@@ -59,6 +60,8 @@ namespace Intersect.Editor.Forms.Editors.Events
         public MapInstance MyMap;
 
         public bool NewEvent;
+
+        public bool QuestEvent;
 
         public int mOldSelectedCommand;
 
@@ -704,6 +707,14 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new EndQuestCommand();
 
                     break;
+                case EventCommandType.RandomQuest:
+                    tmpCommand = new RandomQuestCommand();
+
+                    break;
+                case EventCommandType.OpenQuestBoard:
+                    tmpCommand = new OpenQuestBoardCommand();
+
+                    break;
                 case EventCommandType.ShowPicture:
                     tmpCommand = new ShowPictureCommand();
 
@@ -718,6 +729,54 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.ShowPlayer:
                     tmpCommand = new ShowPlayerCommand();
+
+                    break;
+
+                case EventCommandType.ChangePlayerColor:
+                    tmpCommand = new ChangePlayerColorCommand();
+
+                    break;
+
+                case EventCommandType.ChangeName:
+                    tmpCommand = new ChangeNameCommand(CurrentPage.CommandLists);
+
+                    break;
+
+                case EventCommandType.CreateGuild:
+                    tmpCommand = new CreateGuildCommand(CurrentPage.CommandLists);
+
+                    break;
+
+                case EventCommandType.DisbandGuild:
+                    tmpCommand = new DisbandGuildCommand(CurrentPage.CommandLists);
+
+                    break;
+                case EventCommandType.OpenGuildBank:
+                    tmpCommand = new OpenGuildBankCommand();
+
+                    break;
+                case EventCommandType.SetGuildBankSlots:
+                    tmpCommand = new SetGuildBankSlotsCommand();
+
+                    break;
+                case EventCommandType.ResetStatPointAllocations:
+                    tmpCommand = new ResetStatPointAllocationsCommand();
+
+                    break;
+                case EventCommandType.FlashScreen:
+                    tmpCommand = new FlashScreenCommand();
+
+                    break;
+                case EventCommandType.SetVehicle:
+                    tmpCommand = new SetVehicleCommand();
+
+                    break;
+                case EventCommandType.NPCGuildManagement:
+                    tmpCommand = new NPCGuildManagementCommand();
+
+                    break;
+                case EventCommandType.AddInspiration:
+                    tmpCommand = new AddInspirationCommand();
 
                     break;
                 default:
@@ -758,6 +817,8 @@ namespace Intersect.Editor.Forms.Editors.Events
         {
             InitializeComponent();
             mCurrentMap = currentMap;
+			
+			this.Icon = Properties.Resources.Icon;
         }
 
         private void frmEvent_Load(object sender, EventArgs e)
@@ -880,6 +941,9 @@ namespace Intersect.Editor.Forms.Editors.Events
             btnSave.Text = Strings.EventEditor.save;
             btnCancel.Text = Strings.EventEditor.cancel;
 
+            grpQuestAnimation.Text = Strings.EventEditor.questanimationgroup;
+            lblQuestAnimation.Text = Strings.EventEditor.questanimationlabel;
+
             for (var i = 0; i < lstCommands.Nodes.Count; i++)
             {
                 lstCommands.Nodes[i].Text = Strings.EventCommands.commands[lstCommands.Nodes[i].Name];
@@ -923,9 +987,11 @@ namespace Intersect.Editor.Forms.Editors.Events
             cmbAnimation.Items.Clear();
             cmbAnimation.Items.Add(Strings.General.none);
             cmbAnimation.Items.AddRange(AnimationBase.Names);
-            if (MyEvent.CommonEvent || questEvent)
+            QuestEvent = questEvent;
+            if (MyEvent.CommonEvent || QuestEvent)
             {
                 grpEntityOptions.Hide();
+                grpQuestAnimation.Hide();
                 cmbTrigger.Items.Clear();
                 for (var i = 0; i < Strings.EventEditor.commontriggers.Count; i++)
                 {
@@ -943,6 +1009,14 @@ namespace Intersect.Editor.Forms.Editors.Events
                 cmbTriggerVal.Items.Clear();
                 cmbTriggerVal.Items.Add(Strings.General.none);
                 cmbTriggerVal.Items.AddRange(ProjectileBase.Names);
+
+                cmbQuest.Items.Clear();
+                cmbQuest.Items.Add(Strings.General.none);
+                cmbQuest.Items.AddRange(QuestBase.Names);
+
+                cmbQuestAnimation.Items.Clear();
+                cmbQuestAnimation.Items.Add(Strings.General.none);
+                cmbQuestAnimation.Items.AddRange(AnimationBase.Names);
             }
 
             chkIsGlobal.Checked = Convert.ToBoolean(MyEvent.Global);
@@ -1004,18 +1078,7 @@ namespace Intersect.Editor.Forms.Editors.Events
                 cmbTrigger.SelectedIndex = (int) CurrentPage.Trigger;
             }
 
-            cmbTriggerVal.Hide();
-            lblTriggerVal.Hide();
-            if (MyEvent.CommonEvent)
-            {
-                if (cmbTrigger.SelectedIndex == (int) CommonEventTrigger.SlashCommand)
-                {
-                    txtCommand.Show();
-                    txtCommand.Text = CurrentPage.TriggerCommand;
-                    lblCommand.Show();
-                    lblCommand.Text = Strings.EventEditor.command;
-                }
-            }
+            SetupTrigger();
 
             cmbPreviewFace.SelectedIndex = cmbPreviewFace.Items.IndexOf(TextUtils.NullToNone(CurrentPage.FaceGraphic));
             if (cmbPreviewFace.SelectedIndex == -1)
@@ -1031,6 +1094,13 @@ namespace Intersect.Editor.Forms.Editors.Events
             chkWalkingAnimation.Checked = Convert.ToBoolean(CurrentPage.WalkingAnimation);
             chkInteractionFreeze.Checked = Convert.ToBoolean(CurrentPage.InteractionFreeze);
             txtDesc.Text = CurrentPage.Description;
+
+            if (!MyEvent.CommonEvent && !QuestEvent)
+            {
+                cmbQuestAnimation.SelectedIndex = AnimationBase.ListIndex(CurrentPage.QuestAnimationId) + 1;
+                cmbQuest.SelectedIndex = QuestBase.ListIndex(CurrentPage.GivesQuestId) + 1;
+            }
+            
             ListPageCommands();
             UpdateEventPreview();
             EnableButtons();
@@ -1298,6 +1368,57 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandEndQuest((EndQuestCommand) command, this);
 
                     break;
+                case EventCommandType.RandomQuest:
+                    cmdWindow = new EventCommandRandomQuest((RandomQuestCommand)command, this);
+
+                    break;
+                case EventCommandType.OpenQuestBoard:
+                    cmdWindow = new EventCommandOpenQuestBoard((OpenQuestBoardCommand)command, this);
+
+                    break;
+                case EventCommandType.ChangePlayerColor:
+                    cmdWindow = new EventCommandChangePlayerColor((ChangePlayerColorCommand)command, this);
+
+                    break;
+                case EventCommandType.ChangeName:
+                    cmdWindow = new EventCommandChangeName((ChangeNameCommand)command, CurrentPage, this);
+
+                    break;
+
+                case EventCommandType.CreateGuild:
+                    cmdWindow = new EventCommandCreateGuild((CreateGuildCommand)command, CurrentPage, this);
+
+                    break;
+
+                case EventCommandType.DisbandGuild:
+
+                    break;
+                case EventCommandType.OpenGuildBank:
+
+                    break;
+                case EventCommandType.SetGuildBankSlots:
+                    cmdWindow = new EventCommandSetGuildBankSlots((SetGuildBankSlotsCommand)command, CurrentPage, this);
+
+                    break;
+                case EventCommandType.ResetStatPointAllocations:
+
+                    break;
+                case EventCommandType.FlashScreen:
+                    cmdWindow = new EventCommand_FlashScreen((FlashScreenCommand)command, this);
+
+                    break;
+                case EventCommandType.SetVehicle:
+                    cmdWindow = new EventCommand_SetVehicle((SetVehicleCommand)command, this);
+
+                    break;
+                case EventCommandType.NPCGuildManagement:
+                    cmdWindow = new EventCommand_NPCGuildManagement((NPCGuildManagementCommand)command, this);
+
+                    break;
+                case EventCommandType.AddInspiration:
+                    cmdWindow = new EventCommand_AddInspiration((AddInspirationCommand)command, this);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1347,7 +1468,7 @@ namespace Intersect.Editor.Forms.Editors.Events
         }
 
         /// <summary>
-        ///     Resets the form when a user cancels editting or creating a new command for the event.
+        ///     Resets the form when a user cancels editing or creating a new command for the event.
         /// </summary>
         public void CancelCommandEdit(bool moveRoute = false, bool condition = false)
         {
@@ -1698,19 +1819,146 @@ namespace Intersect.Editor.Forms.Editors.Events
                 CurrentPage.Trigger = (EventTrigger) cmbTrigger.SelectedIndex;
             }
 
+            SetupTrigger();
+        }
+
+        private void SetupTrigger()
+        {
             cmbTriggerVal.Hide();
             lblTriggerVal.Hide();
             txtCommand.Hide();
             lblCommand.Hide();
+            lblVariableTrigger.Hide();
+            lblClass.Hide();
+            cmbVariable.Hide();
+            cmbClass.Hide();
+            nudRecordNumber.Hide();
+            lblRecordNumber.Hide();
+            lblRecordItem.Hide();
+            cmbRecordItem.Hide();
 
             if (MyEvent.CommonEvent)
             {
-                if (cmbTrigger.SelectedIndex == (int) CommonEventTrigger.SlashCommand)
+                cmbVariable.Items.Clear();
+                cmbClass.Items.Clear();
+
+                if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.SlashCommand)
                 {
                     txtCommand.Show();
                     txtCommand.Text = CurrentPage.TriggerCommand;
                     lblCommand.Show();
                     lblCommand.Text = Strings.EventEditor.command;
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.PlayerVariableChange)
+                {
+                    cmbVariable.Show();
+                    lblVariableTrigger.Show();
+                    cmbVariable.Items.Add(Strings.General.none);
+                    cmbVariable.Items.AddRange(PlayerVariableBase.Names);
+                    cmbVariable.SelectedIndex = PlayerVariableBase.ListIndex(CurrentPage.TriggerId) + 1;
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.ServerVariableChange)
+                {
+                    cmbVariable.Show();
+                    lblVariableTrigger.Show();
+                    cmbVariable.Items.Add(Strings.General.none);
+                    cmbVariable.Items.AddRange(ServerVariableBase.Names);
+                    cmbVariable.SelectedIndex = ServerVariableBase.ListIndex(CurrentPage.TriggerId) + 1;
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.InstanceVariableChange)
+                {
+                    cmbVariable.Show();
+                    lblVariableTrigger.Show();
+                    cmbVariable.Items.Add(Strings.General.none);
+                    cmbVariable.Items.AddRange(InstanceVariableBase.Names);
+                    cmbVariable.SelectedIndex = InstanceVariableBase.ListIndex(CurrentPage.TriggerId) + 1;
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.ClassRankIncreased)
+                {
+                    cmbClass.Show();
+                    lblClass.Show();
+                    cmbClass.Items.AddRange(ClassBase.Names);
+                    if (ClassBase.ListIndex(CurrentPage.TriggerId) > -1)
+                    {
+                        cmbClass.SelectedIndex = ClassBase.ListIndex(CurrentPage.TriggerId);
+                    } else if (cmbClass.Items.Count > 0)
+                    {
+                        cmbClass.SelectedIndex = 0;
+                    }
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.NpcsDefeated ||
+                    cmbTrigger.SelectedIndex == (int)CommonEventTrigger.ResourcesGathered ||
+                    cmbTrigger.SelectedIndex == (int)CommonEventTrigger.CraftsCreated)
+                {
+                    cmbRecordItem.Items.Clear();
+                    cmbRecordItem.Show();
+                    lblRecordItem.Show();
+                    nudRecordNumber.Show();
+                    lblRecordNumber.Show();
+                    if (cmbTrigger.SelectedIndex == (int) CommonEventTrigger.NpcsDefeated)
+                    {
+                        cmbRecordItem.Items.AddRange(NpcBase.Names);
+                        if (NpcBase.ListIndex(CurrentPage.TriggerId) > -1)
+                        {
+                            cmbRecordItem.SelectedIndex = NpcBase.ListIndex(CurrentPage.TriggerId);
+                        }
+                        else if (cmbClass.Items.Count > 0)
+                        {
+                            cmbRecordItem.SelectedIndex = 0;
+                        }
+                    } 
+                    else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.ResourcesGathered)
+                    {
+                        cmbRecordItem.Items.AddRange(ResourceBase.Names);
+                        if (ResourceBase.ListIndex(CurrentPage.TriggerId) > -1)
+                        {
+                            cmbRecordItem.SelectedIndex = ResourceBase.ListIndex(CurrentPage.TriggerId);
+                        }
+                        else if (cmbClass.Items.Count > 0)
+                        {
+                            cmbRecordItem.SelectedIndex = 0;
+                        }
+                    }
+                    else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.CraftsCreated)
+                    {
+                        cmbRecordItem.Items.AddRange(CraftBase.Names);
+                        if (CraftBase.ListIndex(CurrentPage.TriggerId) > -1)
+                        {
+                            cmbRecordItem.SelectedIndex = CraftBase.ListIndex(CurrentPage.TriggerId);
+                        }
+                        else if (cmbClass.Items.Count > 0)
+                        {
+                            cmbRecordItem.SelectedIndex = 0;
+                        }
+                    }
+
+                    if (CurrentPage.TriggerVal > -1)
+                    {
+                        nudRecordNumber.Value = CurrentPage.TriggerVal;
+                    }
+                    else
+                    {
+                        nudRecordNumber.Value = 0;
+                    }
+                }
+            }
+        }
+
+        private void cmbVariable_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (MyEvent.CommonEvent)
+            {
+                if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.PlayerVariableChange)
+                {
+                    CurrentPage.TriggerId = PlayerVariableBase.IdFromList(cmbVariable.SelectedIndex - 1);
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.ServerVariableChange)
+                {
+                    CurrentPage.TriggerId = ServerVariableBase.IdFromList(cmbVariable.SelectedIndex - 1);
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.InstanceVariableChange)
+                {
+                    CurrentPage.TriggerId = InstanceVariableBase.IdFromList(cmbVariable.SelectedIndex - 1);
                 }
             }
         }
@@ -1784,6 +2032,53 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         #endregion
 
+        private void cmbQuest_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!MyEvent.CommonEvent)
+            {
+                CurrentPage.GivesQuestId = QuestBase.IdFromList(cmbQuest.SelectedIndex - 1);
+            }
+        }
+
+        private void cmbQuestAnimation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!MyEvent.CommonEvent)
+            {
+                CurrentPage.QuestAnimationId = AnimationBase.IdFromList(cmbQuestAnimation.SelectedIndex - 1);
+            }
+        }
+
+        private void cmbClass_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (MyEvent.CommonEvent && cmbTrigger.SelectedIndex == (int)CommonEventTrigger.ClassRankIncreased)
+            {
+                CurrentPage.TriggerId = ClassBase.IdFromList(cmbClass.SelectedIndex);
+            }
+        }
+
+        private void nudRecordNumber_ValueChanged(object sender, EventArgs e)
+        {
+            CurrentPage.TriggerVal = (int) nudRecordNumber.Value;
+        }
+
+        private void cmbRecordItem_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (MyEvent.CommonEvent)
+            {
+                if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.NpcsDefeated)
+                {
+                    CurrentPage.TriggerId = NpcBase.IdFromList(cmbRecordItem.SelectedIndex);
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.ResourcesGathered)
+                {
+                    CurrentPage.TriggerId = ResourceBase.IdFromList(cmbRecordItem.SelectedIndex);
+                }
+                else if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.CraftsCreated)
+                {
+                    CurrentPage.TriggerId = CraftBase.IdFromList(cmbRecordItem.SelectedIndex);
+                }
+            }
+        }
     }
 
     public class CommandListProperties

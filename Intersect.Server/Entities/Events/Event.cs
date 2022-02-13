@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Intersect.Enums;
 using Intersect.GameObjects.Events;
 using Intersect.GameObjects.Events.Commands;
+using Intersect.GameObjects.QuestList;
 using Intersect.Logging;
 using Intersect.Server.General;
 using Intersect.Server.Localization;
@@ -13,7 +14,7 @@ using Intersect.Server.Networking;
 namespace Intersect.Server.Entities.Events
 {
 
-    public class Event
+    public partial class Event
     {
 
         public EventBase BaseEvent;
@@ -29,6 +30,10 @@ namespace Intersect.Server.Entities.Events
         public Guid Id;
 
         public Guid MapId;
+
+        public Guid MapInstanceId;
+
+        public MapController MapController;
 
         private Dictionary<string, string> mParams = new Dictionary<string, string>();
 
@@ -51,23 +56,26 @@ namespace Intersect.Server.Entities.Events
 
         public int Y;
 
-        public Event(Guid instanceId, Guid map, Player player, EventBase baseEvent)
+        public Event(Guid instanceId, MapController map, Player player, EventBase baseEvent)
         {
             Id = instanceId;
-            MapId = map;
+            MapInstanceId = player.MapInstanceId;
+            MapId = map?.Id ?? Guid.Empty;
+            MapController = map;
             Player = player;
             SelfSwitch = new bool[4];
             BaseEvent = baseEvent;
-            MapId = map;
             X = baseEvent.SpawnX;
             Y = baseEvent.SpawnY;
         }
 
-        public Event(Guid instanceId, EventBase baseEvent, Guid map) //Global constructor
+        public Event(Guid instanceId, EventBase baseEvent, MapController map, Guid mapInstanceId) //Global constructor
         {
             Id = instanceId;
+            MapInstanceId = mapInstanceId;
             Global = true;
-            MapId = map;
+            MapId = map?.Id ?? Guid.Empty;
+            MapController = map;
             BaseEvent = baseEvent;
             SelfSwitch = new bool[4];
             GlobalPageInstance = new EventPageInstance[BaseEvent.Pages.Count];
@@ -75,23 +83,27 @@ namespace Intersect.Server.Entities.Events
             Y = baseEvent.SpawnY;
             for (var i = 0; i < BaseEvent.Pages.Count; i++)
             {
-                GlobalPageInstance[i] = new EventPageInstance(BaseEvent, BaseEvent.Pages[i], MapId, this, null);
+                GlobalPageInstance[i] = new EventPageInstance(BaseEvent, BaseEvent.Pages[i], MapId, mapInstanceId, this, null);
             }
         }
 
         public bool[] SelfSwitch { get; set; }
 
-        public void Update(long timeMs)
+        public void Update(long timeMs, MapController map)
         {
             var sendLeave = false;
             var originalPageInstance = PageInstance;
             if (PageInstance != null)
             {
                 //Check for despawn
-                if (PageInstance.ShouldDespawn())
+                if (PageInstance.ShouldDespawn(map))
                 {
                     X = PageInstance.X;
                     Y = PageInstance.Y;
+                    if (PageInstance.GlobalClone != null)
+                    {
+                        Player.GlobalPageInstanceLookup.TryRemove(PageInstance.GlobalClone, out Event val);
+                    }
                     PageInstance = null;
                     CallStack.Clear();
                     PlayerHasDied = false;
@@ -116,6 +128,14 @@ namespace Intersect.Server.Entities.Events
                     if (CallStack.Count > 0)
                     {
                         var curStack = CallStack.Peek();
+                        if (curStack == null)
+                        {
+                            Log.Error("Curstack variable in event update is null.. not sure how nor how to recover so just gonna let this crash now..");
+                        }
+                        if (Player == null)
+                        {
+                            Log.Error("Player variable in event update is null.. not sure how nor how to recover so just gonna let this crash now..");
+                        }
                         if (curStack.WaitingForResponse == CommandInstance.EventResponse.Shop && Player.InShop == null)
                         {
                             curStack.WaitingForResponse = CommandInstance.EventResponse.None;
@@ -132,6 +152,35 @@ namespace Intersect.Server.Entities.Events
                             curStack.WaitingForResponse = CommandInstance.EventResponse.None;
                         }
 
+                        if (curStack.WaitingForResponse == CommandInstance.EventResponse.QuestBoard &&
+                            Player.QuestBoardId == Guid.Empty)
+                        {
+                            curStack.WaitingForResponse = CommandInstance.EventResponse.None;
+                        }
+
+                        if (curStack.WaitingForResponse == CommandInstance.EventResponse.RandomQuest)
+                        {
+                            var randomQuestList = ((RandomQuestCommand)curStack.WaitingOnCommand).QuestListId;
+                            var randomQuests = QuestListBase.Get(randomQuestList).Quests;
+
+                            var questStillOffered = false;
+                            // Check to see if any of the quests in the random list are currently in the player's offers
+                            foreach (var randomQuestId in randomQuests)
+                            {
+                                if (Player.QuestOffers.Contains(randomQuestId))
+                                {
+                                    questStillOffered = true; // Once we've confirmed this, we're done
+                                    break;
+                                }
+                            }
+
+                            // If we never found the quest in the players outstanding offers, then the event is done.
+                            if (!questStillOffered)
+                            {
+                                curStack.WaitingForResponse = CommandInstance.EventResponse.None;
+                            }
+                        }
+
                         if (curStack.WaitingForResponse == CommandInstance.EventResponse.Quest &&
                             !Player.QuestOffers.Contains(((StartQuestCommand) curStack.WaitingOnCommand).QuestId))
                         {
@@ -145,8 +194,8 @@ namespace Intersect.Server.Entities.Events
                         }
 
                         var commandsExecuted = 0;
-                        while (curStack.WaitingForResponse == CommandInstance.EventResponse.None &&
-                               !PageInstance.ShouldDespawn() &&
+                        while (curStack != null && curStack.WaitingForResponse == CommandInstance.EventResponse.None &&
+                               !(PageInstance?.ShouldDespawn(map) ?? false) &&
                                commandsExecuted < Options.EventWatchdogKillThreshhold)
                         {
                             if (curStack.WaitingForRoute != Guid.Empty)
@@ -230,19 +279,18 @@ namespace Intersect.Server.Entities.Events
                                 if (Player.Power.IsModerator)
                                 {
                                     PacketSender.SendChatMsg(
-                                        Player, Strings.Events.watchdogkillcommon.ToString(BaseEvent.Name), Color.Red
+                                        Player, Strings.Events.watchdogkillcommon.ToString(BaseEvent.Name), ChatMessageType.Error, CustomColors.Alerts.Declined
                                     );
                                 }
                             }
                             else
                             {
-                                var map = MapInstance.Get(this.BaseEvent.MapId);
                                 Log.Error(Strings.Events.watchdogkill.ToString(map.Name, BaseEvent.Name));
                                 if (Player.Power.IsModerator)
                                 {
                                     PacketSender.SendChatMsg(
                                         Player, Strings.Events.watchdogkill.ToString(map.Name, BaseEvent.Name),
-                                        Color.Red
+                                        ChatMessageType.Error, CustomColors.Alerts.Declined
                                     );
                                 }
                             }
@@ -268,20 +316,29 @@ namespace Intersect.Server.Entities.Events
                     {
                         if (Global)
                         {
-                            if (MapInstance.Get(MapId).GetGlobalEventInstance(BaseEvent) != null)
+                            if (MapController.TryGetInstanceFromMap(map.Id, Player.MapInstanceId, out var mapInstance))
                             {
-                                PageInstance = new EventPageInstance(
-                                    BaseEvent, BaseEvent.Pages[i], BaseEvent.Id, MapId, this, Player,
-                                    MapInstance.Get(MapId).GetGlobalEventInstance(BaseEvent).GlobalPageInstance[i]
-                                );
+                                var globalEvent = mapInstance.GetGlobalEventInstance(BaseEvent);
+                                if (globalEvent != null)
+                                {
+                                    PageInstance = new EventPageInstance(
+                                        BaseEvent, BaseEvent.Pages[i], BaseEvent.Id, MapId, Player.MapInstanceId, this, Player,
+                                        globalEvent.GlobalPageInstance[i]
+                                    );
 
-                                sendLeave = false;
-                                PageIndex = i;
+                                    if (PageInstance.GlobalClone != null)
+                                    {
+                                        Player.GlobalPageInstanceLookup.AddOrUpdate(globalEvent.GlobalPageInstance[i], this, (key, oldValue) => this);
+                                    }
+
+                                    sendLeave = false;
+                                    PageIndex = i;
+                                }
                             }
                         }
                         else
                         {
-                            PageInstance = new EventPageInstance(BaseEvent, BaseEvent.Pages[i], MapId, this, Player);
+                            PageInstance = new EventPageInstance(BaseEvent, BaseEvent.Pages[i], MapId, Player.MapInstanceId, this, Player);
                             sendLeave = false;
                             PageIndex = i;
                         }
@@ -308,7 +365,7 @@ namespace Intersect.Server.Entities.Events
 
             prams.Add("evtName", BaseEvent.Name);
 
-            var map = MapInstance.Get(BaseEvent.MapId);
+            var map = MapController.Get(BaseEvent.MapId);
             if (map != null)
             {
                 prams.Add("evtMap", map.Name);

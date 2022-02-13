@@ -13,8 +13,6 @@ using Intersect.Client.Interface.Game;
 using Intersect.Client.Interface.Menu;
 using Intersect.Client.Interface.Shared.Errors;
 
-using JetBrains.Annotations;
-
 using Base = Intersect.Client.Framework.Gwen.Renderer.Base;
 
 namespace Intersect.Client.Interface
@@ -23,7 +21,7 @@ namespace Intersect.Client.Interface
     public static class Interface
     {
 
-        [NotNull] public static readonly List<KeyValuePair<string, string>> MsgboxErrors =
+        public static readonly List<KeyValuePair<string, string>> MsgboxErrors =
             new List<KeyValuePair<string, string>>();
 
         public static ErrorHandler ErrorMsgHandler;
@@ -43,9 +41,9 @@ namespace Intersect.Client.Interface
 
         public static bool SetupHandlers { get; set; }
 
-        public static GameInterface GameUi { get; set; }
+        public static GameInterface GameUi { get; private set; }
 
-        public static MenuGuiBase MenuUi { get; set; }
+        public static MenuGuiBase MenuUi { get; private set; }
 
         public static TexturedBase Skin { get; set; }
 
@@ -71,15 +69,9 @@ namespace Intersect.Client.Interface
                 };
             }
 
-            if (MenuUi != null)
-            {
-                MenuUi.Dispose();
-            }
+            MenuUi?.Dispose();
 
-            if (GameUi != null)
-            {
-                GameUi.Dispose();
-            }
+            GameUi?.Dispose();
 
             // Create a Canvas (it's root, on which all other GWEN controls are created)
             sMenuCanvas = new Canvas(Skin, "MainMenu")
@@ -134,6 +126,8 @@ namespace Intersect.Client.Interface
                 MenuUi = null;
             }
 
+            Globals.OnLifecycleChangeState();
+
             GwenInitialized = true;
         }
 
@@ -143,6 +137,15 @@ namespace Intersect.Client.Interface
             sMenuCanvas?.Dispose();
             sGameCanvas?.Dispose();
             GameUi?.Dispose();
+
+            // Destroy our target UI as well! Above code does NOT appear to clear this properly.
+            if (Globals.Me != null)
+            {
+                Globals.Me.ClearTarget();
+                Globals.Me.TargetBox?.Dispose();
+                Globals.Me.TargetBox = null;
+            }
+            
             GwenInitialized = false;
         }
 
@@ -153,7 +156,7 @@ namespace Intersect.Client.Interface
                 return false;
             }
 
-            return FocusElements.Any(t => t?.HasFocus ?? false) || InputBlockingElements.Any(t => t?.IsHidden == false);
+            return FocusElements.Any(t => t.MouseInputEnabled && (t?.HasFocus ?? false)) || InputBlockingElements.Any(t => t?.IsHidden == false);
         }
 
         #endregion
@@ -203,6 +206,19 @@ namespace Intersect.Client.Interface
         {
             if (obj.IsHidden == true)
             {
+                return false;
+            }
+            else if (!obj.MouseInputEnabled)
+            {
+                // Check if we're hitting a child element.
+                for (var i = 0; i < obj.Children.Count; i++)
+                {
+                    if (MouseHitBase(obj.Children[i]))
+                    {
+                        return true;
+                    }
+                }
+
                 return false;
             }
             else

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Intersect.Client.Entities;
 using Intersect.Client.Entities.Events;
 using Intersect.Client.Framework.File_Management;
@@ -11,6 +11,7 @@ using Intersect.Client.Maps;
 using Intersect.Configuration;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using Intersect.Utilities;
 
 namespace Intersect.Client.Core
 {
@@ -68,8 +69,6 @@ namespace Intersect.Client.Core
 
         private static GameRenderTexture sDarknessTexture;
 
-        private static long sFadeTimer;
-
         private static List<LightBase> sLightQueue = new List<LightBase>();
 
         //Player Spotlight Values
@@ -89,6 +88,12 @@ namespace Intersect.Client.Core
         private static float sPlayerLightSize;
 
         public static GameFont UIFont;
+
+        public static float CurrentShake = 0.0f;
+
+        private static float mShakeDecrement = 0.12f;
+
+        private static long sLastUpdate;
 
         //Init Functions
         public static void InitGraphics()
@@ -149,7 +154,7 @@ namespace Intersect.Client.Core
 
             if (imageTex != null)
             {
-                DrawFullScreenTexture(imageTex);
+                DrawFullScreenTextureCutoff(imageTex);
             }
         }
 
@@ -189,15 +194,12 @@ namespace Intersect.Client.Core
                 GridSwitched = false;
             }
 
-            lock (AnimationLock)
+            var animations = LiveAnimations.ToArray();
+            foreach (var animInstance in animations)
             {
-                var animations = LiveAnimations.ToArray();
-                foreach (var animInstance in animations)
+                if (animInstance.ParentGone())
                 {
-                    if (animInstance.ParentGone())
-                    {
-                        animInstance.Dispose();
-                    }
+                    animInstance.Dispose();
                 }
             }
 
@@ -237,12 +239,9 @@ namespace Intersect.Client.Core
                 }
             }
 
-            lock (AnimationLock)
+            foreach (var animInstance in animations)
             {
-                foreach (var animInstance in LiveAnimations)
-                {
-                    animInstance.Draw(false);
-                }
+                animInstance.Draw(false);
             }
 
             for (var y = 0; y < Options.MapHeight * 5; y++)
@@ -277,13 +276,10 @@ namespace Intersect.Client.Core
                 }
             }
 
-            lock (AnimationLock)
+            foreach (var animInstance in animations)
             {
-                foreach (var animInstance in LiveAnimations)
-                {
-                    animInstance.Draw(false, true);
-                    animInstance.Draw(true, true);
-                }
+                animInstance.Draw(false, true);
+                animInstance.Draw(true, true);
             }
 
             for (var x = gridX - 1; x <= gridX + 1; x++)
@@ -328,13 +324,11 @@ namespace Intersect.Client.Core
                 }
             }
 
-            lock (AnimationLock)
+            foreach (var animInstance in animations)
             {
-                foreach (var animInstance in LiveAnimations)
-                {
-                    animInstance.Draw(true);
-                }
+                animInstance.Draw(true);
             }
+            
 
             for (var x = gridX - 1; x <= gridX + 1; x++)
             {
@@ -352,6 +346,7 @@ namespace Intersect.Client.Core
                             map.DrawWeather();
                             map.DrawFog();
                             map.DrawOverlayGraphic();
+                            map.DrawItemNames();
                         }
                     }
                 }
@@ -420,9 +415,23 @@ namespace Intersect.Client.Core
                 }
             }
 
-            foreach (var animInstance in LiveAnimations.ToArray())
+            foreach (var animInstance in animations)
             {
                 animInstance.EndDraw();
+            }
+
+            DrawScanlines();
+        }
+
+        public static void DrawScanlines()
+        {
+            if (Globals.Database.EnableScanlines)
+            {
+                var imageTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "scanlines.png");
+                if (imageTex != null)
+                {
+                    DrawFullScreenTexture(imageTex, 1f);
+                }
             }
         }
 
@@ -483,11 +492,28 @@ namespace Intersect.Client.Core
 
             Interface.Interface.DrawGui();
 
+            // Draw the current Fade
             DrawGameTexture(
                 Renderer.GetWhiteTexture(), new FloatRect(0, 0, 1, 1), CurrentView,
                 new Color((int) Fade.GetFade(), 0, 0, 0), null, GameBlendModes.None
             );
 
+            // Draw the current Flash over top that
+            DrawGameTexture(
+                Renderer.GetWhiteTexture(), new FloatRect(0, 0, 1, 1), CurrentView,
+                new Color((int) Flash.GetFlash(), Flash.GetColor().R, Flash.GetColor().G, 
+                Flash.GetColor().B), null, GameBlendModes.None
+            );
+
+            // Draw our mousecursor at the very end, but not when taking screenshots.
+            if (!takingScreenshot && !string.IsNullOrWhiteSpace(ClientConfiguration.Instance.MouseCursor))
+            {
+                var renderLoc = ConvertToWorldPoint(Globals.InputManager.GetMousePosition());
+                DrawGameTexture(
+                    Globals.ContentManager.GetTexture(GameContentManager.TextureType.Misc, ClientConfiguration.Instance.MouseCursor), renderLoc.X, renderLoc.Y
+               );
+            }
+            
             Renderer.End();
 
             if (takingScreenshot)
@@ -683,6 +709,20 @@ namespace Intersect.Client.Core
             );
         }
 
+        public static void DrawFullScreenTextureCutoff(GameTexture tex, float alpha = 1f)
+        {
+            var bgx = Renderer.GetScreenWidth() / 2 - tex.GetWidth() / 2;
+            var bgy = Renderer.GetScreenHeight() / 2 - tex.GetHeight() / 2;
+            var bgw = tex.GetWidth();
+            var bgh = tex.GetHeight();
+
+            DrawGameTexture(
+                tex, GetSourceRect(tex),
+                new FloatRect(bgx + Renderer.GetView().X, bgy + Renderer.GetView().Y, bgw, bgh),
+                new Color((int)(alpha * 255f), 255, 255, 255)
+            );
+        }
+
         public static void DrawFullScreenTextureStretched(GameTexture tex)
         {
             DrawGameTexture(
@@ -747,10 +787,28 @@ namespace Intersect.Client.Core
         {
             if (Globals.Me == null)
             {
+                CurrentShake = 0.0f;
                 CurrentView = new FloatRect(0, 0, Renderer.GetScreenWidth(), Renderer.GetScreenHeight());
                 Renderer.SetView(CurrentView);
-
                 return;
+            }
+
+            var shakeReduction = (Globals.System.GetTimeMs() - sLastUpdate) / Options.ShakeDeltaDurationDivider;
+            
+            CurrentShake = Utilities.MathHelper.Clamp(CurrentShake - shakeReduction, 0.0f, 100.0f);
+            var yShake = CurrentShake;
+            var xShake = CurrentShake;
+            if (CurrentShake > 0.0f)
+            {
+                // Randomize which directions we're shaking in
+                if (Randomization.Next(0, 2) == 1)
+                {
+                    yShake *= -1;
+                }
+                if (Randomization.Next(0, 2) == 1)
+                {
+                    xShake *= -1;
+                }
             }
 
             var map = MapInstance.Get(Globals.Me.CurrentMap);
@@ -785,8 +843,8 @@ namespace Intersect.Client.Core
                 var h = y1 - y;
                 var restrictView = new FloatRect(x, y, w, h);
                 CurrentView = new FloatRect(
-                    (int) Math.Ceiling(en.GetCenterPos().X - Renderer.GetScreenWidth() / 2f),
-                    (int) Math.Ceiling(en.GetCenterPos().Y - Renderer.GetScreenHeight() / 2f),
+                    (int) Math.Ceiling(en.GetCenterPos().X - Renderer.GetScreenWidth() / 2f) + (int) xShake,
+                    (int) Math.Ceiling(en.GetCenterPos().Y - Renderer.GetScreenHeight() / 2f) + (int) yShake,
                     Renderer.GetScreenWidth(), Renderer.GetScreenHeight()
                 );
 
@@ -824,6 +882,7 @@ namespace Intersect.Client.Core
             }
 
             Renderer.SetView(CurrentView);
+            sLastUpdate = Globals.System.GetTimeMs();
         }
 
         //Lighting
@@ -900,6 +959,11 @@ namespace Intersect.Client.Core
 
         public static void AddLight(int x, int y, int size, byte intensity, float expand, Color color)
         {
+            if (size == 0)
+            {
+                return;
+            }
+
             sLightQueue.Add(new LightBase(0, 0, x, y, intensity, size, expand, color));
             LightsDrawn++;
         }
@@ -909,23 +973,26 @@ namespace Intersect.Client.Core
             var radialShader = Globals.ContentManager.GetShader("radialgradient");
             if (radialShader != null)
             {
-                foreach (var l in sLightQueue)
+                foreach (var light in sLightQueue.GroupBy(c => c.GetHashCode()))
                 {
-                    var x = l.OffsetX - ((int) CurrentView.Left + l.Size);
-                    var y = l.OffsetY - ((int) CurrentView.Top + l.Size);
+                    foreach (var l in light)
+                    {
+                        var x = l.OffsetX - ((int)CurrentView.Left + l.Size);
+                        var y = l.OffsetY - ((int)CurrentView.Top + l.Size);
 
-                    radialShader.SetColor("LightColor", new Color(l.Intensity, l.Color.R, l.Color.G, l.Color.B));
-                    radialShader.SetFloat("Expand", l.Expand / 100f);
+                        radialShader.SetColor("LightColor", new Color(l.Intensity, l.Color.R, l.Color.G, l.Color.B));
+                        radialShader.SetFloat("Expand", l.Expand / 100f);
 
-                    DrawGameTexture(
-                        Renderer.GetWhiteTexture(), new FloatRect(0, 0, 1, 1),
-                        new FloatRect(x, y, l.Size * 2, l.Size * 2), new Color(255, 255, 255, 255), sDarknessTexture,
-                        GameBlendModes.Add, radialShader, 0, true
-                    );
+                        DrawGameTexture(
+                            Renderer.GetWhiteTexture(), new FloatRect(0, 0, 1, 1),
+                            new FloatRect(x, y, l.Size * 2, l.Size * 2), new Color(255, 255, 255, 255), sDarknessTexture, GameBlendModes.Add, radialShader, 0, false
+                        );
+
+                    }
                 }
-            }
 
-            sLightQueue.Clear();
+                sLightQueue.Clear();
+            }
         }
 
         public static void UpdatePlayerLight()
@@ -1118,6 +1185,15 @@ namespace Intersect.Client.Core
         }
 
         //Helper Functions
+        /// <summary>
+        /// Convert a position on the screen to a position on the actual map for rendering.
+        /// </summary>
+        /// <param name="windowPoint">The point to convert.</param>
+        /// <returns>The converted point.</returns>
+        public static Pointf ConvertToWorldPoint(Pointf windowPoint)
+        {
+            return new Pointf((int)Math.Floor(windowPoint.X + CurrentView.Left), (int)Math.Floor(windowPoint.Y + CurrentView.Top));
+        }
 
         //Rendering Functions
 

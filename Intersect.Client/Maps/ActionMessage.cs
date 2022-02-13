@@ -3,7 +3,7 @@
 namespace Intersect.Client.Maps
 {
 
-    public class ActionMessage
+    public partial class ActionMessage
     {
 
         public Color Clr = new Color();
@@ -18,6 +18,8 @@ namespace Intersect.Client.Maps
 
         public long XOffset;
 
+        public long YOffset;
+
         public int Y;
 
         public ActionMessage(MapInstance map, int x, int y, string message, Color color)
@@ -27,8 +29,9 @@ namespace Intersect.Client.Maps
             Y = y;
             Msg = message;
             Clr = color;
-            XOffset = Globals.Random.Next(-30, 30); //+- 16 pixels so action msg's don't overlap!
-            TransmittionTimer = Globals.System.GetTimeMs() + 1000;
+            XOffset = Globals.Random.Next(-32, 32); //+- 16 pixels so action msg's don't overlap!
+            YOffset = Globals.Random.Next(-20, 20);
+            TransmittionTimer = Globals.System.GetTimeMs() + Options.ActionMessageTime;
         }
 
         public void TryRemove()

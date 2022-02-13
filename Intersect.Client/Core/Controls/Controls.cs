@@ -5,15 +5,13 @@ using System.Linq;
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.General;
 
-using JetBrains.Annotations;
-
 namespace Intersect.Client.Core.Controls
 {
 
     public class Controls
     {
 
-        [NotNull] public readonly IDictionary<Control, ControlMap> ControlMapping;
+        public readonly IDictionary<Control, ControlMap> ControlMapping;
 
         public Controls(Controls gameControls = null)
         {
@@ -60,7 +58,7 @@ namespace Intersect.Client.Core.Controls
             CreateControlMap(Control.MoveDown, Keys.Down, Keys.S);
             CreateControlMap(Control.MoveLeft, Keys.Left, Keys.A);
             CreateControlMap(Control.MoveRight, Keys.Right, Keys.D);
-            CreateControlMap(Control.AttackInteract, Keys.E, Keys.LButton);
+            CreateControlMap(Control.AttackInteract, Keys.Control, Keys.LButton);
             CreateControlMap(Control.Block, Keys.Q, Keys.RButton);
             CreateControlMap(Control.AutoTarget, Keys.Tab, Keys.None);
             CreateControlMap(Control.PickUp, Keys.Space, Keys.None);
@@ -83,10 +81,14 @@ namespace Intersect.Client.Core.Controls
             CreateControlMap(Control.OpenParties, Keys.P, Keys.None);
             CreateControlMap(Control.OpenSpells, Keys.X, Keys.None);
             CreateControlMap(Control.OpenFriends, Keys.F, Keys.None);
+            CreateControlMap(Control.OpenGuild, Keys.G, Keys.None);
             CreateControlMap(Control.OpenSettings, Keys.None, Keys.None);
             CreateControlMap(Control.OpenDebugger, Keys.F2, Keys.None);
             CreateControlMap(Control.OpenAdminPanel, Keys.Insert, Keys.None);
             CreateControlMap(Control.ToggleGui, Keys.F11, Keys.None);
+            CreateControlMap(Control.TurnClockwise, Keys.E, Keys.Home);
+            CreateControlMap(Control.TurnCounterClockwise, Keys.Q, Keys.End);
+            CreateControlMap(Control.FaceTarget, Keys.Shift, Keys.MButton);
         }
 
         public void Save()

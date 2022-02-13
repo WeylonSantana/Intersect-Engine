@@ -46,10 +46,12 @@ namespace Intersect.Editor.General
 
         public static int CurrentEditor = -1;
 
-        public static int CurrentLayer = 0;
+        public static string CurrentLayer = string.Empty;
 
         //Editor Variables
         public static MapInstance CurrentMap = null;
+
+        public static int SelectedMapNpc = -1;
 
         public static TilesetBase CurrentTileset = null;
 

@@ -215,6 +215,44 @@
         //Player Label
         PlayerLabel,
 
+        // Player Color
+        ChangePlayerColor,
+
+        ChangeName,
+
+        //Guilds
+        CreateGuild,
+        DisbandGuild,
+        OpenGuildBank,
+        SetGuildBankSlots,
+        //End Guilds
+
+        //Reset Stats
+        ResetStatPointAllocations,
+        
+        // Flash Screen
+        FlashScreen,
+
+        // Quest lists/board
+        RandomQuest,
+        OpenQuestBoard = 60,
+
+        // Vehicles
+        SetVehicle,
+
+        // NPC Guilds,
+        NPCGuildManagement,
+        
+        // Inspiration
+        AddInspiration
     }
 
+    public enum NPCGuildManagementSelection
+    {
+        ChangeComplete,
+        ClearCooldown,
+        ChangeRank,
+        ChangeGuildStatus,
+        ChangeSpecialAssignment,
+    }
 }

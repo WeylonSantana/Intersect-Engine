@@ -68,7 +68,7 @@ namespace Intersect.Client.Interface.Game.Inventory
                     Items[i].Pnl.IsHidden = false;
                     if (item.IsStackable)
                     {
-                        mValues[i].IsHidden = false;
+                        mValues[i].IsHidden = Globals.Me.Inventory[i].Quantity <= 1;
                         mValues[i].Text = Strings.FormatQuantityAbbreviated(Globals.Me.Inventory[i].Quantity);
                     }
                     else
@@ -86,6 +86,7 @@ namespace Intersect.Client.Interface.Game.Inventory
                 }
                 else
                 {
+                    Items[i].Container.RenderColor = Color.Transparent; // Hide the "Equipped" background
                     Items[i].Pnl.IsHidden = true;
                     mValues[i].IsHidden = true;
                 }

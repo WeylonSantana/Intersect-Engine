@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 
 using Intersect.Localization;
+using MessagePack;
 
 namespace Intersect
 {
-
+    [MessagePackObject]
     public class Color
     {
 
@@ -57,12 +58,16 @@ namespace Intersect
             B = (byte) b;
         }
 
+        [Key(0)]
         public byte A { get; set; }
 
+        [Key(1)]
         public byte R { get; set; }
 
+        [Key(2)]
         public byte G { get; set; }
 
+        [Key(3)]
         public byte B { get; set; }
 
         //public float Hue
@@ -134,6 +139,56 @@ namespace Intersect
         public static Color Cyan => new Color(0, 255, 255);
 
         public static Color Pink => new Color(255, 192, 203);
+
+        public static Color FromName(string name)
+        {
+            if (name == "Black")
+            {
+                return Black;
+            }
+            else if (name == "White")
+            {
+                return White;
+            }
+            else if (name == "Pink")
+            {
+                return Pink;
+            }
+            else if (name == "Blue")
+            {
+                return Blue;
+            }
+            else if (name == "Red")
+            {
+                return Red;
+            }
+            else if (name == "Green")
+            {
+                return Green;
+            }
+            else if (name == "Yellow")
+            {
+                return Yellow;
+            }
+            else if (name == "Orange")
+            {
+                return Orange;
+            }
+            else if (name == "Purple")
+            {
+                return Magenta;
+            }
+            else if (name == "Gray")
+            {
+                return Gray;
+            }
+            else if (name == "Cyan")
+            {
+                return Cyan;
+            }
+
+            return White;
+        }
 
         public static Color FromName(string name, IDictionary<int, LocalizedString> colors)
         {

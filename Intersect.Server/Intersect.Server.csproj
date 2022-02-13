@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
+  <Import Project="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props" Condition="Exists('..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props')" />
+  <Import Project="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" />
   <Import Project="..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" />
   <Import Project="..\packages\Microsoft.EntityFrameworkCore.Design.2.1.3\build\net461\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('..\packages\Microsoft.EntityFrameworkCore.Design.2.1.3\build\net461\Microsoft.EntityFrameworkCore.Design.props')" />
-  <Import Project="$(SolutionDir)\scripts\Intersect.targets" />
+  <Import Project="..\targets\Intersect.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -12,7 +17,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Intersect.Server</RootNamespace>
     <AssemblyName>Intersect Server</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -43,6 +48,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <Externalconsole>True</Externalconsole>
     <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +60,7 @@
     <Externalconsole>True</Externalconsole>
     <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>true</DebugSymbols>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Intersect.Server.Core.Program</StartupObject>
@@ -70,6 +77,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\build\release\server\</OutputPath>
@@ -80,6 +88,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +101,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <Optimize>false</Optimize>
     <DocumentationFile>..\build\debug\server\Intersect Server.xml</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoFody|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -104,6 +114,10 @@
     <Prefer32Bit>false</Prefer32Bit>
     <Optimize>false</Optimize>
     <DisableFody>true</DisableFody>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <NetworkKeyOutputDir>..\build\debug\keys</NetworkKeyOutputDir>
+    <NetworkHandshakePublicKey>$(NetworkKeyOutputDir)\network.handshake.bkey.pub</NetworkHandshakePublicKey>
+    <NetworkHandshakePrivateKey>$(NetworkKeyOutputDir)\network.handshake.bkey</NetworkHandshakePrivateKey>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\build\release\server\</OutputPath>
@@ -114,6 +128,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Tespia|x86'">
     <OutputPath>..\build\tespia\server\</OutputPath>
@@ -124,6 +139,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Tespia|x64'">
     <OutputPath>..\build\tespia\server\</OutputPath>
@@ -133,6 +149,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Tespia|AnyCPU'">
     <OutputPath>..\build\tespia\server\</OutputPath>
@@ -142,6 +159,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Diagnostic|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -151,6 +169,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Diagnostic|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -160,6 +179,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Diagnostic|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -169,6 +189,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -176,20 +197,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoFody|x86'">
     <OutputPath>..\build\debug\server\</OutputPath>
     <DisableFody>true</DisableFody>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoFody|x64'">
     <OutputPath>..\build\debug\server\</OutputPath>
     <DisableFody>true</DisableFody>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <ExternalConsole>false</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.4.3.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.2.4.3\lib\netstandard2.0\CommandLine.dll</HintPath>
+    <Reference Include="CommandLine, Version=2.7.82.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.7.82\lib\net461\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="Costura, Version=3.3.3.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Lidgren.Network, Version=1.7.7518.2930, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AscensionGameDev.Lidgren.Network.1.7.7518.2930-debug\lib\net46\Lidgren.Network.dll</HintPath>
@@ -282,6 +303,9 @@
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Validation, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Validation.15.5.31\lib\netstandard2.0\Microsoft.VisualStudio.Validation.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Data.Sqlite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\lib\net4\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
@@ -309,6 +333,9 @@
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartThreadPool, Version=2.2.6.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartThreadPool.dll.2.2.6\lib\net46\SmartThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="SQLitePCLRaw.batteries_green, Version=1.1.11.121, Culture=neutral, PublicKeyToken=a84b7dcfb1391f7f, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.11\lib\net45\SQLitePCLRaw.batteries_green.dll</HintPath>
@@ -364,6 +391,12 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.6.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.4.6.0\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
       <Private>True</Private>
@@ -391,7 +424,6 @@
     <Reference Include="System.Web.Http.Owin, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.7\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="WebApiThrottle, Version=1.5.4.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AscensionGameDev.WebApiThrottle.1.5.4.2\lib\net45\WebApiThrottle.dll</HintPath>
@@ -399,52 +431,67 @@
     <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
       <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Logging">
-      <HintPath>..\packages\Microsoft.IdentityModel.Logging.5.4.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.IdentityModel.Tokens">
-      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.4.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.IdentityModel.JsonWebTokens">
-      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.5.4.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.4.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Jwt">
-      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.4.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
-    </Reference>
     <Reference Include="Owin.Security.AesDataProtectorProvider">
       <HintPath>..\packages\Owin.Security.AesDataProtectorProvider.1.1.2\lib\net45\Owin.Security.AesDataProtectorProvider.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\Actions\ActionProcessing.cs" />
+    <Compile Include="Core\Commands\GuildWarsCommand.cs" />
+    <Compile Include="Core\Commands\MetricsCommand.cs" />
+    <Compile Include="Core\Commands\SetVarCommand.cs" />
+    <Compile Include="Core\IServerContext.cs" />
+    <Compile Include="Core\LogicService.cs" />
+    <Compile Include="Core\LogicService.LogicThread.cs" />
+    <Compile Include="Core\ProcessingInfo.cs" />
+    <Compile Include="Core\Services\IConsoleService.cs" />
+    <Compile Include="Core\Services\ILogicService.cs" />
+    <Compile Include="Database\ContextProvider.cs" />
+    <Compile Include="Database\ContextProvider.Locking.cs" />
     <Compile Include="Database\DbLogger.cs" />
     <Compile Include="Database\DbLoggerProvider.cs" />
     <Compile Include="Database\GameData\GameContext.cs" />
+    <Compile Include="Database\GameData\IGameContext.cs" />
     <Compile Include="Database\GameData\Migrations\Beta6Migration.cs" />
+    <Compile Include="Database\GameData\Migrations\FixQuestTaskCompletionEventsMigration.cs" />
+    <Compile Include="Database\GameData\Migrations\BoundItemExtensionMigration.cs" />
+    <Compile Include="Database\GameData\Migrations\CerasVersionToleranceMigration.cs" />
+    <Compile Include="Database\ContextInterface.cs" />
+    <Compile Include="Database\IDbContext.cs" />
     <Compile Include="Database\IntersectDbContext.cs" />
+    <Compile Include="Database\Logging\Entities\ChatHistory.cs" />
+    <Compile Include="Database\Logging\Entities\TradeHistory.cs" />
+    <Compile Include="Database\Logging\Entities\GuildHistory.cs" />
+    <Compile Include="Database\Logging\Entities\UserActivityHistory.cs" />
+    <Compile Include="Database\Logging\ILoggingContext.cs" />
     <Compile Include="Database\Logging\LoggingContext.cs" />
     <Compile Include="Database\Logging\RequestLog.cs" />
     <Compile Include="Database\MigrationBuilderExtensions.cs" />
     <Compile Include="Database\PlayerData\Api\RefreshToken.cs" />
     <Compile Include="Database\PlayerData\Ban.cs" />
+    <Compile Include="Database\PlayerData\IPlayerContext.cs" />
     <Compile Include="Database\PlayerData\Players\Bag.cs" />
     <Compile Include="Database\PlayerData\Players\BagSlot.cs" />
+    <Compile Include="Database\PlayerData\Players\GuildBankSlot.cs" />
     <Compile Include="Database\PlayerData\Players\BankSlot.cs" />
     <Compile Include="Database\PlayerData\Players\Friend.cs" />
+    <Compile Include="Database\PlayerData\Players\Guild.cs" />
     <Compile Include="Database\PlayerData\Players\HotbarSlot.cs" />
     <Compile Include="Database\PlayerData\Players\InventorySlot.cs" />
     <Compile Include="Database\Item.cs" />
     <Compile Include="Database\PlayerData\Players\IPlayerOwned.cs" />
     <Compile Include="Database\PlayerData\Players\ISlot.cs" />
     <Compile Include="Database\PlayerData\Players\Quest.cs" />
+    <Compile Include="Database\PlayerData\Players\PlayerRecord.cs" />
     <Compile Include="Database\PlayerData\Players\SlotHelper.cs" />
     <Compile Include="Database\PlayerData\Players\SpellSlot.cs" />
+    <Compile Include="Entities\BankInterface.cs" />
     <Compile Include="Entities\Combat\Buff.cs" />
     <Compile Include="Entities\Combat\Dash.cs" />
     <Compile Include="Entities\Combat\DoT.cs" />
+    <Compile Include="Entities\Events\ConditionHandlerRegistry.cs" />
+    <Compile Include="Entities\Events\Conditions.cs" />
+    <Compile Include="Entities\Events\VariableCheckHandlerRegistry.cs" />
     <Compile Include="Entities\Label.cs" />
     <Compile Include="Entities\Player.Database.cs" />
     <Compile Include="Database\Spell.cs" />
@@ -454,6 +501,7 @@
     <Compile Include="Database\PlayerData\User.cs" />
     <Compile Include="Database\PlayerData\PlayerContext.cs" />
     <Compile Include="Entities\Events\Event.cs" />
+    <Compile Include="Entities\PlayerData\PlayerClassStats.cs" />
     <Compile Include="Entities\Projectile.cs" />
     <Compile Include="Entities\ProjectileSpawn.cs" />
     <Compile Include="Entities\Resource.cs" />
@@ -464,22 +512,235 @@
     <Compile Include="Entities\Trading.cs" />
     <Compile Include="Entities\Events\CommandInstance.cs" />
     <Compile Include="Entities\Events\CommandProcessing.cs" />
-    <Compile Include="Entities\Events\Conditions.cs" />
     <Compile Include="General\Formulas.cs" />
     <Compile Include="General\Time.cs" />
     <Compile Include="Localization\CommandsNamespace.cs" />
     <Compile Include="Localization\Strings.cs" />
-    <Compile Include="Maps\MapInstance.cs" />
+    <Compile Include="Maps\MapActionMessages.cs" />
+    <Compile Include="Maps\MapAnimations.cs" />
+    <Compile Include="Maps\MapEntityMovements.cs" />
+    <Compile Include="Maps\MapController.cs" />
     <Compile Include="Maps\MapItemInstance.cs" />
     <Compile Include="Maps\MapItemSpawn.cs" />
     <Compile Include="Maps\MapNpcSpawn.cs" />
+    <Compile Include="Maps\MapInstance.cs" />
     <Compile Include="Maps\MapResourceSpawn.cs" />
+    <Compile Include="Maps\MapTileLoc.cs" />
     <Compile Include="Maps\MapTrapInstance.cs" />
     <Compile Include="Maps\TileHelper.cs" />
     <Compile Include="Entities\Pathfinding\Pathfinder.cs" />
     <Compile Include="Entities\Pathfinding\SpatialAStar.cs" />
     <Compile Include="Entities\Pathfinding\PathfinderTarget.cs" />
     <Compile Include="Entities\Pathfinding\PriorityQueue.cs" />
+    <Compile Include="Migrations\20210414121435_TrackUserPlayerStats.cs" />
+    <Compile Include="Migrations\20210414121435_TrackUserPlayerStats.Designer.cs">
+      <DependentUpon>20210414121435_TrackUserPlayerStats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Metrics\Controllers\ApplicationMetricsController.cs" />
+    <Compile Include="Metrics\Controllers\GameMetricsController.cs" />
+    <Compile Include="Metrics\Controllers\MetricsController.cs" />
+    <Compile Include="Metrics\Controllers\NetworkMetricsController.cs" />
+    <Compile Include="Metrics\Controllers\ThreadingMetricsController.cs" />
+    <Compile Include="Metrics\Histogram.cs" />
+    <Compile Include="Metrics\MetricsRoot.cs" />
+    <Compile Include="Migrations\20210503165540_AddingGuildsWithGuildBanks.cs" />
+    <Compile Include="Migrations\20210503165540_AddingGuildsWithGuildBanks.Designer.cs">
+      <DependentUpon>20210503165540_AddingGuildsWithGuildBanks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20210510223205_TrackPlaytimeAsULongsInSeconds.cs" />
+    <Compile Include="Migrations\20210510223205_TrackPlaytimeAsULongsInSeconds.Designer.cs">
+      <DependentUpon>20210510223205_TrackPlaytimeAsULongsInSeconds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20210830010743_ComboFieldMigration.cs" />
+    <Compile Include="Migrations\20210830010743_ComboFieldMigration.designer.cs">
+      <DependentUpon>20210830010743_ComboFieldMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20210903131751_AddDecorToPlayerMigration.cs" />
+    <Compile Include="Migrations\20210903131751_AddDecorToPlayerMigration.designer.cs">
+      <DependentUpon>20210903131751_AddDecorToPlayerMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20211108145352_AddVehicleColumn.cs" />
+    <Compile Include="Migrations\20211108145352_AddVehicleColumn.designer.cs">
+      <DependentUpon>20211108145352_AddVehicleColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20220123173906_AddPersonalInstanceFields.cs" />
+    <Compile Include="Migrations\20220123173906_AddPersonalInstanceFields.designer.cs">
+      <DependentUpon>20220123173906_AddPersonalInstanceFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20220124143627_GuildInstanceIdMigration.cs" />
+    <Compile Include="Migrations\20220124143627_GuildInstanceIdMigration.designer.cs">
+      <DependentUpon>20220124143627_GuildInstanceIdMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20220124175811_AddSharedInstanceIdToPlayerMigration.cs" />
+    <Compile Include="Migrations\20220124175811_AddSharedInstanceIdToPlayerMigration.designer.cs">
+      <DependentUpon>20220124175811_AddSharedInstanceIdToPlayerMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20220124215539_AddSharedInstanceRespawnPointMigration.cs" />
+    <Compile Include="Migrations\20220124215539_AddSharedInstanceRespawnPointMigration.designer.cs">
+      <DependentUpon>20220124215539_AddSharedInstanceRespawnPointMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20220205181832_ClassRankMigration.cs" />
+    <Compile Include="Migrations\20220205181832_ClassRankMigration.designer.cs">
+      <DependentUpon>20220205181832_ClassRankMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20220207213352_PlayerRecordsMigration.cs" />
+    <Compile Include="Migrations\20220207213352_PlayerRecordsMigration.designer.cs">
+      <DependentUpon>20220207213352_PlayerRecordsMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20220210173234_InspirationMigration.cs" />
+    <Compile Include="Migrations\20220210173234_InspirationMigration.designer.cs">
+      <DependentUpon>20220210173234_InspirationMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201222164741_NpcResetRadius.cs" />
+    <Compile Include="Migrations\Game\20201222164741_NpcResetRadius.Designer.cs">
+      <DependentUpon>20201222164741_NpcResetRadius.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201004032158_EnablingCerasVersionTolerance.cs" />
+    <Compile Include="Migrations\Game\20201004032158_EnablingCerasVersionTolerance.Designer.cs">
+      <DependentUpon>20201004032158_EnablingCerasVersionTolerance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201001163344_ItemAndSpellCooldownImprovements.cs" />
+    <Compile Include="Migrations\Game\20201001163344_ItemAndSpellCooldownImprovements.Designer.cs">
+      <DependentUpon>20201001163344_ItemAndSpellCooldownImprovements.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20201017065035_AddColorToEntities.cs" />
+    <Compile Include="Migrations\20201017065035_AddColorToEntities.Designer.cs">
+      <DependentUpon>20201017065035_AddColorToEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201016122614_AddItemAndNpcColors.cs" />
+    <Compile Include="Migrations\Game\20201016122614_AddItemAndNpcColors.Designer.cs">
+      <DependentUpon>20201016122614_AddItemAndNpcColors.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210423131813_AddItemSpellIgnoreCdrOptions.cs" />
+    <Compile Include="Migrations\Game\20210423131813_AddItemSpellIgnoreCdrOptions.Designer.cs">
+      <DependentUpon>20210423131813_AddItemSpellIgnoreCdrOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210423141451_AddIndividualizedLootOptionToNpcs.cs" />
+    <Compile Include="Migrations\Game\20210423141451_AddIndividualizedLootOptionToNpcs.Designer.cs">
+      <DependentUpon>20210423141451_AddIndividualizedLootOptionToNpcs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210509070229_AddingQuestCategoriesAndOrderValues.cs" />
+    <Compile Include="Migrations\Game\20210509070229_AddingQuestCategoriesAndOrderValues.Designer.cs">
+      <DependentUpon>20210509070229_AddingQuestCategoriesAndOrderValues.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210512071349_BoundItemExtension.cs" />
+    <Compile Include="Migrations\Game\20210512071349_BoundItemExtension.Designer.cs">
+      <DependentUpon>20210512071349_BoundItemExtension.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210513080440_AddItemStackCaps.cs" />
+    <Compile Include="Migrations\Game\20210513080440_AddItemStackCaps.Designer.cs">
+      <DependentUpon>20210513080440_AddItemStackCaps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210607115442_AddedCanGuildBankOptionToItems.cs" />
+    <Compile Include="Migrations\Game\20210607115442_AddedCanGuildBankOptionToItems.designer.cs">
+      <DependentUpon>20210607115442_AddedCanGuildBankOptionToItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210630114724_CraftingCommonEvents.cs" />
+    <Compile Include="Migrations\Game\20210630114724_CraftingCommonEvents.designer.cs">
+      <DependentUpon>20210630114724_CraftingCommonEvents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210622051409_AddingRequirementNotMetMessages.cs" />
+    <Compile Include="Migrations\Game\20210622051409_AddingRequirementNotMetMessages.designer.cs">
+      <DependentUpon>20210622051409_AddingRequirementNotMetMessages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210703145618_AddingShopSoundEffects.cs" />
+    <Compile Include="Migrations\Game\20210703145618_AddingShopSoundEffects.designer.cs">
+      <DependentUpon>20210703145618_AddingShopSoundEffects.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210810194601_OverTimeSpellAnimationMigration.cs" />
+    <Compile Include="Migrations\Game\20210810194601_OverTimeSpellAnimationMigration.Designer.cs" />
+    <Compile Include="Migrations\Game\20210826154714_AnimationBrightnessThreshold.cs" />
+    <Compile Include="Migrations\Game\20210826154714_AnimationBrightnessThreshold.designer.cs">
+      <DependentUpon>20210826154714_AnimationBrightnessThreshold.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210830230045_ComboEquipmentMigration.cs" />
+    <Compile Include="Migrations\Game\20210830230045_ComboEquipmentMigration.designer.cs">
+      <DependentUpon>20210830230045_ComboEquipmentMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210831005144_ComboEquipmentMigrationTwo.cs" />
+    <Compile Include="Migrations\Game\20210831005144_ComboEquipmentMigrationTwo.designer.cs">
+      <DependentUpon>20210831005144_ComboEquipmentMigrationTwo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210906022027_AddNewHelmetFields.cs" />
+    <Compile Include="Migrations\Game\20210906022027_AddNewHelmetFields.designer.cs">
+      <DependentUpon>20210906022027_AddNewHelmetFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20210923215946_ProjectileGroundedMigration.cs" />
+    <Compile Include="Migrations\Game\20210923215946_ProjectileGroundedMigration.designer.cs">
+      <DependentUpon>20210923215946_ProjectileGroundedMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211017155639_QuestListMigration.cs" />
+    <Compile Include="Migrations\Game\20211017155639_QuestListMigration.designer.cs">
+      <DependentUpon>20211017155639_QuestListMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211025205347_CraftRequirementMigration.cs" />
+    <Compile Include="Migrations\Game\20211025205347_CraftRequirementMigration.designer.cs">
+      <DependentUpon>20211025205347_CraftRequirementMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211026130945_NpcImmunityMigration.cs" />
+    <Compile Include="Migrations\Game\20211026130945_NpcImmunityMigration.designer.cs">
+      <DependentUpon>20211026130945_NpcImmunityMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211027122112_ItemTagMigration.cs" />
+    <Compile Include="Migrations\Game\20211027122112_ItemTagMigration.designer.cs">
+      <DependentUpon>20211027122112_ItemTagMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211031200145_FixQuestTaskCompletionEvents.cs" />
+    <Compile Include="Migrations\Game\20211031200145_FixQuestTaskCompletionEvents.designer.cs">
+      <DependentUpon>20211031200145_FixQuestTaskCompletionEvents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211102124722_ItemStatLockMigration.cs" />
+    <Compile Include="Migrations\Game\20211102124722_ItemStatLockMigration.designer.cs">
+      <DependentUpon>20211102124722_ItemStatLockMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211103142838_DestroyItemMigration.cs" />
+    <Compile Include="Migrations\Game\20211103142838_DestroyItemMigration.designer.cs">
+      <DependentUpon>20211103142838_DestroyItemMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211106140056_DeathAnimationMigration.cs" />
+    <Compile Include="Migrations\Game\20211106140056_DeathAnimationMigration.designer.cs">
+      <DependentUpon>20211106140056_DeathAnimationMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20211213162720_WeaponSpellMigration.cs" />
+    <Compile Include="Migrations\Game\20211213162720_WeaponSpellMigration.designer.cs">
+      <DependentUpon>20211213162720_WeaponSpellMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20220125173554_InstanceVariableMigration.cs" />
+    <Compile Include="Migrations\Game\20220125173554_InstanceVariableMigration.designer.cs">
+      <DependentUpon>20220125173554_InstanceVariableMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20220204163952_BackstabMigration.cs" />
+    <Compile Include="Migrations\Game\20220204163952_BackstabMigration.designer.cs">
+      <DependentUpon>20220204163952_BackstabMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20220206010259_QuestTypeMigration.cs" />
+    <Compile Include="Migrations\Game\20220206010259_QuestTypeMigration.designer.cs">
+      <DependentUpon>20220206010259_QuestTypeMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20220210173512_InspirationMigration.cs" />
+    <Compile Include="Migrations\Game\20220210173512_InspirationMigration.designer.cs">
+      <DependentUpon>20220210173512_InspirationMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20220210203035_ShopImprovementMigration.cs" />
+    <Compile Include="Migrations\Game\20220210203035_ShopImprovementMigration.designer.cs">
+      <DependentUpon>20220210203035_ShopImprovementMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Logging\20201119230003_AddUserActivityHistory.cs" />
+    <Compile Include="Migrations\Logging\20201119230003_AddUserActivityHistory.Designer.cs">
+      <DependentUpon>20201119230003_AddUserActivityHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Logging\20210414222302_AddedChatLogging.cs" />
+    <Compile Include="Migrations\Logging\20210414222302_AddedChatLogging.Designer.cs">
+      <DependentUpon>20210414222302_AddedChatLogging.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Logging\20210515114555_LogPlayerTrades.cs" />
+    <Compile Include="Migrations\Logging\20210515114555_LogPlayerTrades.Designer.cs">
+      <DependentUpon>20210515114555_LogPlayerTrades.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Logging\20210519095613_AddGuildActivityLogging.cs" />
+    <Compile Include="Migrations\Logging\20210519095613_AddGuildActivityLogging.designer.cs">
+      <DependentUpon>20210519095613_AddGuildActivityLogging.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />
@@ -490,7 +751,6 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Database\DbInterface.cs" />
     <Compile Include="Maps\MapGrid.cs" />
-    <Compile Include="Core\ServerLoop.cs" />
     <Compile Include="Networking\Helpers\PortChecker.cs" />
     <Compile Include="Networking\Helpers\UPnP.cs" />
     <Compile Include="Notifications\Notification.cs" />
@@ -506,7 +766,7 @@
     <Compile Include="Core\CommandParsing\Arguments\ArgumentValues.cs" />
     <Compile Include="Core\CommandParsing\Arguments\ArgumentValuesMap.cs" />
     <Compile Include="Core\Bootstrapper.cs" />
-    <Compile Include="Core\CommandLineOptions.cs" />
+    <Compile Include="Core\ServerCommandLineOptions.cs" />
     <Compile Include="Core\CommandParsing\Commands\Command.cs" />
     <Compile Include="Core\CommandParsing\CommandParser.cs" />
     <Compile Include="Core\CommandParsing\Errors\MissingArgumentError.cs" />
@@ -542,9 +802,8 @@
     <Compile Include="Core\Commands\NetDebugCommand.cs" />
     <Compile Include="Core\Commands\OnlineListCommand.cs" />
     <Compile Include="Core\ExperimentalFeatures\Experiments.cs" />
-    <Compile Include="Core\ServerConsole.cs" />
+    <Compile Include="Core\ConsoleService.cs" />
     <Compile Include="Core\ServerContext.cs" />
-    <Compile Include="Core\ServerLogic.cs" />
     <Compile Include="Core\CommandParsing\Tokenization\Tokenizer.cs" />
     <Compile Include="Core\CommandParsing\Tokenization\TokenizerSettings.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
@@ -562,7 +821,7 @@
       <DependentUpon>20190310013418_StandardizeVocabulary1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\20190611170927_CombiningSwitchesVariables.cs" />
-    <Compile Include="Migrations\20190611170927_CombiningSwitchesVariables.designer.cs">
+    <Compile Include="Migrations\20190611170927_CombiningSwitchesVariables.Designer.cs">
       <DependentUpon>20190611170927_CombiningSwitchesVariables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\20190804133420_Custom_Player_Name_Colors.cs" />
@@ -570,19 +829,19 @@
       <DependentUpon>20190804133420_Custom_Player_Name_Colors.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\20200205112316_FixingPlayerDeleteFriendsForeignKeyContraintFail.cs" />
-    <Compile Include="Migrations\20200205112316_FixingPlayerDeleteFriendsForeignKeyContraintFail.designer.cs">
+    <Compile Include="Migrations\20200205112316_FixingPlayerDeleteFriendsForeignKeyContraintFail.Designer.cs">
       <DependentUpon>20200205112316_FixingPlayerDeleteFriendsForeignKeyContraintFail.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\20191030214333_PlayerUpgrades_Labels.cs" />
-    <Compile Include="Migrations\20191030214333_PlayerUpgrades_Labels.designer.cs">
+    <Compile Include="Migrations\20191030214333_PlayerUpgrades_Labels.Designer.cs">
       <DependentUpon>20191030214333_PlayerUpgrades_Labels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\20191126025000_RefactoringCooldowns.cs" />
-    <Compile Include="Migrations\20191126025000_RefactoringCooldowns.designer.cs">
+    <Compile Include="Migrations\20191126025000_RefactoringCooldowns.Designer.cs">
       <DependentUpon>20191126025000_RefactoringCooldowns.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\20200301145105_SavingPlayerLabelsInDb.cs" />
-    <Compile Include="Migrations\20200301145105_SavingPlayerLabelsInDb.designer.cs">
+    <Compile Include="Migrations\20200301145105_SavingPlayerLabelsInDb.Designer.cs">
       <DependentUpon>20200301145105_SavingPlayerLabelsInDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190303234637_SpellUpgrades_OnHit_Shields.cs" />
@@ -594,31 +853,31 @@
       <DependentUpon>20190306224847_BoundSpells.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190320233655_ItemRarityAndSpellQuickCast.cs" />
-    <Compile Include="Migrations\Game\20190320233655_ItemRarityAndSpellQuickCast.designer.cs">
+    <Compile Include="Migrations\Game\20190320233655_ItemRarityAndSpellQuickCast.Designer.cs">
       <DependentUpon>20190320233655_ItemRarityAndSpellQuickCast.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190530000628_AddingCraftingQuantities.cs" />
-    <Compile Include="Migrations\Game\20190530000628_AddingCraftingQuantities.designer.cs">
+    <Compile Include="Migrations\Game\20190530000628_AddingCraftingQuantities.Designer.cs">
       <DependentUpon>20190530000628_AddingCraftingQuantities.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190611170819_CombiningSwitchesVariables.cs" />
-    <Compile Include="Migrations\Game\20190611170819_CombiningSwitchesVariables.designer.cs">
+    <Compile Include="Migrations\Game\20190611170819_CombiningSwitchesVariables.Designer.cs">
       <DependentUpon>20190611170819_CombiningSwitchesVariables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190615010038_AddingExpOveridesToClasses.cs" />
-    <Compile Include="Migrations\Game\20190615010038_AddingExpOveridesToClasses.designer.cs">
+    <Compile Include="Migrations\Game\20190615010038_AddingExpOveridesToClasses.Designer.cs">
       <DependentUpon>20190615010038_AddingExpOveridesToClasses.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190618013705_AddingFoldersToGameObjects.cs" />
-    <Compile Include="Migrations\Game\20190618013705_AddingFoldersToGameObjects.designer.cs">
+    <Compile Include="Migrations\Game\20190618013705_AddingFoldersToGameObjects.Designer.cs">
       <DependentUpon>20190618013705_AddingFoldersToGameObjects.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190618014158_AddingFoldersToVaraibles.cs" />
-    <Compile Include="Migrations\Game\20190618014158_AddingFoldersToVaraibles.designer.cs">
+    <Compile Include="Migrations\Game\20190618014158_AddingFoldersToVaraibles.Designer.cs">
       <DependentUpon>20190618014158_AddingFoldersToVaraibles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190712220904_AddingAnimationSoundCompletionOpt.cs" />
-    <Compile Include="Migrations\Game\20190712220904_AddingAnimationSoundCompletionOpt.designer.cs">
+    <Compile Include="Migrations\Game\20190712220904_AddingAnimationSoundCompletionOpt.Designer.cs">
       <DependentUpon>20190712220904_AddingAnimationSoundCompletionOpt.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190726203949_SpellUpgrades_Percentage_Buffs.cs" />
@@ -626,23 +885,25 @@
       <DependentUpon>20190726203949_SpellUpgrades_Percentage_Buffs.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20190727120303_ItemUpgrades_Percentage_Based_Stats.cs" />
-    <Compile Include="Migrations\Game\20190727120303_ItemUpgrades_Percentage_Based_Stats.designer.cs">
+    <Compile Include="Migrations\Game\20190727120303_ItemUpgrades_Percentage_Based_Stats.Designer.cs">
       <DependentUpon>20190727120303_ItemUpgrades_Percentage_Based_Stats.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20200216143942_MoreGraularAttackSpeedOptions.cs" />
-    <Compile Include="Migrations\Game\20200216143942_MoreGraularAttackSpeedOptions.designer.cs">
+    <Compile Include="Migrations\Game\20200216143942_MoreGraularAttackSpeedOptions.Designer.cs">
       <DependentUpon>20200216143942_MoreGraularAttackSpeedOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Logging\20191118024649_RequestLogs.cs" />
-    <Compile Include="Migrations\Logging\20191118024649_RequestLogs.designer.cs">
+    <Compile Include="Migrations\Logging\20191118024649_RequestLogs.Designer.cs">
       <DependentUpon>20191118024649_RequestLogs.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Logging\LoggingContextModelSnapshot.cs" />
     <Compile Include="Migrations\Game\20191030214236_Spell_Upgrades_Traps_Item_Upgrades_Effects_Event_Upgrades_Labels.cs" />
-    <Compile Include="Migrations\Game\20191030214236_Spell_Upgrades_Traps_Item_Upgrades_Effects_Event_Upgrades_Labels.designer.cs">
+    <Compile Include="Migrations\Game\20191030214236_Spell_Upgrades_Traps_Item_Upgrades_Effects_Event_Upgrades_Labels.Designer.cs">
       <DependentUpon>20191030214236_Spell_Upgrades_Traps_Item_Upgrades_Effects_Event_Upgrades_Labels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\PlayerContextModelSnapshot.cs" />
+    <Compile Include="Plugins\Helpers\ServerLifecycleHelper.cs" />
+    <Compile Include="Plugins\ServerPluginContext.cs" />
     <Compile Include="Web\RestApi\Attributes\DebugAuthorizeAttribute.cs" />
     <Compile Include="Web\RestApi\Attributes\ConfigurableAuthorizeAttribute.cs" />
     <Compile Include="Web\RestApi\Authentication\AuthenticationProvider.cs" />
@@ -670,7 +931,12 @@
     <Compile Include="Web\RestApi\Middleware\IntersectThrottlingMiddleware.cs" />
     <Compile Include="Web\RestApi\Payloads\AdminChange.cs" />
     <Compile Include="Web\RestApi\Payloads\AuthorizedChange.cs" />
+    <Compile Include="Web\RestApi\Payloads\GuildRank.cs" />
+    <Compile Include="Web\RestApi\Payloads\IpAddress.cs" />
     <Compile Include="Web\RestApi\Payloads\ItemInfo.cs" />
+    <Compile Include="Web\RestApi\Payloads\ClassChange.cs" />
+    <Compile Include="Web\RestApi\Payloads\LevelChange.cs" />
+    <Compile Include="Web\RestApi\Payloads\NameChange.cs" />
     <Compile Include="Web\RestApi\Payloads\PagingInfo.cs" />
     <Compile Include="Web\RestApi\Payloads\PasswordValidation.cs" />
     <Compile Include="Web\RestApi\Payloads\Sort.cs" />
@@ -705,7 +971,9 @@
     <Compile Include="Web\RestApi\Routes\V1\DocController.cs" />
     <Compile Include="Web\RestApi\Routes\V1\ChatController.cs" />
     <Compile Include="Web\RestApi\Routes\V1\GameObjectController.cs" />
+    <Compile Include="Web\RestApi\Routes\V1\GuildController.cs" />
     <Compile Include="Web\RestApi\Routes\V1\InfoController.cs" />
+    <Compile Include="Web\RestApi\Routes\V1\LogsController.cs" />
     <Compile Include="Web\RestApi\Routes\V1\VariablesController.cs" />
     <Compile Include="Web\RestApi\Serialization\ApiVisibilityContractResolver.cs" />
     <Compile Include="Web\RestApi\Services\AuthorizedRoutesService.cs" />
@@ -725,6 +993,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Compile Include="Entities\Entity.Comparison.cs" />
+    <Compile Include="Core\ConsoleService.ConsoleThread.cs" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\libe_sqlite3_x64.so" />
     <EmbeddedResource Include="Resources\libe_sqlite3.dylib" />
@@ -767,9 +1036,35 @@
       <Project>{e8f288cb-51df-4d9d-a3b3-a61bd4fd3f45}</Project>
       <Name>Intersect.Network</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Intersect.Server.Framework\Intersect.Server.Framework.csproj">
+      <Project>{4e38c9b0-df8c-44e4-9704-d6b05e092733}</Project>
+      <Name>Intersect.Server.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\PlayerData\Migrations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\Microsoft.CodeAnalysis.VersionCheckAnalyzer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Humanizer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetCore.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\Microsoft.CodeAnalysis.VersionCheckAnalyzer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Humanizer.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetCore.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -785,6 +1080,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.EntityFrameworkCore.Design.2.1.3\build\net461\Microsoft.EntityFrameworkCore.Design.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.EntityFrameworkCore.Design.2.1.3\build\net461\Microsoft.EntityFrameworkCore.Design.props'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props'))" />
     <Error Condition="!Exists('..\packages\Fody.4.2.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.4.2.1\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeQuality.Analyzers.3.0.0\build\Microsoft.CodeQuality.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetCore.Analyzers.3.0.0\build\Microsoft.NetCore.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NetFramework.Analyzers.3.0.0\build\Microsoft.NetFramework.Analyzers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props'))" />
   </Target>
   <Import Project="..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\tools\Mono.Data.Sqlite.Portable.targets" Condition="Exists('..\packages\Mono.Data.Sqlite.Portable.1.0.3.5\tools\Mono.Data.Sqlite.Portable.targets')" />
   <Target Name="EnsureMonoDataSqlitePortableImported" BeforeTargets="BeforeBuild" Condition="'$(MonoDataSqlitePortableImported)' == ''">

@@ -6,6 +6,7 @@ using Intersect.Client.Entities;
 using Intersect.Client.Framework.Audio;
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.General;
+using Intersect.Compression;
 using Intersect.Logging;
 
 namespace Intersect.Client.Core
@@ -68,34 +69,46 @@ namespace Intersect.Client.Core
         //Update
         public static void Update()
         {
-            if (sMyMusic != null)
+            var currentTime = Globals.System.GetTimeMs();
+            // Do we have a valid fade timer?
+            if (sFadeTimer != 0 && sFadeTimer < currentTime)
             {
-                if (sFadeTimer != 0 && sFadeTimer < Globals.System.GetTimeMs())
+                // Are we actually fading out a song?
+                if (sFadingOut)
                 {
-                    if (sFadingOut)
+                    // Lower the volume by one for our current song.
+                    sMyMusic.SetVolume(sMyMusic.GetVolume() - 1, true);
+
+                    // Are we already at minimum volume?
+                    if (sMyMusic.GetVolume() <= 1)
                     {
-                        sMyMusic.SetVolume(sMyMusic.GetVolume() - 1, true);
-                        if (sMyMusic.GetVolume() <= 1)
-                        {
-                            StopMusic();
-                            PlayMusic(sQueuedMusic, 0f, sQueuedFade, sQueuedLoop);
-                        }
-                        else
-                        {
-                            sFadeTimer = Globals.System.GetTimeMs() + (long) (sFadeRate / 1000);
-                        }
+                        // Yes, stop our current song and play our next!
+                        StopMusic();
+                        PlayMusic(sQueuedMusic, 0f, sQueuedFade, sQueuedLoop);
                     }
                     else
                     {
-                        sMyMusic.SetVolume(sMyMusic.GetVolume() + 1, true);
-                        if (sMyMusic.GetVolume() < 100)
-                        {
-                            sFadeTimer = Globals.System.GetTimeMs() + (long) (sFadeRate / 1000);
-                        }
-                        else
-                        {
-                            sFadeTimer = 0;
-                        }
+                        // No, set our fade timer to the current time PLUS our defined wait time
+                        // This way we don't lower the volume a little further for a while.
+                        sFadeTimer = currentTime + (long)(sFadeRate);
+                    }
+                }
+                else
+                {
+                    // We're not fading out a song but fading it in!
+                    sMyMusic.SetVolume(sMyMusic.GetVolume() + 1, true);
+
+                    // Are we at max volume?
+                    if (sMyMusic.GetVolume() < 100)
+                    {
+                        // No, set our fade timer to the current time PLUS our defined wait time
+                        // This way we don't raise the volume a little further for a while.
+                        sFadeTimer = currentTime + (long)(sFadeRate);
+                    }
+                    else
+                    {
+                        // We're fully faded in, so invalidate the fade timer.
+                        sFadeTimer = 0;
                     }
                 }
             }
@@ -108,6 +121,18 @@ namespace Intersect.Client.Core
                     sGameSounds.RemoveAt(i);
                 }
             }
+
+            // Update our pack sound cache if we have any packs loaded.
+            if (Globals.ContentManager.SoundPacks != null)
+            {
+                Globals.ContentManager.SoundPacks.UpdateCache();
+            }
+
+            // Update our pack music cache if we have any packs loaded.
+            if (Globals.ContentManager.MusicPacks != null)
+            {
+                Globals.ContentManager.MusicPacks.UpdateCache();
+            }
         }
 
         //Music
@@ -116,7 +141,7 @@ namespace Intersect.Client.Core
             if (string.IsNullOrWhiteSpace(filename))
             {
                 //Entered a map with no music selected, fade out any music that's already playing.
-                StopMusic(3f);
+                StopMusic(6f);
 
                 return;
             }
@@ -140,7 +165,7 @@ namespace Intersect.Client.Core
                     if (!string.Equals(sCurrentSong, filename, StringComparison.CurrentCultureIgnoreCase) || sFadingOut)
                     {
                         sFadeRate = sMyMusic.GetVolume() / fadeout;
-                        sFadeTimer = Globals.System.GetTimeMs() + (long) (sFadeRate / 1000);
+                        sFadeTimer = Globals.System.GetTimeMs() + (long) (sFadeRate);
                         sFadingOut = true;
                         sQueuedMusic = filename;
                         sQueuedFade = fadein;
@@ -218,6 +243,7 @@ namespace Intersect.Client.Core
             int y,
             Guid mapId,
             bool loop,
+            int loopInterval,
             int distance,
             Entity parent = null
         )
@@ -227,7 +253,7 @@ namespace Intersect.Client.Core
                 return null;
             }
 
-            var sound = new MapSound(filename, x, y, mapId, loop, distance, parent);
+            var sound = new MapSound(filename, x, y, mapId, loop, loopInterval, distance, parent);
             sGameSounds?.Add(sound);
 
             return sound;
@@ -240,7 +266,7 @@ namespace Intersect.Client.Core
                 return null;
             }
 
-            var sound = new Sound(filename, loop);
+            var sound = new Sound(filename, loop, 0);
             sGameSounds?.Add(sound);
 
             return sound;

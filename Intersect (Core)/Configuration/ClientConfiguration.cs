@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-using JetBrains.Annotations;
-
 namespace Intersect.Configuration
 {
 
@@ -29,8 +27,7 @@ namespace Intersect.Configuration
             return ConfigurationHelper.Save(this, filePath, failQuietly);
         }
 
-        [NotNull]
-        public static ClientConfiguration LoadAndSave([CanBeNull] string filePath = null)
+        public static ClientConfiguration LoadAndSave(string filePath = null)
         {
             return ConfigurationHelper.LoadSafely(Instance, filePath);
         }
@@ -51,11 +48,20 @@ namespace Intersect.Configuration
 
         public const string DEFAULT_MENU_MUSIC = "RPG-Theme_v001_Looping.ogg";
 
+        public const string GUI_CANCEL_SFX = "al_gui_cancel.wav";
+
+        public const string HEALTH_WARNING_SFX = "voice_danger.wav";
+        
+        public const int UI_HOVER_SOUND_TIMER = 80;
+        
+        public const int UI_TEXT_SOUND_TIMER = 40;
+
+        public const string TARGET_SOUND = "al_target.wav";
+
         #endregion
 
         #region Static Properties and Methods
 
-        [NotNull]
         public static ClientConfiguration Instance { get; } = new ClientConfiguration();
 
         public void Validate()
@@ -122,10 +128,31 @@ namespace Intersect.Configuration
         /// </summary>
         public string MenuBackground { get; set; } = DEFAULT_MENU_BACKGROUND;
 
+        /// <summary>
+        /// Sound that plays when a negative GUI event happens
+        /// </summary>
+        public string GuiCancelSfx { get; set; } = GUI_CANCEL_SFX;
+
+        /// <summary>
+        /// Sound that plays when HP warning appears
+        /// </summary>
+        public string HealthWarningSfx { get; set; } = HEALTH_WARNING_SFX;
+
         // TODO: What is this for?
         public List<string> IntroImages { get; set; } = new List<string>();
 
         public string UpdateUrl { get; set; } = "";
+
+        /// <summary>
+        /// Sets a custom mouse cursor.
+        /// </summary>
+        public string MouseCursor { get; set; } = "";
+
+        public int UIHoverSoundTimer { get; set; } = UI_HOVER_SOUND_TIMER;
+        
+        public int UITextSoundTimer { get; set; } = UI_TEXT_SOUND_TIMER;
+        
+        public string TargetSound { get; set; } = TARGET_SOUND;
 
         #endregion
 

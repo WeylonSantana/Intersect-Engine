@@ -40,6 +40,8 @@ namespace Intersect.GameObjects
 
         [NotMapped] public ConditionLists HarvestingRequirements = new ConditionLists();
 
+        public string CannotHarvestMessage { get; set; } = "";
+
         [JsonConstructor]
         public ResourceBase(Guid id) : base(id)
         {
@@ -119,6 +121,8 @@ namespace Intersect.GameObjects
 
         /// <inheritdoc />
         public string Folder { get; set; } = "";
+
+        public long Experience { get; set; }
 
         public class ResourceDrop
         {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 
 using Intersect.Client.Core;
 using Intersect.Client.Entities.Events;
@@ -12,19 +11,20 @@ using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
 using Intersect.Client.Items;
+using Intersect.Client.Localization;
 using Intersect.Client.Maps;
 using Intersect.Client.Spells;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using Intersect.GameObjects.Maps;
 using Intersect.Logging;
 using Intersect.Network.Packets.Server;
 using Intersect.Utilities;
-using JetBrains.Annotations;
 
 namespace Intersect.Client.Entities
 {
 
-    public class Entity
+    public partial class Entity
     {
 
         public enum LabelType
@@ -36,7 +36,9 @@ namespace Intersect.Client.Entities
 
             Name,
 
-            ChatBubble
+            ChatBubble,
+
+            Guild
 
         }
 
@@ -116,6 +118,8 @@ namespace Intersect.Client.Entities
 
         protected string mMySprite = "";
 
+        public Color Color = new Color(255,255,255,255);
+
         public int MoveDir = -1;
 
         public long MoveTimer;
@@ -147,6 +151,8 @@ namespace Intersect.Client.Entities
 
         public int[] Stat = new int[(int) Stats.StatCount];
 
+        public int[] TrueStats = new int[(int)Stats.StatCount];
+
         public int Target = -1;
 
         public GameTexture Texture;
@@ -171,12 +177,22 @@ namespace Intersect.Client.Entities
 
         public FloatRect WorldPos = new FloatRect();
 
+        public bool IsTargeted = false;
+
         //Location Info
         public byte X;
 
         public byte Y;
 
         public byte Z;
+
+        public string[] MyDecors = new string[Options.DecorSlots.Count];
+
+        public bool Flash = false; // Whether or not the entity sprite is flashing
+
+        public Color FlashColor = null; // What color to flash the entity
+
+        public long FlashEndTime = 0L;
 
         public Entity(Guid id, EntityPacket packet, bool isEvent = false)
         {
@@ -199,6 +215,11 @@ namespace Intersect.Client.Entities
                     Equipment[i] = Guid.Empty;
                     MyEquipment[i] = -1;
                 }
+
+                for (var i = 0; i < Options.DecorSlots.Count; i++)
+                {
+                    MyDecors[i] = null;
+                }
             }
 
             AnimationTimer = Globals.System.GetTimeMs() + Globals.Random.Next(0, 500);
@@ -213,7 +234,6 @@ namespace Intersect.Client.Entities
         }
 
         //Status effects
-        [NotNull]
         public List<Status> Status { get; private set; } = new List<Status>();
 
         public byte Dir
@@ -227,12 +247,19 @@ namespace Intersect.Client.Entities
             get => mTransformedSprite;
             set
             {
-                mTransformedSprite = value;
-                Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mTransformedSprite);
-                LoadAnimationTextures(mTransformedSprite);
-                if (value == "")
+                if (mTransformedSprite != value)
                 {
-                    MySprite = mMySprite;
+                    mTransformedSprite = value;
+                    if (value == "")
+                    {
+                        Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mMySprite);
+                        LoadAnimationTextures(mMySprite);
+                    }
+                    else
+                    {
+                        Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mTransformedSprite);
+                        LoadAnimationTextures(mTransformedSprite);
+                    }
                 }
             }
         }
@@ -242,9 +269,12 @@ namespace Intersect.Client.Entities
             get => mMySprite;
             set
             {
-                mMySprite = value;
-                Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mMySprite);
-                LoadAnimationTextures(mMySprite);
+                if (mMySprite != value)
+                {
+                    mMySprite = value;
+                    Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mMySprite);
+                    LoadAnimationTextures(mMySprite);
+                }
             }
         }
 
@@ -285,9 +315,15 @@ namespace Intersect.Client.Entities
         //Deserializing
         public virtual void Load(EntityPacket packet)
         {
+            if (packet == null)
+            {
+                return;
+            }
+
             CurrentMap = packet.MapId;
             Name = packet.Name;
             MySprite = packet.Sprite;
+            Color = packet.Color;
             Face = packet.Face;
             Level = packet.Level;
             X = packet.X;
@@ -460,11 +496,19 @@ namespace Intersect.Client.Entities
         //Returns the amount of time required to traverse 1 tile
         public virtual float GetMovementTime()
         {
-            var time = 1000f / (float) (1 + Math.Log(Stat[(int) Stats.Speed]));
+            var speed = Stat[(int)Stats.Speed];
+            if (this is Player player && player.InVehicle)
+            {
+                speed = (int) player.VehicleSpeed;
+            }
+
+            var time = 1000f / (float) (1 + Math.Log(speed * Options.AgilityMovementSpeedModifier));
             if (Blocking)
             {
                 time += time * (float) Options.BlockingSlow;
             }
+            
+            time *= (float)Options.SpeedModifier;
 
             return Math.Min(1000f, time);
         }
@@ -499,6 +543,13 @@ namespace Intersect.Client.Entities
 
             var ecTime = (float) (Globals.System.GetTimeMs() - mLastUpdate);
             elapsedtime = ecTime;
+
+            // Update flash timer
+            if (Flash && Globals.System.GetTimeMs() > FlashEndTime)
+            {
+                Flash = false;
+            }
+
             if (Dashing != null)
             {
                 WalkFrame = Options.Instance.Sprites.NormalSheetDashFrame; //Fix the frame whilst dashing
@@ -633,15 +684,16 @@ namespace Intersect.Client.Entities
 
                         if (anim != null)
                         {
+                            var inVehicle = this is Player player && player.InVehicle;
                             if (EquipmentAnimations[z] != null &&
-                                (EquipmentAnimations[z].MyBase != anim || EquipmentAnimations[z].Disposed()))
+                                (EquipmentAnimations[z].MyBase != anim || EquipmentAnimations[z].Disposed() || inVehicle))
                             {
                                 EquipmentAnimations[z].Dispose();
                                 Animations.Remove(EquipmentAnimations[z]);
                                 EquipmentAnimations[z] = null;
                             }
 
-                            if (EquipmentAnimations[z] == null)
+                            if (EquipmentAnimations[z] == null && !inVehicle)
                             {
                                 EquipmentAnimations[z] = new Animation(anim, true, true, -1, this);
                                 Animations.Add(EquipmentAnimations[z]);
@@ -861,7 +913,14 @@ namespace Intersect.Client.Entities
             var d = 0;
 
             var sprite = "";
-            var alpha = 255;
+            // Copy the actual render color, because we'll be editing it later and don't want to overwrite it.
+            var renderColor = new Color(Color.A, Color.R, Color.G, Color. B);
+            if (Flash && FlashColor != null) // Flash the sprite some color for some duration
+            {
+                renderColor = FlashColor;
+            }
+
+            string transformedSprite = "";
 
             //If the entity has transformed, apply that sprite instead.
             for (var n = 0; n < Status.Count; n++)
@@ -869,7 +928,7 @@ namespace Intersect.Client.Entities
                 if (Status[n].Type == StatusTypes.Transform)
                 {
                     sprite = Status[n].Data;
-                    TransformedSprite = sprite;
+                    transformedSprite = sprite;
                 }
 
                 //If unit is stealthed, don't render unless the entity is the player.
@@ -881,9 +940,20 @@ namespace Intersect.Client.Entities
                     }
                     else
                     {
-                        alpha = 125;
+                        renderColor.A /= 2;
                     }
                 }
+            }
+
+            if (this is Player p && p.InVehicle)
+            {
+                sprite = p.VehicleSprite;
+                transformedSprite = sprite;
+            }
+
+            if (transformedSprite != TransformedSprite)
+            {
+                TransformedSprite = transformedSprite;
             }
 
             //Check if there is no transformed sprite set
@@ -893,8 +963,8 @@ namespace Intersect.Client.Entities
                 MySprite = sprite;
             }
 
-
-            var texture = AnimatedTextures[SpriteAnimation] ?? Texture;
+            AnimatedTextures.TryGetValue(SpriteAnimation, out var texture);
+            texture = texture ?? Texture;
 
             if (texture != null)
             {
@@ -948,8 +1018,8 @@ namespace Intersect.Client.Entities
                 {
                     if (SpriteAnimation == SpriteAnimations.Normal)
                     {
-                        var attackTime = CalculateAttackTime();
-                        if (AttackTimer - CalculateAttackTime() / 2 > Timing.Global.Ticks / TimeSpan.TicksPerMillisecond || Blocking)
+                        bool inAction = AttackTimer - CalculateAttackTime() / 2 > Timing.Global.Ticks / TimeSpan.TicksPerMillisecond || Blocking;
+                        if (inAction && !(this is Player play && play.InVehicle))
                         {
                             srcRectangle = new FloatRect(
                                 Options.Instance.Sprites.NormalSheetAttackFrame * (int)texture.GetWidth() / SpriteFrames, d * (int)texture.GetHeight() / Options.Instance.Sprites.Directions,
@@ -984,18 +1054,26 @@ namespace Intersect.Client.Entities
                 {
                     var paperdoll = Options.PaperdollOrder[Dir][z];
                     var equipSlot = Options.EquipmentSlots.IndexOf(paperdoll);
+                    var decorSlot = Options.DecorSlots.IndexOf(paperdoll);
+
+                    //Don't render the paperdolls if they have transformed.
+                    var notTransformed = sprite == MySprite && Equipment.Length == Options.EquipmentSlots.Count;
+
+                    if (this is Player pl && pl.InVehicle)
+                    {
+                        notTransformed = false;
+                    }
 
                     //Check for player
                     if (paperdoll == "Player")
                     {
                         Graphics.DrawGameTexture(
-                            texture, srcRectangle, destRectangle, new Intersect.Color(alpha, 255, 255, 255)
+                            texture, srcRectangle, destRectangle, renderColor
                         );
                     }
-                    else if (equipSlot > -1)
+                    else if (notTransformed)
                     {
-                        //Don't render the paperdolls if they have transformed.
-                        if (sprite == MySprite && Equipment.Length == Options.EquipmentSlots.Count)
+                        if (equipSlot > -1)
                         {
                             if (Equipment[equipSlot] != Guid.Empty && this != Globals.Me ||
                                 MyEquipment[equipSlot] < Options.MaxInvItems)
@@ -1019,13 +1097,39 @@ namespace Intersect.Client.Entities
                                 {
                                     if (Gender == 0)
                                     {
-                                        DrawEquipment(item.MalePaperdoll, alpha);
+                                        DrawEquipment(item.MalePaperdoll, renderColor.A);
                                     }
                                     else
                                     {
-                                        DrawEquipment(item.FemalePaperdoll, alpha);
+                                        DrawEquipment(item.FemalePaperdoll, renderColor.A);
                                     }
                                 }
+                            }
+                        } else if (decorSlot > -1 && decorSlot < Options.Player.DecorSlots.Count)
+                        {
+                            var hideHair = false;
+                            var hideBeard = false;
+                            var hideExtra = false;
+                            var shouldDraw = true;
+
+                            if (Equipment[Options.HelmetIndex] != Guid.Empty)
+                            {
+                                var helmet = ItemBase.Get(Equipment[Options.HelmetIndex]);
+                                hideHair = helmet.HideHair;
+                                hideBeard = helmet.HideBeard;
+                                hideExtra = helmet.HideExtra;
+
+                                if (decorSlot == Options.HairSlot && hideHair
+                                    || decorSlot == Options.BeardSlot && hideBeard
+                                    || decorSlot == Options.ExtraSlot && hideExtra)
+                                {
+                                    shouldDraw = false;
+                                }
+                            }
+
+                            if (MyDecors[decorSlot] != null && shouldDraw)
+                            {
+                                DrawEquipment(MyDecors[decorSlot], renderColor.A, GameContentManager.TextureType.Decor);
                             }
                         }
                     }
@@ -1044,6 +1148,24 @@ namespace Intersect.Client.Entities
 
         public void DrawChatBubbles()
         {
+            //Don't draw if the entity is hidden
+            if (HideEntity)
+            {
+                return; 
+            }
+
+            //If unit is stealthed, don't render unless the entity is the player or party member.
+            if (this != Globals.Me && !(this is Player player && Globals.Me.IsInMyParty(player)))
+            {
+                for (var n = 0; n < Status.Count; n++)
+                {
+                    if (Status[n].Type == StatusTypes.Stealth)
+                    {
+                        return;
+                    }
+                }
+            }
+
             var chatbubbles = mChatBubbles.ToArray();
             var bubbleoffset = 0f;
             for (var i = chatbubbles.Length - 1; i > -1; i--)
@@ -1052,7 +1174,7 @@ namespace Intersect.Client.Entities
             }
         }
 
-        public virtual void DrawEquipment(string filename, int alpha)
+        public virtual void DrawEquipment(string filename, int alpha, GameContentManager.TextureType textureType = GameContentManager.TextureType.Paperdoll)
         {
             var map = MapInstance.Get(CurrentMap);
             if (map == null)
@@ -1067,14 +1189,14 @@ namespace Intersect.Client.Entities
             GameTexture paperdollTex = null;
             var filenameNoExt = Path.GetFileNameWithoutExtension(filename);
             paperdollTex = Globals.ContentManager.GetTexture(
-                GameContentManager.TextureType.Paperdoll, $"{filenameNoExt}_{SpriteAnimation.ToString()}.png"
+                textureType, $"{filenameNoExt}_{SpriteAnimation.ToString()}.png"
             );
 
             var spriteFrames = SpriteFrames;
 
             if (paperdollTex == null)
             {
-                paperdollTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Paperdoll, filename);
+                paperdollTex = Globals.ContentManager.GetTexture(textureType, filename);
                 spriteFrames = Options.Instance.Sprites.NormalFrames;
             }
 
@@ -1145,8 +1267,15 @@ namespace Intersect.Client.Entities
 
                 destRectangle.Width = srcRectangle.Width;
                 destRectangle.Height = srcRectangle.Height;
+                var renderColor = new Color(alpha, 255, 255, 255);
+                if (Flash)
+                {
+                    renderColor = FlashColor;
+                    renderColor.A = (byte) alpha;
+                }
+
                 Graphics.DrawGameTexture(
-                    paperdollTex, srcRectangle, destRectangle, new Intersect.Color(alpha, 255, 255, 255)
+                    paperdollTex, srcRectangle, destRectangle, renderColor
                 );
             }
         }
@@ -1289,6 +1418,12 @@ namespace Intersect.Client.Entities
 
         public virtual void DrawName(Color textColor, Color borderColor = null, Color backgroundColor = null)
         {
+            // Always draw name if event, player, is targeted, or is aggressive.
+            if (!(this is Event) && !(this is Player) && !IsTargeted && Type != -1)
+            {
+                return;
+            }
+
             if (HideName || Name.Trim().Length == 0)
             {
                 return;
@@ -1360,7 +1495,13 @@ namespace Intersect.Client.Entities
                 return;
             }
 
-            var textSize = Graphics.Renderer.MeasureText(Name, Graphics.EntityNameFont, 1);
+            var name = Name;
+            if ((this is Player && Options.Player.ShowLevelByName) || (!(this is Player) && Options.Npc.ShowLevelByName))
+            {
+                name = Strings.GameWindow.EntityNameAndLevel.ToString(Name, Level);
+            }
+
+            var textSize = Graphics.Renderer.MeasureText(name, Graphics.EntityNameFont, 1);
 
             var x = (int) Math.Ceiling(GetCenterPos().X);
             var y = GetLabelLocation(LabelType.Name);
@@ -1374,9 +1515,11 @@ namespace Intersect.Client.Entities
             }
 
             Graphics.Renderer.DrawString(
-                Name, Graphics.EntityNameFont, (int) (x - (int) Math.Ceiling(textSize.X / 2f)), (int) y, 1,
+                name, Graphics.EntityNameFont, (int) (x - (int) Math.Ceiling(textSize.X / 2f)), (int) y, 1,
                 Color.FromArgb(textColor.ToArgb()), true, null, Color.FromArgb(borderColor.ToArgb())
             );
+
+            IsTargeted = false; // allow resetting of target-only name display
         }
 
         public float GetLabelLocation(LabelType type)
@@ -1422,14 +1565,54 @@ namespace Intersect.Client.Entities
                     y = GetLabelLocation(LabelType.Header) - 4;
 
                     break;
+                case LabelType.Guild:
+                    // ???? This should never NOT run on a player ????
+                    if (this is Player player)
+                    {
+                        if (string.IsNullOrWhiteSpace(player.Guild))
+                        {
+                            return GetLabelLocation(LabelType.Name);
+                        }
+
+                        // Do we have a header? If so, slightly change the position!
+                        if (string.IsNullOrWhiteSpace(HeaderLabel.Text))
+                        {
+                            y = GetLabelLocation(LabelType.Name);
+                        }
+                        else
+                        {
+                            y = GetLabelLocation(LabelType.Header);
+                        }
+
+                        var guildSize = Graphics.Renderer.MeasureText(player.Guild, Graphics.EntityNameFont, 1);
+                        y -= guildSize.Y;
+                    }
+                    break;
             }
 
             return y;
+        }
+        public int GetShieldSize()
+        {
+            var shieldSize = 0;
+            foreach (var status in Status)
+            {
+                if (status.Type == StatusTypes.Shield)
+                {
+                    shieldSize += status.Shield[(int)Vitals.Health];
+                }
+            }
+            return shieldSize;
         }
 
         public void DrawHpBar()
         {
             if (HideName && HideEntity)
+            {
+                return;
+            }
+
+            if (this is Resource && Options.HideResourceHealthBars)
             {
                 return;
             }
@@ -1481,7 +1664,7 @@ namespace Intersect.Client.Entities
                 return;
             }
 
-            var width = Options.TileWidth;
+            var width = Options.TileWidth - 8;
 
             var hpfillRatio = (float) Vital[(int) Vitals.Health] / maxVital;
             hpfillRatio = Math.Min(1, Math.Max(0, hpfillRatio));
@@ -1513,15 +1696,16 @@ namespace Intersect.Client.Entities
             {
                 Graphics.DrawGameTexture(
                     hpBackground, new FloatRect(0, 0, hpBackground.GetWidth(), hpBackground.GetHeight()),
-                    new FloatRect((int) (x - width / 2), (int) (y - 1), width, 6), Color.White
+                    new FloatRect((int) (x - width / 2), (int) (y - 1), width, 9), Color.White
                 );
             }
 
             if (hpForeground != null)
             {
                 Graphics.DrawGameTexture(
-                    hpForeground, new FloatRect(0, 0, hpfillWidth, hpForeground.GetHeight()),
-                    new FloatRect((int) (x - width / 2), (int) (y - 1), hpfillWidth, 6), Color.White
+                    hpForeground, 
+                    new FloatRect(0, 0, hpForeground.GetWidth(), hpForeground.GetHeight()),
+                    new FloatRect((int) (x - width / 2), (int) (y - 1), hpfillWidth, 9), Color.White
                 );
             }
 
@@ -1529,8 +1713,8 @@ namespace Intersect.Client.Entities
             {
                 Graphics.DrawGameTexture(
                     shieldForeground,
-                    new FloatRect((float) (width - shieldfillWidth), 0, shieldfillWidth, shieldForeground.GetHeight()),
-                    new FloatRect((int) (x - width / 2) + hpfillWidth, (int) (y - 1), shieldfillWidth, 6), Color.White
+                    new FloatRect(0, 0, shieldfillWidth, shieldForeground.GetHeight()),
+                    new FloatRect((int) (x - width / 2) + hpfillWidth, (int) (y - 1), shieldfillWidth, 9), Color.White
                 );
             }
         }
@@ -1550,7 +1734,7 @@ namespace Intersect.Client.Entities
             var castSpell = SpellBase.Get(SpellCast);
             if (castSpell != null)
             {
-                var width = Options.TileWidth;
+                var width = Options.TileWidth - 8;
                 var fillratio = (castSpell.CastDuration - (CastTime - Globals.System.GetTimeMs())) /
                                 (float) castSpell.CastDuration;
 
@@ -1576,7 +1760,7 @@ namespace Intersect.Client.Entities
                 {
                     Graphics.DrawGameTexture(
                         castBackground, new FloatRect(0, 0, castBackground.GetWidth(), castBackground.GetHeight()),
-                        new FloatRect((int) (x - width / 2), (int) (y - 1), width, 6), Color.White
+                        new FloatRect((int) (x - width / 2), (int) (y - 1), width, 9), Color.White
                     );
                 }
 
@@ -1585,7 +1769,7 @@ namespace Intersect.Client.Entities
                     Graphics.DrawGameTexture(
                         castForeground,
                         new FloatRect(0, 0, castForeground.GetWidth() * fillratio, castForeground.GetHeight()),
-                        new FloatRect((int) (x - width / 2), (int) (y - 1), castFillWidth, 6), Color.White
+                        new FloatRect((int) (x - width / 2), (int) (y - 1), castFillWidth, 9), Color.White
                     );
                 }
             }
@@ -1594,6 +1778,7 @@ namespace Intersect.Client.Entities
         //
         public void DrawTarget(int priority)
         {
+            IsTargeted = true;
             if (GetType() == typeof(Projectile))
             {
                 return;
@@ -1698,7 +1883,6 @@ namespace Intersect.Client.Entities
                 if (AnimatedTextures[SpriteAnimations.Attack] != null)
                 {
                     SpriteAnimation = SpriteAnimations.Attack;
-                    SpriteFrame = (int)Math.Floor((timeIn / (CalculateAttackTime() / (float)SpriteFrames)));
                 }
 
                 if (Options.WeaponIndex > -1 && Options.WeaponIndex < Equipment.Length)
@@ -1735,6 +1919,11 @@ namespace Intersect.Client.Entities
                         }
                     }
                 }
+
+                if (SpriteAnimation != SpriteAnimations.Normal && SpriteAnimation != SpriteAnimations.Idle)
+                {
+                    SpriteFrame = (int)Math.Floor((timeIn / (CalculateAttackTime() / (float)SpriteFrames)));
+                }
             }
             else if (CastTime > Globals.System.GetTimeMs())
             {
@@ -1743,7 +1932,6 @@ namespace Intersect.Client.Entities
                 {
                     var duration = spell.CastDuration;
                     var timeIn = duration - (CastTime - Globals.System.GetTimeMs());
-                    SpriteFrame = (int)Math.Floor((timeIn / (duration / (float)SpriteFrames)));
 
                     if (AnimatedTextures[SpriteAnimations.Cast] != null)
                     {
@@ -1755,6 +1943,8 @@ namespace Intersect.Client.Entities
                     {
                         SpriteAnimation = SpriteAnimations.Shoot;
                     }
+
+                    SpriteFrame = (int)Math.Floor((timeIn / (duration / (float)SpriteFrames)));
                 }
                 LastActionTime = Globals.System.GetTimeMs();
             }
@@ -1795,14 +1985,295 @@ namespace Intersect.Client.Entities
             }
         }
 
+        public byte GetDirectionTo(Entity otherEntity)
+        {
+            if (otherEntity == null) return Dir;
+
+            bool preferY;
+            int yOffset, xOffset;
+            byte newDir = Dir;
+
+            if (otherEntity.MapInstance.Id != MapInstance.Id)
+            {
+                int relX = X;
+                int relY = Y;
+                int relEntityX = otherEntity.X;
+                int relEntityY = otherEntity.Y;
+
+                if (otherEntity.MapInstance.MapGridX < MapInstance.MapGridX)
+                {
+                    relX += Options.MapWidth - 1;
+                } else if (otherEntity.MapInstance.MapGridX > MapInstance.MapGridX)
+                {
+                    relEntityX += (Options.MapWidth - 1);
+                }
+                
+                if (otherEntity.MapInstance.MapGridY < MapInstance.MapGridY)
+                {
+                    relY += Options.MapHeight - 1;
+                } else if (otherEntity.MapInstance.MapGridY > MapInstance.MapGridY)
+                {
+                    relEntityY += Options.MapHeight - 1;
+                }
+
+                yOffset = relY - relEntityY;
+                xOffset = relX - relEntityX;
+                preferY = (Math.Abs(yOffset) - Math.Abs(xOffset)) > 0;
+            } else
+            {
+                yOffset = Y - otherEntity.Y;
+                xOffset = X - otherEntity.X;
+                preferY = (Math.Abs(yOffset) - Math.Abs(xOffset)) > 0;
+            }
+
+            if (preferY)
+            {
+                if (yOffset > 0) newDir = (byte)Directions.Up;
+                else if (yOffset < 0) newDir = (byte)Directions.Down;
+                else if (xOffset > 0) newDir = (byte)Directions.Left;
+                else if (xOffset < 0) newDir = (byte)Directions.Right;
+            }
+            else
+            {
+                if (xOffset > 0) newDir = (byte)Directions.Left;
+                else if (xOffset < 0) newDir = (byte)Directions.Right;
+                else if (yOffset > 0) newDir = (byte)Directions.Up;
+                else if (yOffset < 0) newDir = (byte)Directions.Down;
+            }
+
+            return newDir;
+        }
+
+        //Movement
+        /// <summary>
+        ///     Returns -6 if the tile is blocked by a global (non-event) entity
+        ///     Returns -5 if the tile is completely out of bounds.
+        ///     Returns -4 if a tile is blocked because of a local event.
+        ///     Returns -3 if a tile is blocked because of a Z dimension tile
+        ///     Returns -2 if a tile does not exist or is blocked by a map attribute.
+        ///     Returns -1 is a tile is passable.
+        ///     Returns any value zero or greater matching the entity index that is in the way.
+        /// </summary>
+        /// <returns></returns>
+        public int IsTileBlocked(
+            int x,
+            int y,
+            int z,
+            Guid mapId,
+            ref Entity blockedBy,
+            bool ignoreAliveResources = true,
+            bool ignoreDeadResources = true,
+            bool ignoreNpcAvoids = true,
+            bool grounded = true
+        )
+        {
+            var mapInstance = MapInstance.Get(mapId);
+            if (mapInstance == null)
+            {
+                return -2;
+            }
+
+            var gridX = mapInstance.MapGridX;
+            var gridY = mapInstance.MapGridY;
+            try
+            {
+                var tmpX = x;
+                var tmpY = y;
+                var tmpMapId = Guid.Empty;
+                if (x < 0)
+                {
+                    gridX--;
+                    tmpX = Options.MapWidth - x * -1;
+                }
+
+                if (y < 0)
+                {
+                    gridY--;
+                    tmpY = Options.MapHeight - y * -1;
+                }
+
+                if (x > Options.MapWidth - 1)
+                {
+                    gridX++;
+                    tmpX = x - Options.MapWidth;
+                }
+
+                if (y > Options.MapHeight - 1)
+                {
+                    gridY++;
+                    tmpY = y - Options.MapHeight;
+                }
+
+                if (gridX < 0 || gridY < 0 || gridX >= Globals.MapGridWidth || gridY >= Globals.MapGridHeight)
+                {
+                    return -2;
+                }
+
+                tmpMapId = Globals.MapGrid[gridX, gridY];
+
+                foreach (var en in Globals.Entities)
+                {
+                    if (en.Value == null)
+                    {
+                        continue;
+                    }
+
+                    if (en.Value == Globals.Me)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (en.Value.CurrentMap == tmpMapId &&
+                            en.Value.X == tmpX &&
+                            en.Value.Y == tmpY &&
+                            en.Value.Z == Z)
+                        {
+                            if (en.Value.GetType() != typeof(Projectile))
+                            {
+                                if (en.Value.GetType() == typeof(Resource))
+                                {
+                                    var resourceBase = ((Resource)en.Value).GetResourceBase();
+                                    if (resourceBase != null)
+                                    {
+                                        if (!ignoreAliveResources && !((Resource)en.Value).IsDead)
+                                        {
+                                            blockedBy = en.Value;
+
+                                            return -6;
+                                        }
+
+                                        if (!ignoreDeadResources && ((Resource)en.Value).IsDead)
+                                        {
+                                            blockedBy = en.Value;
+
+                                            return -6;
+                                        }
+
+                                        if (resourceBase.WalkableAfter && ((Resource)en.Value).IsDead ||
+                                            resourceBase.WalkableBefore && !((Resource)en.Value).IsDead)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+                                else if (en.Value.GetType() == typeof(Player))
+                                {
+                                    //Return the entity key as this should block the player.  Only exception is if the MapZone this entity is on is passable.
+                                    var entityMap = MapInstance.Get(en.Value.CurrentMap);
+                                    if (Options.Instance.Passability.Passable[(int)entityMap.ZoneType])
+                                    {
+                                        continue;
+                                    }
+                                }
+
+                                blockedBy = en.Value;
+
+                                return -6;
+                            }
+                        }
+                    }
+                }
+
+                if (MapInstance.Get(tmpMapId) != null)
+                {
+                    foreach (var en in MapInstance.Get(tmpMapId).LocalEntities)
+                    {
+                        if (en.Value == null)
+                        {
+                            continue;
+                        }
+
+                        if (en.Value.CurrentMap == tmpMapId &&
+                            en.Value.X == tmpX &&
+                            en.Value.Y == tmpY &&
+                            en.Value.Z == Z &&
+                            !en.Value.Passable)
+                        {
+                            var entityMap = MapInstance.Get(en.Value.CurrentMap);
+                            blockedBy = en.Value;
+                            if (!(this is Projectile))
+                            {
+                                return -4;
+                            }
+                        }
+                    }
+
+                    foreach (var en in MapInstance.Get(tmpMapId).Critters)
+                    {
+                        if (en.Value == null)
+                        {
+                            continue;
+                        }
+
+                        if (en.Value.CurrentMap == tmpMapId &&
+                            en.Value.X == tmpX &&
+                            en.Value.Y == tmpY &&
+                            en.Value.Z == Z &&
+                            !en.Value.Passable)
+                        {
+                            blockedBy = en.Value;
+
+                            return -4;
+                        }
+                    }
+                }
+
+                var gameMap = MapInstance.Get(Globals.MapGrid[gridX, gridY]);
+                if (gameMap != null)
+                {
+                    if (gameMap.Attributes[tmpX, tmpY] != null)
+                    {
+                        if (gameMap.Attributes[tmpX, tmpY] is MapBlockedAttribute blockAttr)
+                        {
+                            if (grounded)
+                            {
+                                return -2;
+                            } else
+                            {
+                                if (!blockAttr.GroundLevel)
+                                {
+                                    return -2;
+                                }
+                            }
+                        }
+
+                        if ((gameMap.Attributes[tmpX, tmpY].Type == MapAttributes.Animation && ((MapAnimationAttribute)gameMap.Attributes[tmpX, tmpY]).IsBlock))
+                        {
+                            return -2;
+                        }
+                        else if (gameMap.Attributes[tmpX, tmpY].Type == MapAttributes.ZDimension)
+                        {
+                            if (((MapZDimensionAttribute)gameMap.Attributes[tmpX, tmpY]).BlockedLevel - 1 == z)
+                            {
+                                return -3;
+                            }
+                        }
+                        else if (gameMap.Attributes[tmpX, tmpY].Type == MapAttributes.NpcAvoid)
+                        {
+                            if (!ignoreNpcAvoids)
+                            {
+                                return -2;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return -5;
+                }
+
+                return -1;
+            }
+            catch
+            {
+                return -2;
+            }
+        }
+
         ~Entity()
         {
             Dispose();
         }
-
-
-
-
     }
-
 }

@@ -37,7 +37,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="Menu" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Menu(Base parent) : base(parent)
+        public Menu(Base parent, string name = "") : base(parent, name)
         {
             SetBounds(0, 0, 10, 10);
             Padding = Padding.Two;
@@ -46,6 +46,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             AutoHideBars = true;
             EnableScroll(false, true);
             DeleteOnClose = false;
+            Name = name;
         }
 
         internal override bool IsMenuComponent => true;
@@ -98,7 +99,20 @@ namespace Intersect.Client.Framework.Gwen.Control
             IsHidden = false;
             BringToFront();
             var mouse = Input.InputHandler.MousePosition;
-            SetPosition(mouse.X, mouse.Y);
+
+            var x = mouse.X;
+            var y = mouse.Y;
+            if (x + Width > Canvas.Width)
+            {
+                x -= Width;
+            }
+
+            if (y + Height > Canvas.Height)
+            {
+                y -= Height;
+            }
+
+            SetPosition(x, y);
         }
 
         /// <summary>
@@ -289,7 +303,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             base.SizeToChildren(width, height);
             if (width)
             {
-                var maxWidth = this.Width;
+                var maxWidth = 0;
                 foreach (var child in Children)
                 {
                     if (child.Width > maxWidth)

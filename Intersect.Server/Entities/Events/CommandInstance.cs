@@ -7,7 +7,7 @@ using Intersect.GameObjects.Events.Commands;
 namespace Intersect.Server.Entities.Events
 {
 
-    public class CommandInstance
+    public partial class CommandInstance
     {
 
         public enum EventResponse
@@ -25,7 +25,13 @@ namespace Intersect.Server.Entities.Events
 
             Quest,
 
-            Timer
+            Timer,
+
+            Picture,
+
+            QuestBoard,
+
+            RandomQuest
 
         }
 

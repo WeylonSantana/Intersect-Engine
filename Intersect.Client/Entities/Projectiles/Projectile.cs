@@ -10,7 +10,7 @@ using Intersect.Network.Packets.Server;
 namespace Intersect.Client.Entities.Projectiles
 {
 
-    public class Projectile : Entity
+    public partial class Projectile : Entity
     {
 
         private bool mDisposing;
@@ -32,6 +32,8 @@ namespace Intersect.Client.Entities.Projectiles
         private long mSpawnTime;
 
         private int mTotalSpawns;
+
+        public bool Grounded = false;
 
         public Guid ProjectileId;
 
@@ -83,6 +85,7 @@ namespace Intersect.Client.Entities.Projectiles
                 }
 
                 mTotalSpawns *= mMyBase.Quantity;
+                Grounded = mMyBase.Grounded;
             }
 
             Spawns = new ProjectileSpawns[mTotalSpawns];
@@ -365,7 +368,7 @@ namespace Intersect.Client.Entities.Projectiles
                 var map = CurrentMap;
                 var y = Y;
 
-                if (mQuantity < mMyBase.Quantity && mSpawnTime < Globals.System.GetTimeMs())
+                if (!mDisposing && mQuantity < mMyBase.Quantity && mSpawnTime < Globals.System.GetTimeMs())
                 {
                     AddProjectileSpawns();
                 }
@@ -538,7 +541,8 @@ namespace Intersect.Client.Entities.Projectiles
             Entity blockedBy = null;
             var tileBlocked = Globals.Me.IsTileBlocked(
                 Spawns[i].X, Spawns[i].Y, Z, Spawns[i].MapId, ref blockedBy,
-                Spawns[i].ProjectileBase.IgnoreActiveResources, Spawns[i].ProjectileBase.IgnoreExhaustedResources
+                Spawns[i].ProjectileBase.IgnoreActiveResources, Spawns[i].ProjectileBase.IgnoreExhaustedResources, true,
+                Grounded
             );
 
             if (tileBlocked != -1)

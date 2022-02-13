@@ -6,8 +6,6 @@ using Intersect.Server.Entities;
 using Intersect.Server.Localization;
 using Intersect.Utilities;
 
-using JetBrains.Annotations;
-
 using NCalc;
 
 using Newtonsoft.Json;
@@ -32,6 +30,18 @@ namespace Intersect.Server.General
 
         public string TrueDamage =
             "Random(((BaseDamage + (ScalingStat * ScaleFactor))) * CritMultiplier * .975, ((BaseDamage + (ScalingStat * ScaleFactor))) * CritMultiplier * 1.025)";
+
+        public string Evasion =
+            "V_Speed + V_Defense + 20";
+
+        public string AccuracyRating =
+            "A_Speed + (A_Attack / 5)";
+
+        public string Resistance =
+            "V_Speed + V_AbilityPwr + 20";
+
+        public string AttunementRating =
+           "A_AbilityPwr + (A_Speed / 5)";
 
         public static void LoadFormulas()
         {
@@ -128,32 +138,7 @@ namespace Intersect.Server.General
 
             try
             {
-                expression.Parameters["BaseDamage"] = baseDamage;
-                expression.Parameters["ScalingStat"] = attacker.Stat[(int) scalingStat].Value();
-                expression.Parameters["ScaleFactor"] = scaling / 100f;
-                expression.Parameters["CritMultiplier"] = critMultiplier;
-                expression.Parameters["A_Attack"] = attacker.Stat[(int) Stats.Attack].Value();
-                expression.Parameters["A_Defense"] = attacker.Stat[(int) Stats.Defense].Value();
-                expression.Parameters["A_Speed"] = attacker.Stat[(int) Stats.Speed].Value();
-                expression.Parameters["A_AbilityPwr"] = attacker.Stat[(int) Stats.AbilityPower].Value();
-                expression.Parameters["A_MagicResist"] = attacker.Stat[(int) Stats.MagicResist].Value();
-                expression.Parameters["V_Attack"] = victim.Stat[(int) Stats.Attack].Value();
-                expression.Parameters["V_Defense"] = victim.Stat[(int) Stats.Defense].Value();
-                expression.Parameters["V_Speed"] = victim.Stat[(int) Stats.Speed].Value();
-                expression.Parameters["V_AbilityPwr"] = victim.Stat[(int) Stats.AbilityPower].Value();
-                expression.Parameters["V_MagicResist"] = victim.Stat[(int) Stats.MagicResist].Value();
-                expression.EvaluateFunction += delegate(string name, FunctionArgs args)
-                {
-                    if (args == null)
-                    {
-                        throw new ArgumentNullException(nameof(args));
-                    }
-
-                    if (name == "Random")
-                    {
-                        args.Result = Random(args);
-                    }
-                };
+                mFormulas.ReadParams(ref expression, baseDamage, attacker, victim, critMultiplier, scaling, scalingStat);
 
                 var result = Convert.ToDouble(expression.Evaluate());
                 if (negate)
@@ -169,7 +154,56 @@ namespace Intersect.Server.General
             }
         }
 
-        private static int Random([NotNull] FunctionArgs args)
+        public static bool AttackEvaded(int baseDamage, DamageType damageType, Entity attacker, Entity victim, double critMultiplier, int scaling, Stats scalingStat)
+        {
+            var victimsEvasionExpr = damageType == DamageType.Physical ? new Expression(mFormulas.Evasion) : new Expression(mFormulas.Resistance);
+            mFormulas.ReadParams(ref victimsEvasionExpr, baseDamage, attacker, victim, critMultiplier, scaling, scalingStat);
+            var evasion = (int) Math.Round(Convert.ToDouble(victimsEvasionExpr.Evaluate()));
+
+            var attackersAccuracyExpr = damageType == DamageType.Physical ? new Expression(mFormulas.AccuracyRating) : new Expression(mFormulas.AttunementRating);
+            mFormulas.ReadParams(ref attackersAccuracyExpr, baseDamage, attacker, victim, critMultiplier, scaling, scalingStat);
+            var accuracy = (int) Math.Round(Convert.ToDouble(attackersAccuracyExpr.Evaluate()));
+
+            FormattableString evadeExpString = $"if ( Random(1.0, 400.0) <= ({evasion}) - ({accuracy}), 1, 0 )";
+            var evasionExpression = new Expression(evadeExpString.ToString());
+            mFormulas.ReadParams(ref evasionExpression, baseDamage, attacker, victim, critMultiplier, scaling, scalingStat);
+
+            bool hasEvaded = Convert.ToBoolean(Convert.ToInt32(evasionExpression.Evaluate()));
+            return hasEvaded;
+        }
+
+        private void ReadParams(ref Expression expression, int baseDamage, Entity attacker, Entity victim, double critMultiplier, int scaling, Stats scalingStat)
+        {
+            expression.Parameters["BaseDamage"] = baseDamage;
+            expression.Parameters["ScalingStat"] = attacker.Stat[(int)scalingStat].Value();
+            expression.Parameters["ScaleFactor"] = scaling / 100f;
+            expression.Parameters["CritMultiplier"] = critMultiplier;
+            expression.Parameters["A_Attack"] = attacker.Stat[(int)Stats.Attack].Value();
+            expression.Parameters["A_Defense"] = attacker.Stat[(int)Stats.Defense].Value();
+            expression.Parameters["A_Speed"] = attacker.Stat[(int)Stats.Speed].Value();
+            expression.Parameters["A_AbilityPwr"] = attacker.Stat[(int)Stats.AbilityPower].Value();
+            expression.Parameters["A_MagicResist"] = attacker.Stat[(int)Stats.MagicResist].Value();
+            expression.Parameters["V_Attack"] = victim.Stat[(int)Stats.Attack].Value();
+            expression.Parameters["V_Defense"] = victim.Stat[(int)Stats.Defense].Value();
+            expression.Parameters["V_Speed"] = victim.Stat[(int)Stats.Speed].Value();
+            expression.Parameters["V_AbilityPwr"] = victim.Stat[(int)Stats.AbilityPower].Value();
+            expression.Parameters["V_MagicResist"] = victim.Stat[(int)Stats.MagicResist].Value();
+
+            expression.EvaluateFunction += delegate (string name, FunctionArgs args)
+            {
+                if (args == null)
+                {
+                    throw new ArgumentNullException(nameof(args));
+                }
+
+                if (name == "Random")
+                {
+                    args.Result = Random(args);
+                }
+            };
+        }
+
+        private static int Random(FunctionArgs args)
         {
             if (args.Parameters == null)
             {

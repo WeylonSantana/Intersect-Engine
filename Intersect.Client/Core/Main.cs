@@ -18,7 +18,7 @@ using Intersect.GameObjects.Maps;
 namespace Intersect.Client.Core
 {
 
-    public static class Main
+    internal static class Main
     {
 
         private static long _animTimer;
@@ -27,17 +27,17 @@ namespace Intersect.Client.Core
 
         private static bool _loadedTilesets;
 
-        public static void Start()
+        internal static void Start(IClientContext context)
         {
             //Load Graphics
             Graphics.InitGraphics();
 
             //Load Sounds
             Audio.Init();
-            Audio.PlayMusic(ClientConfiguration.Instance.MenuMusic, 3, 3, true);
+            Audio.PlayMusic(ClientConfiguration.Instance.MenuMusic, 6f, 10f, true);
 
             //Init Network
-            Networking.Network.InitNetwork();
+            Networking.Network.InitNetwork(context);
             Fade.FadeIn();
 
             //Make Json.Net Familiar with Our Object Types
@@ -71,6 +71,7 @@ namespace Intersect.Client.Core
                 Networking.Network.Update();
                 Globals.System.Update();
                 Fade.Update();
+                Flash.Update();
                 Interface.Interface.ToggleInput(Globals.GameState != GameStates.Intro);
 
                 switch (Globals.GameState)
@@ -106,6 +107,8 @@ namespace Intersect.Client.Core
 
                 Globals.InputManager.Update();
                 Audio.Update();
+
+                Globals.OnGameUpdate();
             }
         }
 
@@ -184,7 +187,7 @@ namespace Intersect.Client.Core
                 _loadedTilesets = true;
             }
 
-            Audio.PlayMusic(MapInstance.Get(Globals.Me.CurrentMap).Music, 3, 3, true);
+            Audio.PlayMusic(MapInstance.Get(Globals.Me.CurrentMap).Music, 6f, 10f, true);
             Globals.GameState = GameStates.InGame;
             Fade.FadeIn();
         }
@@ -351,12 +354,12 @@ namespace Intersect.Client.Core
         public static void JoinGame()
         {
             Globals.LoggedIn = true;
-            Audio.StopMusic(3f);
+            Audio.StopMusic(6f);
         }
 
         public static void Logout(bool characterSelect)
         {
-            Audio.PlayMusic(ClientConfiguration.Instance.MenuMusic, 3, 3, true);
+            Audio.PlayMusic(ClientConfiguration.Instance.MenuMusic, 6f, 10f, true);
             Fade.FadeOut();
             PacketSender.SendLogout(characterSelect);
             Globals.LoggedIn = false;

@@ -36,6 +36,12 @@ namespace Intersect.Client.Interface.Game.Crafting
 
         private Button mCraft;
 
+        private Button mCraftAll;
+
+        private Guid mAutoCraftId = Guid.Empty;
+
+        private int mAutoCraftAmount = 0;
+
         private ImagePanel mCraftedItemTemplate;
 
         private Guid mCraftId;
@@ -44,6 +50,8 @@ namespace Intersect.Client.Interface.Game.Crafting
         private WindowControl mCraftWindow;
 
         private bool mInitialized = false;
+
+        public bool Refresh = false;
 
         private ScrollControl mItemContainer;
 
@@ -90,6 +98,11 @@ namespace Intersect.Client.Interface.Game.Crafting
             mCraft = new Button(mCraftWindow, "CraftButton");
             mCraft.SetText(Strings.Crafting.craft);
             mCraft.Clicked += craft_Clicked;
+
+            //Craft all button
+            mCraftAll = new Button(mCraftWindow, "CraftAllButton");
+            mCraftAll.SetText(Strings.Crafting.craftall.ToString("1"));
+            mCraftAll.Clicked += craftAll_Clicked;
 
             mCraftWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
@@ -186,6 +199,8 @@ namespace Intersect.Client.Interface.Game.Crafting
                 }
             }
 
+            var craftableQuantity = -1;
+
             for (var i = 0; i < craft.Ingredients.Count; i++)
             {
                 mItems.Add(new RecipeItem(this, craft.Ingredients[i]));
@@ -201,6 +216,14 @@ namespace Intersect.Client.Interface.Game.Crafting
                 }
 
                 lblTemp.Text = onHand + "/" + craft.Ingredients[i].Quantity;
+
+                var possibleToCraft = (int)Math.Floor(onHand / (double)craft.Ingredients[i].Quantity);
+
+                if (craftableQuantity == -1 || possibleToCraft < craftableQuantity)
+                {
+                    craftableQuantity = possibleToCraft;
+                }
+
                 mValues.Add(lblTemp);
 
                 mItems[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
@@ -256,9 +279,43 @@ namespace Intersect.Client.Interface.Game.Crafting
                     Crafting = false;
                     mCraftWindow.IsClosable = true;
                     mBar.Width = 0;
-                    ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Crafting.incorrectresources, Color.Red));
+                    ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Crafting.incorrectresources, CustomColors.Alerts.Declined, Enums.ChatMessageType.Crafting));
 
                     return;
+                }
+            }
+            else
+            {
+                var autoCrafting = false;
+
+                //Auto craft if that's what we were doing
+                if (mAutoCraftId != Guid.Empty && mCraftId == mAutoCraftId)
+                {
+                    if (mAutoCraftAmount > 0 && CanCraft())
+                    {
+                        craft_Clicked(null, null);
+                        mAutoCraftAmount--;
+                        autoCrafting = true;
+                    }
+                    else
+                    {
+                        mAutoCraftId = Guid.Empty;
+                    }
+                }
+
+                if (!autoCrafting)
+                {
+                    //Update craft buttons!
+                    if (craftableQuantity > 1)
+                    {
+                        mCraftAll.Show();
+                        mCraftAll.SetText(Strings.Crafting.craftall.ToString(craftableQuantity.ToString()));
+                    }
+                    else
+                    {
+                        mCraftAll.Hide();
+                    }
+                    mCraftAll.UserData = craftableQuantity;
                 }
             }
         }
@@ -293,8 +350,7 @@ namespace Intersect.Client.Interface.Game.Crafting
             }
         }
 
-        //Craft the item
-        void craft_Clicked(Base sender, ClickedEventArgs arguments)
+        bool CanCraft()
         {
             //This shouldn't be client side :(
             //Quickly Look through the inventory and create a catalog of what items we have, and how many
@@ -339,24 +395,69 @@ namespace Intersect.Client.Interface.Game.Crafting
                 }
             }
 
-            if (canCraft)
+            return canCraft;
+        }
+
+        //Craft the item
+        void craft_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            if (Crafting)
+            {
+                PacketSender.SendCraftItem(Guid.Empty);
+                Crafting = false;
+                mCraftWindow.IsClosable = true;
+                mBar.Width = 0;
+                mAutoCraftAmount = 0;
+                mAutoCraftId = Guid.Empty;
+
+                LoadCraftItems(mCraftId);
+
+                return;
+            }
+
+            if (CanCraft())
             {
                 Crafting = true;
                 mBarTimer = Globals.System.GetTimeMs();
                 PacketSender.SendCraftItem(mCraftId);
                 mCraftWindow.IsClosable = false;
+                mCraftAll.Hide();
 
                 return;
             }
 
-            ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Crafting.incorrectresources, Color.Red));
+            ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Crafting.incorrectresources, CustomColors.Alerts.Declined, Enums.ChatMessageType.Crafting));
+        }
+
+        //Craft all the items
+        void craftAll_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            if (CanCraft())
+            {
+                craft_Clicked(null, null);
+                mAutoCraftAmount = (int)mCraftAll.UserData - 1;
+                mAutoCraftId = mCraftId;
+                mCraftAll.Hide();
+            }
+            else
+            {
+                ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Crafting.incorrectresources, CustomColors.Alerts.Declined, Enums.ChatMessageType.Crafting));
+            }
         }
 
         //Update the crafting bar
         public void Update()
         {
-            if (!mInitialized)
+            var resetSelection = false;
+            if (Refresh)
             {
+                // Clear things that were already populated
+                mRecipes.Clear();
+            }
+
+            if (!mInitialized || Refresh)
+            {
+                var displayIndex = 0;
                 for (var i = 0; i < Globals.ActiveCraftingTable?.Crafts?.Count; ++i)
                 {
                     var activeCraft = CraftBase.Get(Globals.ActiveCraftingTable.Crafts[i]);
@@ -365,7 +466,18 @@ namespace Intersect.Client.Interface.Game.Crafting
                         continue;
                     }
 
-                    var tmpRow = mRecipes?.AddRow(i + 1 + ") " + ItemBase.GetName(activeCraft.ItemId));
+                    if (Globals.ActiveCraftingTable.HiddenCrafts.Contains(activeCraft.Id))
+                    {
+                        if (activeCraft.Id == mCraftId && mAutoCraftAmount == 0)
+                        {
+                            // The craft the user had seelcted is no longer available - clear it from their selection
+                            resetSelection = true;
+                        }
+                        continue;
+                    }
+
+                    displayIndex++;
+                    var tmpRow = mRecipes?.AddRow(Strings.Crafting.recipe.ToString(displayIndex, activeCraft.Name));
                     if (tmpRow == null)
                     {
                         continue;
@@ -379,19 +491,24 @@ namespace Intersect.Client.Interface.Game.Crafting
                 }
 
                 //Load the craft data
-                if (Globals.ActiveCraftingTable?.Crafts?.Count > 0)
+                if (( Globals.ActiveCraftingTable?.Crafts?.Count > 0 && !Refresh ) || resetSelection)
                 {
                     LoadCraftItems(Globals.ActiveCraftingTable.Crafts[0]);
                 }
-
                 mInitialized = true;
+                Refresh = false;
             }
 
             if (!Crafting)
             {
+                mCraft.SetText(Strings.Crafting.craft);
                 mBar.Width = 0;
 
                 return;
+            }
+            else
+            {
+                mCraft.SetText(Strings.Crafting.craftstop);
             }
 
             var craft = CraftBase.Get(mCraftId);
@@ -410,7 +527,6 @@ namespace Intersect.Client.Interface.Game.Crafting
                     mCraftWindow.IsClosable = true;
                 }
 
-                LoadCraftItems(mCraftId);
                 mBar.Width = 0;
             }
 
@@ -428,7 +544,5 @@ namespace Intersect.Client.Interface.Game.Crafting
 
             mBar.Width = Convert.ToInt32(width);
         }
-
     }
-
 }

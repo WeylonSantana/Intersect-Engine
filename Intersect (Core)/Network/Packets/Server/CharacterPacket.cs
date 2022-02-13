@@ -1,10 +1,15 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 
 namespace Intersect.Network.Packets.Server
 {
-
-    public class CharacterPacket : CerasPacket
+    [MessagePackObject]
+    public class CharacterPacket : IntersectPacket
     {
+        //Parameterless Constructor for MessagePack
+        public CharacterPacket()
+        {
+        }
 
         public CharacterPacket(
             Guid id,
@@ -13,7 +18,11 @@ namespace Intersect.Network.Packets.Server
             string face,
             int level,
             string className,
-            string[] equipment
+            string[] equipment,
+            string[] decor,
+            bool hideHair,
+            bool hideBeard,
+            bool hideExtra
         )
         {
             Id = id;
@@ -23,22 +32,44 @@ namespace Intersect.Network.Packets.Server
             Level = level;
             ClassName = className;
             Equipment = equipment;
+            Decor = decor;
+            HideHair = hideHair;
+            HideBeard = hideBeard;
+            HideExtra = hideExtra;
         }
 
+        [Key(0)]
         public Guid Id { get; set; }
 
+        [Key(1)]
         public string Name { get; set; }
 
+        [Key(2)]
         public string Sprite { get; set; }
 
+        [Key(3)]
         public string Face { get; set; }
 
+        [Key(4)]
         public int Level { get; set; }
 
+        [Key(5)]
         public string ClassName { get; set; }
 
+        [Key(6)]
         public string[] Equipment { get; set; }
 
+        [Key(7)]
+        public string[] Decor { get; set; }
+
+        [Key(8)]
+        public bool HideHair { get; set; }
+
+        [Key(9)]
+        public bool HideBeard { get; set; }
+
+        [Key(10)]
+        public bool HideExtra { get; set; }
     }
 
 }

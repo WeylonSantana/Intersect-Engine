@@ -10,6 +10,18 @@ namespace Intersect.Client.Framework.Database
 
         public bool HideOthersOnWindowOpen;
 
+        public bool TapToTurn;
+
+        public bool FaceOnLock;
+
+        public bool CombatFlash;
+
+        public bool CombatShake;
+        
+        public bool EnableScanlines;
+
+        public bool TargetAccountDirection;
+
         //Preferences
         public int MusicVolume;
 
@@ -18,6 +30,10 @@ namespace Intersect.Client.Framework.Database
         public int TargetFps;
 
         public int TargetResolution;
+
+        public bool StickyTarget;
+
+        public bool LeftClickTarget;
 
         //Saving password, other stuff we don't want in the games directory
         public abstract void SavePreference(string key, object value);
@@ -44,6 +60,14 @@ namespace Intersect.Client.Framework.Database
             TargetFps = LoadPreference("Fps", 0);
             FullScreen = LoadPreference("Fullscreen", false);
             HideOthersOnWindowOpen = LoadPreference("HideOthersOnWindowOpen", true);
+            TapToTurn = LoadPreference("TapToTurn", false);
+            FaceOnLock = LoadPreference("FaceOnLock", true);
+            LeftClickTarget = LoadPreference("LeftClickTarget", false);
+            TargetAccountDirection = LoadPreference("TargetAccountDirection", false);
+            StickyTarget = LoadPreference("StickyTarget", true);
+            CombatShake = LoadPreference("CombatShake", true);
+            CombatFlash = LoadPreference("CombatFlash", true);
+            EnableScanlines = LoadPreference("EnableScanlines", true);
         }
 
         public virtual void SavePreferences()
@@ -54,6 +78,14 @@ namespace Intersect.Client.Framework.Database
             SavePreference("Resolution", TargetResolution.ToString());
             SavePreference("Fps", TargetFps.ToString());
             SavePreference("HideOthersOnWindowOpen", HideOthersOnWindowOpen.ToString());
+            SavePreference("TargetAccountDirection", TargetAccountDirection.ToString());
+            SavePreference("StickyTarget", StickyTarget.ToString());
+            SavePreference("TapToTurn", TapToTurn.ToString());
+            SavePreference("FaceOnLock", FaceOnLock.ToString());
+            SavePreference("LeftClickTarget", LeftClickTarget.ToString());
+            SavePreference("CombatShake", CombatShake.ToString());
+            SavePreference("CombatFlash", CombatFlash.ToString());
+            SavePreference("EnableScanlines", EnableScanlines.ToString());
         }
 
         public abstract bool LoadConfig();

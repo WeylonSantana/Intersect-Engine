@@ -31,6 +31,11 @@ namespace Intersect.Editor.Forms.Editors
 
         NpcCanBeAttacked,
 
+        QuestList,
+
+        Craft,
+
+        ItemDestroy,
     }
 
     public partial class FrmDynamicRequirements : Form
@@ -51,6 +56,8 @@ namespace Intersect.Editor.Forms.Editors
             mEdittingLists = new ConditionLists(lists.Data());
             UpdateLists();
             InitLocalization(type);
+
+            this.Icon = Properties.Resources.Icon;
         }
 
         private void InitLocalization(RequirementType type)
@@ -93,6 +100,18 @@ namespace Intersect.Editor.Forms.Editors
                     break;
                 case RequirementType.NpcCanBeAttacked:
                     lblInstructions.Text = Strings.DynamicRequirements.instructionsnpccanbeattacked;
+
+                    break;
+                case RequirementType.QuestList:
+                    lblInstructions.Text = Strings.DynamicRequirements.instructionsnpccanbeattacked;
+                    
+                    break;
+                case RequirementType.Craft:
+                    lblInstructions.Text = Strings.DynamicRequirements.craft;
+
+                    break;
+                case RequirementType.ItemDestroy:
+                    lblInstructions.Text = Strings.DynamicRequirements.instructionsdestroyitem;
 
                     break;
                 default:
