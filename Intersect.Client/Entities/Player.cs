@@ -375,6 +375,10 @@ namespace Intersect.Client.Entities
             var canDropMultiple = quantity > 1;
             var inputType = canDropMultiple ? InputBox.InputType.NumericSliderInput : InputBox.InputType.YesNo;
             var prompt = canDropMultiple ? Strings.Inventory.DropItemPrompt : Strings.Inventory.DropPrompt;
+
+            //Heroes QuicklyDrop
+            if(QuicklyDrop(index)) return;
+
             InputBox.Open(
                 title: Strings.Inventory.DropItemTitle,
                 prompt: prompt.ToString(itemDescriptor.Name),
@@ -624,6 +628,9 @@ namespace Intersect.Client.Entities
                 }
             }
 
+            //Heroes QuicklySell
+            if (QuicklySell(index)) return;
+
             InputBox.Open(
                 title: Strings.Shop.sellitem,
                 prompt: prompt.ToString(itemDescriptor.Name),
@@ -669,6 +676,9 @@ namespace Intersect.Client.Entities
                 PacketSender.SendBuyItem(shopSlotIndex, 1);
                 return;
             }
+
+            //Heroes QuicklyBuy
+            if (QuicklyBuy(slot)) return;
 
             InputBox.Open(
                 title: Strings.Shop.buyitem,
@@ -733,6 +743,9 @@ namespace Intersect.Client.Entities
             }
 
             var userData = new int[2] { inventorySlotIndex, bankSlotIndex };
+
+            //Heroes QuicklyBankDeposit
+            if (QuicklyBankDeposit(index, bankSlot)) return;
 
             InputBox.Open(
                 title: Strings.Bank.deposititem,
@@ -799,6 +812,9 @@ namespace Intersect.Client.Entities
 
             int[] userData = new int[2] { bankSlotIndex, inventorySlotIndex };
 
+            //Heroes QuicklyBankWithdraw
+            if (QuicklyBankWithdraw(index, invSlot)) return;
+
             InputBox.Open(
                 title: Strings.Bank.withdrawitem,
                 prompt: Strings.Bank.withdrawitemprompt.ToString(itemDescriptor.Name),
@@ -847,6 +863,9 @@ namespace Intersect.Client.Entities
                 PacketSender.SendStoreBagItem(inventorySlotIndex, 1, bagSlotIndex);
                 return;
             }
+
+            //Heroes QuicklyBagDeposit
+            if (QuicklyBagDeposit(invSlot, bagSlot)) return;
 
             InputBox.Open(
                 title: Strings.Bags.storeitem,
@@ -900,6 +919,9 @@ namespace Intersect.Client.Entities
                 return;
             }
 
+            //Heroes QuicklyBagWithdraw
+            if (QuicklyBagWithdraw(bagSlot, invSlot)) return;
+
             InputBox.Open(
                 title: Strings.Bags.retreiveitem,
                 prompt: Strings.Bags.retreiveitemprompt.ToString(itemDescriptor.Name),
@@ -940,6 +962,9 @@ namespace Intersect.Client.Entities
                 return;
             }
 
+            //Heroes QuicklyTrade
+            if (QuicklyTrade(index)) return;
+
             InputBox.Open(
                 title: Strings.Trading.offeritem,
                 prompt: Strings.Trading.offeritemprompt.ToString(tradingItem.Name),
@@ -977,6 +1002,9 @@ namespace Intersect.Client.Entities
                 PacketSender.SendRevokeTradeItem(index, 1);
                 return;
             }
+
+            //Heroes QuicklyRevokeTrade
+            if (QuicklyRevokeTrade(index)) return;
 
             InputBox.Open(
                 title: Strings.Trading.revokeitem,

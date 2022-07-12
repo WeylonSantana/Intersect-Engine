@@ -398,7 +398,9 @@ namespace Intersect.Client.Core
                 return;
             }
 
-            if (Globals.InputManager.KeyDown(Keys.Shift) != true)
+            //Do not warp admin if him is NOT holding shift OR if his inventory is opened
+            var inventoryOpen = Interface.Interface.GameUi?.GameMenu?.IsInventoryVisible() ?? false;
+            if (Globals.InputManager.KeyDown(Keys.Shift) != true || inventoryOpen)
             {
                 return;
             }

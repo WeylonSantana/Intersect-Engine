@@ -120,7 +120,7 @@ namespace Intersect.Client.Interface.Game.Inventory
 
         void pnl_RightClicked(Base sender, ClickedEventArgs arguments)
         {
-            if (ClientConfiguration.Instance.EnableContextMenus)
+            if (ClientConfiguration.Instance.EnableContextMenus && !Globals.Me.QuicklyShortcutPressed())
             {
                 mInventoryWindow.OpenContextMenu(mMySlot);
             }

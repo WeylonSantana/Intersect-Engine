@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Gwen.Control;
@@ -73,7 +73,7 @@ namespace Intersect.Client.Interface.Game.Bank
 
         private void Pnl_RightClicked(Base sender, ClickedEventArgs arguments)
         {
-            if (ClientConfiguration.Instance.EnableContextMenus)
+            if (ClientConfiguration.Instance.EnableContextMenus && !Globals.Me.QuicklyShortcutPressed())
             {
                 mBankWindow.OpenContextMenu(mMySlot);
             }
