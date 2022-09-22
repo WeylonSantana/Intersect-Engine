@@ -29,6 +29,9 @@ namespace Intersect.Client.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString SwiftChange = @"Swift Change:";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString CooldownChange = @"Cooldown Change:";
         }
     }
 }

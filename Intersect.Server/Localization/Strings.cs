@@ -375,6 +375,7 @@ namespace Intersect.Server.Localization
                     {14, @"SWIFT!"},
                     {15, @"CONFUSED!"},
                     {16, @"STEADY!"},
+                    {17, @"COOLDOWN CHANGE!"},
                 }
             );
 

@@ -3356,6 +3356,14 @@ namespace Intersect.Server.Entities
                 value += item.Descriptor.GetEffectPercentage(effect);
             }
 
+            //Add amounts from spell effects
+            switch(effect)
+            {
+                case EffectType.CooldownReduction:
+                    value += GetExtraSpellBuff(StatusTypes.CooldownChange);
+                    break;
+            }
+
             return value;
         }
 

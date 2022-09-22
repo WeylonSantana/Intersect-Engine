@@ -433,8 +433,12 @@ namespace Intersect.Client.Interface.Game.Character
             mExtraExp.SetText(Strings.Character.ExtraExp.ToString(0));
             mLuck.SetText(Strings.Character.Luck.ToString(0));
             mTenacity.SetText(Strings.Character.Tenacity.ToString(0));
-            mCooldownReduction.SetText(Strings.Character.CooldownReduction.ToString(0));
             mManaSteal.SetText(Strings.Character.Manasteal.ToString(0));
+            mCooldownReduction.SetText(
+                Strings.Character.CooldownReduction.ToString(
+                    GetExtraSpellBuff(StatusTypes.CooldownChange)
+                )
+            );
 
             mAttackSpeed.SetText(Strings.Character.AttackSpeed.ToString(Globals.Me.CalculateAttackTime() / 1000f));
         }
@@ -479,6 +483,7 @@ namespace Intersect.Client.Interface.Game.Character
                     {
                         case EffectType.CooldownReduction:
                             CooldownAmount += effect.Percentage;
+                            CooldownAmount += GetExtraSpellBuff(StatusTypes.CooldownChange);
                             mCooldownReduction?.SetText(Strings.Character.CooldownReduction.ToString(CooldownAmount));
 
                             break;

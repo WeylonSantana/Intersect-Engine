@@ -56,5 +56,18 @@ namespace Intersect.Server.Entities
 
             return speed;
         }
+
+        public int GetExtraSpellBuff(StatusTypes status)
+        {
+            int amount = 0;
+            var spellStatus = GetStatusActiveList(status);
+
+            for (var i = 0; i < spellStatus.Count; i++)
+            {
+                amount += spellStatus[i].Combat.EffectPercentageValue;
+            }
+
+            return amount;
+        }
     }
 }

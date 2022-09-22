@@ -483,6 +483,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Swift:
                 case StatusTypes.Confused:
                 case StatusTypes.Steady:
+                case StatusTypes.CooldownChange:
                 case null:
                     return false;
 
@@ -514,6 +515,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Swift:
                 case StatusTypes.Confused:
                 case StatusTypes.Steady:
+                case StatusTypes.CooldownChange:
                 case null:
                     return false;
 

@@ -38,6 +38,8 @@ namespace Intersect.Enums
 
         Steady = 16,
 
+        CooldownChange = 17,
+
         Knockback = 100,
 
     }

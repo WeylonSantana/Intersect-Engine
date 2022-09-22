@@ -32,17 +32,20 @@ namespace Intersect.Editor.Forms.Editors
 
         void ExtraStatusSetup()
         {
-            //Haste or Swift
-            if (cmbExtraEffect.SelectedIndex == 13 ||
-                cmbExtraEffect.SelectedIndex == 14)
+            switch (cmbExtraEffect.SelectedIndex)
             {
-                lblPercentageEffect.Show();
-                nudPercentageEffect.Show();
-            }
-            else
-            {
-                lblPercentageEffect.Hide();
-                nudPercentageEffect.Hide();
+                case (int) StatusTypes.Haste:
+                case (int) StatusTypes.Swift:
+                case (int) StatusTypes.CooldownChange:
+                    lblPercentageEffect.Show();
+                    nudPercentageEffect.Show();
+
+                    break;
+
+                default:
+                    lblPercentageEffect.Hide();
+                    nudPercentageEffect.Hide();
+                    break;
             }
         }
 
