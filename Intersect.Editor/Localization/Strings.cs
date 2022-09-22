@@ -4466,6 +4466,7 @@ Tick timer saved in server config.json.";
                 {StatusTypes.Confused, @"Confused"},
                 {StatusTypes.Steady, @"Steady"},
                 {StatusTypes.CooldownChange, @"Cooldown Change"},
+                {StatusTypes.ExpChange, @"Exp Bonus Change"},
             };
 
         }
@@ -5062,6 +5063,7 @@ Tick timer saved in server config.json.";
                 {15, @"Confused"},
                 {16, @"Steady"},
                 {17, @"Cooldown Change"},
+                {18, @"Exp Bonus Change"},
             };
 
             public static LocalizedString effectgroup = @"Effect";

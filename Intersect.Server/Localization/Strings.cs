@@ -376,6 +376,7 @@ namespace Intersect.Server.Localization
                     {15, @"CONFUSED!"},
                     {16, @"STEADY!"},
                     {17, @"COOLDOWN CHANGE!"},
+                    {18, @"EXP BONUS CHANGE!"},
                 }
             );
 

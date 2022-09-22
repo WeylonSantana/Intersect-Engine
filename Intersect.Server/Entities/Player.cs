@@ -3362,6 +3362,9 @@ namespace Intersect.Server.Entities
                 case EffectType.CooldownReduction:
                     value += GetExtraSpellBuff(StatusTypes.CooldownChange);
                     break;
+                case EffectType.EXP:
+                    value += GetExtraSpellBuff(StatusTypes.ExpChange);
+                    break;
             }
 
             return value;

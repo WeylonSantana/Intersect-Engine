@@ -37,6 +37,7 @@ namespace Intersect.Editor.Forms.Editors
                 case (int) StatusTypes.Haste:
                 case (int) StatusTypes.Swift:
                 case (int) StatusTypes.CooldownChange:
+                case (int) StatusTypes.ExpChange:
                     lblPercentageEffect.Show();
                     nudPercentageEffect.Show();
 

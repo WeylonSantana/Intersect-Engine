@@ -484,6 +484,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Confused:
                 case StatusTypes.Steady:
                 case StatusTypes.CooldownChange:
+                case StatusTypes.ExpChange:
                 case null:
                     return false;
 
@@ -516,6 +517,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Confused:
                 case StatusTypes.Steady:
                 case StatusTypes.CooldownChange:
+                case StatusTypes.ExpChange:
                 case null:
                     return false;
 

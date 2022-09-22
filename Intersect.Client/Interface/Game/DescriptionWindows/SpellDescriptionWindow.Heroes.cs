@@ -47,6 +47,17 @@ namespace Intersect.Client.Interface.Game.DescriptionWindows
                     );
                 }
             }
+
+            if (mSpell.Combat.Effect == StatusTypes.ExpChange)
+            {
+                if (mSpell.Combat.EffectPercentageValue != 0)
+                {
+                    rows.AddKeyValueRow(
+                        Strings.SpellDescription.ExpChange,
+                        Strings.SpellDescription.Percentage.ToString(mSpell.Combat.EffectPercentageValue)
+                    );
+                }
+            }
         }
     }
 }

@@ -430,10 +430,19 @@ namespace Intersect.Client.Interface.Game.Character
             ManaStealAmount = 0;
 
             mLifeSteal.SetText(Strings.Character.Lifesteal.ToString(0));
-            mExtraExp.SetText(Strings.Character.ExtraExp.ToString(0));
+
+            mExtraExp.SetText(
+                Strings.Character.ExtraExp.ToString(
+                    GetExtraSpellBuff(StatusTypes.ExpChange)
+                )
+            );
+
             mLuck.SetText(Strings.Character.Luck.ToString(0));
+
             mTenacity.SetText(Strings.Character.Tenacity.ToString(0));
+
             mManaSteal.SetText(Strings.Character.Manasteal.ToString(0));
+            
             mCooldownReduction.SetText(
                 Strings.Character.CooldownReduction.ToString(
                     GetExtraSpellBuff(StatusTypes.CooldownChange)
@@ -504,6 +513,7 @@ namespace Intersect.Client.Interface.Game.Character
                             break;
                         case EffectType.EXP:
                             ExtraExpAmount += effect.Percentage;
+                            ExtraExpAmount += GetExtraSpellBuff(StatusTypes.ExpChange);
                             mExtraExp?.SetText(Strings.Character.ExtraExp.ToString(ExtraExpAmount));
 
                             break;

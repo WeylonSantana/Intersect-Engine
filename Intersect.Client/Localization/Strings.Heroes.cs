@@ -32,6 +32,9 @@ namespace Intersect.Client.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString CooldownChange = @"Cooldown Change:";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString ExpChange = @"Exp Bonus Change:";
         }
     }
 }
