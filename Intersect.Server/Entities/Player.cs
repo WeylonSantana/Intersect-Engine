@@ -1529,8 +1529,8 @@ namespace Intersect.Server.Entities
                 }
             }
 
-            //Heroes SwiftTime()
-            attackTime = SwiftTime(attackTime);
+            //Heroes SpeedStatusModifier()
+            attackTime = (int) SpeedStatusModifier(attackTime, StatusTypes.Swift);
 
             return
                 attackTime -

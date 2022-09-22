@@ -1170,22 +1170,22 @@ namespace Intersect.Client.Entities
 
             if (Controls.KeyDown(Control.MoveUp))
             {
-                movey = StatusActive(StatusTypes.Confused) == null ? 1 : -1;
+                movey = GetStatusActiveList(StatusTypes.Confused).Count == 0 ? 1 : -1;
             }
 
             if (Controls.KeyDown(Control.MoveDown))
             {
-                movey = StatusActive(StatusTypes.Confused) == null ? -1 : 1;
+                movey = GetStatusActiveList(StatusTypes.Confused).Count == 0 ? -1 : 1;
             }
 
             if (Controls.KeyDown(Control.MoveLeft))
             {
-                movex = StatusActive(StatusTypes.Confused) == null ? -1 : 1;
+                movex = GetStatusActiveList(StatusTypes.Confused).Count == 0 ? -1 : 1;
             }
 
             if (Controls.KeyDown(Control.MoveRight))
             {
-                movex = StatusActive(StatusTypes.Confused) == null ? 1 : -1;
+                movex = GetStatusActiveList(StatusTypes.Confused).Count == 0 ? 1 : -1;
             }
 
 
@@ -1925,8 +1925,8 @@ namespace Intersect.Client.Entities
                 }
             }
 
-            //Heroes SwiftTime()
-            attackTime = SwiftTime(attackTime);
+            //Heroes SpeedStatusModifier()
+            attackTime = (int) SpeedStatusModifier(attackTime, StatusTypes.Swift);
 
             return attackTime;
         }

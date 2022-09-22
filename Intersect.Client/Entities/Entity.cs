@@ -526,8 +526,8 @@ namespace Intersect.Client.Entities
                 time += time * (float)Options.BlockingSlow;
             }
 
-            //Heroes HasteTime()
-            time = HasteTime(time);
+            //Heroes SpeedStatusModifier()
+            time = SpeedStatusModifier(time, StatusTypes.Haste);
 
             return Math.Min(1000f, time);
         }

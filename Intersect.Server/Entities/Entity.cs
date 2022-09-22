@@ -827,8 +827,8 @@ namespace Intersect.Server.Entities
                 time += time * (float)Options.BlockingSlow;
             }
 
-            //Heroes HasteTime()
-            time = HasteTime(time);
+            //Heroes SpeedStatusModifier()
+            time = SpeedStatusModifier(time, StatusTypes.Haste);
 
             return Math.Min(1000f, time);
         }
@@ -1419,7 +1419,7 @@ namespace Intersect.Server.Entities
             //If there is a knockback, knock them backwards and make sure its linear (diagonal player movement not coded).
             if (projectile.Knockback > 0 && projectileDir < 4 &&
                 !target.Immunities.Contains(StatusTypes.Knockback) &&
-                target.StatusActive(StatusTypes.Steady) == null)
+                target.GetStatusActiveList(StatusTypes.Steady).Count == 0)
             {
                 var _ = new Dash(target, projectile.Knockback, projectileDir, false, false, false, false);
             }

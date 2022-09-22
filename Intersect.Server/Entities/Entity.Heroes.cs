@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Intersect.Enums;
 using Intersect.GameObjects;
 
@@ -7,8 +8,10 @@ namespace Intersect.Server.Entities
 
     public partial class Entity
     {
-        public SpellBase StatusActive(StatusTypes status)
+        public List<SpellBase> GetStatusActiveList(StatusTypes status)
         {
+            List<SpellBase> result = new List<SpellBase>();
+
             foreach (var s in CachedStatuses)
             {
                 if (s.Type == status)
@@ -16,54 +19,42 @@ namespace Intersect.Server.Entities
                     var spell = SpellBase.Get(s.Spell.Id);
                     if (spell != null)
                     {
-                        return spell;
+                        result.Add(spell);
                     }
                 }
             }
 
-            return null;
+            return result;
         }
 
-        public float HasteTime(float time)
+        /// <summary>
+        /// Modifies a given speed by the given modifier.
+        /// </summary>
+        /// <param name="speed">Attack or Movement Speed</param>
+        /// <param name="modifier">Haste or Swift spell status </param>
+        /// <returns></returns>
+        public float SpeedStatusModifier(float speed, StatusTypes modifier)
         {
-            var spellStatus = StatusActive(StatusTypes.Haste);
-            if (spellStatus == null)
+            var spellStatus = GetStatusActiveList(modifier);
+            if (spellStatus.Count == 0)
             {
-                return time;
+                return speed;
             }
 
-            float timeMultiplier = Math.Abs(spellStatus.Combat.EffectPercentageValue / 100f);
-            if (spellStatus.Combat.EffectPercentageValue > 0)
+            for (int i = 0; i < spellStatus.Count; i++)
             {
-                time -= time * timeMultiplier;
-            }
-            else if (spellStatus.Combat.EffectPercentageValue < 0)
-            {
-                time += time * timeMultiplier;
-            }
-
-            return time;
-        }
-
-        public int SwiftTime(int attackTime)
-        {
-            var spellStatus = StatusActive(StatusTypes.Swift);
-            if (spellStatus == null)
-            {
-                return attackTime;
+                float timeMultiplier = Math.Abs(spellStatus[i].Combat.EffectPercentageValue / 100f);
+                if (spellStatus[i].Combat.EffectPercentageValue > 0)
+                {
+                    speed -= speed * timeMultiplier;
+                }
+                else if (spellStatus[i].Combat.EffectPercentageValue < 0)
+                {
+                    speed += speed * timeMultiplier;
+                }
             }
 
-            float timeMultiplier = Math.Abs(spellStatus.Combat.EffectPercentageValue / 100f);
-            if (spellStatus.Combat.EffectPercentageValue > 0)
-            {
-                attackTime -= (int)Math.Floor(attackTime * timeMultiplier);
-            }
-            else if (spellStatus.Combat.EffectPercentageValue < 0)
-            {
-                attackTime += (int)Math.Floor(attackTime * timeMultiplier);
-            }
-
-            return attackTime;
+            return speed;
         }
     }
 }
