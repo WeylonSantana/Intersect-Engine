@@ -36,6 +36,8 @@ namespace Intersect.Enums
 
         Confused = 15,
 
+        Steady = 16,
+
         Knockback = 100,
 
     }

@@ -480,6 +480,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Haste:
                 case StatusTypes.Swift:
                 case StatusTypes.Confused:
+                case StatusTypes.Steady:
                 case null:
                     return false;
 
@@ -510,6 +511,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Haste:
                 case StatusTypes.Swift:
                 case StatusTypes.Confused:
+                case StatusTypes.Steady:
                 case null:
                     return false;
 
