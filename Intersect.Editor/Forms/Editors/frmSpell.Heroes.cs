@@ -30,9 +30,11 @@ namespace Intersect.Editor.Forms.Editors
             nudPercentageEffect.Value = mEditorItem.Combat.EffectPercentageValue;
         }
 
-        private void HasteFormSetup()
+        void ExtraStatusSetup()
         {
-            if (cmbExtraEffect.SelectedIndex == 13) //Haste
+            //Haste or Swift
+            if (cmbExtraEffect.SelectedIndex == 13 ||
+                cmbExtraEffect.SelectedIndex == 14)
             {
                 lblPercentageEffect.Show();
                 nudPercentageEffect.Show();
@@ -64,9 +66,9 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.Combat.PercentageStatDiff[(int)Stats.Evasion] = (int)nudEvasionPercentage.Value;
         }
 
-        private void nudHasteChange_ValueChanged(object sender, EventArgs e)
+        private void nudPercentageEffect_ValueChanged(object sender, EventArgs e)
         {
-            mEditorItem.Combat.EffectPercentageValue = (int)nudPercentageEffect.Value;
+            mEditorItem.Combat.EffectPercentageValue = (int) nudPercentageEffect.Value;
         }
     }
 }

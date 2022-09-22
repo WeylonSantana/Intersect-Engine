@@ -273,8 +273,8 @@ namespace Intersect.Client.Interface.Game.DescriptionWindows
                 rows.AddKeyValueRow(Strings.SpellDescription.Effect, Strings.SpellDescription.Effects[(int) mSpell.Combat.Effect]);
             }
 
-            //Heroes HasteValueSetup()
-            HasteValueSetup(rows);
+            //Heroes ExtraValueSetup()
+            ExtraValueSetup(rows);
 
             // Show Stat Buff / Effect / HoT / DoT duration.
             if (showDuration)

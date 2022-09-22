@@ -32,7 +32,9 @@ namespace Intersect.Enums
 
         Haste = 13,
 
-        Knockback = 14,
+        Swift = 14,
+
+        Knockback = 100,
 
     }
 

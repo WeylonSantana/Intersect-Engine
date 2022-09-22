@@ -579,8 +579,8 @@ namespace Intersect.Editor.Forms.Editors
                 }
             }
 
-            //Heroes HasteFormSetup()
-            HasteFormSetup();
+            //Heroes ExtraStatusSetup()
+            ExtraStatusSetup();
         }
 
         private void frmSpell_FormClosed(object sender, FormClosedEventArgs e)

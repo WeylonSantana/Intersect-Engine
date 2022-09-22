@@ -1529,6 +1529,9 @@ namespace Intersect.Server.Entities
                 }
             }
 
+            //Heroes SwiftTime()
+            attackTime = SwiftTime(attackTime);
+
             return
                 attackTime -
                 60; //subtracting 60 to account for a moderate ping to the server so some attacks dont get cancelled.

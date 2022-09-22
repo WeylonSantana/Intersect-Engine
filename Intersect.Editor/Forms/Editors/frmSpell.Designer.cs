@@ -1730,7 +1730,7 @@ namespace Intersect.Editor.Forms.Editors
             0,
             0,
             0});
-            this.nudPercentageEffect.ValueChanged += new System.EventHandler(this.nudHasteChange_ValueChanged);
+            this.nudPercentageEffect.ValueChanged += new System.EventHandler(this.nudPercentageEffect_ValueChanged);
             // 
             // lblEffect
             // 
@@ -1768,7 +1768,8 @@ namespace Intersect.Editor.Forms.Editors
             "Sleep",
             "On Hit",
             "Taunt",
-            "Haste"});
+            "Haste",
+            "Swift"});
             this.cmbExtraEffect.Location = new System.Drawing.Point(5, 31);
             this.cmbExtraEffect.Name = "cmbExtraEffect";
             this.cmbExtraEffect.Size = new System.Drawing.Size(80, 21);

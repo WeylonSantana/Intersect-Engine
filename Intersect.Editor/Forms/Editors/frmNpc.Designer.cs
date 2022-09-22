@@ -78,6 +78,7 @@ namespace Intersect.Editor.Forms.Editors
             this.lblExp = new System.Windows.Forms.Label();
             this.pnlContainer = new System.Windows.Forms.Panel();
             this.grpImmunities = new DarkUI.Controls.DarkGroupBox();
+            this.chkHaste = new DarkUI.Controls.DarkCheckBox();
             this.nudTenacity = new DarkUI.Controls.DarkNumericUpDown();
             this.lblTenacity = new System.Windows.Forms.Label();
             this.chkTaunt = new DarkUI.Controls.DarkCheckBox();
@@ -179,6 +180,7 @@ namespace Intersect.Editor.Forms.Editors
             this.nudEvasion = new DarkUI.Controls.DarkNumericUpDown();
             this.lblEvasion = new System.Windows.Forms.Label();
             this.chkHaste = new DarkUI.Controls.DarkCheckBox();
+            this.chkSwift = new DarkUI.Controls.DarkCheckBox();
             this.grpNpcs.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRgbaA)).BeginInit();
@@ -911,6 +913,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpImmunities.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpImmunities.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpImmunities.Controls.Add(this.chkSwift);
             this.grpImmunities.Controls.Add(this.chkHaste);
             this.grpImmunities.Controls.Add(this.nudTenacity);
             this.grpImmunities.Controls.Add(this.lblTenacity);
@@ -931,6 +934,16 @@ namespace Intersect.Editor.Forms.Editors
             this.grpImmunities.TabIndex = 33;
             this.grpImmunities.TabStop = false;
             this.grpImmunities.Text = "Immunities";
+            // 
+            // chkHaste
+            // 
+            this.chkHaste.AutoSize = true;
+            this.chkHaste.Location = new System.Drawing.Point(11, 118);
+            this.chkHaste.Name = "chkHaste";
+            this.chkHaste.Size = new System.Drawing.Size(54, 17);
+            this.chkHaste.TabIndex = 87;
+            this.chkHaste.Text = "Haste";
+            this.chkHaste.CheckedChanged += new System.EventHandler(this.chkHaste_CheckedChanged);
             // 
             // nudTenacity
             // 
@@ -2283,8 +2296,8 @@ namespace Intersect.Editor.Forms.Editors
             this.lblEvasion.TabIndex = 48;
             this.lblEvasion.Text = "Evasion:";
             // 
-            // chkHaste
-            // 
+            // chkSwift
+            //
             this.chkHaste.AutoSize = true;
             this.chkHaste.Location = new System.Drawing.Point(11, 118);
             this.chkHaste.Name = "chkHaste";
@@ -2292,6 +2305,14 @@ namespace Intersect.Editor.Forms.Editors
             this.chkHaste.TabIndex = 87;
             this.chkHaste.Text = "Haste";
             this.chkHaste.CheckedChanged += new System.EventHandler(this.chkHaste_CheckedChanged);
+            //
+            this.chkSwift.AutoSize = true;
+            this.chkSwift.Location = new System.Drawing.Point(116, 118);
+            this.chkSwift.Name = "chkSwift";
+            this.chkSwift.Size = new System.Drawing.Size(49, 17);
+            this.chkSwift.TabIndex = 88;
+            this.chkSwift.Text = "Swift";
+            this.chkSwift.CheckedChanged += new System.EventHandler(this.chkSwift_CheckedChanged);
             //
             // FrmNpc
             // 
@@ -2525,5 +2546,6 @@ namespace Intersect.Editor.Forms.Editors
         private DarkNumericUpDown nudAccuracy;
         private System.Windows.Forms.Label lblAccuracy;
         private DarkCheckBox chkHaste;
+        private DarkCheckBox chkSwift;
     }
 }

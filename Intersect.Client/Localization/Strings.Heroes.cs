@@ -26,6 +26,9 @@ namespace Intersect.Client.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString HasteNegativeEffect = @"Slowness Change:";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString SwiftChange = @"Swift Change:";
         }
     }
 }

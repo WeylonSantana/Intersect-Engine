@@ -1925,6 +1925,9 @@ namespace Intersect.Client.Entities
                 }
             }
 
+            //Heroes SwiftTime()
+            attackTime = SwiftTime(attackTime);
+
             return attackTime;
         }
 

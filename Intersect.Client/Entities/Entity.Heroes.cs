@@ -44,5 +44,26 @@ namespace Intersect.Client.Entities
 
             return time;
         }
+
+        public int SwiftTime(int attackTime)
+        {
+            var spellStatus = StatusActive(StatusTypes.Swift);
+            if (spellStatus == null)
+            {
+                return attackTime;
+            }
+
+            float timeMultiplier = Math.Abs(spellStatus.Combat.EffectPercentageValue / 100f);
+            if (spellStatus.Combat.EffectPercentageValue > 0)
+            {
+                attackTime -= (int) Math.Floor(attackTime * timeMultiplier);
+            }
+            else if (spellStatus.Combat.EffectPercentageValue < 0)
+            {
+                attackTime += (int) Math.Floor(attackTime * timeMultiplier);
+            }
+
+            return attackTime;
+        }
     }
 }

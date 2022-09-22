@@ -4462,6 +4462,7 @@ Tick timer saved in server config.json.";
                 {StatusTypes.Sleep, @"Sleep"},
                 {StatusTypes.Taunt, @"Taunt"},
                 {StatusTypes.Haste, @"Haste"},
+                {StatusTypes.Swift, @"Swift"},
             };
 
         }
@@ -5054,6 +5055,7 @@ Tick timer saved in server config.json.";
                 {11, @"OnHit"},
                 {12, @"Taunt"},
                 {13, @"Haste"},
+                {14, @"Swift"},
             };
 
             public static LocalizedString effectgroup = @"Effect";

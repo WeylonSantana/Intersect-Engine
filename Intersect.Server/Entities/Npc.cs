@@ -305,10 +305,10 @@ namespace Intersect.Server.Entities
         {
             if (Base.AttackSpeedModifier == 1) //Static
             {
-                return Base.AttackSpeedValue;
+                return SwiftTime(Base.AttackSpeedValue);
             }
 
-            return base.CalculateAttackTime();
+            return SwiftTime(base.CalculateAttackTime());
         }
 
         public override bool CanAttack(Entity entity, SpellBase spell)
@@ -478,6 +478,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.OnHit:
                 case StatusTypes.Taunt:
                 case StatusTypes.Haste:
+                case StatusTypes.Swift:
                 case null:
                     return false;
 
@@ -506,6 +507,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.OnHit:
                 case StatusTypes.Taunt:
                 case StatusTypes.Haste:
+                case StatusTypes.Swift:
                 case null:
                     return false;
 
