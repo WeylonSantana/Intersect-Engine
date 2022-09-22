@@ -373,6 +373,7 @@ namespace Intersect.Server.Localization
                     {12, @"TAUNT!"},
                     {13, @"HASTE!"},
                     {14, @"SWIFT!"},
+                    {15, @"CONFUSED!"},
                 }
             );
 

@@ -18,6 +18,7 @@ namespace Intersect.Editor.Forms.Editors
             lblEvasion.Text = Strings.NpcEditor.Evasion;
             chkHaste.Text = Strings.NpcEditor.Immunities[StatusTypes.Haste];
             chkSwift.Text = Strings.NpcEditor.Immunities[StatusTypes.Swift];
+            chkConfused.Text = Strings.NpcEditor.Immunities[StatusTypes.Confused];
         }
 
         private void UpdateExtraEditor()
@@ -26,6 +27,7 @@ namespace Intersect.Editor.Forms.Editors
             nudEvasion.Value = mEditorItem.Stats[(int) Stats.Evasion];
             chkHaste.Checked = mEditorItem.Immunities.Contains(StatusTypes.Haste);
             chkSwift.Checked = mEditorItem.Immunities.Contains(StatusTypes.Swift);
+            chkConfused.Checked = mEditorItem.Immunities.Contains(StatusTypes.Confused);
         }
 
         private void nudAccuracy_ValueChanged(object sender, EventArgs e)
@@ -46,6 +48,11 @@ namespace Intersect.Editor.Forms.Editors
         private void chkSwift_CheckedChanged(object sender, EventArgs e)
         {
             ChangeImmunity(StatusTypes.Swift, chkSwift.Checked);
+        }
+
+        private void chkConfused_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeImmunity(StatusTypes.Confused, chkConfused.Checked);
         }
     }
 }

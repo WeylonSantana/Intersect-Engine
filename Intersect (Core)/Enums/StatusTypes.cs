@@ -34,6 +34,8 @@ namespace Intersect.Enums
 
         Swift = 14,
 
+        Confused = 15,
+
         Knockback = 100,
 
     }

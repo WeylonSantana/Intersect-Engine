@@ -1,4 +1,4 @@
-﻿namespace Intersect.Config
+namespace Intersect.Config
 {
 
     public partial class CombatOptions
@@ -65,6 +65,11 @@
         /// If enabled this allows regenerate vitals in combat
         /// </summary>
         public bool RegenVitalsInCombat = false;
+
+        /// <summary>
+        /// Configures the chance of fail attack/cast when confused
+        /// </summary>
+        public int ConfusedFailChance = 30;
     }
 
 }

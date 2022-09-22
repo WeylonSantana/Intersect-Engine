@@ -1441,10 +1441,10 @@ namespace Intersect.Server.Entities
                 return;
             }
 
-            //Check for taunt status and trying to attack a target that has not taunted you.
-            if (!trapTrigger) //Traps ignore taunts.
+            foreach (var status in CachedStatuses)
             {
-                foreach (var status in CachedStatuses)
+                //Check for taunt status and trying to attack a target that has not taunted you.
+                if (!trapTrigger) //Traps ignore taunts.
                 {
                     if (status.Type == StatusTypes.Taunt)
                     {
@@ -1454,6 +1454,21 @@ namespace Intersect.Server.Entities
 
                             return;
                         }
+                    }
+                }
+
+                //Check for confused status fail chance
+                if (status.Type == StatusTypes.Confused)
+                {
+                    if (Randomization.Next(0, 101) < Options.Instance.CombatOpts.ConfusedFailChance)
+                    {
+                        PacketSender.SendActionMsg(
+                            this,
+                            Strings.Combat.ConfusedFailedCast,
+                            CustomColors.Combat.Missed
+                        );
+
+                        return;
                     }
                 }
             }
@@ -1693,15 +1708,29 @@ namespace Intersect.Server.Entities
                 }
             }
 
-            //Check for taunt status and trying to attack a target that has not taunted you.
             foreach (var status in CachedStatuses)
             {
+                //Check for taunt status and trying to attack a target that has not taunted you.
                 if (status.Type == StatusTypes.Taunt)
                 {
                     if (Target != target)
                     {
                         PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
 
+                        return;
+                    }
+                }
+
+                // Check for confused status fail chance
+                if (status.Type == StatusTypes.Confused)
+                {
+                    if (Randomization.Next(0, 101) < Options.Instance.CombatOpts.ConfusedFailChance)
+                    {
+                        PacketSender.SendActionMsg(
+                            this,
+                            Strings.Combat.ConfusedFailedAttack,
+                            CustomColors.Combat.Missed
+                        );
                         return;
                     }
                 }

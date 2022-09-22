@@ -479,6 +479,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Taunt:
                 case StatusTypes.Haste:
                 case StatusTypes.Swift:
+                case StatusTypes.Confused:
                 case null:
                     return false;
 
@@ -508,6 +509,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Taunt:
                 case StatusTypes.Haste:
                 case StatusTypes.Swift:
+                case StatusTypes.Confused:
                 case null:
                     return false;
 
@@ -937,6 +939,12 @@ namespace Intersect.Server.Entities
                                                     {
                                                         return;
                                                     }
+
+                                                    //If it's confused, fuck the whole damn thing
+                                                    if (status.Type == StatusTypes.Confused)
+                                                    {
+                                                        dir = (sbyte)Randomization.Next(0, 4);
+                                                    }
                                                 }
 
                                                 Move((byte)dir, null);
@@ -1028,6 +1036,12 @@ namespace Intersect.Server.Entities
                                                 status.Type == StatusTypes.Sleep)
                                             {
                                                 return;
+                                            }
+
+                                            //If it's confused, fuck the whole damn thing
+                                            if (status.Type == StatusTypes.Confused)
+                                            {
+                                                dir = (byte)Randomization.Next(0, 4);
                                             }
                                         }
 

@@ -1170,22 +1170,22 @@ namespace Intersect.Client.Entities
 
             if (Controls.KeyDown(Control.MoveUp))
             {
-                movey = 1;
+                movey = StatusActive(StatusTypes.Confused) == null ? 1 : -1;
             }
 
             if (Controls.KeyDown(Control.MoveDown))
             {
-                movey = -1;
+                movey = StatusActive(StatusTypes.Confused) == null ? -1 : 1;
             }
 
             if (Controls.KeyDown(Control.MoveLeft))
             {
-                movex = -1;
+                movex = StatusActive(StatusTypes.Confused) == null ? -1 : 1;
             }
 
             if (Controls.KeyDown(Control.MoveRight))
             {
-                movex = 1;
+                movex = StatusActive(StatusTypes.Confused) == null ? 1 : -1;
             }
 
 
