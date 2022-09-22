@@ -3365,6 +3365,9 @@ namespace Intersect.Server.Entities
                 case EffectType.EXP:
                     value += GetExtraSpellBuff(StatusTypes.ExpChange);
                     break;
+                case EffectType.Luck:
+                    value += GetExtraSpellBuff(StatusTypes.LuckChange);
+                    break;
             }
 
             return value;

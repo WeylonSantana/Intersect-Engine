@@ -42,6 +42,8 @@ namespace Intersect.Enums
 
         ExpChange = 18,
 
+        LuckChange = 19,
+
         Knockback = 100,
 
     }

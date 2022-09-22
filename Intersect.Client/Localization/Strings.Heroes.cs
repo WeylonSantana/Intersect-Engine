@@ -35,6 +35,9 @@ namespace Intersect.Client.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString ExpChange = @"Exp Bonus Change:";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString LuckChange = @"Luck Bonus Change:";
         }
     }
 }

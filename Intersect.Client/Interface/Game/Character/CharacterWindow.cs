@@ -437,7 +437,11 @@ namespace Intersect.Client.Interface.Game.Character
                 )
             );
 
-            mLuck.SetText(Strings.Character.Luck.ToString(0));
+            mLuck.SetText(
+                Strings.Character.Luck.ToString(
+                    GetExtraSpellBuff(StatusTypes.LuckChange)
+                )
+            );
 
             mTenacity.SetText(Strings.Character.Tenacity.ToString(0));
 
@@ -508,6 +512,7 @@ namespace Intersect.Client.Interface.Game.Character
                             break;
                         case EffectType.Luck:
                             LuckAmount += effect.Percentage;
+                            LuckAmount += GetExtraSpellBuff(StatusTypes.LuckChange);
                             mLuck?.SetText(Strings.Character.Luck.ToString(LuckAmount));
 
                             break;
