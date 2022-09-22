@@ -1,4 +1,5 @@
 using Intersect.Localization;
+using Newtonsoft.Json;
 
 namespace Intersect.Client.Localization
 {
@@ -16,6 +17,15 @@ namespace Intersect.Client.Localization
             public static LocalizedString stat5 = @"Accuracy";
 
             public static LocalizedString stat6 = @"Evasion";
+        }
+
+        public partial struct SpellDescription
+        {
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString HastePositiveEffect = @"Haste Change:";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString HasteNegativeEffect = @"Slowness Change:";
         }
     }
 }

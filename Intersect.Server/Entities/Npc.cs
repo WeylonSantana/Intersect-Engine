@@ -477,6 +477,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Shield:
                 case StatusTypes.OnHit:
                 case StatusTypes.Taunt:
+                case StatusTypes.Haste:
                 case null:
                     return false;
 
@@ -504,6 +505,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Shield:
                 case StatusTypes.OnHit:
                 case StatusTypes.Taunt:
+                case StatusTypes.Haste:
                 case null:
                     return false;
 

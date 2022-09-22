@@ -16,12 +16,14 @@ namespace Intersect.Editor.Forms.Editors
         {
             lblAccuracy.Text = Strings.NpcEditor.Accuracy;
             lblEvasion.Text = Strings.NpcEditor.Evasion;
+            chkHaste.Text = Strings.NpcEditor.Immunities[StatusTypes.Haste];
         }
 
         private void UpdateExtraEditor()
         {
             nudAccuracy.Value = mEditorItem.Stats[(int) Stats.Accuracy];
             nudEvasion.Value = mEditorItem.Stats[(int) Stats.Evasion];
+            chkHaste.Checked = mEditorItem.Immunities.Contains(StatusTypes.Haste);
         }
 
         private void nudAccuracy_ValueChanged(object sender, EventArgs e)
@@ -32,6 +34,11 @@ namespace Intersect.Editor.Forms.Editors
         private void nudEvasion_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Stats[(int)Stats.Evasion] = (int)nudEvasion.Value;
+        }
+        
+        private void chkHaste_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeImmunity(StatusTypes.Haste, chkHaste.Checked);
         }
     }
 }

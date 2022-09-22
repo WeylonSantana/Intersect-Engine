@@ -371,6 +371,7 @@ namespace Intersect.Server.Localization
                     {10, @"SLEEP!"},
                     {11, @"ON HIT!"},
                     {12, @"TAUNT!"},
+                    {13, @"HASTE!"},
                 }
             );
 

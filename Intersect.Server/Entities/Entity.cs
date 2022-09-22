@@ -827,6 +827,9 @@ namespace Intersect.Server.Entities
                 time += time * (float)Options.BlockingSlow;
             }
 
+            //Heroes HasteTime()
+            time = HasteTime(time);
+
             return Math.Min(1000f, time);
         }
 

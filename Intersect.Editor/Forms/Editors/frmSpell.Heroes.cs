@@ -18,6 +18,7 @@ namespace Intersect.Editor.Forms.Editors
         {
             lblAccuracy.Text = Strings.SpellEditor.Accuracy;
             lblEvasion.Text = Strings.SpellEditor.Evasion;
+            lblPercentageEffect.Text = Strings.SpellEditor.EffectPercentageValue;
         }
 
         private void UpdateExtraEditor()
@@ -26,6 +27,21 @@ namespace Intersect.Editor.Forms.Editors
             nudEvasion.Value = mEditorItem.Combat.StatDiff[(int) Stats.Evasion];
             nudAccuracyPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Accuracy];
             nudEvasionPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Evasion];
+            nudPercentageEffect.Value = mEditorItem.Combat.EffectPercentageValue;
+        }
+
+        private void HasteFormSetup()
+        {
+            if (cmbExtraEffect.SelectedIndex == 13) //Haste
+            {
+                lblPercentageEffect.Show();
+                nudPercentageEffect.Show();
+            }
+            else
+            {
+                lblPercentageEffect.Hide();
+                nudPercentageEffect.Hide();
+            }
         }
 
         private void nudAccuracy_ValueChanged(object sender, EventArgs e)
@@ -46,6 +62,11 @@ namespace Intersect.Editor.Forms.Editors
         private void nudEvasionPercentage_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Combat.PercentageStatDiff[(int)Stats.Evasion] = (int)nudEvasionPercentage.Value;
+        }
+
+        private void nudHasteChange_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.EffectPercentageValue = (int)nudPercentageEffect.Value;
         }
     }
 }

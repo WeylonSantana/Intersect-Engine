@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,6 +38,7 @@ namespace Intersect.Server.Entities.Combat
             StatusTypes.OnHit,
             StatusTypes.Shield,
             StatusTypes.Transform,
+            StatusTypes.Haste,
         };
 
         public static List<StatusTypes> InterruptStatusses = new List<StatusTypes>()

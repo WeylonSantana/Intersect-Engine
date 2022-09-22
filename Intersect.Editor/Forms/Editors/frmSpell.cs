@@ -328,6 +328,9 @@ namespace Intersect.Editor.Forms.Editors
                     mChanged.Add(mEditorItem);
                     mEditorItem.MakeBackup();
                 }
+
+                //Heroes UpdateExtraEditor()
+                UpdateExtraEditor();
             }
             else
             {
@@ -575,6 +578,9 @@ namespace Intersect.Editor.Forms.Editors
                     picSprite.BackgroundImage = null;
                 }
             }
+
+            //Heroes HasteFormSetup()
+            HasteFormSetup();
         }
 
         private void frmSpell_FormClosed(object sender, FormClosedEventArgs e)

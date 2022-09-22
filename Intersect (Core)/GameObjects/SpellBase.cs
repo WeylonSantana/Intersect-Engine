@@ -247,6 +247,8 @@ namespace Intersect.GameObjects
         [Column("Trap")]
         public int TrapDuration { get; set; }
 
+        public int EffectPercentageValue { get; set; } = 0;
+
     }
 
     [Owned]

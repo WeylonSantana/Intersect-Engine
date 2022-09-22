@@ -83,6 +83,16 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbProjectile = new DarkUI.Controls.DarkComboBox();
             this.grpCombat = new DarkUI.Controls.DarkGroupBox();
             this.grpStats = new DarkUI.Controls.DarkGroupBox();
+            this.lblPercentage7 = new System.Windows.Forms.Label();
+            this.nudEvasionPercentage = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblPlus7 = new System.Windows.Forms.Label();
+            this.nudEvasion = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblEvasion = new System.Windows.Forms.Label();
+            this.lblPercentage6 = new System.Windows.Forms.Label();
+            this.nudAccuracyPercentage = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblPlus6 = new System.Windows.Forms.Label();
+            this.nudAccuracy = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblAccuracy = new System.Windows.Forms.Label();
             this.lblPercentage5 = new System.Windows.Forms.Label();
             this.lblPercentage4 = new System.Windows.Forms.Label();
             this.lblPercentage3 = new System.Windows.Forms.Label();
@@ -115,6 +125,8 @@ namespace Intersect.Editor.Forms.Editors
             this.chkHOTDOT = new DarkUI.Controls.DarkCheckBox();
             this.lblTick = new System.Windows.Forms.Label();
             this.grpEffect = new DarkUI.Controls.DarkGroupBox();
+            this.lblPercentageEffect = new System.Windows.Forms.Label();
+            this.nudPercentageEffect = new DarkUI.Controls.DarkNumericUpDown();
             this.lblEffect = new System.Windows.Forms.Label();
             this.cmbExtraEffect = new DarkUI.Controls.DarkComboBox();
             this.picSprite = new System.Windows.Forms.PictureBox();
@@ -202,6 +214,10 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudCastRange)).BeginInit();
             this.grpCombat.SuspendLayout();
             this.grpStats.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudEvasionPercentage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudEvasion)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracyPercentage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpdPercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMRPercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDefPercentage)).BeginInit();
@@ -215,6 +231,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpHotDot.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTick)).BeginInit();
             this.grpEffect.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPercentageEffect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSprite)).BeginInit();
             this.grpEffectDuration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBuffDuration)).BeginInit();
@@ -232,10 +249,6 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudWarpX)).BeginInit();
             this.toolStrip.SuspendLayout();
             this.grpSpells.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracyPercentage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracy)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudEvasionPercentage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudEvasion)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlContainer
@@ -1019,6 +1032,166 @@ namespace Intersect.Editor.Forms.Editors
             this.grpStats.TabStop = false;
             this.grpStats.Text = "Stat Modifiers";
             // 
+            // lblPercentage7
+            // 
+            this.lblPercentage7.AutoSize = true;
+            this.lblPercentage7.Location = new System.Drawing.Point(212, 194);
+            this.lblPercentage7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPercentage7.Name = "lblPercentage7";
+            this.lblPercentage7.Size = new System.Drawing.Size(15, 13);
+            this.lblPercentage7.TabIndex = 77;
+            this.lblPercentage7.Text = "%";
+            // 
+            // nudEvasionPercentage
+            // 
+            this.nudEvasionPercentage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudEvasionPercentage.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudEvasionPercentage.Location = new System.Drawing.Point(165, 192);
+            this.nudEvasionPercentage.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudEvasionPercentage.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.nudEvasionPercentage.Name = "nudEvasionPercentage";
+            this.nudEvasionPercentage.Size = new System.Drawing.Size(43, 20);
+            this.nudEvasionPercentage.TabIndex = 76;
+            this.nudEvasionPercentage.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudEvasionPercentage.ValueChanged += new System.EventHandler(this.nudEvasionPercentage_ValueChanged);
+            // 
+            // lblPlus7
+            // 
+            this.lblPlus7.AutoSize = true;
+            this.lblPlus7.Location = new System.Drawing.Point(147, 194);
+            this.lblPlus7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPlus7.Name = "lblPlus7";
+            this.lblPlus7.Size = new System.Drawing.Size(13, 13);
+            this.lblPlus7.TabIndex = 75;
+            this.lblPlus7.Text = "+";
+            // 
+            // nudEvasion
+            // 
+            this.nudEvasion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudEvasion.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudEvasion.Location = new System.Drawing.Point(82, 192);
+            this.nudEvasion.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudEvasion.Minimum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            -2147483648});
+            this.nudEvasion.Name = "nudEvasion";
+            this.nudEvasion.Size = new System.Drawing.Size(60, 20);
+            this.nudEvasion.TabIndex = 74;
+            this.nudEvasion.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudEvasion.ValueChanged += new System.EventHandler(this.nudEvasion_ValueChanged);
+            // 
+            // lblEvasion
+            // 
+            this.lblEvasion.AutoSize = true;
+            this.lblEvasion.Location = new System.Drawing.Point(5, 196);
+            this.lblEvasion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblEvasion.Name = "lblEvasion";
+            this.lblEvasion.Size = new System.Drawing.Size(48, 13);
+            this.lblEvasion.TabIndex = 73;
+            this.lblEvasion.Text = "Evasion:";
+            // 
+            // lblPercentage6
+            // 
+            this.lblPercentage6.AutoSize = true;
+            this.lblPercentage6.Location = new System.Drawing.Point(212, 164);
+            this.lblPercentage6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPercentage6.Name = "lblPercentage6";
+            this.lblPercentage6.Size = new System.Drawing.Size(15, 13);
+            this.lblPercentage6.TabIndex = 72;
+            this.lblPercentage6.Text = "%";
+            // 
+            // nudAccuracyPercentage
+            // 
+            this.nudAccuracyPercentage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudAccuracyPercentage.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudAccuracyPercentage.Location = new System.Drawing.Point(165, 162);
+            this.nudAccuracyPercentage.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudAccuracyPercentage.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.nudAccuracyPercentage.Name = "nudAccuracyPercentage";
+            this.nudAccuracyPercentage.Size = new System.Drawing.Size(43, 20);
+            this.nudAccuracyPercentage.TabIndex = 71;
+            this.nudAccuracyPercentage.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudAccuracyPercentage.ValueChanged += new System.EventHandler(this.nudAccuracyPercentage_ValueChanged);
+            // 
+            // lblPlus6
+            // 
+            this.lblPlus6.AutoSize = true;
+            this.lblPlus6.Location = new System.Drawing.Point(147, 164);
+            this.lblPlus6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPlus6.Name = "lblPlus6";
+            this.lblPlus6.Size = new System.Drawing.Size(13, 13);
+            this.lblPlus6.TabIndex = 70;
+            this.lblPlus6.Text = "+";
+            // 
+            // nudAccuracy
+            // 
+            this.nudAccuracy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudAccuracy.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudAccuracy.Location = new System.Drawing.Point(82, 162);
+            this.nudAccuracy.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudAccuracy.Minimum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            -2147483648});
+            this.nudAccuracy.Name = "nudAccuracy";
+            this.nudAccuracy.Size = new System.Drawing.Size(60, 20);
+            this.nudAccuracy.TabIndex = 69;
+            this.nudAccuracy.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudAccuracy.ValueChanged += new System.EventHandler(this.nudAccuracy_ValueChanged);
+            // 
+            // lblAccuracy
+            // 
+            this.lblAccuracy.AutoSize = true;
+            this.lblAccuracy.Location = new System.Drawing.Point(5, 166);
+            this.lblAccuracy.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAccuracy.Name = "lblAccuracy";
+            this.lblAccuracy.Size = new System.Drawing.Size(55, 13);
+            this.lblAccuracy.TabIndex = 68;
+            this.lblAccuracy.Text = "Accuracy:";
+            // 
             // lblPercentage5
             // 
             this.lblPercentage5.AutoSize = true;
@@ -1509,6 +1682,8 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEffect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEffect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEffect.Controls.Add(this.lblPercentageEffect);
+            this.grpEffect.Controls.Add(this.nudPercentageEffect);
             this.grpEffect.Controls.Add(this.lblEffect);
             this.grpEffect.Controls.Add(this.cmbExtraEffect);
             this.grpEffect.Controls.Add(this.picSprite);
@@ -1521,6 +1696,41 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEffect.TabIndex = 52;
             this.grpEffect.TabStop = false;
             this.grpEffect.Text = "Effect";
+            // 
+            // lblPercentageEffect
+            // 
+            this.lblPercentageEffect.AutoSize = true;
+            this.lblPercentageEffect.Location = new System.Drawing.Point(5, 61);
+            this.lblPercentageEffect.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPercentageEffect.Name = "lblPercentageEffect";
+            this.lblPercentageEffect.Size = new System.Drawing.Size(113, 13);
+            this.lblPercentageEffect.TabIndex = 68;
+            this.lblPercentageEffect.Text = "Percentage Effect (%):";
+            // 
+            // nudPercentageEffect
+            // 
+            this.nudPercentageEffect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudPercentageEffect.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudPercentageEffect.Location = new System.Drawing.Point(5, 77);
+            this.nudPercentageEffect.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudPercentageEffect.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.nudPercentageEffect.Name = "nudPercentageEffect";
+            this.nudPercentageEffect.Size = new System.Drawing.Size(221, 20);
+            this.nudPercentageEffect.TabIndex = 68;
+            this.nudPercentageEffect.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudPercentageEffect.ValueChanged += new System.EventHandler(this.nudHasteChange_ValueChanged);
             // 
             // lblEffect
             // 
@@ -1557,7 +1767,8 @@ namespace Intersect.Editor.Forms.Editors
             "Shield",
             "Sleep",
             "On Hit",
-            "Taunt"});
+            "Taunt",
+            "Haste"});
             this.cmbExtraEffect.Location = new System.Drawing.Point(5, 31);
             this.cmbExtraEffect.Name = "cmbExtraEffect";
             this.cmbExtraEffect.Size = new System.Drawing.Size(80, 21);
@@ -2599,6 +2810,10 @@ namespace Intersect.Editor.Forms.Editors
             this.grpCombat.ResumeLayout(false);
             this.grpStats.ResumeLayout(false);
             this.grpStats.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudEvasionPercentage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudEvasion)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracyPercentage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpdPercentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMRPercentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDefPercentage)).EndInit();
@@ -2614,6 +2829,7 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudTick)).EndInit();
             this.grpEffect.ResumeLayout(false);
             this.grpEffect.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPercentageEffect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSprite)).EndInit();
             this.grpEffectDuration.ResumeLayout(false);
             this.grpEffectDuration.PerformLayout();
@@ -2638,10 +2854,6 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStrip.PerformLayout();
             this.grpSpells.ResumeLayout(false);
             this.grpSpells.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracyPercentage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAccuracy)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudEvasionPercentage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudEvasion)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2803,5 +3015,7 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblPlus6;
         private DarkNumericUpDown nudAccuracy;
         private System.Windows.Forms.Label lblAccuracy;
+        private System.Windows.Forms.Label lblPercentageEffect;
+        private DarkNumericUpDown nudPercentageEffect;
     }
 }

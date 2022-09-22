@@ -178,6 +178,7 @@ namespace Intersect.Editor.Forms.Editors
             this.lblAccuracy = new System.Windows.Forms.Label();
             this.nudEvasion = new DarkUI.Controls.DarkNumericUpDown();
             this.lblEvasion = new System.Windows.Forms.Label();
+            this.chkHaste = new DarkUI.Controls.DarkCheckBox();
             this.grpNpcs.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRgbaA)).BeginInit();
@@ -910,6 +911,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpImmunities.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpImmunities.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpImmunities.Controls.Add(this.chkHaste);
             this.grpImmunities.Controls.Add(this.nudTenacity);
             this.grpImmunities.Controls.Add(this.lblTenacity);
             this.grpImmunities.Controls.Add(this.chkTaunt);
@@ -925,7 +927,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpImmunities.Margin = new System.Windows.Forms.Padding(2);
             this.grpImmunities.Name = "grpImmunities";
             this.grpImmunities.Padding = new System.Windows.Forms.Padding(2);
-            this.grpImmunities.Size = new System.Drawing.Size(208, 181);
+            this.grpImmunities.Size = new System.Drawing.Size(208, 190);
             this.grpImmunities.TabIndex = 33;
             this.grpImmunities.TabStop = false;
             this.grpImmunities.Text = "Immunities";
@@ -940,7 +942,7 @@ namespace Intersect.Editor.Forms.Editors
             0,
             0,
             131072});
-            this.nudTenacity.Location = new System.Drawing.Point(5, 138);
+            this.nudTenacity.Location = new System.Drawing.Point(7, 160);
             this.nudTenacity.Name = "nudTenacity";
             this.nudTenacity.Size = new System.Drawing.Size(195, 20);
             this.nudTenacity.TabIndex = 79;
@@ -954,7 +956,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblTenacity
             // 
             this.lblTenacity.AutoSize = true;
-            this.lblTenacity.Location = new System.Drawing.Point(5, 122);
+            this.lblTenacity.Location = new System.Drawing.Point(7, 144);
             this.lblTenacity.Name = "lblTenacity";
             this.lblTenacity.Size = new System.Drawing.Size(68, 13);
             this.lblTenacity.TabIndex = 79;
@@ -2222,7 +2224,7 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo.Size = new System.Drawing.Size(23, 22);
             this.toolStripItemUndo.Text = "Undo";
             this.toolStripItemUndo.Click += new System.EventHandler(this.toolStripItemUndo_Click);
-            // 
+            //
             // nudAccuracy
             // 
             this.nudAccuracy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
@@ -2281,6 +2283,16 @@ namespace Intersect.Editor.Forms.Editors
             this.lblEvasion.TabIndex = 48;
             this.lblEvasion.Text = "Evasion:";
             // 
+            // chkHaste
+            // 
+            this.chkHaste.AutoSize = true;
+            this.chkHaste.Location = new System.Drawing.Point(11, 118);
+            this.chkHaste.Name = "chkHaste";
+            this.chkHaste.Size = new System.Drawing.Size(54, 17);
+            this.chkHaste.TabIndex = 87;
+            this.chkHaste.Text = "Haste";
+            this.chkHaste.CheckedChanged += new System.EventHandler(this.chkHaste_CheckedChanged);
+            //
             // FrmNpc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2512,5 +2524,6 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblEvasion;
         private DarkNumericUpDown nudAccuracy;
         private System.Windows.Forms.Label lblAccuracy;
+        private DarkCheckBox chkHaste;
     }
 }

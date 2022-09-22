@@ -35,5 +35,10 @@ namespace Intersect.Editor.Localization
 
             public static LocalizedString EvasionBonus = @"Evasion:";
         }
+
+        public partial struct SpellEditor
+        {
+            public static LocalizedString EffectPercentageValue = @"Percentage Effect (%):";
+        }
     }
 }
