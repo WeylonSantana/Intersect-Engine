@@ -867,8 +867,9 @@ namespace Intersect.Server.Entities
             //Remove any damage over time effects
             DoT.Clear();
             CachedDots = new DoT[0];
-            Statuses.Clear();
-            CachedStatuses = new Status[0];
+            var statusToRemove = Statuses.Keys.Where(key => key.Combat.StatusPersist == false).ToList();
+            statusToRemove.ForEach(key => Statuses.TryRemove(key, out Status _));
+            CachedStatuses = Statuses.Values.ToArray();
 
             CombatTimer = 0;
 

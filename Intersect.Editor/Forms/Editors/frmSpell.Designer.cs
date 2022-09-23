@@ -199,6 +199,7 @@ namespace Intersect.Editor.Forms.Editors
             this.lblPlus7 = new System.Windows.Forms.Label();
             this.nudEvasion = new DarkUI.Controls.DarkNumericUpDown();
             this.lblEvasion = new System.Windows.Forms.Label();
+            this.chkStatusPersist = new DarkUI.Controls.DarkCheckBox();
             this.pnlContainer.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSpell)).BeginInit();
@@ -979,7 +980,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpCombat.ForeColor = System.Drawing.Color.Gainsboro;
             this.grpCombat.Location = new System.Drawing.Point(3, 485);
             this.grpCombat.Name = "grpCombat";
-            this.grpCombat.Size = new System.Drawing.Size(440, 500);
+            this.grpCombat.Size = new System.Drawing.Size(440, 520);
             this.grpCombat.TabIndex = 39;
             this.grpCombat.TabStop = false;
             this.grpCombat.Text = "Combat Spell";
@@ -1682,6 +1683,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEffect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEffect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEffect.Controls.Add(this.chkStatusPersist);
             this.grpEffect.Controls.Add(this.lblPercentageEffect);
             this.grpEffect.Controls.Add(this.nudPercentageEffect);
             this.grpEffect.Controls.Add(this.lblEffect);
@@ -1692,7 +1694,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEffect.ForeColor = System.Drawing.Color.Gainsboro;
             this.grpEffect.Location = new System.Drawing.Point(201, 299);
             this.grpEffect.Name = "grpEffect";
-            this.grpEffect.Size = new System.Drawing.Size(233, 186);
+            this.grpEffect.Size = new System.Drawing.Size(233, 214);
             this.grpEffect.TabIndex = 52;
             this.grpEffect.TabStop = false;
             this.grpEffect.Text = "Effect";
@@ -1700,7 +1702,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblPercentageEffect
             // 
             this.lblPercentageEffect.AutoSize = true;
-            this.lblPercentageEffect.Location = new System.Drawing.Point(5, 61);
+            this.lblPercentageEffect.Location = new System.Drawing.Point(4, 87);
             this.lblPercentageEffect.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPercentageEffect.Name = "lblPercentageEffect";
             this.lblPercentageEffect.Size = new System.Drawing.Size(113, 13);
@@ -1711,7 +1713,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.nudPercentageEffect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this.nudPercentageEffect.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudPercentageEffect.Location = new System.Drawing.Point(5, 77);
+            this.nudPercentageEffect.Location = new System.Drawing.Point(4, 103);
             this.nudPercentageEffect.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -1735,7 +1737,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblEffect
             // 
             this.lblEffect.AutoSize = true;
-            this.lblEffect.Location = new System.Drawing.Point(4, 15);
+            this.lblEffect.Location = new System.Drawing.Point(3, 41);
             this.lblEffect.Name = "lblEffect";
             this.lblEffect.Size = new System.Drawing.Size(65, 13);
             this.lblEffect.TabIndex = 35;
@@ -1770,7 +1772,7 @@ namespace Intersect.Editor.Forms.Editors
             "Taunt",
             "Haste",
             "Swift"});
-            this.cmbExtraEffect.Location = new System.Drawing.Point(5, 31);
+            this.cmbExtraEffect.Location = new System.Drawing.Point(4, 57);
             this.cmbExtraEffect.Name = "cmbExtraEffect";
             this.cmbExtraEffect.Size = new System.Drawing.Size(80, 21);
             this.cmbExtraEffect.TabIndex = 36;
@@ -1782,7 +1784,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.picSprite.BackColor = System.Drawing.Color.Black;
             this.picSprite.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.picSprite.Location = new System.Drawing.Point(5, 61);
+            this.picSprite.Location = new System.Drawing.Point(4, 87);
             this.picSprite.Name = "picSprite";
             this.picSprite.Size = new System.Drawing.Size(222, 120);
             this.picSprite.TabIndex = 43;
@@ -1803,7 +1805,7 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbTransform.FormattingEnabled = true;
             this.cmbTransform.Items.AddRange(new object[] {
             "None"});
-            this.cmbTransform.Location = new System.Drawing.Point(137, 31);
+            this.cmbTransform.Location = new System.Drawing.Point(136, 57);
             this.cmbTransform.Name = "cmbTransform";
             this.cmbTransform.Size = new System.Drawing.Size(80, 21);
             this.cmbTransform.TabIndex = 44;
@@ -1814,7 +1816,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblSprite
             // 
             this.lblSprite.AutoSize = true;
-            this.lblSprite.Location = new System.Drawing.Point(134, 15);
+            this.lblSprite.Location = new System.Drawing.Point(133, 41);
             this.lblSprite.Name = "lblSprite";
             this.lblSprite.Size = new System.Drawing.Size(37, 13);
             this.lblSprite.TabIndex = 40;
@@ -2768,6 +2770,17 @@ namespace Intersect.Editor.Forms.Editors
             this.lblEvasion.Size = new System.Drawing.Size(48, 13);
             this.lblEvasion.TabIndex = 73;
             this.lblEvasion.Text = "Evasion:";
+            // chkStatusPersist
+            // 
+            this.chkStatusPersist.AutoSize = true;
+            this.chkStatusPersist.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkStatusPersist.Location = new System.Drawing.Point(8, 19);
+            this.chkStatusPersist.Name = "chkStatusPersist";
+            this.chkStatusPersist.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkStatusPersist.Size = new System.Drawing.Size(96, 17);
+            this.chkStatusPersist.TabIndex = 69;
+            this.chkStatusPersist.Text = "Status Persist?";
+            this.chkStatusPersist.CheckedChanged += new System.EventHandler(this.chkStatusPersist_CheckedChanged);
             // 
             // FrmSpell
             // 
@@ -3018,5 +3031,6 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblAccuracy;
         private System.Windows.Forms.Label lblPercentageEffect;
         private DarkNumericUpDown nudPercentageEffect;
+        private DarkCheckBox chkStatusPersist;
     }
 }

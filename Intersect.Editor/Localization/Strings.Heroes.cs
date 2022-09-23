@@ -39,6 +39,8 @@ namespace Intersect.Editor.Localization
         public partial struct SpellEditor
         {
             public static LocalizedString EffectPercentageValue = @"Percentage Effect (%):";
+
+            public static LocalizedString StatusPersist = @"Persist Effect on Death";
         }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using Intersect.Server.Database.GameData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Intersect.Server.Migrations.Game
 {
     [DbContext(typeof(GameContext))]
-    partial class GameContextModelSnapshot : ModelSnapshot
+    [Migration("20220923115208_StatusPersist")]
+    partial class StatusPersist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,8 +49,6 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<int>("AttackSpeedModifier");
 
                     b.Property<int>("AttackSpeedValue");
-
-                    b.Property<string>("AttackSpriteOverride");
 
                     b.Property<long>("BaseExp");
 
@@ -274,12 +274,7 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<string>("Description");
 
-                    b.Property<long>("DespawnTime");
-
                     b.Property<int>("DropChanceOnDeath");
-
-                    b.Property<string>("EffectsJson")
-                        .HasColumnName("Effects");
 
                     b.Property<Guid>("EquipmentAnimationId")
                         .HasColumnName("EquipmentAnimation");
@@ -362,8 +357,6 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<string>("VitalsRegenJson")
                         .HasColumnName("VitalsRegen");
-
-                    b.Property<string>("WeaponSpriteOverride");
 
                     b.HasKey("Id");
 
@@ -730,8 +723,6 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<int>("CastDuration");
 
-                    b.Property<string>("CastSpriteOverride");
-
                     b.Property<int>("CooldownDuration");
 
                     b.Property<string>("CooldownGroup");
@@ -803,26 +794,6 @@ namespace Intersect.Server.Migrations.Game
                     b.HasKey("Id");
 
                     b.ToTable("Time");
-                });
-
-            modelBuilder.Entity("Intersect.GameObjects.UserVariableBase", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<byte>("DataType");
-
-                    b.Property<string>("Folder");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("TextId");
-
-                    b.Property<long>("TimeCreated");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserVariables");
                 });
 
             modelBuilder.Entity("Intersect.Server.Maps.MapController", b =>
@@ -993,6 +964,22 @@ namespace Intersect.Server.Migrations.Game
                             b1.HasOne("Intersect.GameObjects.ItemBase")
                                 .WithOne("Consumable")
                                 .HasForeignKey("Intersect.GameObjects.ConsumableData", "ItemBaseId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("Intersect.GameObjects.EffectData", "Effect", b1 =>
+                        {
+                            b1.Property<Guid>("ItemBaseId");
+
+                            b1.Property<int>("Percentage");
+
+                            b1.Property<byte>("Type");
+
+                            b1.ToTable("Items");
+
+                            b1.HasOne("Intersect.GameObjects.ItemBase")
+                                .WithOne("Effect")
+                                .HasForeignKey("Intersect.GameObjects.EffectData", "ItemBaseId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

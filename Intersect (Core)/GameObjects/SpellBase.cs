@@ -249,6 +249,8 @@ namespace Intersect.GameObjects
 
         public int EffectPercentageValue { get; set; } = 0;
 
+        public bool StatusPersist { get; set; } = false;
+
     }
 
     [Owned]

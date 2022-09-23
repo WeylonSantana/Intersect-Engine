@@ -19,6 +19,7 @@ namespace Intersect.Editor.Forms.Editors
             lblAccuracy.Text = Strings.SpellEditor.Accuracy;
             lblEvasion.Text = Strings.SpellEditor.Evasion;
             lblPercentageEffect.Text = Strings.SpellEditor.EffectPercentageValue;
+            chkStatusPersist.Text = Strings.SpellEditor.StatusPersist;
         }
 
         private void UpdateExtraEditor()
@@ -28,6 +29,7 @@ namespace Intersect.Editor.Forms.Editors
             nudAccuracyPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Accuracy];
             nudEvasionPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Evasion];
             nudPercentageEffect.Value = mEditorItem.Combat.EffectPercentageValue;
+            chkStatusPersist.Checked = mEditorItem.Combat.StatusPersist;
         }
 
         void ExtraStatusSetup()
@@ -77,6 +79,11 @@ namespace Intersect.Editor.Forms.Editors
         private void nudPercentageEffect_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Combat.EffectPercentageValue = (int) nudPercentageEffect.Value;
+        }
+
+        private void chkStatusPersist_CheckedChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.StatusPersist = chkStatusPersist.Checked;
         }
     }
 }
