@@ -61,7 +61,7 @@ namespace Intersect.Server.Entities.Combat
             if (en is Player player)
             {
                 // Get our player's Tenacity stat!
-                if (!TenacityExcluded.Contains(type))
+                if (!TenacityExcluded.Contains(type) && !spell.Combat.Friendly)
                 {
                     tenacity = player.GetEquipmentBonusEffect(EffectType.Tenacity);
                 }

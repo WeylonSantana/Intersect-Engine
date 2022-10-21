@@ -443,7 +443,11 @@ namespace Intersect.Client.Interface.Game.Character
                 )
             );
 
-            mTenacity.SetText(Strings.Character.Tenacity.ToString(0));
+            mTenacity.SetText(
+                Strings.Character.Tenacity.ToString(
+                    GetExtraSpellBuff(StatusTypes.TenacityChange)
+                )
+            );
 
             mManaSteal.SetText(Strings.Character.Manasteal.ToString(0));
             
@@ -507,6 +511,7 @@ namespace Intersect.Client.Interface.Game.Character
                             break;
                         case EffectType.Tenacity:
                             TenacityAmount += effect.Percentage;
+                            TenacityAmount += GetExtraSpellBuff(StatusTypes.TenacityChange);
                             mTenacity?.SetText(Strings.Character.Tenacity.ToString(TenacityAmount));
 
                             break;

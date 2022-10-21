@@ -3368,6 +3368,9 @@ namespace Intersect.Server.Entities
                 case EffectType.Luck:
                     value += GetExtraSpellBuff(StatusTypes.LuckChange);
                     break;
+                case EffectType.Tenacity:
+                    value += GetExtraSpellBuff(StatusTypes.TenacityChange);
+                    break;
             }
 
             return value;

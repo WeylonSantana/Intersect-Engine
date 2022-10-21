@@ -486,6 +486,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.CooldownChange:
                 case StatusTypes.ExpChange:
                 case StatusTypes.LuckChange:
+                case StatusTypes.TenacityChange:
                 case null:
                     return false;
 
@@ -520,6 +521,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.CooldownChange:
                 case StatusTypes.ExpChange:
                 case StatusTypes.LuckChange:
+                case StatusTypes.TenacityChange:
                 case null:
                     return false;
 

@@ -39,6 +39,7 @@ namespace Intersect.Editor.Forms.Editors
                 case (int) StatusTypes.CooldownChange:
                 case (int) StatusTypes.ExpChange:
                 case (int) StatusTypes.LuckChange:
+                case (int) StatusTypes.TenacityChange:
                     lblPercentageEffect.Show();
                     nudPercentageEffect.Show();
 
