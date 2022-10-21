@@ -273,6 +273,9 @@ namespace Intersect.Editor.Forms.Editors
                 }
 
                 grpExpGrid.Hide();
+
+                //Heroes UpdateExtraEditor()
+                UpdateExtraEditor();
             }
             else
             {
@@ -321,6 +324,9 @@ namespace Intersect.Editor.Forms.Editors
 
             InitLocalization();
             UpdateEditor();
+
+            //Heroes ExtraFrmLoad()
+            ExtraFrmLoad();
         }
 
         private void InitLocalization()
@@ -483,6 +489,9 @@ namespace Intersect.Editor.Forms.Editors
 
             btnSave.Text = Strings.ClassEditor.save;
             btnCancel.Text = Strings.ClassEditor.cancel;
+
+            //Heroes InitExtraLocalization()
+            InitExtraLocalization();
         }
 
         public void InitEditor()
@@ -768,6 +777,8 @@ namespace Intersect.Editor.Forms.Editors
                 nudMagicIncrease.Maximum = Options.MaxStatValue;
                 nudMagicResistIncrease.Maximum = Options.MaxStatValue;
                 nudSpeedIncrease.Maximum = Options.MaxStatValue;
+                nudAccuracyIncrease.Maximum = Options.MaxStatValue;
+                nudEvasionIncrease.Maximum = Options.MaxStatValue;
             }
             else
             {
@@ -778,6 +789,8 @@ namespace Intersect.Editor.Forms.Editors
                 nudMagicIncrease.Maximum = 100;
                 nudMagicResistIncrease.Maximum = 100;
                 nudSpeedIncrease.Maximum = 100;
+                nudAccuracyIncrease.Maximum = 100;
+                nudEvasionIncrease.Maximum = 100;
             }
 
             nudHpIncrease.Value = Math.Min(nudHpIncrease.Maximum, mEditorItem.VitalIncrease[(int) Vitals.Health]);
@@ -827,6 +840,9 @@ namespace Intersect.Editor.Forms.Editors
             );
 
             nudPointsIncrease.Value = mEditorItem.PointIncrease;
+
+            //Heroes ExtraUpdateIncreases()
+            ExtraUpdateIncreases();
         }
 
         private void rdoPercentageIncrease_CheckedChanged(object sender, EventArgs e)

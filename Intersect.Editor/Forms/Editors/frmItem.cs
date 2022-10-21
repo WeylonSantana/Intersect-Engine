@@ -166,6 +166,9 @@ namespace Intersect.Editor.Forms.Editors
 
             InitLocalization();
             UpdateEditor();
+
+            //Heroes ExtraFrmLoad()
+            ExtraFrmLoad();
         }
 
         private void InitLocalization()
@@ -313,6 +316,9 @@ namespace Intersect.Editor.Forms.Editors
             btnCancel.Text = Strings.ItemEditor.cancel;
 
             grpEffects.Text = Strings.ItemEditor.BonusEffectGroup;
+            
+            //Heroes InitExtraLocalization()
+            InitExtraLocalization();
         }
 
         private void UpdateEditor()
@@ -435,6 +441,9 @@ namespace Intersect.Editor.Forms.Editors
                     mChanged.Add(mEditorItem);
                     mEditorItem.MakeBackup();
                 }
+
+                //Heroes UpdateExtraEditor()
+                UpdateExtraEditor();
             }
             else
             {

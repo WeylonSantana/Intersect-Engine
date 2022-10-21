@@ -160,6 +160,14 @@ namespace Intersect.Client.Interface.Game.Character
             mAddMagicResistBtn = new Button(mCharacterWindow, "IncreaseMagicResistButton");
             mAddMagicResistBtn.Clicked += _addMagicResistBtn_Clicked;
 
+            mAccuracyLabel = new Label(mCharacterWindow, "AccuracyLabel");
+            mAddAccuracyBtn = new Button(mCharacterWindow, "IncreaseAccuracyButton");
+            mAddAccuracyBtn.Clicked += _addAccuracyBtn_Clicked;
+
+            mEvasionLabel = new Label(mCharacterWindow, "EvasionLabel");
+            mAddEvasionBtn = new Button(mCharacterWindow, "IncreaseEvasionButton");
+            mAddEvasionBtn.Clicked += _addEvasionBtn_Clicked;
+
             mPointsLabel = new Label(mCharacterWindow, "PointsLabel");
 
             for (var i = 0; i < Options.EquipmentSlots.Count; i++)
@@ -350,6 +358,9 @@ namespace Intersect.Client.Interface.Game.Character
             mMagicRstLabel.SetText(
                 Strings.Character.stat3.ToString(Strings.Combat.stat3, Globals.Me.Stat[(int) Stats.MagicResist])
             );
+
+            //Heroes UpdateExtraStatus()
+            UpdateExtraStatus();
 
             mPointsLabel.SetText(Strings.Character.points.ToString(Globals.Me.StatPoints));
             mAddAbilityPwrBtn.IsHidden = Globals.Me.StatPoints == 0 ||

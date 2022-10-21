@@ -149,6 +149,9 @@ namespace Intersect.Editor.Forms.Editors
 
             InitLocalization();
             UpdateEditor();
+
+            //Heroes ExtraFrmLoad()
+            ExtraFrmLoad();
         }
 
         private void InitLocalization()
@@ -275,6 +278,9 @@ namespace Intersect.Editor.Forms.Editors
 
             btnSave.Text = Strings.SpellEditor.save;
             btnCancel.Text = Strings.SpellEditor.cancel;
+
+            //Heroes InitExtraLocalization()
+            InitExtraLocalization();
         }
 
         private void UpdateEditor()
@@ -379,6 +385,9 @@ namespace Intersect.Editor.Forms.Editors
                 nudTick.Value = mEditorItem.Combat.HotDotInterval;
                 cmbExtraEffect.SelectedIndex = (int) mEditorItem.Combat.Effect;
                 cmbExtraEffect_SelectedIndexChanged(null, null);
+
+                //Heroes UpdateExtraEditor()
+                UpdateExtraEditor();
             }
             else if (cmbType.SelectedIndex == (int) SpellTypes.Warp)
             {

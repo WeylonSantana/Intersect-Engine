@@ -1723,6 +1723,22 @@ namespace Intersect.Server.Entities
                 }
             }
 
+            //Check if the victim managed to evade
+            var evasionRate = Formulas.CalculateEvasion(this, target);
+            if(Randomization.Next(0, 101) < evasionRate)
+            {
+                PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
+
+                if (this is Npc npc)
+                {
+                    npc.MoveTimer = Timing.Global.Milliseconds + (long) GetMovementTime();
+                }
+
+                PacketSender.SendEntityAttack(this, CalculateAttackTime());
+
+                return;
+            }
+
             Attack(
                 target, baseDamage, 0, damageType, scalingStat, scaling, critChance, critMultiplier, deadAnimations,
                 aliveAnimations, true
