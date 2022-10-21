@@ -46,6 +46,8 @@ namespace Intersect.Enums
 
         TenacityChange = 20,
 
+        LifestealChange = 21,
+
         Knockback = 100,
 
     }

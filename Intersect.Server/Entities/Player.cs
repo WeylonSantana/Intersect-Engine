@@ -3371,6 +3371,9 @@ namespace Intersect.Server.Entities
                 case EffectType.Tenacity:
                     value += GetExtraSpellBuff(StatusTypes.TenacityChange);
                     break;
+                case EffectType.Lifesteal:
+                    value += GetExtraSpellBuff(StatusTypes.LifestealChange);
+                    break;
             }
 
             return value;

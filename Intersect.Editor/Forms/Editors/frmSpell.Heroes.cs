@@ -40,6 +40,7 @@ namespace Intersect.Editor.Forms.Editors
                 case (int) StatusTypes.ExpChange:
                 case (int) StatusTypes.LuckChange:
                 case (int) StatusTypes.TenacityChange:
+                case (int) StatusTypes.LifestealChange:
                     lblPercentageEffect.Show();
                     nudPercentageEffect.Show();
 

@@ -4469,6 +4469,7 @@ Tick timer saved in server config.json.";
                 {StatusTypes.ExpChange, @"Exp Bonus Change"},
                 {StatusTypes.LuckChange, @"Luck Bonus Change"},
                 {StatusTypes.TenacityChange, @"Tenacity Change"},
+                {StatusTypes.LifestealChange, @"Lifesteal Change"},
             };
 
         }
@@ -5068,6 +5069,7 @@ Tick timer saved in server config.json.";
                 {18, @"Exp Bonus Change"},
                 {19, @"Luck Bonus Change"},
                 {20, @"Tenacity Change"},
+                {21, @"Lifesteal Change"},
             };
 
             public static LocalizedString effectgroup = @"Effect";

@@ -41,6 +41,9 @@ namespace Intersect.Client.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString TenacityChange = @"Tenacity Change:";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString LifestealChange = @"Lifesteal Change:";
         }
     }
 }

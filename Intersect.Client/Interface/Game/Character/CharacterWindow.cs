@@ -429,7 +429,11 @@ namespace Intersect.Client.Interface.Game.Character
             ExtraExpAmount = 0;
             ManaStealAmount = 0;
 
-            mLifeSteal.SetText(Strings.Character.Lifesteal.ToString(0));
+            mLifeSteal.SetText(
+                Strings.Character.Lifesteal.ToString(
+                    GetExtraSpellBuff(StatusTypes.LifestealChange)
+                )
+            );
 
             mExtraExp.SetText(
                 Strings.Character.ExtraExp.ToString(
@@ -506,6 +510,7 @@ namespace Intersect.Client.Interface.Game.Character
                             break;
                         case EffectType.Lifesteal:
                             LifeStealAmount += effect.Percentage;
+                            LifeStealAmount += GetExtraSpellBuff(StatusTypes.LifestealChange);
                             mLifeSteal?.SetText(Strings.Character.Lifesteal.ToString(LifeStealAmount));
 
                             break;
