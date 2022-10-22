@@ -573,6 +573,10 @@ namespace Intersect.Server.Database
                     UserVariableBase.Lookup.Clear();
 
                     break;
+                case GameObjectType.Professions:
+                    ProfessionBase.Lookup.Clear();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -719,6 +723,13 @@ namespace Intersect.Server.Database
                             }
 
                             break;
+                        case GameObjectType.Professions:
+                            foreach (var psw in context.Professions)
+                            {
+                                ProfessionBase.Lookup.Set(psw.Id, psw);
+                            }
+
+                            break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(gameObjectType), gameObjectType, null);
                     }
@@ -825,6 +836,11 @@ namespace Intersect.Server.Database
 
                 case GameObjectType.UserVariable:
                     dbObj = new UserVariableBase(predefinedid);
+
+                    break;
+
+                case GameObjectType.Professions:
+                    dbObj = new ProfessionBase(predefinedid);
 
                     break;
                 default:
@@ -950,6 +966,12 @@ namespace Intersect.Server.Database
                         case GameObjectType.UserVariable:
                             context.UserVariables.Add((UserVariableBase)dbObj);
                             UserVariableBase.Lookup.Set(dbObj.Id, dbObj);
+
+                            break;
+
+                        case GameObjectType.Professions:
+                            context.Professions.Add((ProfessionBase)dbObj);
+                            ProfessionBase.Lookup.Set(dbObj.Id, dbObj);
 
                             break;
 
@@ -1079,6 +1101,10 @@ namespace Intersect.Server.Database
                             context.UserVariables.Remove((UserVariableBase)gameObject);
 
                             break;
+                        case GameObjectType.Professions:
+                            context.Professions.Remove((ProfessionBase)gameObject);
+
+                            break;
                     }
 
                     if (gameObject.Type.GetLookup().Values.Contains(gameObject))
@@ -1201,6 +1227,10 @@ namespace Intersect.Server.Database
                             break;
                         case GameObjectType.UserVariable:
                             context.UserVariables.Update((UserVariableBase)gameObject);
+
+                            break;
+                        case GameObjectType.Professions:
+                            context.Professions.Update((ProfessionBase)gameObject);
 
                             break;
                     }

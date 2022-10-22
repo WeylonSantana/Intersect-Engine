@@ -1,4 +1,4 @@
-﻿using Intersect.GameObjects;
+using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
 using Intersect.GameObjects.Events;
 using Intersect.GameObjects.Maps.MapList;
@@ -43,5 +43,7 @@ namespace Intersect.Server.Database.GameData
         DbSet<TilesetBase> Tilesets { get; set; }
 
         DbSet<TimeBase> Time { get; set; }
+
+        DbSet<ProfessionBase> Professions { get; set; }
     }
 }

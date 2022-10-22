@@ -95,6 +95,9 @@ namespace Intersect.Server.Database.GameData
         //Time
         public DbSet<TimeBase> Time { get; set; }
 
+        //Professions
+        public DbSet<ProfessionBase> Professions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Item>().Property<int>("Effect_Percentage").HasDefaultValue(default(int));
