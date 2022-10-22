@@ -48,6 +48,8 @@ namespace Intersect.Enums
 
         LifestealChange = 21,
 
+        ManastealChange = 22,
+
         Knockback = 100,
 
     }

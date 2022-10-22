@@ -3374,6 +3374,9 @@ namespace Intersect.Server.Entities
                 case EffectType.Lifesteal:
                     value += GetExtraSpellBuff(StatusTypes.LifestealChange);
                     break;
+                case EffectType.Manasteal:
+                    value += GetExtraSpellBuff(StatusTypes.ManastealChange);
+                    break;
             }
 
             return value;

@@ -453,7 +453,11 @@ namespace Intersect.Client.Interface.Game.Character
                 )
             );
 
-            mManaSteal.SetText(Strings.Character.Manasteal.ToString(0));
+            mManaSteal.SetText(
+                Strings.Character.Manasteal.ToString(
+                    GetExtraSpellBuff(StatusTypes.ManastealChange)
+                )
+            );
             
             mCooldownReduction.SetText(
                 Strings.Character.CooldownReduction.ToString(
@@ -534,6 +538,7 @@ namespace Intersect.Client.Interface.Game.Character
                             break;
                         case EffectType.Manasteal:
                             ManaStealAmount += effect.Percentage;
+                            ManaStealAmount += GetExtraSpellBuff(StatusTypes.ManastealChange);
                             mManaSteal?.SetText(Strings.Character.Manasteal.ToString(ManaStealAmount));
 
                             break;

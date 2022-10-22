@@ -2172,6 +2172,7 @@ namespace Intersect.Client.Localization
                 {19, @"Luck Bonus Change"},
                 {20, @"Tenacity Change"},
                 {21, @"Lifesteal Change"},
+                {22, @"Manasteal Change"},
             };
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

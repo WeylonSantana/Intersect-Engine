@@ -380,6 +380,7 @@ namespace Intersect.Server.Localization
                     {19, @"LUCK BONUS CHANGE!"},
                     {20, @"TENACITY CHANGE!"},
                     {21, @"LIFESTEAL CHANGE!"},
+                    {22, @"MANASTEAL CHANGE!"},
                 }
             );
 

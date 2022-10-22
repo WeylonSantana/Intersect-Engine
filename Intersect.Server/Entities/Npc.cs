@@ -488,6 +488,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.LuckChange:
                 case StatusTypes.TenacityChange:
                 case StatusTypes.LifestealChange:
+                case StatusTypes.ManastealChange:
                 case null:
                     return false;
 
@@ -524,6 +525,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.LuckChange:
                 case StatusTypes.TenacityChange:
                 case StatusTypes.LifestealChange:
+                case StatusTypes.ManastealChange:
                 case null:
                     return false;
 
