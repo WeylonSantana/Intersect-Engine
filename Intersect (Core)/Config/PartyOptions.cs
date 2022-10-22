@@ -1,4 +1,4 @@
-﻿namespace Intersect.Config
+namespace Intersect.Config
 {
     public partial class PartyOptions
     {
@@ -13,10 +13,12 @@
         public int NpcDeathCommonEventStartRange = 0;
 
         /// <summary>
-        /// It will determine if you will have an XP bonus for each member, Eg 10, will give 10% more to the monster's total XP, then split equally to all members.
-        /// A monster that would give 100 XP, now gives 120, getting 60 for each member, when 2 in the party.
+        /// It will determine a bonus to add to the base npc exp per member
+        /// Eg:10. A monster that would give 100 XP, now gives 120, when 2 in the party, 130 when 3, and 140 when 4. (10% extra by party member)
+        /// PS: I, Weylon, removed the division of exp for reasons of my own, so the above calculation does not consider division by exp
+        /// Each member receives the quoted values.
         /// </summary>
-        public float BonusExperiencePercentPerMember = 0;
+        public float BonusExperiencePercentPerMember = 10;
 
     }
 }

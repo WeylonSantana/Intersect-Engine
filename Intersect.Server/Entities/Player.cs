@@ -1168,17 +1168,30 @@ namespace Intersect.Server.Entities
                         var descriptor = npc.Base;
                         var playerEvent = descriptor.OnDeathEvent;
                         var partyEvent = descriptor.OnDeathPartyEvent;
+                        long npcExperience = descriptor.Experience;
+                        long expToGive = npcExperience;
 
                         // If in party, split the exp.
                         if (Party != null && Party.Count > 0)
                         {
                             var partyMembersInXpRange = Party.Where(partyMember => partyMember.InRangeOf(this, Options.Party.SharedXpRange)).ToArray();
-                            float bonusExp = Options.Instance.PartyOpts.BonusExperiencePercentPerMember / 100;
-                            var multiplier = 1.0f + (partyMembersInXpRange.Length * bonusExp);
-                            var partyExperience = (int)(descriptor.Experience * multiplier) / partyMembersInXpRange.Length;
+                            var bonusExp = Options.Instance.PartyOpts.BonusExperiencePercentPerMember / 100f;
+                            var damageFactor = Options.Instance.PartyOpts.DefaultBonusDamageExperience / 100f;
+                            var necessaryDamage = damageFactor * npc.GetMaxVital(Vitals.Health);
+
+                            //Only add bonus exp for those who dealt a certain percentage of the damage
+                            //avoiding creating multiple accounts for ghost party members
                             foreach (var partyMember in partyMembersInXpRange)
                             {
-                                partyMember.GiveExperience(partyExperience);
+                                if(npc.DamageMap.TryGetValue(partyMember, out var value) && value > necessaryDamage)
+                                {
+                                    expToGive += (long)(npcExperience * bonusExp);
+                                }
+                            }
+
+                            foreach (var partyMember in partyMembersInXpRange)
+                            {
+                                partyMember.GiveExperience(CalculateExperienceFactor(expToGive, descriptor.Level, partyMember.Level));
                                 partyMember.UpdateQuestKillTasks(entity);
                             }
 
@@ -1195,7 +1208,7 @@ namespace Intersect.Server.Entities
                         }
                         else
                         {
-                            GiveExperience(descriptor.Experience);
+                            GiveExperience(CalculateExperienceFactor(npcExperience, descriptor.Level, Level));
                             UpdateQuestKillTasks(entity);
                         }
 
