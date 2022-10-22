@@ -79,6 +79,8 @@ namespace Intersect.Editor.Forms
 
         private FrmTime mTimeEditor;
 
+        private FrmProfession mProfessionEditor;
+
         //General Editting Variables
         bool mTMouseDown;
 
@@ -1716,6 +1718,15 @@ namespace Intersect.Editor.Forms
                             mTimeEditor = new FrmTime();
                             mTimeEditor.InitEditor(TimeBase.GetTimeBase());
                             mTimeEditor.Show();
+                        }
+
+                        break;
+                    case GameObjectType.Professions:
+                        if (mProfessionEditor == null || mProfessionEditor.Visible == false)
+                        {
+                            mProfessionEditor = new FrmProfession();
+                            mProfessionEditor.InitEditor();
+                            mProfessionEditor.Show();
                         }
 
                         break;

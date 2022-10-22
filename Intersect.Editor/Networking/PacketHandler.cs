@@ -680,6 +680,21 @@ namespace Intersect.Editor.Networking
                     }
 
                     break;
+
+                case GameObjectType.Professions:
+                    if (deleted)
+                    {
+                        var pvar = ProfessionBase.Get(id);
+                        pvar.Delete();
+                    }
+                    else
+                    {
+                        var pvar = new ProfessionBase(id);
+                        pvar.Load(json);
+                        ProfessionBase.Lookup.Set(id, pvar);
+                    }
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

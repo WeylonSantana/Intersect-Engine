@@ -1703,6 +1703,13 @@ namespace Intersect.Server.Networking
                     }
 
                     break;
+                case GameObjectType.Professions:
+                    foreach (var obj in ProfessionBase.Lookup)
+                    {
+                        SendGameObject(client, obj.Value, false, false, packetList);
+                    }
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
