@@ -33,7 +33,8 @@ namespace Intersect.Server.Entities
                 return null;
             }
 
-            if (ProfessionBase.Get(professionBaseId) == null)
+            var descriptor = ProfessionBase.Get(professionBaseId);
+            if (descriptor == null)
             {
                 return null;
             }
@@ -48,7 +49,18 @@ namespace Intersect.Server.Entities
             }
 
             //If the profession was not found above, then add one in the first empty slot it finds.
-            var professionData = new ProfessionData(professionBaseId);
+            var professionData = new ProfessionData()
+            {
+                ProfessionBaseId = professionBaseId,
+                Level = 1,
+                Exp = 0,
+                NextLevelExp = descriptor.ExperienceToNextLevel(1),
+                MaxLevel = descriptor.MaxLevel,
+                Name = descriptor.Name,
+                Description = descriptor.Description,
+                Icon = descriptor.Icon,
+            };
+
             PlayerProfessions.Professions.Add(professionData);
 
             return PlayerProfessions;

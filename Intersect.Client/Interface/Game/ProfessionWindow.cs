@@ -77,6 +77,7 @@ namespace Intersect.Client.Interface.Game
             if (!mInitialized)
             {
                 mInitialized = true;
+                mProfessions.RemoveAllRows();
 
                 for (var i = 0; i < Globals.Me?.PlayerProfessions?.Professions?.Count; ++i)
                 {
@@ -118,13 +119,18 @@ namespace Intersect.Client.Interface.Game
         private void UpdateCurrentProfession()
         {
             var index = mProfessions.SelectedRowIndex;
+
+            if(mProfessions.RowCount != Globals.Me?.PlayerProfessions?.Professions?.Count)
+            {
+                mInitialized = false;
+            }
+
             LoadProfessionItems(Globals.Me?.PlayerProfessions?.Professions[index]);
         }
 
         private void LoadProfessionItems(ProfessionData data)
         {
-            var descriptor = ProfessionBase.Get(data.ProfessionBaseId);
-            var itemTex = Globals.ContentManager.GetTexture(Framework.Content.TextureType.Spell, descriptor.Icon);
+            var itemTex = Globals.ContentManager.GetTexture(Framework.Content.TextureType.Spell, data.Icon);
             if (itemTex != null)
             {
                 mIcon.Texture = itemTex;
@@ -137,14 +143,11 @@ namespace Intersect.Client.Interface.Game
                 }
             }
 
-            mProfessionName.Text = descriptor.Name;
+            mProfessionName.Text = data.Name;
             mProfessionLevel.Text = Strings.Profession.Level.ToString(data.Level);
-            mProfessionMaxLevel.Text = Strings.Profession.MaxLevel.ToString(descriptor.MaxLevel);
-            mProfessionExp.Text = Strings.Profession.Exp.ToString(
-                data.Exp,
-                descriptor.ExperienceToNextLevel(data.Level)
-            );
-            mProfessionDescription.Text = descriptor.Description;
+            mProfessionMaxLevel.Text = Strings.Profession.MaxLevel.ToString(data.MaxLevel);
+            mProfessionExp.Text = Strings.Profession.Exp.ToString(data.Exp, data.NextLevelExp);
+            mProfessionDescription.Text = data.Description;
         }
     }
 }

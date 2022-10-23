@@ -38,20 +38,10 @@ namespace Intersect.Network.Packets.Server
             ProfessionBaseId = default;
             Level = 1;
             Exp = 0;
-        }
-
-        public ProfessionData(Guid professionBaseId)
-        {
-            ProfessionBaseId = professionBaseId;
-            Level = 1;
-            Exp = 0;
-        }
-
-        public ProfessionData(Guid professionBaseId, int level, long exp)
-        {
-            ProfessionBaseId = professionBaseId;
-            Level = level;
-            Exp = exp;
+            NextLevelExp = 1;
+            MaxLevel = 1;
+            Name = default;
+            Description = default;
         }
 
         [Key(1)]
@@ -62,5 +52,20 @@ namespace Intersect.Network.Packets.Server
 
         [Key(3)]
         public long Exp { get; set; }
+
+        [Key(4)]
+        public long NextLevelExp { get; set; }
+
+        [Key(5)]
+        public long MaxLevel { get; set; }
+
+        [Key(6)]
+        public string Name { get; set; }
+
+        [Key(7)]
+        public string Description { get; set; }
+
+        [Key(8)]
+        public string Icon { get; set; }
     }
 }
