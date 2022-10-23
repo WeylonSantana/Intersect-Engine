@@ -25,7 +25,7 @@ namespace Intersect.Server.Entities
         /// Function that seeks a profession, if it did not exist, it would add it
         /// </summary>
         /// <param name="professionBaseId">ProfessionBase Id</param>
-        /// <returns>Profession or Null</returns>
+        /// <returns>Profession or null</returns>
         public Profession GetOrAddProfession(Guid professionBaseId)
         {
             if (professionBaseId == null || professionBaseId == Guid.Empty)
@@ -57,8 +57,8 @@ namespace Intersect.Server.Entities
         /// <summary>
         /// Set the profession level
         /// </summary>
-        /// <param name="professionBaseId"></param>
-        /// <param name="value"></param>
+        /// <param name="professionBaseId">ProfessionBase Id</param>
+        /// <param name="value">The level to set</param>
         public void SetProfessionLevel(Guid professionBaseId, int value)
         {
             var profession = GetOrAddProfession(professionBaseId);
@@ -89,8 +89,8 @@ namespace Intersect.Server.Entities
         /// <summary>
         /// Give profession exp
         /// </summary>
-        /// <param name="professionBaseId"></param>
-        /// <param name="amount"></param>
+        /// <param name="professionBaseId">ProfessionBase Id</param>
+        /// <param name="amount">The amount to give</param>
         public void GiveProfessionExp(Guid professionBaseId, long amount)
         {
             var profession = GetOrAddProfession(professionBaseId);
@@ -136,6 +136,31 @@ namespace Intersect.Server.Entities
                     PacketSender.SendPlayerProfessions(this);
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="professionBaseId">ProfessionBase Id</param>
+        /// <returns>ProfessionData or null</returns>
+        public ProfessionData GetPlayerProfessionValue(Guid professionBaseId)
+        {
+            var profession = GetOrAddProfession(professionBaseId);
+
+            if (profession == null)
+            {
+                return null;
+            }
+
+            foreach (var p in profession.Professions)
+            {
+                if (p.ProfessionBaseId == professionBaseId)
+                {
+                    return p;
+                }
+            }
+
+            return null;
         }
     }
 }

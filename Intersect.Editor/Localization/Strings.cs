@@ -2389,6 +2389,7 @@ Tick timer saved in server config.json.";
                 {19, @"In Guild With At Least Rank..." },
                 {20, @"Map Zone Type is..." },
                 {21, @"Check Equipped Slot..." },
+                {22, @"Profession Level is..." },
             };
 
             public static LocalizedString endrange = @"End Range:";

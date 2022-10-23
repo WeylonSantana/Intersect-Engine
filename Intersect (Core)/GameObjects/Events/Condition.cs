@@ -46,6 +46,8 @@ namespace Intersect.GameObjects.Events
 
         CheckEquipment,
 
+        ProfessionLevelIs,
+
     }
 
     public partial class Condition
@@ -298,6 +300,19 @@ namespace Intersect.GameObjects.Events
         /// Defines the map Zone Type to compare to.
         /// </summary>
         public MapZones ZoneType { get; set; }
+    }
+
+    public class ProfessionLevelIs : Condition
+    {
+
+        public override ConditionTypes Type { get; } = ConditionTypes.ProfessionLevelIs;
+
+        public VariableComparators Comparator { get; set; } = VariableComparators.Equal;
+
+        public Guid ProfessionId { get; set; }
+
+        public int Value { get; set; }
+
     }
 
     public partial class VariableCompaison

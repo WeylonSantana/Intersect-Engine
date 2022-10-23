@@ -266,6 +266,9 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
             btnSave.Text = Strings.EventConditional.okay;
             btnCancel.Text = Strings.EventConditional.cancel;
+
+            //InitExtraLocalization
+            InitExtraLocalization();
         }
 
         private void ConditionTypeChanged(ConditionTypes type)
@@ -408,6 +411,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     }
 
                     break;
+                case ConditionTypes.ProfessionLevelIs:
+                    Condition = new ProfessionLevelIs();
+                    cmbProfessions.SelectedIndex = 0;
+                    nudProfessionValue.Maximum = ProfessionBase.Get(ProfessionBase.IdFromList(cmbProfessions.SelectedIndex)).MaxLevel;
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -433,6 +442,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpMapZoneType.Hide();
             grpNpc.Hide();
             grpCheckEquippedSlot.Hide();
+            grpProfessionLevelIs.Hide();
             switch (type)
             {
                 case ConditionTypes.VariableIs:
@@ -572,6 +582,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     {
                         cmbCheckEquippedSlot.Items.Add(slot);
                     }
+
+                    break;
+                case ConditionTypes.ProfessionLevelIs:
+                    grpProfessionLevelIs.Show();
+                    cmbProfessions.Items.Clear();
+                    cmbProfessions.Items.AddRange(ProfessionBase.Names);
 
                     break;
                 default:

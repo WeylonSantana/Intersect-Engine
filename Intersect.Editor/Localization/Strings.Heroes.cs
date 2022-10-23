@@ -1,3 +1,6 @@
+using Intersect.Enums;
+using Intersect.GameObjects;
+using Intersect.GameObjects.Events;
 using Intersect.Localization;
 using Newtonsoft.Json;
 
@@ -135,7 +138,6 @@ namespace Intersect.Editor.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString ServerVariable = @"Global Variable";
-
         }
 
         public partial struct EventCommandList
@@ -158,6 +160,56 @@ namespace Intersect.Editor.Localization
 
             public static LocalizedString title = @"Change Level";
 
+        }
+
+        public partial struct EventConditional
+        {
+            public static LocalizedString profession = @"Profession: ";
+
+            public static LocalizedString professiontitle = @"Profession Level Is:";
+
+            public static LocalizedString professionvalue = @"Value:";
+        }
+
+        public partial struct EventConditionDesc
+        {
+            public static LocalizedString ProfessionComparison = @"Profession {00} {01}";
+        }
+
+        public static string GetEventConditionalDesc(ProfessionLevelIs condition)
+        {
+            var professionLvl = "";
+            switch (condition.Comparator)
+            {
+                case VariableComparators.Equal:
+                    professionLvl = EventConditionDesc.equal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.GreaterOrEqual:
+                    professionLvl = EventConditionDesc.greaterequal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.LesserOrEqual:
+                    professionLvl = EventConditionDesc.lessthanequal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.Greater:
+                    professionLvl = EventConditionDesc.greater.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.Less:
+                    professionLvl = EventConditionDesc.lessthan.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.NotEqual:
+                    professionLvl = EventConditionDesc.notequal.ToString(condition.Value);
+
+                    break;
+            }
+
+            return EventConditionDesc.ProfessionComparison.ToString(
+                ProfessionBase.Get(condition.ProfessionId).Name, professionLvl
+            );
         }
     }
 }
