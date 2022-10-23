@@ -126,6 +126,18 @@
     <Compile Update="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.Designer.cs">
       <DependentUpon>EventCommand_CreateGuild.cs</DependentUpon>
     </Compile>
+    <Compile Update="Forms\Editors\Events\Event Commands\EventCommand_SetProfessionLevel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\Editors\Events\Event Commands\EventCommand_SetProfessionLevel.Designer.cs">
+      <DependentUpon>EventCommand_SetProfessionLevel.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Editors\frmProfession.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Editors\frmProfession.Designer.cs">
+      <DependentUpon>frmProfession.cs</DependentUpon>
+    </Compile>
     <Compile Update="Forms\frmUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -644,6 +656,12 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Forms\frmWarpSelection.resx">
       <DependentUpon>frmWarpSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\Editors\Events\Event Commands\EventCommand_SetProfessionLevel.resx">
+      <DependentUpon>EventCommand_SetProfessionLevel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\Editors\frmProfession.resx">
+      <DependentUpon>frmProfession.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
 

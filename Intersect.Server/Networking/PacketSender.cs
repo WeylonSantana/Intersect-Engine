@@ -353,6 +353,7 @@ namespace Intersect.Server.Networking
                 SendQuestsProgress(player);
                 SendItemCooldowns(player);
                 SendSpellCooldowns(player);
+                SendPlayerProfessions(player);
             }
 
             switch (entity)

@@ -109,5 +109,25 @@ namespace Intersect.Editor.Localization
 
             public static LocalizedString Undotitle = @"Undo Changes";
         }
+
+        public partial struct EventCommandList
+        {
+            public static LocalizedString setprofessionlevel = @"Set Profession {00} Level To: {01}";
+        }
+
+        public struct EventSetProfessionLevel
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString level = @"Set Level:";
+
+            public static LocalizedString profession = @"Profession:";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString title = @"Change Level";
+
+        }
     }
 }

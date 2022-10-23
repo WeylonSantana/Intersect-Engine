@@ -229,6 +229,9 @@
 
         //Reset Stats
         ResetStatPointAllocations,
+
+        //Professions
+        SetProfessionLevel,
     }
 
 }
