@@ -88,6 +88,7 @@ namespace Intersect.Client.Core.Controls
             CreateControlMap(Control.OpenAdminPanel, new ControlValue(Keys.None, Keys.Insert), ControlValue.Default);
             CreateControlMap(Control.ToggleGui, new ControlValue(Keys.None, Keys.F11), ControlValue.Default);
             CreateControlMap(Control.TurnAround, new ControlValue(Keys.None, Keys.Control), ControlValue.Default);
+            CreateControlMap(Control.OpenProfessions, new ControlValue(Keys.None, Keys.T), ControlValue.Default);
         }
 
         private static void MigrateControlBindings(Control control)

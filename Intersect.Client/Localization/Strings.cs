@@ -714,6 +714,7 @@ namespace Intersect.Client.Localization
                 {"openadminpanel", @"Open Admin Panel:"},
                 {"togglegui", @"Toggle Interface:"},
                 {"turnaround", @"Hold to turn around:"},
+                {"openprofessions", @"Open Professions:"},
             };
 
             public static LocalizedString listening = @"Listening";

@@ -1,11 +1,14 @@
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.General;
 using Intersect.Client.Networking;
+using Intersect.Client.Professions;
 
 namespace Intersect.Client.Entities
 {
     public partial class Player
     {
+        public Profession PlayerProfessions { get; set; } = new Profession();
+
         public bool QuicklyShortcutPressed()
         {
             return Globals.InputManager.KeyDown(Keys.Shift);

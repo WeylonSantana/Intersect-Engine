@@ -48,5 +48,21 @@ namespace Intersect.Client.Localization
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString ManastealChange = @"Manasteal Change:";
         }
+
+        public partial struct GameMenu
+        {
+            public static LocalizedString Professions = @"Professions";
+        }
+
+        public partial struct Profession
+        {
+            public static LocalizedString Level = @"Level: {00}";
+
+            public static LocalizedString MaxLevel = @"Max Level: {00}";
+
+            public static LocalizedString Exp = @"Profession Exp: {00}/{01}";
+
+            public static LocalizedString DescriptionTitle = @"Details:";
+        }
     }
 }

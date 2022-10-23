@@ -131,6 +131,11 @@ namespace Intersect.Client.Interface.Game
             mMenuButton.SetToolTipText(Strings.GameMenu.Menu);
             mMenuButton.Clicked += MenuButtonClicked;
 
+            mProfessionBackground = new ImagePanel(mMenuContainer, "ProfessionContainer");
+            mProfessionButton = new Button(mProfessionBackground, "ProfessionButton");
+            mProfessionButton.SetToolTipText(Strings.GameMenu.Professions);
+            mProfessionButton.Clicked += ProfessionButton_Clicked;
+
             mMenuContainer.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
             //Assign Window References
@@ -142,6 +147,8 @@ namespace Intersect.Client.Interface.Game
             mQuestsWindow = new QuestsWindow(gameCanvas);
             mMapItemWindow = new MapItemWindow(gameCanvas);
             mGuildWindow = new GuildWindow(gameCanvas);
+            mProfessionWindow = new ProfessionWindow(gameCanvas);
+            mProfessionWindow.Hide();
         }
 
         //Methods
@@ -155,6 +162,7 @@ namespace Intersect.Client.Interface.Game
             mQuestsWindow.Update(updateQuestLog);
             mMapItemWindow.Update();
             mGuildWindow.Update();
+            mProfessionWindow.Update();
         }
 
         public void UpdateFriendsList()
@@ -181,6 +189,7 @@ namespace Intersect.Client.Interface.Game
             mQuestsWindow.Hide();
             mSpellsWindow.Hide();
             mGuildWindow.Hide();
+            mProfessionWindow.Hide();
         }
 
         public void ToggleCharacterWindow()
@@ -317,6 +326,8 @@ namespace Intersect.Client.Interface.Game
             mPartyWindow.Hide();
 
             mGuildWindow.Hide();
+
+            mProfessionWindow.Hide();
         }
 
         public bool HasWindowsOpen()
@@ -354,6 +365,11 @@ namespace Intersect.Client.Interface.Game
             }
 
             if (mGuildWindow.IsVisible())
+            {
+                windowsOpen = true;
+            }
+
+            if (mProfessionWindow.IsVisible())
             {
                 windowsOpen = true;
             }
