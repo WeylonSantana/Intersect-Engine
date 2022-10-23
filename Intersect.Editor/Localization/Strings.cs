@@ -2301,6 +2301,7 @@ Tick timer saved in server config.json.";
                 {"setguildbankslots", @"Set Guild Bank Slots Count"},
                 {"resetstatallocations", @"Reset Stat Point Allocations"},
                 {"setprofessionlevel", @"Set Profession Level" },
+                {"giveprofessionexp", @"Give Profession Exp" },
             };
 
         }

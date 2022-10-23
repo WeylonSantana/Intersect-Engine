@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 using Intersect.GameObjects;
+using Intersect.Server.Localization;
 using Intersect.Network.Packets.Server;
 using Intersect.Server.Database.PlayerData.Players;
 using Intersect.Server.Networking;
@@ -20,8 +21,12 @@ namespace Intersect.Server.Entities
             return (long)((exp * Options.Party.GlobalBonusExperience) * levelFactor);
         }
 
-        //Professions Manangement
-        public Profession AddPlayerProfession(Guid professionBaseId)
+        /// <summary>
+        /// Function that seeks a profession, if it did not exist, it would add it
+        /// </summary>
+        /// <param name="professionBaseId">ProfessionBase Id</param>
+        /// <returns>Profession or Null</returns>
+        public Profession GetOrAddProfession(Guid professionBaseId)
         {
             if (professionBaseId == null || professionBaseId == Guid.Empty)
             {
@@ -33,14 +38,7 @@ namespace Intersect.Server.Entities
                 return null;
             }
 
-            var professionData = new ProfessionData(professionBaseId);
-            PlayerProfessions.Professions.Add(professionData);
-
-            return PlayerProfessions;
-        }
-
-        public Profession GetPlayerProfession(Guid professionBaseId)
-        {
+            //try find the profession and return to user
             foreach (var p in PlayerProfessions.Professions)
             {
                 if (p.ProfessionBaseId == professionBaseId)
@@ -49,35 +47,93 @@ namespace Intersect.Server.Entities
                 }
             }
 
-            return null;
+            //If the profession was not found above, then add one in the first empty slot it finds.
+            var professionData = new ProfessionData(professionBaseId);
+            PlayerProfessions.Professions.Add(professionData);
+
+            return PlayerProfessions;
         }
 
+        /// <summary>
+        /// Set the profession level
+        /// </summary>
+        /// <param name="professionBaseId"></param>
+        /// <param name="value"></param>
         public void SetProfessionLevel(Guid professionBaseId, int value)
         {
-            if (professionBaseId == null || professionBaseId == Guid.Empty)
+            var profession = GetOrAddProfession(professionBaseId);
+
+            if (profession == null)
             {
                 return;
             }
 
-            var profession = GetPlayerProfession(professionBaseId);
-
-            if (profession != null)
+            foreach(var p in profession.Professions)
             {
-                foreach(var p in profession.Professions)
+                if (p.ProfessionBaseId == professionBaseId)
                 {
-                    if(p.ProfessionBaseId == professionBaseId)
-                    {
-                        p.Level = value;
-                        PacketSender.SendPlayerProfessions(this);
-                    }
+                    var descriptor = ProfessionBase.Get(professionBaseId);
+                    p.Level = (int) Math.Min(value, descriptor.MaxLevel);
+
+                    PacketSender.SendChatMsg(
+                        this,
+                        Strings.Player.LevelUpProfession.ToString(descriptor.Name, p.Level),
+                        Enums.ChatMessageType.Experience
+                    );
+
+                    PacketSender.SendPlayerProfessions(this);
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// Give profession exp
+        /// </summary>
+        /// <param name="professionBaseId"></param>
+        /// <param name="amount"></param>
+        public void GiveProfessionExp(Guid professionBaseId, long amount)
+        {
+            var profession = GetOrAddProfession(professionBaseId);
+
+            if (profession == null)
             {
-                var newProfession = AddPlayerProfession(professionBaseId);
-                if (newProfession != null)
+                return;
+            }
+
+            foreach(var p in profession.Professions)
+            {
+                if(p.ProfessionBaseId == professionBaseId)
                 {
-                    SetProfessionLevel(professionBaseId, value);
+                    var descriptor = ProfessionBase.Get(professionBaseId);
+
+                    if(p.Level == descriptor.MaxLevel)
+                    {
+                        PacketSender.SendChatMsg(this, "Profession in max level", Enums.ChatMessageType.Experience);
+                        return;
+                    }
+
+                    p.Exp += amount;
+                    if (p.Exp < 0)
+                    {
+                        p.Exp = 0;
+                    }
+
+                    var levelCount = 0;
+                    while (p.Exp >= descriptor.ExperienceToNextLevel(p.Level + levelCount) &&
+                        descriptor.ExperienceToNextLevel(p.Level + levelCount) > 0)
+                    {
+                        p.Exp -= descriptor.ExperienceToNextLevel(p.Level + levelCount);
+                        levelCount++;
+                    }
+
+                    if(levelCount > 0)
+                    {
+                        p.Level += levelCount;
+                        p.Level = (int) Math.Min(p.Level, descriptor.MaxLevel);
+                        PacketSender.SendChatMsg(this, Strings.Player.LevelUpProfession.ToString(descriptor.Name, p.Level), Enums.ChatMessageType.Experience);
+                    }
+
+                    PacketSender.SendPlayerProfessions(this);
                 }
             }
         }

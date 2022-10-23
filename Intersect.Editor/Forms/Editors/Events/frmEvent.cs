@@ -756,6 +756,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new SetProfessionLevelCommand();
 
                     break;
+                case EventCommandType.GiveProfessionExp:
+                    tmpCommand = new GiveProfessionExpCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1356,6 +1360,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.SetProfessionLevel:
                     cmdWindow = new EventCommandSetProfessionLevel((SetProfessionLevelCommand)command, this);
+
+                    break;
+                case EventCommandType.GiveProfessionExp:
+                    cmdWindow = new EventCommandGiveProfessionExp((GiveProfessionExpCommand)command, this);
 
                     break;
                 default:

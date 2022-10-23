@@ -13,5 +13,11 @@ namespace Intersect.Server.Localization
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString ConfusedFailedAttack = @"Failed attack!";
         }
+
+        public sealed partial class PlayerNamespace
+        {
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString LevelUpProfession = @"The profession {00} is now level {01}!";
+        }
     }
 }

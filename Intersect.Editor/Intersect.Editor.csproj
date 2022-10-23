@@ -102,6 +102,12 @@
     <Compile Update="Forms\Controls\GameObjectList.Designer.cs">
       <DependentUpon>GameObjectList.cs</DependentUpon>
     </Compile>
+    <Compile Update="Forms\Editors\Events\Event Commands\EventCommand_GiveProfessionExp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\Editors\Events\Event Commands\EventCommand_GiveProfessionExp.Designer.cs">
+      <DependentUpon>EventCommand_GiveProfessionExp.cs</DependentUpon>
+    </Compile>
     <Compile Update="Forms\Editors\Events\Event Commands\EventCommand_SetGuildBankSlots.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -662,6 +668,9 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Forms\Editors\frmProfession.resx">
       <DependentUpon>frmProfession.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\Editors\Events\Event Commands\EventCommand_GiveProfessionExp.resx">
+      <DependentUpon>EventCommand_GiveProfessionExp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
 

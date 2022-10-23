@@ -110,9 +110,39 @@ namespace Intersect.Editor.Localization
             public static LocalizedString Undotitle = @"Undo Changes";
         }
 
+        public struct EventGiveProfessionExp
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString label = @"Give Experience:";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString title = @"Give Profession Exp";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString AmountType = @"Amount Type";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString Variable = @"Variable";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString Manual = @"Manual";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString PlayerVariable = @"Player Variable";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString ServerVariable = @"Global Variable";
+
+        }
+
         public partial struct EventCommandList
         {
             public static LocalizedString setprofessionlevel = @"Set Profession {00} Level To: {01}";
+
+            public static LocalizedString giveprofessionexp = @"Give {00} Exp to Profession {01}";
         }
 
         public struct EventSetProfessionLevel
