@@ -828,6 +828,8 @@ namespace Intersect.Server.Database.PlayerData
                     .Include(p => p.Players)
                     .ThenInclude(c => c.Bank)
                     .Include(p => p.Variables)
+                    .Include(p => p.Players)
+                    .ThenInclude(p => p.PlayerProfessions)
                     .FirstOrDefault()
             ) ??
             throw new InvalidOperationException();
@@ -854,6 +856,8 @@ namespace Intersect.Server.Database.PlayerData
                     .Include(p => p.Players)
                     .ThenInclude(c => c.Bank)
                     .Include(p => p.Variables)
+                    .Include(p => p.Players)
+                    .ThenInclude(p => p.PlayerProfessions)
                     .FirstOrDefault()
             ) ??
             throw new InvalidOperationException();
@@ -879,6 +883,8 @@ namespace Intersect.Server.Database.PlayerData
                     .Include(p => p.Players)
                     .ThenInclude(c => c.Bank)
                     .Include(p => p.Variables)
+                    .Include(p => p.Players)
+                    .ThenInclude(p => p.PlayerProfessions)
                     .FirstOrDefault()
             ) ??
             throw new InvalidOperationException();
@@ -904,6 +910,8 @@ namespace Intersect.Server.Database.PlayerData
                     .Include(p => p.Players)
                     .ThenInclude(c => c.Bank)
                     .Include(p => p.Variables)
+                    .Include(p => p.Players)
+                    .ThenInclude(p => p.PlayerProfessions)
                     .FirstOrDefault()
                 ) ?? throw new InvalidOperationException();
 
@@ -938,6 +946,8 @@ namespace Intersect.Server.Database.PlayerData
                     .Include(p => p.Players)
                     .ThenInclude(c => c.Bank)
                     .Include(p => p.Variables)
+                    .Include(p => p.Players)
+                    .ThenInclude(p => p.PlayerProfessions)
                     .FirstOrDefault()
                 ) ?? throw new InvalidOperationException();
 

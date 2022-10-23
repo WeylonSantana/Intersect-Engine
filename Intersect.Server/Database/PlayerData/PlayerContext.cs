@@ -73,6 +73,8 @@ namespace Intersect.Server.Database.PlayerData
 
         public DbSet<UserVariable> User_Variables { get; set; }
 
+        public DbSet<Profession> Player_Professions { get; set; }
+
         internal async ValueTask Commit(
             bool commit = false,
             CancellationToken cancellationToken = default(CancellationToken)
@@ -138,6 +140,8 @@ namespace Intersect.Server.Database.PlayerData
             modelBuilder.Entity<User>().HasMany(b => b.Variables).WithOne(p => p.User);
             modelBuilder.Entity<UserVariable>().HasKey(p => new { p.VariableId, UserId = p.UserId });
             modelBuilder.Entity<UserVariable>().Ignore(v => v.Id);
+
+            modelBuilder.Entity<Profession>().HasIndex(p => new { PlayerId = p.PlayerId }).IsUnique();
         }
 
         public void Seed()
