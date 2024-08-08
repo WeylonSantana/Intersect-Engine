@@ -1,16 +1,16 @@
 #pragma warning disable CA1822 // Mark members as static
 
-using Intersect.Server.CustomChange.Types;
-using Intersect.Server.CustomChange.Utils;
+using Intersect.Server.CustomChange.WarHeroHub.Types;
+using Intersect.Server.CustomChange.WarHeroHub.Utils;
 using Intersect.Server.Database;
 using Intersect.Server.Database.PlayerData;
 using Intersect.Server.Localization;
 using Intersect.Utilities;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Intersect.Server.CustomChange;
+namespace Intersect.Server.CustomChange.WarHeroHub;
 
-public class GameHub : Hub
+public class WarHeroHub : Hub
 {
     public override async Task OnConnectedAsync()
     {

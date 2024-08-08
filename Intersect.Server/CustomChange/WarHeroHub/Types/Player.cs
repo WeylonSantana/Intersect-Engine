@@ -1,4 +1,4 @@
-namespace Intersect.Server.CustomChange.Types;
+namespace Intersect.Server.CustomChange.WarHeroHub.Types;
 
 public class Player(Guid userId)
 {

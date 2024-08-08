@@ -1,4 +1,4 @@
-namespace Intersect.Server.CustomChange.Utils;
+namespace Intersect.Server.CustomChange.WarHeroHub.Utils;
 
 public class SimpleIdGenerator
 {

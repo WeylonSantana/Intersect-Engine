@@ -1,9 +1,8 @@
-using Intersect.Server.CustomChange.Types;
-using Intersect.Server.CustomChange.Utils;
-using Intersect.Server.Database.PlayerData;
+using Intersect.Server.CustomChange.WarHeroHub.Types;
+using Intersect.Server.CustomChange.WarHeroHub.Utils;
 using Intersect.Utilities;
 
-namespace Intersect.Server.CustomChange;
+namespace Intersect.Server.CustomChange.WarHeroHub;
 
 public static class RoomHandler
 {

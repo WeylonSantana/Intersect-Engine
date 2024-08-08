@@ -5,7 +5,8 @@ using Intersect.Core;
 using Intersect.Enums;
 using Intersect.Logging;
 using Intersect.Server.Core;
-using Intersect.Server.CustomChange;
+using Intersect.Server.CustomChange.WarHeroHub;
+using Intersect.Server.CustomChange.SCFVHub;
 using Intersect.Server.Web.Configuration;
 using Intersect.Server.Web.Constraints;
 using Intersect.Server.Web.Middleware;
@@ -330,7 +331,8 @@ internal partial class ApiService : ApplicationService<ServerContext, IApiServic
 
         app.MapControllers();
         app.UseCors("CorsPolicy");
-        app.MapHub<GameHub>("/gamehub");
+        app.MapHub<WarHeroHub>("/war-hero");
+        app.MapHub<SCFVHub>("/scfv-admin");
 
         // app.MapControllers();
 
