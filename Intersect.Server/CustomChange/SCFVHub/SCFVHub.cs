@@ -73,6 +73,13 @@ public class SCFVHub : Hub
     {
         var presence = SCFVPresenceBase.GetPresenceByName();
 
+        // If the user is already in the list, don't add them again
+        if (presence.PresenceList.Any(u => u.Name == username) == isAdding)
+        {
+            await Clients.All.SendAsync("PresenceListUpdated", presence.PresenceList);
+            return;
+        }
+
         lock (_lock)
         {
             if (presence == default)
@@ -97,6 +104,7 @@ public class SCFVHub : Hub
                 _ = presence.PresenceList.RemoveAll(u => u.Name == username);
             }
 
+            presence.PresenceList = presence.PresenceList.Distinct().ToList();
             DbInterface.SaveGameObject(presence);
         }
 
