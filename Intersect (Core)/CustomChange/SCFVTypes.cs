@@ -1,4 +1,4 @@
-namespace Intersect.Server.CustomChange.SCFVHub;
+namespace Intersect.CustomChange.SCFVHub;
 
 public class SCFVConfig
 {

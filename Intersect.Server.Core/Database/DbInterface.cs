@@ -9,6 +9,7 @@ using System.Text;
 using Amib.Threading;
 using Intersect.Collections;
 using Intersect.Config;
+using Intersect.CustomChange;
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
@@ -735,6 +736,10 @@ public static partial class DbInterface
                 UserVariableBase.Lookup.Clear();
 
                 break;
+            case GameObjectType.SCFVPresence:
+                SCFVPresenceBase.Lookup.Clear();
+
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
@@ -885,6 +890,13 @@ public static partial class DbInterface
                         }
 
                         break;
+                    case GameObjectType.SCFVPresence:
+                        foreach (var psw in context.SCFVPresences)
+                        {
+                            SCFVPresenceBase.Lookup.Set(psw.Id, psw);
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(gameObjectType), gameObjectType, null);
                 }
@@ -991,6 +1003,11 @@ public static partial class DbInterface
 
             case GameObjectType.UserVariable:
                 dbObj = new UserVariableBase(predefinedid);
+
+                break;
+
+            case GameObjectType.SCFVPresence:
+                dbObj = new SCFVPresenceBase(predefinedid);
 
                 break;
             default:
@@ -1116,6 +1133,12 @@ public static partial class DbInterface
                     case GameObjectType.UserVariable:
                         context.UserVariables.Add((UserVariableBase)dbObj);
                         UserVariableBase.Lookup.Set(dbObj.Id, dbObj);
+
+                        break;
+
+                    case GameObjectType.SCFVPresence:
+                        context.SCFVPresences.Add((SCFVPresenceBase)dbObj);
+                        SCFVPresenceBase.Lookup.Set(dbObj.Id, dbObj);
 
                         break;
 
@@ -1252,6 +1275,10 @@ public static partial class DbInterface
                         break;
                     case GameObjectType.UserVariable:
                         context.UserVariables.Remove((UserVariableBase)gameObject);
+
+                        break;
+                    case GameObjectType.SCFVPresence:
+                        context.SCFVPresences.Remove((SCFVPresenceBase)gameObject);
 
                         break;
                 }
@@ -1401,6 +1428,11 @@ public static partial class DbInterface
                         break;
                     case GameObjectType.UserVariable:
                         context.UserVariables.Update((UserVariableBase)gameObject);
+
+                        break;
+
+                    case GameObjectType.SCFVPresence:
+                        context.SCFVPresences.Update((SCFVPresenceBase)gameObject);
 
                         break;
                 }

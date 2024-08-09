@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Intersect.CustomChange;
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
@@ -1832,6 +1833,13 @@ public static partial class PacketSender
                 break;
             case GameObjectType.UserVariable:
                 foreach (var obj in UserVariableBase.Lookup)
+                {
+                    SendGameObject(client, obj.Value, false, false, packetList);
+                }
+
+                break;
+            case GameObjectType.SCFVPresence:
+                foreach (var obj in SCFVPresenceBase.Lookup)
                 {
                     SendGameObject(client, obj.Value, false, false, packetList);
                 }

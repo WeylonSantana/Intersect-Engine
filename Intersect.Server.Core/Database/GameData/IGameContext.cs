@@ -1,3 +1,4 @@
+using Intersect.CustomChange;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
 using Intersect.GameObjects.Events;
@@ -45,4 +46,6 @@ public interface IGameContext : IDbContext
     DbSet<TilesetBase> Tilesets { get; set; }
 
     DbSet<TimeBase> Time { get; set; }
+
+    DbSet<SCFVPresenceBase> SCFVPresences { get; set; }
 }

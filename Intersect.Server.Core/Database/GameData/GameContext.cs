@@ -1,3 +1,4 @@
+using Intersect.CustomChange;
 using Intersect.Extensions;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
@@ -68,6 +69,8 @@ public abstract partial class GameContext : IntersectDbContext<GameContext>, IGa
     public DbSet<GuildVariableBase> GuildVariables { get; set; }
 
     public DbSet<UserVariableBase> UserVariables { get; set; }
+
+    public DbSet<SCFVPresenceBase> SCFVPresences { get; set; }
 
     //Tilesets
     public DbSet<TilesetBase> Tilesets { get; set; }

@@ -1,5 +1,10 @@
 #pragma warning disable CA1822 // Mark members as static
 
+using Intersect.CustomChange;
+using Intersect.CustomChange.SCFVHub;
+using Intersect.Enums;
+using Intersect.Extensions;
+using Intersect.Server.Database;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 
@@ -58,56 +63,43 @@ public class SCFVHub : Hub
     public List<SCFVUser> GetPresenceList(long? timestamp)
     {
         var date = timestamp.HasValue ? DateTimeOffset.FromUnixTimeMilliseconds(timestamp.Value) : DateTimeOffset.Now;
-        var filename = $"resources-custom/database/presence-{date:yyyy-MM-dd}.json";
+        var presenceName = $"Presence-{date:dd-MM-yyyy}";
 
-        if (!Directory.Exists("resources-custom") || !Directory.Exists("resources-custom/database"))
-        {
-            if (!Directory.Exists("resources-custom"))
-            {
-                _ = Directory.CreateDirectory("resources-custom");
-            }
-
-            if (!Directory.Exists("resources-custom/database"))
-            {
-                _ = Directory.CreateDirectory("resources-custom/database");
-            }
-        }
-
-        if (!File.Exists(filename))
-        {
-            return [];
-        }
-
-        var json = File.ReadAllText(filename);
-        return JsonConvert.DeserializeObject<List<SCFVUser>>(json) ?? [];
+        var presence = SCFVPresenceBase.GetPresenceByName(presenceName);
+        return presence?.PresenceList ?? [];
     }
 
     public async Task UpdatePresenceList(string workerId, string username, bool isAdding)
     {
-        var date = DateTimeOffset.Now;
-        var filename = $"resources-custom/database/presence-{date:yyyy-MM-dd}.json";
-        var presenceList = GetPresenceList(null);
+        var presence = SCFVPresenceBase.GetPresenceByName();
 
         lock (_lock)
         {
+            if (presence == default)
+            {
+                _ = DbInterface.AddGameObject(GameObjectType.SCFVPresence);
+                presence = SCFVPresenceBase.GetPresenceByName();
+            }
+
             if (isAdding)
             {
-                presenceList.Add(new SCFVUser { ID = workerId, Name = username, LastModified = date.ToString("yyyy-MM-dd HH:mm:ss") });
+                presence.PresenceList.Add(
+                    new SCFVUser
+                    {
+                        ID = workerId,
+                        Name = username,
+                        LastModified = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                    }
+                );
             }
             else
             {
-                _ = presenceList.RemoveAll(u => u.Name == username);
+                _ = presence.PresenceList.RemoveAll(u => u.Name == username);
             }
 
-            File.WriteAllText(
-                filename,
-                JsonConvert.SerializeObject(
-                    presenceList,
-                    Formatting.Indented
-                )
-            );
+            DbInterface.SaveGameObject(presence);
         }
 
-        await Clients.All.SendAsync("PresenceListUpdated", presenceList);
+        await Clients.All.SendAsync("PresenceListUpdated", presence.PresenceList);
     }
 }
