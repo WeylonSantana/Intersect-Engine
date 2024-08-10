@@ -3,7 +3,6 @@
 using Intersect.CustomChange;
 using Intersect.CustomChange.SCFVHub;
 using Intersect.Enums;
-using Intersect.Extensions;
 using Intersect.Server.Database;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
@@ -29,17 +28,22 @@ public class SCFVHub : Hub
         if (!Directory.Exists("resources-custom"))
         {
             _ = Directory.CreateDirectory("resources-custom");
-            File.WriteAllText(
-                "resources-custom/config.json",
-                JsonConvert.SerializeObject(
-                    new SCFVConfig(),
-                    Formatting.Indented
-                )
-            );
+            SaveConfig(new SCFVConfig());
         }
 
         var json = File.ReadAllText("resources-custom/config.json");
         return JsonConvert.DeserializeObject<SCFVConfig>(json) ?? new SCFVConfig();
+    }
+
+    public void SaveConfig(SCFVConfig config)
+    {
+        File.WriteAllText(
+            "resources-custom/config.json",
+            JsonConvert.SerializeObject(
+                config,
+                Formatting.Indented
+            )
+        );
     }
 
     public List<string> GetUserList(SCFVUserType type)
@@ -108,6 +112,15 @@ public class SCFVHub : Hub
             DbInterface.SaveGameObject(presence);
         }
 
-        await Clients.All.SendAsync("PresenceListUpdated", presence.PresenceList);
+        await Clients.All.SendAsync("update");
+    }
+
+    public async Task ToggleEvent()
+    {
+        var config = GetConfig();
+        config.IsOpen = !config.IsOpen;
+        SaveConfig(config);
+
+        await Clients.All.SendAsync("update");
     }
 }
