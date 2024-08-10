@@ -13,8 +13,6 @@ namespace Intersect.Server.CustomChange.SCFVHub;
 
 public class SCFVHub : Hub
 {
-    private static readonly object _lock = new();
-
     private Logger _logger => ServerContext.Instance.Logger;
 
     public override async Task OnConnectedAsync()
@@ -86,56 +84,56 @@ public class SCFVHub : Hub
     }
 
     // This method is called by the client to update the presence list
-    public async Task UpdatePresenceList(string workerId, string username, bool isAdding)
+    public void UpdatePresenceList(string workerId, string username, bool isAdding)
     {
         var presence = SCFVPresenceBase.GetPresenceByName();
-
-        lock (_lock)
+        if (presence == default)
         {
-            if (presence == default)
-            {
-                _ = DbInterface.AddGameObject(GameObjectType.SCFVPresence);
-                presence = SCFVPresenceBase.GetPresenceByName();
-            }
-
-            if (isAdding)
-            {
-                presence.PresenceList.Add(
-                    new SCFVUser
-                    {
-                        ID = workerId,
-                        Name = username,
-                        LastModified = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                    }
-                );
-
-                _logger.Info($"The worker {workerId} has added {username} to the presence list.");
-            }
-            else
-            {
-                _ = presence.PresenceList.RemoveAll(u => u.Name == username);
-                _logger.Info($"The worker {workerId} has removed {username} from the presence list.");
-            }
-
-            presence.PresenceList = presence.PresenceList.Distinct().ToList();
-            DbInterface.SaveGameObject(presence);
+            _ = DbInterface.AddGameObject(GameObjectType.SCFVPresence);
+            presence = SCFVPresenceBase.GetPresenceByName();
         }
 
-        await Clients.All.SendAsync("update");
+        if (isAdding)
+        {
+            presence.PresenceList.Add(
+                new SCFVUser
+                {
+                    ID = workerId,
+                    Name = username,
+                    LastModified = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                }
+            );
+
+            _logger.Info($"The worker {workerId} has added {username} to the presence list.");
+        }
+        else
+        {
+            _ = presence.PresenceList.RemoveAll(u => u.Name == username);
+            _logger.Info($"The worker {workerId} has removed {username} from the presence list.");
+        }
+
+        // remove duplicates
+        presence.PresenceList = presence.PresenceList
+            .GroupBy(u => u.Name)
+            .Select(g => g.First())
+            .ToList();
+
+        DbInterface.SaveGameObject(presence);
+        _ = Clients.All.SendAsync("update");
     }
 
     // This method is called by the admin to toggle the event
-    public async Task ToggleEvent()
+    public void ToggleEvent()
     {
         var config = GetConfig();
         config.IsOpen = !config.IsOpen;
         _saveConfig(config);
 
-        await Clients.All.SendAsync("update");
+        _ = Clients.All.SendAsync("update");
     }
 
     // This method is called by the admin to add a user to the event
-    public async Task AddUser(string username)
+    public void AddUser(string username)
     {
         var userList = GetUserList(SCFVUserType.Night);
         if (string.IsNullOrWhiteSpace(username) || userList.Contains(username))
@@ -146,11 +144,11 @@ public class SCFVHub : Hub
         userList.Add(username);
         _saveUserList(SCFVUserType.Night, userList);
 
-        await Clients.All.SendAsync("update");
+        _ = Clients.All.SendAsync("update");
     }
 
     // This method is called by the admin to remove a user from the event
-    public async Task RemoveUser(string username)
+    public void RemoveUser(string username)
     {
         var userList = GetUserList(SCFVUserType.Night);
         if (string.IsNullOrWhiteSpace(username) || !userList.Contains(username))
@@ -161,6 +159,6 @@ public class SCFVHub : Hub
         _ = userList.Remove(username);
         _saveUserList(SCFVUserType.Night, userList);
 
-        await Clients.All.SendAsync("update");
+        _ = Clients.All.SendAsync("update");
     }
 }
