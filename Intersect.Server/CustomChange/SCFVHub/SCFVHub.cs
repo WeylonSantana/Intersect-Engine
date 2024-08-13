@@ -161,4 +161,39 @@ public class SCFVHub : Hub
 
         _ = Clients.All.SendAsync("update");
     }
+
+    public void UpdateAll(SCFVUserType userType, string worker, List<string> userList, List<string> presenceNames)
+    {
+        _saveUserList(userType, userList);
+
+        var presence = SCFVPresenceBase.GetPresenceByName();
+        if (presence == default)
+        {
+            _ = DbInterface.AddGameObject(GameObjectType.SCFVPresence);
+            presence = SCFVPresenceBase.GetPresenceByName();
+        }
+
+        presence.PresenceList.Clear();
+        foreach (var name in presenceNames)
+        {
+            presence.PresenceList.Add(
+                new SCFVUser
+                {
+                    ID = worker,
+                    Name = name,
+                    LastModified = DateTimeOffset.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                }
+            );
+        }
+
+        // remove duplicates
+        presence.PresenceList = presence.PresenceList
+            .GroupBy(u => u.Name)
+            .Select(g => g.First())
+            .ToList();
+
+        DbInterface.SaveGameObject(presence);
+
+        _logger.Info($"The user and today's presence list for {userType} has been updated.");
+    }
 }
