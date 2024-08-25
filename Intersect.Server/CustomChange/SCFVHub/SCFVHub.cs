@@ -55,7 +55,7 @@ public class SCFVHub : Hub
         if (!Directory.Exists("resources-custom"))
         {
             _ = Directory.CreateDirectory("resources-custom");
-            _saveUserList(type, new List<string>());
+            _saveUserList(type, []);
         }
 
         var json = File.ReadAllText($"resources-custom/users-{type.ToString().ToLowerInvariant()}.json");
@@ -74,13 +74,9 @@ public class SCFVHub : Hub
     }
 
     // This method is called by the client to get the current presence list
-    public List<SCFVUser> GetPresenceList(long? timestamp)
+    public List<SCFVUser> GetPresenceList(string date)
     {
-        var date = timestamp.HasValue ? DateTimeOffset.FromUnixTimeMilliseconds(timestamp.Value) : DateTimeOffset.Now;
-        var presenceName = $"Presence-{date:dd-MM-yyyy}";
-
-        var presence = SCFVPresenceBase.GetPresenceByName(presenceName);
-        return presence?.PresenceList ?? [];
+        return SCFVPresenceBase.GetPresenceByName($"Presence-{date}")?.PresenceList ?? [];
     }
 
     // This method is called by the client to update the presence list
@@ -162,11 +158,11 @@ public class SCFVHub : Hub
         _ = Clients.All.SendAsync("update");
     }
 
-    public void UpdateAll(SCFVUserType userType, string worker, List<string> userList, List<string> presenceNames)
+    public void UpdateAll(string date, SCFVUserType userType, string worker, List<string> userList, List<string> presenceNames)
     {
         _saveUserList(userType, userList);
 
-        var presence = SCFVPresenceBase.GetPresenceByName();
+        var presence = SCFVPresenceBase.GetPresenceByName($"Presence-{date}");
         if (presence == default)
         {
             _ = DbInterface.AddGameObject(GameObjectType.SCFVPresence);
