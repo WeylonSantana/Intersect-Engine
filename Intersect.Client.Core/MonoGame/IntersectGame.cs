@@ -4,7 +4,6 @@ using Intersect.Client.Framework.Gwen.Input;
 using Intersect.Client.Framework.Gwen.Renderer;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Game;
 using Intersect.Client.Localization;
 using Intersect.Client.MonoGame.File_Management;
 using Intersect.Client.MonoGame.Graphics;
@@ -25,6 +24,8 @@ using Intersect.Utilities;
 using MainMenu = Intersect.Client.Interface.Menu.MainMenu;
 using Intersect.Logging;
 using Intersect.Client.Interface.Shared;
+using Myra;
+using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.MonoGame;
 
@@ -40,6 +41,8 @@ internal partial class IntersectGame : Game
     private readonly GameRenderer _gameRenderer;
 
     private GraphicsDeviceManager mGraphics;
+
+    public Desktop MyraDesktop;
 
     #region "Autoupdate Variables"
 
@@ -287,6 +290,9 @@ internal partial class IntersectGame : Game
         {
             LoadUpdaterContent();
         }
+
+        MyraEnvironment.Game = this;
+        MyraDesktop = new Desktop();
     }
 
     /// <summary>
@@ -329,6 +335,7 @@ internal partial class IntersectGame : Game
         }
 
         base.Draw(gameTime);
+        MyraDesktop.Render();
     }
 
     protected override void OnExiting(object sender, EventArgs args)
