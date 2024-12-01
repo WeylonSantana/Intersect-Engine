@@ -16,6 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\interface\menu\LoginWindow.xmmp" />
+    <None Remove="Resources\interface\menu\ServerStatus.xmmp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>Intersect.Tests.Client</_Parameter1>
     </AssemblyAttribute>
@@ -35,6 +40,8 @@
 
   <ItemGroup Label="Project Embedded Resources">
     <EmbeddedResource Include="$(NetworkHandshakePublicKey)" />
+		<EmbeddedResource Include="Resources\interface\menu\LoginWindow.xmmp" />
+    <EmbeddedResource Include="Resources\interface\menu\ServerStatus.xmmp" />
     <EmbeddedResource Include="Resources\MonoGame.Framework.dll.config" />
     <EmbeddedResource Include="Resources\openal32.dll" />
     <EmbeddedResource Include="Resources\Shaders\radialgradient.xnb" />

@@ -89,7 +89,7 @@ public partial class GameInterface : MutableInterface
 
     public PlayerStatusWindow PlayerStatusWindow;
 
-    public GameInterface(Canvas canvas) : base(canvas)
+    public GameInterface(Canvas canvas) : base(null)
     {
         GameCanvas = canvas;
         EscapeMenu = new EscapeMenu(GameCanvas) {IsHidden = true};

@@ -1,4 +1,4 @@
-﻿using Intersect.Client.Core;
+using Intersect.Client.Core;
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Gwen.Control;
@@ -43,7 +43,7 @@ public partial class TradingWindow
         );
 
         mTradeWindow.DisableResizing();
-        Interface.InputBlockingElements.Add(mTradeWindow);
+        //Interface.InputBlockingElements.Add(mTradeWindow);
 
         mYourOffer = new Label(mTradeWindow, "YourOfferLabel")
         {

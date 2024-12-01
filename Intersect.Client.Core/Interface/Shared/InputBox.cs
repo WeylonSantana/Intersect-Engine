@@ -60,7 +60,8 @@ public partial class InputBox : WindowControl
         object? userData = default,
         int quantity = 0,
         int maxQuantity = int.MaxValue
-    ) : base(Interface.CurrentInterface.Root, title, true, "InputBox")
+        //MYRA-TODO: fix base()
+    ) : base(new Base(), title, true, "InputBox")
     {
         OkayEventHandler = onSuccess;
         CancelEventHandler = onCancel;
@@ -148,7 +149,7 @@ public partial class InputBox : WindowControl
         _btnOk.Clicked += (sender, e) => SubmitInput();
 
         _promptLabel = new Label(this, "PromptLabel");
-        Interface.InputBlockingElements.Add(this);
+        //Interface.InputBlockingElements.Add(this);
 
         Value = quantity;
     }

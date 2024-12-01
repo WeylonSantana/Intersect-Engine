@@ -1,4 +1,4 @@
-﻿using Intersect.Client.Framework.Entities;
+using Intersect.Client.Framework.Entities;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
 using Intersect.Client.Interface;
@@ -30,8 +30,9 @@ internal sealed partial class ClientLifecycleHelper : ContextHelper<IClientPlugi
     }
 
     /// <inheritdoc />
-    public IMutableInterface Interface =>
-        Client.Interface.Interface.MenuUi ?? Client.Interface.Interface.GameUi as IMutableInterface;
+    /// MYRA-TODO: fix this
+    //public IMutableInterface Interface =>
+    //    Client.Interface.Interface.MenuUi ?? Client.Interface.Interface.GameUi as IMutableInterface;
 
     /// <inheritdoc />
     public void OnLifecycleChangeState(GameStates state)

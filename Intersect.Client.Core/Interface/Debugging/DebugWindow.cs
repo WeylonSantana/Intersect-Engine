@@ -221,10 +221,11 @@ internal sealed partial class DebugWindow : Window
         {
             try
             {
-                return Interface.CurrentInterface?.Children.ToArray().SelectManyRecursive(
-                    x => x != default ? [.. x.Children] : [],
-                    cancellationToken
-                ).ToArray().Length ?? 0;
+                //return Interface.CurrentInterface?.Children.ToArray().SelectManyRecursive(
+                //    x => x != default ? [.. x.Children] : [],
+                //    cancellationToken
+                //).ToArray().Length ?? 0;
+                return 0;
             }
             catch (ObjectDisposedException)
             {
@@ -256,7 +257,7 @@ internal sealed partial class DebugWindow : Window
     {
         public ControlUnderCursorProvider()
         {
-            Generator = new CancellableGenerator<Base>(CreateControlUnderCursorGenerator);
+            //Generator = new CancellableGenerator<Base>(CreateControlUnderCursorGenerator);
         }
 
         public event TableDataChangedEventHandler? DataChanged;
@@ -268,18 +269,18 @@ internal sealed partial class DebugWindow : Window
             _ = Generator.Start();
         }
 
-        private AsyncValueGenerator<Base> CreateControlUnderCursorGenerator(CancellationToken cancellationToken)
-        {
-            return new AsyncValueGenerator<Base>(() => Task.Delay(100).ContinueWith((completedTask) => Interface.FindControlAtCursor(), TaskScheduler.Current), (component) =>
-            {
-                DataChanged?.Invoke(this, new TableDataChangedEventArgs(0, 1, default, component?.GetType().Name ?? Strings.Internals.NotApplicable));
-                DataChanged?.Invoke(this, new TableDataChangedEventArgs(1, 1, default, component?.CanonicalName ?? string.Empty));
-                DataChanged?.Invoke(this, new TableDataChangedEventArgs(2, 1, default, component?.Bounds.ToString() ?? string.Empty));
-                DataChanged?.Invoke(this, new TableDataChangedEventArgs(3, 1, default, component?.BoundsGlobal.ToString() ?? string.Empty));
-                DataChanged?.Invoke(this, new TableDataChangedEventArgs(4, 1, default, (component as IColorableText)?.TextColor ?? string.Empty));
-                DataChanged?.Invoke(this, new TableDataChangedEventArgs(5, 1, default, (component as IColorableText)?.TextColorOverride ?? string.Empty));
+        //private AsyncValueGenerator<Base> CreateControlUnderCursorGenerator(CancellationToken cancellationToken)
+        //{
+        //    return new AsyncValueGenerator<Base>(() => Task.Delay(100).ContinueWith((completedTask) => Interface.FindControlAtCursor(), TaskScheduler.Current), (component) =>
+        //    {
+        //        DataChanged?.Invoke(this, new TableDataChangedEventArgs(0, 1, default, component?.GetType().Name ?? Strings.Internals.NotApplicable));
+        //        DataChanged?.Invoke(this, new TableDataChangedEventArgs(1, 1, default, component?.CanonicalName ?? string.Empty));
+        //        DataChanged?.Invoke(this, new TableDataChangedEventArgs(2, 1, default, component?.Bounds.ToString() ?? string.Empty));
+        //        DataChanged?.Invoke(this, new TableDataChangedEventArgs(3, 1, default, component?.BoundsGlobal.ToString() ?? string.Empty));
+        //        DataChanged?.Invoke(this, new TableDataChangedEventArgs(4, 1, default, (component as IColorableText)?.TextColor ?? string.Empty));
+        //        DataChanged?.Invoke(this, new TableDataChangedEventArgs(5, 1, default, (component as IColorableText)?.TextColorOverride ?? string.Empty));
 
-            }, cancellationToken);
-        }
+        //    }, cancellationToken);
+        //}
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 
 using Intersect.Client.Core;
@@ -140,7 +140,7 @@ public partial class ResetPasswordWindow
         if (!Networking.Network.IsConnected)
         {
             Hide();
-            mMainMenu.Show();
+            mMainMenu.SwitchToWindow<LoginWindow>();
         }
     }
 
@@ -160,7 +160,7 @@ public partial class ResetPasswordWindow
     void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
     {
         Hide();
-        Interface.MenuUi.MainMenu.NotifyOpenLogin();
+        Interface.MenuUi?.NotifyOpenLogin();
     }
 
     void Textbox_SubmitPressed(Base sender, EventArgs arguments)

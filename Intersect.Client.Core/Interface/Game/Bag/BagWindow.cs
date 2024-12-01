@@ -1,4 +1,4 @@
-﻿using Intersect.Client.Core;
+using Intersect.Client.Core;
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Gwen.Control;
@@ -35,7 +35,7 @@ public partial class BagWindow
     {
         mBagWindow = new WindowControl(gameCanvas, Strings.Bags.Title, false, "BagWindow");
         mBagWindow.DisableResizing();
-        Interface.InputBlockingElements.Add(mBagWindow);
+        //Interface.InputBlockingElements.Add(mBagWindow);
 
         mItemContainer = new ScrollControl(mBagWindow, "ItemContainer");
         mItemContainer.EnableScroll(false, true);

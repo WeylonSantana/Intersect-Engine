@@ -144,7 +144,7 @@ public partial class Controls
     {
         if (ActiveControls?.ControlMapping.ContainsKey(control) ?? false)
         {
-            return ActiveControls.ControlMapping[control]?.KeyDown() ?? false;
+            //return ActiveControls.ControlMapping[control]?.KeyDown() ?? false;
         }
 
         return false;

@@ -94,7 +94,7 @@ public partial class RegistrationWindow : ImagePanel, IMainMenuWindow
         buttonBack.Clicked += (s, e) =>
         {
             Hide();
-            _mainMenu.Show();
+            _mainMenu.SwitchToWindow<LoginWindow>();
             Networking.Network.DebounceClose("returning_to_main_menu");
         };
 
@@ -107,7 +107,7 @@ public partial class RegistrationWindow : ImagePanel, IMainMenuWindow
         if (!Networking.Network.IsConnected)
         {
             Hide();
-            _mainMenu.Show();
+            _mainMenu.SwitchToWindow<LoginWindow>();
         }
 
         // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
@@ -117,7 +117,7 @@ public partial class RegistrationWindow : ImagePanel, IMainMenuWindow
         }
     }
 
-    public override void Show()
+    public void Toggle()
     {
         base.Show();
         _textBoxUsername.Focus();

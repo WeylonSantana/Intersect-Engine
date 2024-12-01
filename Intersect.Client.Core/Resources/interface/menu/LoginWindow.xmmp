@@ -1,0 +1,34 @@
+<Project>
+  <Project.ExportOptions />
+  <Panel Id="_loginWindow">
+    <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="250" Padding="10" Background="#202020FF">
+      <Label Text="Login" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="_labelTitle" />
+      <Panel Top="45" Height="50">
+        <Label Text="UserName:" TextAlign="Center" Top="5" Id="_labelUsername" />
+        <TextBox VerticalAlignment="Bottom" Id="_textboxUsername" />
+      </Panel>
+      <Panel Top="100" Height="50">
+        <Label Text="Senha:" TextAlign="Center" Top="5" Id="_labelPassword" />
+        <TextBox VerticalAlignment="Bottom" Id="_textboxPassword" />
+      </Panel>
+      <CheckButton Top="55" VerticalAlignment="Center" Id="_checkboxSave">
+        <Label Text="Save Credentials" TextAlign="Center" Left="5" Id="_labelSave" />
+      </CheckButton>
+      <Button Top="-11" Width="150" Height="25" VerticalAlignment="Bottom" Id="_buttonRegister">
+        <Label Text="Register" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelRegister" />
+      </Button>
+      <Button Top="-11" Width="150" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Id="_buttonLogin">
+        <Label Text="Login" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelLogin" />
+      </Button>
+    </Panel>
+    <Button Left="-10" Top="10" Width="150" Height="25" HorizontalAlignment="Right" Id="_buttonSettings">
+      <Label Text="Settings" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelSettings" />
+    </Button>
+    <Button Left="-10" Top="40" Width="150" Height="25" HorizontalAlignment="Right" Id="_buttonCredits">
+      <Label Text="Credits" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelCredits" />
+    </Button>
+    <Button Left="-10" Top="70" Width="150" Height="25" HorizontalAlignment="Right" Id="_buttonExit">
+      <Label Text="Exit" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelExit" />
+    </Button>
+  </Panel>
+</Project>

@@ -1,4 +1,4 @@
-﻿using Intersect.Client.Core;
+using Intersect.Client.Core;
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.Gwen.Control;
 using Intersect.Client.General;
@@ -32,7 +32,7 @@ public partial class ShopWindow
     {
         mShopWindow = new WindowControl(gameCanvas, Globals.GameShop.Name, false, "ShopWindow");
         mShopWindow.DisableResizing();
-        Interface.InputBlockingElements.Add(mShopWindow);
+        //Interface.InputBlockingElements.Add(mShopWindow);
 
         mItemContainer = new ScrollControl(mShopWindow, "ItemContainer");
         mItemContainer.EnableScroll(false, true);

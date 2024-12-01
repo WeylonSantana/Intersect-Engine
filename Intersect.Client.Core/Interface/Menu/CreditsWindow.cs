@@ -39,10 +39,10 @@ public partial class CreditsWindow : ImagePanel, IMainMenuWindow
     private void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
     {
         Hide();
-        _mainMenu.Show();
+        _mainMenu.SwitchToWindow<LoginWindow>();
     }
 
-    public override void Show()
+    public void Toggle()
     {
         base.Show();
         _richLabel.ClearText();

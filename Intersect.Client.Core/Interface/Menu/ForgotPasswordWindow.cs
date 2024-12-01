@@ -7,6 +7,7 @@ using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Utilities;
+using static Intersect.Client.Localization.Strings;
 
 namespace Intersect.Client.Interface.Menu;
 
@@ -96,7 +97,7 @@ public partial class ForgotPasswordWindow
         if (!Networking.Network.IsConnected)
         {
             Hide();
-            mMainMenu.Show();
+            mMainMenu.SwitchToWindow<LoginWindow>();
         }
 
         // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
@@ -120,7 +121,7 @@ public partial class ForgotPasswordWindow
     void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
     {
         Hide();
-        Interface.MenuUi.MainMenu.NotifyOpenLogin();
+        Interface.MenuUi?.NotifyOpenLogin();
     }
 
     void Textbox_SubmitPressed(Base sender, EventArgs arguments)
@@ -156,7 +157,7 @@ public partial class ForgotPasswordWindow
             return;
         }
 
-        Interface.MenuUi.MainMenu.OpenResetPassword(mInputTextbox?.Text);
+        Interface.MenuUi?.OpenResetPassword(mInputTextbox?.Text);
         PacketSender.SendRequestPasswordReset(mInputTextbox?.Text);
     }
 

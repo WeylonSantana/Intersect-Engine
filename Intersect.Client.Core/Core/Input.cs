@@ -84,25 +84,25 @@ public static partial class Input
                 {
                     try
                     {
-                        if (Interface.Interface.InputBlockingElements[i] is InputBox inputBox && !inputBox.IsHidden)
-                        {
-                            inputBox.SubmitInput();
-                            canFocusChat = false;
-                            break;
-                        }
+                        //if (Interface.Interface.InputBlockingElements[i] is InputBox inputBox && !inputBox.IsHidden)
+                        //{
+                        //    inputBox.SubmitInput();
+                        //    canFocusChat = false;
+                        //    break;
+                        //}
                     }
                     catch { }
 
                     try
                     {
-                        var eventWindow = (EventWindow)Interface.Interface.InputBlockingElements[i];
-                        if (eventWindow != null && !eventWindow.IsHidden && Globals.EventDialogs.Count > 0)
-                        {
-                            eventWindow.CloseEventResponse(EventResponseType.OneOption);
-                            canFocusChat = false;
+                        //var eventWindow = (EventWindow)Interface.Interface.InputBlockingElements[i];
+                        //if (eventWindow != null && !eventWindow.IsHidden && Globals.EventDialogs.Count > 0)
+                        //{
+                        //    eventWindow.CloseEventResponse(EventResponseType.OneOption);
+                        //    canFocusChat = false;
 
-                            break;
-                        }
+                        //    break;
+                        //}
                     }
                     catch { }
                 }
@@ -219,7 +219,7 @@ public static partial class Input
                             break;
 
                         case GameStates.Menu:
-                            var selectCharacterWindow = Interface.Interface.MenuUi.MainMenu.SelectCharacterWindow;
+                            var selectCharacterWindow = Interface.Interface.MenuUi?.SelectCharacterWindow;
 
                             switch (control)
                             {
@@ -422,10 +422,10 @@ public static partial class Input
             return;
         }
 
-        if (Interface.Interface.MouseHitGui())
-        {
-            return;
-        }
+        //if (Interface.Interface.MouseHitGui())
+        //{
+        //    return;
+        //}
 
         if (Globals.Me == null)
         {

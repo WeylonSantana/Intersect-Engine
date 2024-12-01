@@ -125,19 +125,19 @@ public partial class MonoInput : GameInput
 
         Mouse.SetPosition((int)center.X, (int)center.Y);
         var mouseState = Mouse.GetState();
-        Interface.Interface.GwenInput.ProcessMessage(
-            new GwenInputMessage(IntersectInput.InputEvent.MouseMove, new Pointf(mouseState.X, mouseState.Y), (int)MouseButtons.None, Keys.Alt)
-        );
+        //Interface.Interface.GwenInput.ProcessMessage(
+        //    new GwenInputMessage(IntersectInput.InputEvent.MouseMove, new Pointf(mouseState.X, mouseState.Y), (int)MouseButtons.None, Keys.Alt)
+        //);
     }
 
     private void Window_TextInput(object sender, TextInputEventArgs e)
     {
-        Interface.Interface.GwenInput.ProcessMessage(
-            new GwenInputMessage(
-                IntersectInput.InputEvent.TextEntered, GetMousePosition(), (int) MouseButtons.None, Keys.Alt, false,
-                false, false, e.Character.ToString()
-            )
-        );
+        //Interface.Interface.GwenInput.ProcessMessage(
+        //    new GwenInputMessage(
+        //        IntersectInput.InputEvent.TextEntered, GetMousePosition(), (int) MouseButtons.None, Keys.Alt, false,
+        //        false, false, e.Character.ToString()
+        //    )
+        //);
     }
 
     public override bool MouseButtonDown(MouseButtons mb)
@@ -186,17 +186,17 @@ public partial class MonoInput : GameInput
 
         if (bs == ButtonState.Pressed && !MouseButtonDown(mb))
         {
-            Interface.Interface.GwenInput.ProcessMessage(
-                new GwenInputMessage(IntersectInput.InputEvent.MouseDown, GetMousePosition(), (int) mb, Keys.Alt)
-            );
+            //Interface.Interface.GwenInput.ProcessMessage(
+            //    new GwenInputMessage(IntersectInput.InputEvent.MouseDown, GetMousePosition(), (int) mb, Keys.Alt)
+            //);
 
             Core.Input.OnMouseDown(modifier, mb);
         }
         else if (bs == ButtonState.Released && MouseButtonDown(mb))
         {
-            Interface.Interface.GwenInput.ProcessMessage(
-                new GwenInputMessage(IntersectInput.InputEvent.MouseUp, GetMousePosition(), (int) mb, Keys.Alt)
-            );
+            //Interface.Interface.GwenInput.ProcessMessage(
+            //    new GwenInputMessage(IntersectInput.InputEvent.MouseUp, GetMousePosition(), (int) mb, Keys.Alt)
+            //);
 
             Core.Input.OnMouseUp(modifier, mb);
         }
@@ -210,9 +210,9 @@ public partial class MonoInput : GameInput
         {
             p = new Pointf(scrlHValue - mMouseHScroll, scrlVValue - mMouseVScroll);
 
-            Interface.Interface.GwenInput.ProcessMessage(
-                new GwenInputMessage(IntersectInput.InputEvent.MouseScroll, p, (int)MouseButtons.Middle, Keys.Alt)
-            );
+            //Interface.Interface.GwenInput.ProcessMessage(
+            //    new GwenInputMessage(IntersectInput.InputEvent.MouseScroll, p, (int)MouseButtons.Middle, Keys.Alt)
+            //);
 
             mMouseVScroll = scrlVValue;
             mMouseHScroll = scrlHValue;
@@ -260,11 +260,11 @@ public partial class MonoInput : GameInput
             {
                 mMouseX = (int)(mouseState.X * ((MonoRenderer)Core.Graphics.Renderer).GetMouseOffset().X);
                 mMouseY = (int)(mouseState.Y * ((MonoRenderer)Core.Graphics.Renderer).GetMouseOffset().Y);
-                Interface.Interface.GwenInput.ProcessMessage(
-                    new GwenInputMessage(
-                        IntersectInput.InputEvent.MouseMove, GetMousePosition(), (int)MouseButtons.None, Keys.Alt
-                    )
-                );
+                //Interface.Interface.GwenInput.ProcessMessage(
+                //    new GwenInputMessage(
+                //        IntersectInput.InputEvent.MouseMove, GetMousePosition(), (int)MouseButtons.None, Keys.Alt
+                //    )
+                //);
             }
 
             if (gamePadState.IsConnected)
@@ -348,21 +348,21 @@ public partial class MonoInput : GameInput
                 if (keyboardState.IsKeyDown(key.Value) && !mLastKeyboardState.IsKeyDown(key.Value))
                 {
                     Log.Diagnostic("{0} -> {1}", key.Key, key.Value);
-                    Interface.Interface.GwenInput.ProcessMessage(
-                        new GwenInputMessage(
-                            IntersectInput.InputEvent.KeyDown, GetMousePosition(), (int) MouseButtons.None, key.Key
-                        )
-                    );
+                    //Interface.Interface.GwenInput.ProcessMessage(
+                    //    new GwenInputMessage(
+                    //        IntersectInput.InputEvent.KeyDown, GetMousePosition(), (int) MouseButtons.None, key.Key
+                    //    )
+                    //);
 
                     Core.Input.OnKeyPressed(modifier, key.Key);
                 }
                 else if (!keyboardState.IsKeyDown(key.Value) && mLastKeyboardState.IsKeyDown(key.Value))
                 {
-                    Interface.Interface.GwenInput.ProcessMessage(
-                        new GwenInputMessage(
-                            IntersectInput.InputEvent.KeyUp, GetMousePosition(), (int) MouseButtons.None, key.Key
-                        )
-                    );
+                    //Interface.Interface.GwenInput.ProcessMessage(
+                    //    new GwenInputMessage(
+                    //        IntersectInput.InputEvent.KeyUp, GetMousePosition(), (int) MouseButtons.None, key.Key
+                    //    )
+                    //);
 
                     Core.Input.OnKeyReleased(modifier, key.Key);
                 }
@@ -380,11 +380,11 @@ public partial class MonoInput : GameInput
             {
                 if (mLastKeyboardState.IsKeyDown(key.Value))
                 {
-                    Interface.Interface.GwenInput.ProcessMessage(
-                        new GwenInputMessage(
-                            IntersectInput.InputEvent.KeyUp, GetMousePosition(), (int) MouseButtons.None, key.Key
-                        )
-                    );
+                    //Interface.Interface.GwenInput.ProcessMessage(
+                    //    new GwenInputMessage(
+                    //        IntersectInput.InputEvent.KeyUp, GetMousePosition(), (int) MouseButtons.None, key.Key
+                    //    )
+                    //);
 
                     Core.Input.OnKeyReleased(modifier, key.Key);
                 }

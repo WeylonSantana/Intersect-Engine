@@ -117,6 +117,7 @@ public static partial class Graphics
         EntityNameFont = FindFont(ClientConfiguration.Instance.EntityNameFont);
         ChatBubbleFont = FindFont(ClientConfiguration.Instance.ChatBubbleFont);
         ActionMsgFont = FindFont(ClientConfiguration.Instance.ActionMsgFont);
+        Interface.Interface.Initialization();
     }
 
     public static GameFont FindFont(string font)
@@ -544,9 +545,8 @@ public static partial class Graphics
             Renderer.GetScreenHeight() != sOldHeight ||
             Renderer.DisplayModeChanged())
         {
+            //MYRA-TODO: attention to this, maybe we need to destroy all interface an then recreate it
             sDarknessTexture = null;
-            Interface.Interface.DestroyGwen();
-            Interface.Interface.InitGwen();
             sOldWidth = Renderer.GetScreenWidth();
             sOldHeight = Renderer.GetScreenHeight();
         }
@@ -583,7 +583,7 @@ public static partial class Graphics
 
         Renderer.Scale = Globals.Database.UIScale;
 
-        Interface.Interface.DrawGui();
+        Interface.Interface.Update();
 
         DrawGameTexture(
             Renderer.GetWhiteTexture(), new FloatRect(0, 0, 1, 1), CurrentView,

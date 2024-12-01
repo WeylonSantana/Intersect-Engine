@@ -1,0 +1,6 @@
+<Project>
+  <Project.ExportOptions />
+  <Panel HorizontalAlignment="Left" VerticalAlignment="Bottom" Left="10" Top="-10" Padding="5" Background="#40404096" Id="_serverStatusPanel">
+    <Label Text="Server Status" Id="_serverStatusLabel" />
+  </Panel>
+</Project>

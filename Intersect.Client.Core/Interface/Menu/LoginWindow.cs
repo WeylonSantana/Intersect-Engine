@@ -1,172 +1,275 @@
-using Intersect.Client.Core;
-using Intersect.Client.Framework.File_Management;
-using Intersect.Client.Framework.Gwen.Control;
-using Intersect.Client.Framework.Gwen.Control.EventArguments;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
 using Intersect.Client.Interface.Game.Chat;
+using Intersect.Client.Interface.Shared;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
+using Intersect.Logging;
+using Intersect.Network;
+using Intersect.Network.Events;
 using Intersect.Security;
 using Intersect.Utilities;
+using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class LoginWindow : ImagePanel, IMainMenuWindow
+public partial class LoginWindow : IMainMenuWindow
 {
-    private readonly MainMenu _mainMenu;
-    private readonly TextBox _txtUsername;
-    private readonly TextBoxPassword _txtPassword;
-    private readonly LabeledCheckBox _chkSavePass;
-    private readonly Button _btnForgotPassword;
-    private readonly Button _btnLogin;
+    private MainMenu _mainMenu = null!;
+    private Panel? _loginWindow;
+    private Label? _labelTitle;
+    private Label? _labelUsername;
+    private TextBox? _textboxUsername;
+    private Label? _labelPassword;
+    private TextBox? _textboxPassword;
+    private Label? _labelSave;
+    private CheckButton? _checkboxSave;
+    private Label? _labelLogin;
+    private Button? _buttonLogin;
+    private Label? _labelForgotPassword;
+    private Button? _buttonForgotPassword;
+    private Label? _labelRegister;
+    private Button? _buttonRegister;
+    private Label? _labelSettings;
+    private Button? _buttonSettings;
+    private Label? _labelCredits;
+    private Button? _buttonCredits;
+    private Label? _labelExit;
+    private Button? _buttonExit;
+
     private bool _useSavedPass;
     private string _savedPass = string.Empty;
+    private string _storedPassword = string.Empty;
 
-    //Init
-    public LoginWindow(Canvas parent, MainMenu mainMenu) : base(parent, "LoginWindow")
+    public bool IsHidden => _loginWindow?.Visible == false;
+
+    public Widget? Root => _loginWindow;
+
+    public void Load(MainMenu mainMenu)
     {
-        //Assign References
         _mainMenu = mainMenu;
-
-        //Menu Header
-        _ = new Label(this, "LoginHeader")
+        _loginWindow = (Panel)Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"), true).Root;
+        if (Interface.GetChildById<Label>("_labelTitle", out var labelTitle))
         {
-            Text = Strings.LoginWindow.Title,
-        };
+            _labelTitle = labelTitle;
+            _labelTitle.Text = Strings.LoginWindow.Title;
+        }
 
-        //Login Username Label/Textbox
-        var usernameBackground = new ImagePanel(this, "UsernamePanel");
-        _ = new Label(usernameBackground, "UsernameLabel")
+        if (Interface.GetChildById<Label>("_labelUsername", out var labelUsername))
         {
-            Text = Strings.LoginWindow.Username,
-        };
-        _txtUsername = new TextBox(usernameBackground, "UsernameField");
-        _txtUsername.SubmitPressed += (s, e) => TryLogin();
-        _txtUsername.Clicked += _txtUsername_Clicked;
+            _labelUsername = labelUsername;
+            _labelUsername.Text = Strings.LoginWindow.Username;
+        }
 
-        //Login Password Label/Textbox
-        var passwordBackground = new ImagePanel(this, "PasswordPanel");
-        _ = new Label(passwordBackground, "PasswordLabel")
+        if (Interface.GetChildById<TextBox>("_textboxUsername", out var textboxUsername))
         {
-            Text = Strings.LoginWindow.Password,
-        };
-        _txtPassword = new TextBoxPassword(passwordBackground, "PasswordField");
-        _txtPassword.SubmitPressed += (s, e) => TryLogin();
-        _txtPassword.TextChanged += _txtPassword_TextChanged;
-        _txtPassword.Clicked += _txtPassword_Clicked;
+            _textboxUsername = textboxUsername;
+            _textboxUsername.TouchDown += _textboxUsername_Clicked;
+        }
 
-        //Login Save Pass Checkbox
-        _chkSavePass = new LabeledCheckBox(this, "SavePassCheckbox")
+        if (Interface.GetChildById<Label>("_labelPassword", out var labelPassword))
         {
-            Text = Strings.LoginWindow.SavePassword,
-        };
+            _labelPassword = labelPassword;
+            _labelPassword.Text = Strings.LoginWindow.Password;
+        }
 
-        //Forgot Password Button
-        _btnForgotPassword = new Button(this, "ForgotPasswordButton")
+        if (Interface.GetChildById<TextBox>("_textboxPassword", out var textboxPassword))
         {
-            IsHidden = true, Text = Strings.LoginWindow.ForgotPassword,
-        };
-        _btnForgotPassword.Clicked += _btnForgotPassword_Clicked;
+            _textboxPassword = textboxPassword;
+            _textboxPassword.PasswordField = true;
+            _textboxPassword.TouchDown += _textboxPassword_Clicked;
+            _textboxPassword.TextChanged += _textboxPassword_TextChanged;
+        }
 
-        //Login - Send Login Button
-        _btnLogin = new Button(this, "LoginButton")
+        if (Interface.GetChildById<Label>("_labelSave", out var labelSave))
         {
-            Text = Strings.LoginWindow.Login,
-        };
-        _btnLogin.Clicked += (s, e) => TryLogin();
+            _labelSave = labelSave;
+            _labelSave.Text = Strings.LoginWindow.SavePassword;
+        }
 
-        //Login - Back Button
-        var btnBack = new Button(this, "BackButton")
+        if (Interface.GetChildById<CheckButton>("_checkboxSave", out var checkboxSave))
         {
-            Text = Strings.LoginWindow.Back,
-        };
-        btnBack.Clicked += _btnBack_Clicked;
+            _checkboxSave = checkboxSave;
+        }
+
+        if (Interface.GetChildById<Label>("_labelLogin", out var labelLogin))
+        {
+            _labelLogin = labelLogin;
+            _labelLogin.Text = Strings.MainMenu.Login;
+        }
+
+        if (Interface.GetChildById<Button>("_buttonLogin", out var buttonLogin))
+        {
+            _buttonLogin = buttonLogin;
+            _buttonLogin.Enabled = false;
+            _buttonLogin.Click += (sender, args) => TryLogin();
+        }
+
+        if (Interface.GetChildById<Label>("_labelForgotPassword", out var labelForgotPassword))
+        {
+            _labelForgotPassword = labelForgotPassword;
+            _labelForgotPassword.Text = Strings.LoginWindow.ForgotPassword;
+        }
+
+        if (Interface.GetChildById<Button>("_buttonForgotPassword", out var buttonForgotPassword))
+        {
+            _buttonForgotPassword = buttonForgotPassword;
+            _buttonForgotPassword.Click += _buttonForgotPassword_Clicked;
+        }
+
+        if (Interface.GetChildById<Label>("_labelRegister", out var labelRegister))
+        {
+            _labelRegister = labelRegister;
+            _labelRegister.Text = Strings.MainMenu.Register;
+        }
+
+        if (Interface.GetChildById<Button>("_buttonRegister", out var buttonRegister))
+        {
+            _buttonRegister = buttonRegister;
+            _buttonRegister.Enabled = false;
+            _buttonRegister.Click += (sender, args) => _mainMenu.SwitchToWindow<RegistrationWindow>();
+        }
+
+        if (Interface.GetChildById<Label>("_labelSettings", out var labelSettings))
+        {
+            _labelSettings = labelSettings;
+            _labelSettings.Text = Strings.MainMenu.Settings;
+        }
+
+        if (Interface.GetChildById<Button>("_buttonSettings", out var buttonSettings))
+        {
+            _buttonSettings = buttonSettings;
+            _buttonSettings.Click += (sender, args) => _mainMenu.SwitchToWindow<SettingsWindow>();
+        }
+
+        if (Interface.GetChildById<Label>("_labelCredits", out var labelCredits))
+        {
+            _labelCredits = labelCredits;
+            _labelCredits.Text = Strings.MainMenu.Credits;
+        }
+
+        if (Interface.GetChildById<Button>("_buttonCredits", out var buttonCredits))
+        {
+            _buttonCredits = buttonCredits;
+            _buttonCredits.Click += (sender, args) => _mainMenu.SwitchToWindow<CreditsWindow>();
+        }
+
+        if (Interface.GetChildById<Label>("_labelExit", out var labelExit))
+        {
+            _labelExit = labelExit;
+            _labelExit.Text = Strings.MainMenu.Exit;
+        }
+
+        if (Interface.GetChildById<Button>("_buttonExit", out var buttonExit))
+        {
+            _buttonExit = buttonExit;
+            _buttonExit.Click += (sender, args) =>
+            {
+                Log.Info("User clicked exit button.");
+                Globals.IsRunning = false;
+            };
+        }
 
         LoadCredentials();
-        LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer?.GetResolutionString());
+    }
+
+    public void Toggle()
+    {
+        if (_loginWindow == default)
+        {
+            return;
+        }
+
+        _loginWindow.Visible = !_loginWindow.Visible;
+
+        if (_loginWindow.Visible)
+        {
+            if (_buttonForgotPassword?.Visible == false)
+            {
+                _buttonForgotPassword.Visible = !Options.Instance.SmtpValid;
+            }
+
+            if (!string.IsNullOrWhiteSpace(_textboxUsername?.Text))
+            {
+                _textboxUsername?.SetKeyboardFocus();
+            }
+            else
+            {
+                _textboxUsername?.SetKeyboardFocus();
+            }
+        }
     }
 
     #region Input Handling
-
-    private void _txtUsername_Clicked(Base sender, ClickedEventArgs arguments)
+    private void _textboxUsername_Clicked(object? sender, EventArgs e)
     {
+        if (_textboxUsername == default)
+        {
+            return;
+        }
+
         Globals.InputManager.OpenKeyboard(
             KeyboardType.Normal,
-            text => _txtUsername.Text = text ?? string.Empty,
+            text => _textboxUsername.Text = text ?? string.Empty,
             Strings.LoginWindow.Username,
-            _txtUsername.Text,
-            inputBounds: _txtUsername.BoundsGlobal
+            _textboxUsername.Text,
+            inputBounds: new Framework.GenericClasses.Rectangle(
+                _textboxUsername.Bounds.X,
+                _textboxUsername.Bounds.Y,
+                _textboxUsername.Bounds.Width,
+                _textboxUsername.Bounds.Height
+            )
         );
     }
 
-    private void _txtPassword_TextChanged(Base sender, EventArgs arguments)
+    private void _textboxPassword_Clicked(object? sender, EventArgs e)
+    {
+        if (_textboxPassword == default)
+        {
+            return;
+        }
+
+        Globals.InputManager.OpenKeyboard(
+            KeyboardType.Password,
+            text => _textboxPassword.Text = text ?? string.Empty,
+            Strings.LoginWindow.Password,
+            _textboxPassword.Text
+        );
+    }
+
+    private void _textboxPassword_TextChanged(object? sender, EventArgs e)
     {
         _useSavedPass = false;
     }
 
-    private void _txtPassword_Clicked(Base sender, ClickedEventArgs arguments)
+    private static void _buttonForgotPassword_Clicked(object? sender, EventArgs e)
     {
-        Globals.InputManager.OpenKeyboard(
-            KeyboardType.Password,
-            text => _txtPassword.Text = text ?? string.Empty,
-            Strings.LoginWindow.Password,
-            _txtPassword.Text
-        );
+        Interface.MenuUi?.NotifyOpenForgotPassword();
     }
-
-    private static void _btnForgotPassword_Clicked(Base sender, ClickedEventArgs arguments)
-    {
-        Interface.MenuUi.MainMenu.NotifyOpenForgotPassword();
-    }
-
-    private void _btnBack_Clicked(Base sender, ClickedEventArgs arguments)
-    {
-        Hide();
-        _mainMenu.Show();
-        Networking.Network.DebounceClose("returning_to_main_menu");
-    }
-
     #endregion
 
     public void Update()
     {
-        if (!Networking.Network.IsConnected)
+        if (_buttonLogin != default)
         {
-            Hide();
-            _mainMenu.Show();
-            return;
+            _buttonLogin.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
         }
 
-        // Re-Enable our buttons button if we're not waiting for the server anymore with it disabled.
-        if (!Globals.WaitingOnServer && _btnLogin.IsDisabled)
+        if (_buttonRegister != default)
         {
-            _btnLogin.Enable();
+            _buttonRegister.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
         }
     }
 
-    public override void Show()
-    {
-        base.Show();
-        if (!_btnForgotPassword.IsHidden)
-        {
-            _btnForgotPassword.IsHidden = !Options.Instance.SmtpValid;
-        }
-
-        // Set focus to the appropriate elements.
-        if (!string.IsNullOrWhiteSpace(_txtUsername.Text))
-        {
-            _txtPassword.Focus();
-        }
-        else
-        {
-            _txtUsername.Focus();
-        }
-    }
-
+    # region Login
     private void TryLogin()
     {
         if (Globals.WaitingOnServer)
+        {
+            return;
+        }
+
+        if (_textboxUsername == default || _textboxPassword == default)
         {
             return;
         }
@@ -177,13 +280,13 @@ public partial class LoginWindow : ImagePanel, IMainMenuWindow
             return;
         }
 
-        if (!FieldChecking.IsValidUsername(_txtUsername.Text, Strings.Regex.Username))
+        if (!FieldChecking.IsValidUsername(_textboxUsername.Text, Strings.Regex.Username))
         {
             Interface.ShowError(Strings.Errors.UsernameInvalid);
             return;
         }
 
-        if (!FieldChecking.IsValidPassword(_txtPassword.Text, Strings.Regex.Password))
+        if (!FieldChecking.IsValidPassword(_textboxPassword.Text, Strings.Regex.Password))
         {
             if (!_useSavedPass)
             {
@@ -192,52 +295,90 @@ public partial class LoginWindow : ImagePanel, IMainMenuWindow
             }
         }
 
-        var password = _savedPass;
+        _storedPassword = _savedPass;
         if (!_useSavedPass)
         {
-            password = PasswordUtils.ComputePasswordHash(_txtPassword.Text.Trim());
+            _storedPassword = PasswordUtils.ComputePasswordHash(_textboxPassword.Text.Trim());
         }
 
         Globals.WaitingOnServer = true;
-        _btnLogin.Disable();
+        if (Networking.Network.InterruptDisconnectsIfConnected())
+        {
+            _mainMenu.SwitchToWindow<LoginWindow>();
+        }
+        else
+        {
+            _addLoginEvents();
+            Networking.Network.TryConnect();
+        }
+    }
+    private void _addLoginEvents()
+    {
+        MainMenu.ReceivedConfiguration += _loginConnected;
+        Networking.Network.Socket.ConnectionFailed += _loginConnectionFailed;
+        Networking.Network.Socket.Disconnected += _loginDisconnected;
+    }
 
-        PacketSender.SendLogin(_txtUsername.Text, password);
+    private void _removeLoginEvents()
+    {
+        MainMenu.ReceivedConfiguration -= _loginConnected;
+        Networking.Network.Socket.ConnectionFailed -= _loginConnectionFailed;
+        Networking.Network.Socket.Disconnected -= _loginDisconnected;
+    }
+
+    private void _loginConnectionFailed(INetworkLayerInterface nli, ConnectionEventArgs args, bool denied) => _removeLoginEvents();
+
+    private void _loginDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) => _removeLoginEvents();
+
+    private void _loginConnected(object? sender, EventArgs eventArgs)
+    {
+        PacketSender.SendLogin(_textboxUsername!.Text, _storedPassword);
         SaveCredentials();
         ChatboxMsg.ClearMessages();
+        _removeLoginEvents();
+    }
+    #endregion
+
+    private void SaveCredentials()
+    {
+        string username = string.Empty, password = string.Empty;
+
+        if (_textboxUsername == default || _textboxPassword == default)
+        {
+            return;
+        }
+
+        if (_checkboxSave?.IsChecked == true)
+        {
+            username = _textboxUsername.Text.Trim();
+            password = _useSavedPass ? _savedPass : PasswordUtils.ComputePasswordHash(_textboxPassword.Text.Trim());
+        }
+
+        Globals.Database.SavePreference("Username", username);
+        Globals.Database.SavePreference("Password", password);
     }
 
     private void LoadCredentials()
     {
         var name = Globals.Database.LoadPreference("Username");
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(name) || _textboxUsername == default || _textboxPassword == default)
         {
             return;
         }
 
-        _txtUsername.Text = name;
+        _textboxUsername.Text = name;
         var pass = Globals.Database.LoadPreference("Password");
         if (string.IsNullOrEmpty(pass))
         {
             return;
         }
 
-        _txtPassword.Text = "****************";
+        _textboxPassword.Text = "****************";
         _savedPass = pass;
         _useSavedPass = true;
-        _chkSavePass.IsChecked = true;
-    }
-
-    private void SaveCredentials()
-    {
-        string username = string.Empty, password = string.Empty;
-
-        if (_chkSavePass.IsChecked)
+        if (_checkboxSave != default)
         {
-            username = _txtUsername.Text.Trim();
-            password = _useSavedPass ? _savedPass : PasswordUtils.ComputePasswordHash(_txtPassword.Text.Trim());
+            _checkboxSave.IsChecked = true;
         }
-
-        Globals.Database.SavePreference("Username", username);
-        Globals.Database.SavePreference("Password", password);
     }
 }

@@ -179,7 +179,7 @@ public partial class CreateCharacterWindow : ImagePanel
         if (!Networking.Network.IsConnected)
         {
             Hide();
-            _mainMenu.Show();
+            _mainMenu.SwitchToWindow<LoginWindow>();
             return;
         }
 
@@ -447,7 +447,7 @@ public partial class CreateCharacterWindow : ImagePanel
         if (Options.Player.MaxCharacters <= 1)
         {
             //Logout
-            _mainMenu.Show();
+            _mainMenu.SwitchToWindow<LoginWindow>();
         }
         else
         {

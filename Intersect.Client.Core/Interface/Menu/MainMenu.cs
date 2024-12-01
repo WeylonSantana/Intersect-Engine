@@ -1,25 +1,26 @@
 using Intersect.Client.Core;
-using Intersect.Client.Framework.File_Management;
-using Intersect.Client.Framework.Gwen.Control;
 using Intersect.Client.Interface.Shared;
+using Intersect.Client.Localization;
+using Intersect.Client.Networking;
 using Intersect.Network;
 using Intersect.Utilities;
+using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class MainMenu : MutableInterface
+public partial class MainMenu
 {
-    private readonly Canvas _menuCanvas;
-    private readonly MainMenuWindow _mainMenuWindow;
-    private readonly LoginWindow _loginWindow;
+    private readonly LoginWindow? _loginWindow;
     private readonly RegistrationWindow _registerWindow;
     private readonly ForgotPasswordWindow _forgotPasswordWindow;
     private readonly ResetPasswordWindow _resetPasswordWindow;
     private readonly CreateCharacterWindow _createCharacterWindow;
     private readonly SettingsWindow _settingsWindow;
     private readonly CreditsWindow _creditsWindow;
-
     public readonly SelectCharacterWindow SelectCharacterWindow;
+
+    private readonly Project _serverStatusArea;
+    private readonly Label _serverStatusLabel;
 
     //Character creation feild check
     private bool mShouldOpenCharacterCreation;
@@ -33,29 +34,34 @@ public partial class MainMenu : MutableInterface
 
     public static long LastNetworkStatusChangeTime { get; private set; }
 
-    public MainMenu(Canvas menuCanvas) : base(menuCanvas)
+    public MainMenu()
     {
-        _menuCanvas = menuCanvas;
-        _mainMenuWindow = new MainMenuWindow(_menuCanvas, this);
+        _loginWindow = new LoginWindow();
+        _loginWindow.Load(this);
 
-        var logo = new ImagePanel(menuCanvas, "Logo");
-        logo.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer?.GetResolutionString());
+        _serverStatusArea = Interface.LoadContent(Path.Combine("menu", "ServerStatus.xmmp"));
+        Interface.AddElement(_serverStatusArea.Root);
+
+        if (Interface.GetChildById<Label>("_serverStatusLabel", out var label))
+        {
+            _serverStatusLabel = label;
+            _serverStatusLabel.Text = Strings.Server.StatusLabel.ToString(ActiveNetworkStatus.ToLocalizedString());
+            _serverStatusLabel.Visible = !ClientContext.IsSinglePlayer;
+        }
 
         NetworkStatusChanged += HandleNetworkStatusChanged;
 
-        _loginWindow = new LoginWindow(_menuCanvas, this);
-        _registerWindow = new RegistrationWindow(_menuCanvas, this);
-        _forgotPasswordWindow = new ForgotPasswordWindow(_menuCanvas, this);
-        _resetPasswordWindow = new ResetPasswordWindow(_menuCanvas, this);
-        SelectCharacterWindow = new SelectCharacterWindow(_menuCanvas, this);
-        _createCharacterWindow = new CreateCharacterWindow(_menuCanvas, this, SelectCharacterWindow);
-        _settingsWindow = new SettingsWindow(_menuCanvas, this, null);
-        _creditsWindow = new CreditsWindow(_menuCanvas, this);
+        //_registerWindow = new RegistrationWindow(_menuCanvas, this);
+        //_forgotPasswordWindow = new ForgotPasswordWindow(_menuCanvas, this);
+        //_resetPasswordWindow = new ResetPasswordWindow(_menuCanvas, this);
+        //SelectCharacterWindow = new SelectCharacterWindow(_menuCanvas, this);
+        //_createCharacterWindow = new CreateCharacterWindow(_menuCanvas, this, SelectCharacterWindow);
+        //_settingsWindow = new SettingsWindow(_menuCanvas, this, null);
+        //_creditsWindow = new CreditsWindow(_menuCanvas, this);
     }
 
     ~MainMenu()
     {
-        // ReSharper disable once DelegateSubtraction
         NetworkStatusChanged -= HandleNetworkStatusChanged;
     }
 
@@ -64,14 +70,14 @@ public partial class MainMenu : MutableInterface
         ReceivedConfiguration?.Invoke(default, EventArgs.Empty);
     }
 
+    private void HandleNetworkStatusChanged()
+    {
+        _serverStatusLabel.Text = Strings.Server.StatusLabel.ToString(MainMenu.ActiveNetworkStatus.ToLocalizedString());
+    }
+
     //Methods
     public void Update()
     {
-        if (_mainMenuWindow.IsVisible)
-        {
-            _mainMenuWindow.Update();
-        }
-
         if (mShouldOpenCharacterSelection)
         {
             CreateCharacterSelection();
@@ -82,10 +88,12 @@ public partial class MainMenu : MutableInterface
             CreateCharacterCreation();
         }
 
-        if (!_loginWindow.IsHidden)
+        if (_loginWindow?.IsHidden == false)
         {
             _loginWindow.Update();
         }
+
+        return;
 
         if (!_createCharacterWindow.IsHidden)
         {
@@ -107,7 +115,7 @@ public partial class MainMenu : MutableInterface
 
     public void Reset()
     {
-        _loginWindow.Hide();
+        _loginWindow?.Toggle();
         _registerWindow.Hide();
         _settingsWindow.Hide();
         _creditsWindow.Hide();
@@ -115,13 +123,7 @@ public partial class MainMenu : MutableInterface
         _resetPasswordWindow.Hide();
         _createCharacterWindow.Hide();
         SelectCharacterWindow.Hide();
-        _mainMenuWindow.Show();
-        _mainMenuWindow.Reset();
     }
-
-    public void Show() => _mainMenuWindow.Show();
-
-    public void Hide() => _mainMenuWindow.Hide();
 
     public void NotifyOpenCharacterSelection(List<Character> characters)
     {
@@ -132,32 +134,25 @@ public partial class MainMenu : MutableInterface
     public void NotifyOpenForgotPassword()
     {
         Reset();
-        Hide();
         _forgotPasswordWindow.Show();
     }
 
     public void NotifyOpenLogin()
     {
         Reset();
-        Hide();
-        _loginWindow.Show();
+        _loginWindow?.Toggle();
     }
 
     public void OpenResetPassword(string nameEmail)
     {
         Reset();
-        Hide();
         _resetPasswordWindow.Target = nameEmail;
         _resetPasswordWindow.Show();
     }
 
     public void CreateCharacterSelection()
     {
-        Hide();
-        _loginWindow.Hide();
-        _registerWindow.Hide();
-        _settingsWindow.Hide();
-        _createCharacterWindow.Hide();
+        Reset();
         SelectCharacterWindow.Show();
         mShouldOpenCharacterSelection = false;
     }
@@ -166,11 +161,7 @@ public partial class MainMenu : MutableInterface
 
     public void CreateCharacterCreation()
     {
-        Hide();
-        _loginWindow.Hide();
-        _registerWindow.Hide();
-        _settingsWindow.Hide();
-        SelectCharacterWindow.Hide();
+        Reset();
         _createCharacterWindow.Show();
         _createCharacterWindow.Init();
         mShouldOpenCharacterCreation = false;
@@ -178,28 +169,24 @@ public partial class MainMenu : MutableInterface
 
     internal void SwitchToWindow<TMainMenuWindow>() where TMainMenuWindow : IMainMenuWindow
     {
-        _mainMenuWindow.Hide();
+        Reset();
         if (typeof(TMainMenuWindow) == typeof(LoginWindow))
         {
-            _loginWindow.Show();
+            _loginWindow?.Toggle();
         }
         else if (typeof(TMainMenuWindow) == typeof(RegistrationWindow))
         {
             _registerWindow.Show();
+        }
+        else if (typeof(TMainMenuWindow) == typeof(SettingsWindow))
+        {
+            _settingsWindow.Show();
         }
         else if (typeof(TMainMenuWindow) == typeof(CreditsWindow))
         {
             _creditsWindow.Show();
         }
     }
-
-    internal void SettingsButton_Clicked()
-    {
-        Hide();
-        _settingsWindow.Show(true);
-    }
-
-    private void HandleNetworkStatusChanged() => _mainMenuWindow.UpdateDisabled();
 
     public static void SetNetworkStatus(NetworkStatus networkStatus, bool resetStatusCheck = false)
     {

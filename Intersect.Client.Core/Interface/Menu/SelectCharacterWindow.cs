@@ -95,7 +95,7 @@ public partial class SelectCharacterWindow : ImagePanel
         if (!Networking.Network.IsConnected)
         {
             Hide();
-            _mainMenu.Show();
+            _mainMenu.SwitchToWindow<LoginWindow>();
         }
 
         // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.

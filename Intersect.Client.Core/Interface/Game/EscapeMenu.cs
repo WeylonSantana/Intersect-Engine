@@ -16,7 +16,7 @@ public partial class EscapeMenu : ImagePanel
 
     public EscapeMenu(Canvas gameCanvas) : base(gameCanvas, nameof(EscapeMenu))
     {
-        Interface.InputBlockingElements?.Add(this);
+        //Interface.InputBlockingElements?.Add(this);
 
         Width = gameCanvas.Width;
         Height = gameCanvas.Height;

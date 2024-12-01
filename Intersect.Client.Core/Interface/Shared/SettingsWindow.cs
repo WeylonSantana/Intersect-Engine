@@ -15,7 +15,7 @@ using MathHelper = Intersect.Client.Utilities.MathHelper;
 
 namespace Intersect.Client.Interface.Shared;
 
-public partial class SettingsWindow : ImagePanel
+public partial class SettingsWindow : ImagePanel, IMainMenuWindow
 {
     // Parent Window.
     private readonly MainMenu? _mainMenu;
@@ -104,7 +104,7 @@ public partial class SettingsWindow : ImagePanel
         _escapeMenu = escapeMenu;
 
         // Main Menu Window.
-        Interface.InputBlockingElements.Add(this);
+        //Interface.InputBlockingElements.Add(this);
 
         // Menu Header.
         _settingsHeader = new Label(this, "SettingsHeader")
@@ -709,7 +709,7 @@ public partial class SettingsWindow : ImagePanel
 
         _keybindingEditBtn = null;
         _keysDown.Clear();
-        Interface.GwenInput.HandleInput = true;
+        //Interface.GwenInput.HandleInput = true;
     }
 
     // Methods.
@@ -720,6 +720,18 @@ public partial class SettingsWindow : ImagePanel
             _keybindingListeningTimer < Timing.Global.MillisecondsUtc)
         {
             OnKeyUp(Keys.None, Keys.None);
+        }
+    }
+
+    public void Toggle()
+    {
+        if (IsHidden)
+        {
+            Show();
+        }
+        else
+        {
+            Hide();
         }
     }
 
@@ -846,7 +858,7 @@ public partial class SettingsWindow : ImagePanel
             switch (Globals.GameState)
             {
                 case GameStates.Menu:
-                    _mainMenu?.Show();
+                    _mainMenu?.SwitchToWindow<LoginWindow>();
                     break;
 
                 case GameStates.InGame:
@@ -889,7 +901,7 @@ public partial class SettingsWindow : ImagePanel
             _keyEdit = ((KeyValuePair<Control, int>)sender.UserData).Value;
             _keybindingEditControl = ((KeyValuePair<Control, int>)sender.UserData).Key;
             _keybindingEditBtn = sender;
-            Interface.GwenInput.HandleInput = false;
+            //Interface.GwenInput.HandleInput = false;
             _keybindingListeningTimer = Timing.Global.MillisecondsUtc + 3000;
         }
     }

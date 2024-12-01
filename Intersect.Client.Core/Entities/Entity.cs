@@ -922,7 +922,7 @@ public partial class Entity : IEntity
             var mousePos = Graphics.ConvertToWorldPoint(Globals.InputManager.MousePosition);
 
             // Entity is considered hovered if the mouse is over its world position and not hovering over the GUI.
-            IsHovered = WorldPos.Contains(mousePos.X, mousePos.Y) && !Interface.Interface.MouseHitGui();
+            //IsHovered = WorldPos.Contains(mousePos.X, mousePos.Y) && !Interface.Interface.MouseHitGui();
 
             // Check the type of entity and return whether its name should be drawn based on settings and conditions.
             switch (this)

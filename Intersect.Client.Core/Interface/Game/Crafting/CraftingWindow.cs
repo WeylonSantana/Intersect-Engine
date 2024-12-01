@@ -123,7 +123,7 @@ public partial class CraftingWindow
             mCraftAll.Hide();
         }
 
-        Interface.InputBlockingElements.Add(mCraftWindow);
+        //Interface.InputBlockingElements.Add(mCraftWindow);
 
         Globals.Me.InventoryUpdatedDelegate = () =>
         {

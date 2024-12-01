@@ -1369,7 +1369,7 @@ internal sealed partial class PacketHandler
     public void HandlePacket(IPacketSender packetSender, CharacterCreationPacket packet)
     {
         Globals.WaitingOnServer = false;
-        Interface.Interface.MenuUi.MainMenu.NotifyOpenCharacterCreation();
+        Interface.Interface.MenuUi.NotifyOpenCharacterCreation();
     }
 
     //AdminPanelPacket
@@ -2097,7 +2097,7 @@ internal sealed partial class PacketHandler
         }
 
         Globals.WaitingOnServer = false;
-        Interface.Interface.MenuUi.MainMenu.NotifyOpenCharacterSelection(characters);
+        Interface.Interface.MenuUi?.NotifyOpenCharacterSelection(characters);
     }
 
     //PasswordResetResultPacket
@@ -2107,7 +2107,7 @@ internal sealed partial class PacketHandler
         {
             // Show Success Message and Open Login Screen
             Interface.Interface.ShowError(Strings.ResetPass.Success, Strings.ResetPass.SuccessMessage);
-            Interface.Interface.MenuUi.MainMenu.NotifyOpenLogin();
+            Interface.Interface.MenuUi?.NotifyOpenLogin();
         }
         else
         {

@@ -2664,7 +2664,8 @@ public partial class Player : Entity, IPlayer
             }
         }
 
-        if (!Interface.Interface.MouseHitGui())
+        //MYRA-TODO: old !Interface.Interface.MouseHitGui()
+        if (false)
         {
             var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.GetMousePosition());
             foreach (MapInstance map in Maps.MapInstance.Lookup.Values.Cast<MapInstance>())

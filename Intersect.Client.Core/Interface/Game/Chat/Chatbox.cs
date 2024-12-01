@@ -125,7 +125,7 @@ public partial class Chatbox
         mChatboxInput.Clicked += ChatboxInput_Clicked;
         mChatboxInput.IsTabable = false;
         mChatboxInput.SetMaxLength(Options.MaxChatLength);
-        Interface.FocusElements.Add(mChatboxInput);
+        //Interface.FocusElements.Add(mChatboxInput);
 
         mChannelLabel = new Label(mChatboxWindow, "ChannelLabel");
         mChannelLabel.Text = Strings.Chatbox.Channel;
