@@ -14,7 +14,7 @@ public static partial class Interface
 {
     public static GameInterface? GameUi { get; private set; }
 
-    public static MainMenu? MenuUi { get; private set; }
+    public static MenuInterface? MenuUi { get; private set; }
 
     public static List<Widget> FocusElements { get; set; } = [];
 
@@ -28,8 +28,8 @@ public static partial class Interface
 
     public static bool IsVisible
     {
-        get => Desktop.Root.Visible;
-        set => Desktop.Root.Visible = value;
+        get => Desktop.Widgets.Any(w => w.Visible);
+        set => Desktop.Widgets.ToList().ForEach(w => w.Visible = value);
     }
 
     public static bool IsMouseOverGUI => Desktop.IsMouseOverGUI;
@@ -44,7 +44,7 @@ public static partial class Interface
 
         if (Globals.GameState is GameStates.Intro or GameStates.Menu)
         {
-            MenuUi = new MainMenu();
+            MenuUi = new MenuInterface();
             GameUi = null;
         }
         else
@@ -144,7 +144,7 @@ public static partial class Interface
         ErrorMsgHandler.Update();
 
         //Do not allow hiding of UI under several conditions
-        var forceShowUi = Globals.InCraft || Globals.InBank || Globals.InShop || Globals.InTrade || Globals.InBag || Globals.EventDialogs?.Count > 0 || HasInputFocus() || (!Interface.GameUi?.EscapeMenu?.IsHidden ?? true);
+        var forceShowUi = Globals.InCraft || Globals.InBank || Globals.InShop || Globals.InTrade || Globals.InBag || Globals.EventDialogs?.Count > 0 || HasInputFocus() || (!GameUi?.EscapeMenu?.IsHidden ?? true);
 
         if (HideUi && !forceShowUi && IsVisible)
         {
