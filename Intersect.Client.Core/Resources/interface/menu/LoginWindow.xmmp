@@ -2,14 +2,14 @@
   <Project.ExportOptions />
   <Panel Id="_loginWindow">
     <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="250" Padding="10" Background="#202020FF">
-      <Label Text="Login" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="_labelTitle" />
+      <Label Text="Login" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="_labelLoginTitle" />
       <Panel Top="45" Height="50">
-        <Label Text="UserName:" TextAlign="Center" Top="5" Id="_labelUsername" />
-        <TextBox VerticalAlignment="Bottom" Id="_textboxUsername" />
+        <Label Text="Username:" TextAlign="Center" Top="5" Id="_labelLoginUsername" />
+        <TextBox VerticalAlignment="Bottom" Id="_textboxLoginUsername" />
       </Panel>
       <Panel Top="100" Height="50">
-        <Label Text="Senha:" TextAlign="Center" Top="5" Id="_labelPassword" />
-        <TextBox VerticalAlignment="Bottom" Id="_textboxPassword" />
+        <Label Text="Password:" TextAlign="Center" Top="5" Id="_labelLoginPassword" />
+        <TextBox VerticalAlignment="Bottom" Id="_textboxLoginPassword" />
       </Panel>
       <CheckButton Top="55" VerticalAlignment="Center" Id="_checkboxSave">
         <Label Text="Save Credentials" TextAlign="Center" Left="5" Id="_labelSave" />

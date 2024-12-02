@@ -1,8 +1,8 @@
 <Project>
   <Project.ExportOptions />
   <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="420" Padding="5, 10" Background="#202020FF">
-  <Label Text="Credits" HorizontalAlignment="Center" Id="_labelTitle" />  
-    <ScrollViewer ShowHorizontalScrollBar="False" Top="30" Width="420" Height="340" >
+    <Label Text="Credits" HorizontalAlignment="Center" Id="_labelCreditsTitle" />
+    <ScrollViewer ShowHorizontalScrollBar="False" Top="30" Width="420" Height="330" >
       <VerticalStackPanel HorizontalAlignment="Center" Width="400">
         <Label Text="Intersect Engine" HorizontalAlignment="Center" />
         <Label Text="www.freemmorpgmaker.com" HorizontalAlignment="Center" />
@@ -99,8 +99,8 @@
         <Label HorizontalAlignment="Center" />
       </VerticalStackPanel>
     </ScrollViewer>
-    <Button Width="120" Height="25" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Bottom" Id="_buttonBack">
-      <Label Text="Back" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelBack" />
+    <Button Width="170" Height="30" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Bottom" Id="_buttonCreditsBack" >
+      <Label Text="Back To Main Menu" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelCreditsBack" />
     </Button>
   </Panel>
 </Project>

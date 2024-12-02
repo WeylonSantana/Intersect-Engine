@@ -10,8 +10,8 @@ namespace Intersect.Client.Interface.Menu;
 
 public partial class MainMenu
 {
-    private readonly LoginWindow? _loginWindow;
-    private readonly RegistrationWindow _registerWindow;
+    private readonly LoginWindow _loginWindow;
+    private readonly RegisterWindow _registerWindow;
     private readonly ForgotPasswordWindow _forgotPasswordWindow;
     private readonly ResetPasswordWindow _resetPasswordWindow;
     private readonly CreateCharacterWindow _createCharacterWindow;
@@ -19,7 +19,6 @@ public partial class MainMenu
     private readonly CreditsWindow _creditsWindow;
     public readonly SelectCharacterWindow SelectCharacterWindow;
 
-    private readonly Project _serverStatusArea;
     private readonly Label _serverStatusLabel;
 
     //Character creation feild check
@@ -39,7 +38,7 @@ public partial class MainMenu
         _loginWindow = new LoginWindow();
         _loginWindow.Load(this);
 
-        _serverStatusArea = Interface.LoadContent(Path.Combine("menu", "ServerStatus.xmmp"));
+        var _serverStatusArea = Interface.LoadContent(Path.Combine("menu", "ServerStatus.xmmp"));
         if (Interface.GetChildById<Label>("_serverStatusLabel", out var label))
         {
             _serverStatusLabel = label;
@@ -49,14 +48,19 @@ public partial class MainMenu
 
         NetworkStatusChanged += HandleNetworkStatusChanged;
 
-        //_registerWindow = new RegistrationWindow(_menuCanvas, this);
+        _registerWindow = new RegisterWindow();
+        _registerWindow.Load(this);
+
         //_forgotPasswordWindow = new ForgotPasswordWindow(_menuCanvas, this);
         //_resetPasswordWindow = new ResetPasswordWindow(_menuCanvas, this);
         //SelectCharacterWindow = new SelectCharacterWindow(_menuCanvas, this);
         //_createCharacterWindow = new CreateCharacterWindow(_menuCanvas, this, SelectCharacterWindow);
         //_settingsWindow = new SettingsWindow(_menuCanvas, this, null);
+
         _creditsWindow = new CreditsWindow();
         _creditsWindow.Load(this);
+
+        Reset();
     }
 
     ~MainMenu()
@@ -87,9 +91,14 @@ public partial class MainMenu
             CreateCharacterCreation();
         }
 
-        if (_loginWindow?.IsHidden == false)
+        if (_loginWindow.IsHidden == false)
         {
             _loginWindow.Update();
+        }
+
+        if (!_registerWindow.IsHidden)
+        {
+            _registerWindow.Update();
         }
 
         return;
@@ -97,11 +106,6 @@ public partial class MainMenu
         if (!_createCharacterWindow.IsHidden)
         {
             _createCharacterWindow.Update();
-        }
-
-        if (!_registerWindow.IsHidden)
-        {
-            _registerWindow.Update();
         }
 
         if (!SelectCharacterWindow.IsHidden)
@@ -114,8 +118,8 @@ public partial class MainMenu
 
     public void Reset()
     {
-        _loginWindow?.Toggle(false);
-        _registerWindow?.Hide();
+        _loginWindow.Toggle(false);
+        _registerWindow.Toggle(false);
         _settingsWindow?.Hide();
         _creditsWindow.Toggle(false);
         _forgotPasswordWindow?.Hide();
@@ -139,7 +143,7 @@ public partial class MainMenu
     public void NotifyOpenLogin()
     {
         Reset();
-        _loginWindow?.Toggle(true);
+        _loginWindow.Toggle(true);
     }
 
     public void OpenResetPassword(string nameEmail)
@@ -171,11 +175,11 @@ public partial class MainMenu
         Reset();
         if (typeof(TMainMenuWindow) == typeof(LoginWindow))
         {
-            _loginWindow?.Toggle(true);
+            _loginWindow.Toggle(true);
         }
-        else if (typeof(TMainMenuWindow) == typeof(RegistrationWindow))
+        else if (typeof(TMainMenuWindow) == typeof(RegisterWindow))
         {
-            _registerWindow.Show();
+            _registerWindow.Toggle(true);
         }
         else if (typeof(TMainMenuWindow) == typeof(SettingsWindow))
         {

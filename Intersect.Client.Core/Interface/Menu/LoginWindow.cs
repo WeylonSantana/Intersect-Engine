@@ -1,6 +1,5 @@
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Game.Chat;
 using Intersect.Client.Interface.Shared;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
@@ -16,12 +15,12 @@ namespace Intersect.Client.Interface.Menu;
 public partial class LoginWindow : IMainMenuWindow
 {
     private MainMenu _mainMenu = null!;
-    private Panel? _loginWindow;
-    private Label? _labelTitle;
-    private Label? _labelUsername;
-    private TextBox? _textboxUsername;
-    private Label? _labelPassword;
-    private TextBox? _textboxPassword;
+    private Widget? _loginWindow;
+    private Label? _labelLoginTitle;
+    private Label? _labelLoginUsername;
+    private TextBox? _textboxLoginUsername;
+    private Label? _labelLoginPassword;
+    private TextBox? _textboxLoginPassword;
     private Label? _labelSave;
     private CheckButton? _checkboxSave;
     private Label? _labelLogin;
@@ -43,42 +42,41 @@ public partial class LoginWindow : IMainMenuWindow
 
     public bool IsHidden => _loginWindow?.Visible == false;
 
-    public Widget? Root => _loginWindow;
-
     public void Load(MainMenu mainMenu)
     {
         _mainMenu = mainMenu;
-        _loginWindow = (Panel)Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp")).Root;
-        if (Interface.GetChildById<Label>("_labelTitle", out var labelTitle))
+        _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
+        if (Interface.GetChildById<Label>("_labelLoginTitle", out var labelTitle))
         {
-            _labelTitle = labelTitle;
-            _labelTitle.Text = Strings.LoginWindow.Title;
+            _labelLoginTitle = labelTitle;
+            _labelLoginTitle.Text = Strings.LoginWindow.Title;
         }
 
-        if (Interface.GetChildById<Label>("_labelUsername", out var labelUsername))
+        if (Interface.GetChildById<Label>("_labelLoginUsername", out var labelUsername))
         {
-            _labelUsername = labelUsername;
-            _labelUsername.Text = Strings.LoginWindow.Username;
+            _labelLoginUsername = labelUsername;
+            _labelLoginUsername.Text = Strings.LoginWindow.Username;
         }
 
-        if (Interface.GetChildById<TextBox>("_textboxUsername", out var textboxUsername))
+        if (Interface.GetChildById<TextBox>("_textboxLoginUsername", out var textboxUsername))
         {
-            _textboxUsername = textboxUsername;
-            _textboxUsername.TouchDown += _textboxUsername_Clicked;
+            _textboxLoginUsername = textboxUsername;
+            _textboxLoginUsername.TouchDown += _textboxUsername_Clicked;
+            Interface.SetInputFocus(_textboxLoginUsername);
         }
 
-        if (Interface.GetChildById<Label>("_labelPassword", out var labelPassword))
+        if (Interface.GetChildById<Label>("_labelLoginPassword", out var labelPassword))
         {
-            _labelPassword = labelPassword;
-            _labelPassword.Text = Strings.LoginWindow.Password;
+            _labelLoginPassword = labelPassword;
+            _labelLoginPassword.Text = Strings.LoginWindow.Password;
         }
 
-        if (Interface.GetChildById<TextBox>("_textboxPassword", out var textboxPassword))
+        if (Interface.GetChildById<TextBox>("_textboxLoginPassword", out var textboxPassword))
         {
-            _textboxPassword = textboxPassword;
-            _textboxPassword.PasswordField = true;
-            _textboxPassword.TouchDown += _textboxPassword_Clicked;
-            _textboxPassword.TextChanged += _textboxPassword_TextChanged;
+            _textboxLoginPassword = textboxPassword;
+            _textboxLoginPassword.PasswordField = true;
+            _textboxLoginPassword.TouchDown += _textboxPassword_Clicked;
+            _textboxLoginPassword.TextChanged += _textboxPassword_TextChanged;
         }
 
         if (Interface.GetChildById<Label>("_labelSave", out var labelSave))
@@ -127,7 +125,18 @@ public partial class LoginWindow : IMainMenuWindow
         {
             _buttonRegister = buttonRegister;
             _buttonRegister.Enabled = false;
-            _buttonRegister.Click += (sender, args) => _mainMenu.SwitchToWindow<RegistrationWindow>();
+            _buttonRegister.Click += (sender, args) =>
+            {
+                if (Networking.Network.InterruptDisconnectsIfConnected())
+                {
+                    _mainMenu.SwitchToWindow<RegisterWindow>();
+                }
+                else
+                {
+                    _addRegisterEvents();
+                    Networking.Network.TryConnect();
+                }
+            };
         }
 
         if (Interface.GetChildById<Label>("_labelSettings", out var labelSettings))
@@ -189,13 +198,13 @@ public partial class LoginWindow : IMainMenuWindow
                 _buttonForgotPassword.Visible = !Options.Instance.SmtpValid;
             }
 
-            if (!string.IsNullOrWhiteSpace(_textboxUsername?.Text))
+            if (string.IsNullOrWhiteSpace(_textboxLoginUsername?.Text))
             {
-                _textboxUsername?.SetKeyboardFocus();
+                Interface.SetInputFocus(_textboxLoginUsername);
             }
             else
             {
-                _textboxUsername?.SetKeyboardFocus();
+                Interface.SetInputFocus(_textboxLoginPassword);
             }
         }
     }
@@ -203,37 +212,37 @@ public partial class LoginWindow : IMainMenuWindow
     #region Input Handling
     private void _textboxUsername_Clicked(object? sender, EventArgs e)
     {
-        if (_textboxUsername == default)
+        if (_textboxLoginUsername == default)
         {
             return;
         }
 
         Globals.InputManager.OpenKeyboard(
             KeyboardType.Normal,
-            text => _textboxUsername.Text = text ?? string.Empty,
+            text => _textboxLoginUsername.Text = text ?? string.Empty,
             Strings.LoginWindow.Username,
-            _textboxUsername.Text,
+            _textboxLoginUsername.Text,
             inputBounds: new Framework.GenericClasses.Rectangle(
-                _textboxUsername.Bounds.X,
-                _textboxUsername.Bounds.Y,
-                _textboxUsername.Bounds.Width,
-                _textboxUsername.Bounds.Height
+                _textboxLoginUsername.Bounds.X,
+                _textboxLoginUsername.Bounds.Y,
+                _textboxLoginUsername.Bounds.Width,
+                _textboxLoginUsername.Bounds.Height
             )
         );
     }
 
     private void _textboxPassword_Clicked(object? sender, EventArgs e)
     {
-        if (_textboxPassword == default)
+        if (_textboxLoginPassword == default)
         {
             return;
         }
 
         Globals.InputManager.OpenKeyboard(
             KeyboardType.Password,
-            text => _textboxPassword.Text = text ?? string.Empty,
+            text => _textboxLoginPassword.Text = text ?? string.Empty,
             Strings.LoginWindow.Password,
-            _textboxPassword.Text
+            _textboxLoginPassword.Text
         );
     }
 
@@ -269,7 +278,7 @@ public partial class LoginWindow : IMainMenuWindow
             return;
         }
 
-        if (_textboxUsername == default || _textboxPassword == default)
+        if (_textboxLoginUsername == default || _textboxLoginPassword == default)
         {
             return;
         }
@@ -280,13 +289,13 @@ public partial class LoginWindow : IMainMenuWindow
             return;
         }
 
-        if (!FieldChecking.IsValidUsername(_textboxUsername.Text, Strings.Regex.Username))
+        if (!FieldChecking.IsValidUsername(_textboxLoginUsername.Text, Strings.Regex.Username))
         {
             Interface.ShowError(Strings.Errors.UsernameInvalid);
             return;
         }
 
-        if (!FieldChecking.IsValidPassword(_textboxPassword.Text, Strings.Regex.Password))
+        if (!FieldChecking.IsValidPassword(_textboxLoginPassword.Text, Strings.Regex.Password))
         {
             if (!_useSavedPass)
             {
@@ -298,7 +307,7 @@ public partial class LoginWindow : IMainMenuWindow
         _storedPassword = _savedPass;
         if (!_useSavedPass)
         {
-            _storedPassword = PasswordUtils.ComputePasswordHash(_textboxPassword.Text.Trim());
+            _storedPassword = PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
         }
 
         Globals.WaitingOnServer = true;
@@ -332,10 +341,35 @@ public partial class LoginWindow : IMainMenuWindow
 
     private void _loginConnected(object? sender, EventArgs eventArgs)
     {
-        PacketSender.SendLogin(_textboxUsername!.Text, _storedPassword);
+        PacketSender.SendLogin(_textboxLoginUsername!.Text, _storedPassword);
         SaveCredentials();
-        ChatboxMsg.ClearMessages();
         _removeLoginEvents();
+    }
+    #endregion
+
+    #region Register Handling
+    private void _addRegisterEvents()
+    {
+        MainMenu.ReceivedConfiguration += _registerConnected;
+        Networking.Network.Socket.ConnectionFailed += _registerConnectionFailed;
+        Networking.Network.Socket.Disconnected += _registerDisconnected;
+    }
+
+    private void _removeRegisterEvents()
+    {
+        MainMenu.ReceivedConfiguration -= _registerConnected;
+        Networking.Network.Socket.ConnectionFailed -= _registerConnectionFailed;
+        Networking.Network.Socket.Disconnected -= _registerDisconnected;
+    }
+
+    private void _registerConnectionFailed(INetworkLayerInterface nli, ConnectionEventArgs args, bool denied) => _removeRegisterEvents();
+
+    private void _registerDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) => _removeRegisterEvents();
+
+    private void _registerConnected(object? sender, EventArgs eventArgs)
+    {
+        _removeRegisterEvents();
+        _mainMenu.SwitchToWindow<RegisterWindow>();
     }
     #endregion
 
@@ -343,15 +377,15 @@ public partial class LoginWindow : IMainMenuWindow
     {
         string username = string.Empty, password = string.Empty;
 
-        if (_textboxUsername == default || _textboxPassword == default)
+        if (_textboxLoginUsername == default || _textboxLoginPassword == default)
         {
             return;
         }
 
         if (_checkboxSave?.IsChecked == true)
         {
-            username = _textboxUsername.Text.Trim();
-            password = _useSavedPass ? _savedPass : PasswordUtils.ComputePasswordHash(_textboxPassword.Text.Trim());
+            username = _textboxLoginUsername.Text.Trim();
+            password = _useSavedPass ? _savedPass : PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
         }
 
         Globals.Database.SavePreference("Username", username);
@@ -361,19 +395,19 @@ public partial class LoginWindow : IMainMenuWindow
     private void LoadCredentials()
     {
         var name = Globals.Database.LoadPreference("Username");
-        if (string.IsNullOrEmpty(name) || _textboxUsername == default || _textboxPassword == default)
+        if (string.IsNullOrEmpty(name) || _textboxLoginUsername == default || _textboxLoginPassword == default)
         {
             return;
         }
 
-        _textboxUsername.Text = name;
+        _textboxLoginUsername.Text = name;
         var pass = Globals.Database.LoadPreference("Password");
         if (string.IsNullOrEmpty(pass))
         {
             return;
         }
 
-        _textboxPassword.Text = "****************";
+        _textboxLoginPassword.Text = "****************";
         _savedPass = pass;
         _useSavedPass = true;
         if (_checkboxSave != default)

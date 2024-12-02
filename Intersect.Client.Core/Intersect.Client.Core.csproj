@@ -18,6 +18,7 @@
   <ItemGroup>
     <None Remove="Resources\interface\menu\CreditsWindow.xmmp" />
     <None Remove="Resources\interface\menu\LoginWindow.xmmp" />
+    <None Remove="Resources\interface\menu\RegisterWindow.xmmp" />
     <None Remove="Resources\interface\menu\ServerStatus.xmmp" />
   </ItemGroup>
 
@@ -43,6 +44,7 @@
     <EmbeddedResource Include="$(NetworkHandshakePublicKey)" />
     <EmbeddedResource Include="Resources\interface\menu\CreditsWindow.xmmp" />
 		<EmbeddedResource Include="Resources\interface\menu\LoginWindow.xmmp" />
+		<EmbeddedResource Include="Resources\interface\menu\RegisterWindow.xmmp" />
     <EmbeddedResource Include="Resources\interface\menu\ServerStatus.xmmp" />
     <EmbeddedResource Include="Resources\MonoGame.Framework.dll.config" />
     <EmbeddedResource Include="Resources\openal32.dll" />

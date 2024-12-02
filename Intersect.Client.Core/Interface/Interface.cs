@@ -80,6 +80,11 @@ public static partial class Interface
         }
     }
 
+    public static void SetInputFocus(Widget? widget)
+    {
+        Desktop.FocusedKeyboardWidget = widget;
+    }
+
     public static bool HasInputFocus()
     {
         if (FocusElements == null || InputBlockingElements == null)
@@ -100,7 +105,7 @@ public static partial class Interface
         Desktop.Render();
     }
 
-    public static Project LoadContent(string filepath)
+    public static Widget LoadContent(string filepath)
     {
         string data;
         string fullPath = Path.Combine(MyraEnvironment.Game.Content.RootDirectory, filepath);
@@ -123,7 +128,7 @@ public static partial class Interface
 
         var project = Project.LoadFromXml(data);
         AddElement(project.Root);
-        return project;
+        return project.Root;
     }
     #endregion
 

@@ -6,10 +6,10 @@ namespace Intersect.Client.Interface.Menu;
 public partial class CreditsWindow : IMainMenuWindow
 {
     private MainMenu _mainMenu = null!;
-    private Panel? _creditsPanel;
-    private Label? _labelTitle;
-    private Label? _labelBack;
-    private Button? _buttonBack;
+    private Widget? _creditsPanel;
+    private Label? _labelCreditsTitle;
+    private Label? _labelCreditsBack;
+    private Button? _buttonCreditsBack;
 
     public bool IsHidden => _creditsPanel!.Visible;
 
@@ -17,23 +17,23 @@ public partial class CreditsWindow : IMainMenuWindow
     {
         _mainMenu = menu;
 
-        _creditsPanel = (Panel)Interface.LoadContent(Path.Combine("menu", "CreditsWindow.xmmp")).Root;
-        if (Interface.GetChildById<Label>("_labelTitle", out var labelTitle))
+        _creditsPanel = Interface.LoadContent(Path.Combine("menu", "CreditsWindow.xmmp"));
+        if (Interface.GetChildById<Label>("_labelCreditsTitle", out var labelTitle))
         {
-            _labelTitle = labelTitle;
-            _labelTitle.Text = Strings.Credits.Title;
+            _labelCreditsTitle = labelTitle;
+            _labelCreditsTitle.Text = Strings.Credits.Title;
         }
 
-        if (Interface.GetChildById<Label>("_labelBack", out var labelBack))
+        if (Interface.GetChildById<Label>("_labelCreditsBack", out var labelBack))
         {
-            _labelBack = labelTitle;
-            _labelBack.Text = Strings.Credits.Back;
+            _labelCreditsBack = labelBack;
+            _labelCreditsBack.Text = Strings.Credits.Back;
         }
 
-        if (Interface.GetChildById<Button>("_buttonBack", out var buttonBack))
+        if (Interface.GetChildById<Button>("_buttonCreditsBack", out var buttonBack))
         {
-            _buttonBack = buttonBack;
-            _buttonBack.Click += BackBtn_Clicked;
+            _buttonCreditsBack = buttonBack;
+            _buttonCreditsBack.Click += BackBtn_Clicked;
         }
 
         _creditsPanel.Visible = false;
