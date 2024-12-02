@@ -9,7 +9,7 @@ namespace Intersect.Client.Interface.Menu;
 
 public partial class RegisterWindow : IMainMenuWindow
 {
-    private MainMenu _mainMenu = null!;
+    private MenuInterface _mainMenu = null!;
     private Widget? _registerWindow;
     private TextBox? _textboxRegisterUsername;
     private TextBox? _textboxEmail;
@@ -17,9 +17,13 @@ public partial class RegisterWindow : IMainMenuWindow
     private TextBox? _textboxPasswordConfirm;
     private Button? _buttonRegister;
 
-    public bool IsHidden => _registerWindow?.Visible == false;
+    public bool IsHidden
+    {
+        get => _registerWindow?.Visible == false;
+        set => Toggle(!value);
+    }
 
-    public void Load(MainMenu mainMenu)
+    public void Load(MenuInterface mainMenu)
     {
         _mainMenu = mainMenu;
         _registerWindow = Interface.LoadContent(Path.Combine("menu", "RegisterWindow.xmmp"));

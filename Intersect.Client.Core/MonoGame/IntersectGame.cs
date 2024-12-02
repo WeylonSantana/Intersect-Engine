@@ -19,7 +19,7 @@ using Intersect.Client.Framework.Graphics;
 using Intersect.Client.ThirdParty;
 using Intersect.Utilities;
 
-using MainMenu = Intersect.Client.Interface.Menu.MainMenu;
+using MenuInterface = Intersect.Client.Interface.Menu.MenuInterface;
 using Intersect.Logging;
 using Intersect.Client.Interface.Shared;
 using Intersect.Client.Interface;
@@ -189,11 +189,11 @@ internal partial class IntersectGame : Game
         // TODO: Remove old netcode
         Networking.Network.Socket = new MonoSocket(Context);
         Networking.Network.Socket.Connected += (_, connectionEventArgs) =>
-            MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
+            MenuInterface.SetNetworkStatus(connectionEventArgs.NetworkStatus);
         Networking.Network.Socket.ConnectionFailed += (_, connectionEventArgs, _) =>
-            MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
+            MenuInterface.SetNetworkStatus(connectionEventArgs.NetworkStatus);
         Networking.Network.Socket.Disconnected += (_, connectionEventArgs) =>
-            MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus, resetStatusCheck: true);
+            MenuInterface.SetNetworkStatus(connectionEventArgs.NetworkStatus, resetStatusCheck: true);
 
         Main.Start(Context);
 

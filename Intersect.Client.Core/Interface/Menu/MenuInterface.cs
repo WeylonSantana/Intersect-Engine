@@ -8,7 +8,7 @@ using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class MainMenu
+public partial class MenuInterface
 {
     private readonly LoginWindow _loginWindow;
     private readonly RegisterWindow _registerWindow;
@@ -33,7 +33,7 @@ public partial class MainMenu
 
     public static long LastNetworkStatusChangeTime { get; private set; }
 
-    public MainMenu()
+    public MenuInterface()
     {
         _loginWindow = new LoginWindow();
         _loginWindow.Load(this);
@@ -60,10 +60,10 @@ public partial class MainMenu
         _creditsWindow = new CreditsWindow();
         _creditsWindow.Load(this);
 
-        Reset();
+        SwitchToWindow<LoginWindow>();
     }
 
-    ~MainMenu()
+    ~MenuInterface()
     {
         NetworkStatusChanged -= HandleNetworkStatusChanged;
     }
@@ -75,7 +75,7 @@ public partial class MainMenu
 
     private void HandleNetworkStatusChanged()
     {
-        _serverStatusLabel.Text = Strings.Server.StatusLabel.ToString(MainMenu.ActiveNetworkStatus.ToLocalizedString());
+        _serverStatusLabel.Text = Strings.Server.StatusLabel.ToString(ActiveNetworkStatus.ToLocalizedString());
     }
 
     //Methods
@@ -91,7 +91,7 @@ public partial class MainMenu
             CreateCharacterCreation();
         }
 
-        if (_loginWindow.IsHidden == false)
+        if (!_loginWindow.IsHidden)
         {
             _loginWindow.Update();
         }

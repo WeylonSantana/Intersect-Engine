@@ -12,7 +12,7 @@ public class ServerStatusResponsePacketHandler : AbstractPacketHandler<ServerSta
     {
         try
         {
-            MainMenu.SetNetworkStatus(packet.Status);
+            MenuInterface.SetNetworkStatus(packet.Status);
             return true;
         }
         catch (Exception exception)

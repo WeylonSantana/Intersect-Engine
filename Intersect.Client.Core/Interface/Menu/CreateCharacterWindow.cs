@@ -16,7 +16,7 @@ namespace Intersect.Client.Interface.Menu;
 public partial class CreateCharacterWindow : ImagePanel
 {
     // Parent
-    private readonly MainMenu _mainMenu;
+    private readonly MenuInterface _mainMenu;
     private readonly SelectCharacterWindow _selectCharWindow;
 
     // Header
@@ -42,7 +42,7 @@ public partial class CreateCharacterWindow : ImagePanel
     private readonly List<KeyValuePair<int, ClassSprite>> _femaleSprites = [];
     private readonly List<KeyValuePair<int, ClassSprite>> _maleSprites = [];
 
-    public CreateCharacterWindow(Canvas parent, MainMenu mainMenu, SelectCharacterWindow selectCharacterWindow) : base(parent, "CharacterCreationWindow")
+    public CreateCharacterWindow(Canvas parent, MenuInterface mainMenu, SelectCharacterWindow selectCharacterWindow) : base(parent, "CharacterCreationWindow")
     {
         // Assign References
         _mainMenu = mainMenu;

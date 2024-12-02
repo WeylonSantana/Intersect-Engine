@@ -18,7 +18,7 @@ namespace Intersect.Client.Interface.Shared;
 public partial class SettingsWindow : ImagePanel, IMainMenuWindow
 {
     // Parent Window.
-    private readonly MainMenu? _mainMenu;
+    private readonly MenuInterface? _mainMenu;
     private readonly EscapeMenu? _escapeMenu;
 
     // Settings Window.
@@ -96,8 +96,10 @@ public partial class SettingsWindow : ImagePanel, IMainMenuWindow
     // Open Settings.
     private bool _returnToMenu;
 
+    public void Load(MenuInterface menu) { }
+
     // Initialize.
-    public SettingsWindow(Base parent, MainMenu? mainMenu, EscapeMenu? escapeMenu) : base(parent, nameof(SettingsWindow))
+    public SettingsWindow(Base parent, MenuInterface? mainMenu, EscapeMenu? escapeMenu) : base(parent, nameof(SettingsWindow))
     {
         // Assign References.
         _mainMenu = mainMenu;

@@ -29,7 +29,7 @@ public partial class ForgotPasswordWindow
     private TextBox mInputTextbox;
 
     //Parent
-    private MainMenu mMainMenu;
+    private MenuInterface mMainMenu;
 
     //Controls
     private ImagePanel mResetWindow;
@@ -39,7 +39,7 @@ public partial class ForgotPasswordWindow
     private Label mWindowHeader;
 
     //Init
-    public ForgotPasswordWindow(Canvas parent, MainMenu mainMenu)
+    public ForgotPasswordWindow(Canvas parent, MenuInterface mainMenu)
     {
         //Assign References
         mMainMenu = mainMenu;

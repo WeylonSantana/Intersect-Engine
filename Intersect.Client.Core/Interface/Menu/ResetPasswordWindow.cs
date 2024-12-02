@@ -28,7 +28,7 @@ public partial class ResetPasswordWindow
     private TextBox mCodeInputTextbox;
 
     //Parent
-    private MainMenu mMainMenu;
+    private MenuInterface mMainMenu;
 
     //Password Fields
     private ImagePanel mPasswordBackground;
@@ -51,7 +51,7 @@ public partial class ResetPasswordWindow
     private Label mWindowHeader;
 
     //Init
-    public ResetPasswordWindow(Canvas parent, MainMenu mainMenu)
+    public ResetPasswordWindow(Canvas parent, MenuInterface mainMenu)
     {
         //Assign References
         mMainMenu = mainMenu;

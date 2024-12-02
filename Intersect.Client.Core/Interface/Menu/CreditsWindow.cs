@@ -5,10 +5,10 @@ namespace Intersect.Client.Interface.Menu;
 
 public partial class CreditsWindow : IMainMenuWindow
 {
-    private MainMenu _mainMenu = null!;
+    private MenuInterface _mainMenu = null!;
     private Widget? _creditsPanel;
 
-    public void Load(MainMenu menu)
+    public void Load(MenuInterface menu)
     {
         _mainMenu = menu;
 

@@ -14,7 +14,7 @@ namespace Intersect.Client.Interface.Menu;
 
 public partial class SelectCharacterWindow : ImagePanel
 {
-    private readonly MainMenu _mainMenu;
+    private readonly MenuInterface _mainMenu;
 
     private readonly Label _labelCharname;
     private readonly Label _labelInfo;
@@ -33,7 +33,7 @@ public partial class SelectCharacterWindow : ImagePanel
     public int mSelectedChar = 0;
 
     //Init
-    public SelectCharacterWindow(Canvas parent, MainMenu mainMenu) : base(parent, "CharacterSelectionWindow")
+    public SelectCharacterWindow(Canvas parent, MenuInterface mainMenu) : base(parent, "CharacterSelectionWindow")
     {
         //Assign References
         _mainMenu = mainMenu;

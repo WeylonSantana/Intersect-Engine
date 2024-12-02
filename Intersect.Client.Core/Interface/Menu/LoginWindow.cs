@@ -14,7 +14,7 @@ namespace Intersect.Client.Interface.Menu;
 
 public partial class LoginWindow : IMainMenuWindow
 {
-    private MainMenu _mainMenu = null!;
+    private MenuInterface _mainMenu = null!;
     private Widget? _loginWindow;
     private TextBox? _textboxLoginUsername;
     private TextBox? _textboxLoginPassword;
@@ -27,9 +27,13 @@ public partial class LoginWindow : IMainMenuWindow
     private string _savedPass = string.Empty;
     private string _storedPassword = string.Empty;
 
-    public bool IsHidden => _loginWindow?.Visible == false;
+    public bool IsHidden
+    {
+        get => _loginWindow?.Visible == false;
+        set => Toggle(!value);
+    }
 
-    public void Load(MainMenu mainMenu)
+    public void Load(MenuInterface mainMenu)
     {
         _mainMenu = mainMenu;
         _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
@@ -187,12 +191,12 @@ public partial class LoginWindow : IMainMenuWindow
     {
         if (_buttonLogin != default)
         {
-            _buttonLogin.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
+            _buttonLogin.Enabled = MenuInterface.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
         }
 
         if (_buttonRegister != default)
         {
-            _buttonRegister.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
+            _buttonRegister.Enabled = MenuInterface.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
         }
     }
 
@@ -340,14 +344,14 @@ public partial class LoginWindow : IMainMenuWindow
     }
     private void _addLoginEvents()
     {
-        MainMenu.ReceivedConfiguration += _loginConnected;
+        MenuInterface.ReceivedConfiguration += _loginConnected;
         Networking.Network.Socket.ConnectionFailed += _loginConnectionFailed;
         Networking.Network.Socket.Disconnected += _loginDisconnected;
     }
 
     private void _removeLoginEvents()
     {
-        MainMenu.ReceivedConfiguration -= _loginConnected;
+        MenuInterface.ReceivedConfiguration -= _loginConnected;
         Networking.Network.Socket.ConnectionFailed -= _loginConnectionFailed;
         Networking.Network.Socket.Disconnected -= _loginDisconnected;
     }
@@ -367,14 +371,14 @@ public partial class LoginWindow : IMainMenuWindow
     #region Register Handler
     private void _addRegisterEvents()
     {
-        MainMenu.ReceivedConfiguration += _registerConnected;
+        MenuInterface.ReceivedConfiguration += _registerConnected;
         Networking.Network.Socket.ConnectionFailed += _registerConnectionFailed;
         Networking.Network.Socket.Disconnected += _registerDisconnected;
     }
 
     private void _removeRegisterEvents()
     {
-        MainMenu.ReceivedConfiguration -= _registerConnected;
+        MenuInterface.ReceivedConfiguration -= _registerConnected;
         Networking.Network.Socket.ConnectionFailed -= _registerConnectionFailed;
         Networking.Network.Socket.Disconnected -= _registerDisconnected;
     }

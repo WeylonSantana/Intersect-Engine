@@ -214,7 +214,7 @@ internal partial class MonoSocket : GameSocket
         {
             var now = Timing.Global.MillisecondsUtc;
             // ReSharper disable once InvertIf
-            if (_nextServerStatusPing <= now || MainMenu.LastNetworkStatusChangeTime < 0)
+            if (_nextServerStatusPing <= now || MenuInterface.LastNetworkStatusChangeTime < 0)
             {
                 if (!_resolvingHost)
                 {
@@ -251,9 +251,9 @@ internal partial class MonoSocket : GameSocket
                     );
                 }
 
-                if (MainMenu.LastNetworkStatusChangeTime + ServerStatusPingInterval < now)
+                if (MenuInterface.LastNetworkStatusChangeTime + ServerStatusPingInterval < now)
                 {
-                    MainMenu.SetNetworkStatus(NetworkStatus.Offline);
+                    MenuInterface.SetNetworkStatus(NetworkStatus.Offline);
                 }
 
                 _nextServerStatusPing = now + ServerStatusPingInterval;
