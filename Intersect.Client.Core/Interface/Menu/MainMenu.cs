@@ -40,8 +40,6 @@ public partial class MainMenu
         _loginWindow.Load(this);
 
         _serverStatusArea = Interface.LoadContent(Path.Combine("menu", "ServerStatus.xmmp"));
-        Interface.AddElement(_serverStatusArea.Root);
-
         if (Interface.GetChildById<Label>("_serverStatusLabel", out var label))
         {
             _serverStatusLabel = label;
@@ -57,7 +55,8 @@ public partial class MainMenu
         //SelectCharacterWindow = new SelectCharacterWindow(_menuCanvas, this);
         //_createCharacterWindow = new CreateCharacterWindow(_menuCanvas, this, SelectCharacterWindow);
         //_settingsWindow = new SettingsWindow(_menuCanvas, this, null);
-        //_creditsWindow = new CreditsWindow(_menuCanvas, this);
+        _creditsWindow = new CreditsWindow();
+        _creditsWindow.Load(this);
     }
 
     ~MainMenu()
@@ -115,14 +114,14 @@ public partial class MainMenu
 
     public void Reset()
     {
-        _loginWindow?.Toggle();
-        _registerWindow.Hide();
-        _settingsWindow.Hide();
-        _creditsWindow.Hide();
-        _forgotPasswordWindow.Hide();
-        _resetPasswordWindow.Hide();
-        _createCharacterWindow.Hide();
-        SelectCharacterWindow.Hide();
+        _loginWindow?.Toggle(false);
+        _registerWindow?.Hide();
+        _settingsWindow?.Hide();
+        _creditsWindow.Toggle(false);
+        _forgotPasswordWindow?.Hide();
+        _resetPasswordWindow?.Hide();
+        _createCharacterWindow?.Hide();
+        SelectCharacterWindow?.Hide();
     }
 
     public void NotifyOpenCharacterSelection(List<Character> characters)
@@ -140,7 +139,7 @@ public partial class MainMenu
     public void NotifyOpenLogin()
     {
         Reset();
-        _loginWindow?.Toggle();
+        _loginWindow?.Toggle(true);
     }
 
     public void OpenResetPassword(string nameEmail)
@@ -172,7 +171,7 @@ public partial class MainMenu
         Reset();
         if (typeof(TMainMenuWindow) == typeof(LoginWindow))
         {
-            _loginWindow?.Toggle();
+            _loginWindow?.Toggle(true);
         }
         else if (typeof(TMainMenuWindow) == typeof(RegistrationWindow))
         {
@@ -184,7 +183,7 @@ public partial class MainMenu
         }
         else if (typeof(TMainMenuWindow) == typeof(CreditsWindow))
         {
-            _creditsWindow.Show();
+            _creditsWindow.Toggle(true);
         }
     }
 

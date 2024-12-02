@@ -117,7 +117,7 @@ public partial class RegistrationWindow : ImagePanel, IMainMenuWindow
         }
     }
 
-    public void Toggle()
+    public void Toggle(bool v)
     {
         base.Show();
         _textBoxUsername.Focus();

@@ -723,7 +723,7 @@ public partial class SettingsWindow : ImagePanel, IMainMenuWindow
         }
     }
 
-    public void Toggle()
+    public void Toggle(bool v)
     {
         if (IsHidden)
         {

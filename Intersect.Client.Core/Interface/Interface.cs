@@ -100,7 +100,7 @@ public static partial class Interface
         Desktop.Render();
     }
 
-    public static Project LoadContent(string filepath, bool changeRoot = false)
+    public static Project LoadContent(string filepath)
     {
         string data;
         string fullPath = Path.Combine(MyraEnvironment.Game.Content.RootDirectory, filepath);
@@ -122,11 +122,7 @@ public static partial class Interface
         }
 
         var project = Project.LoadFromXml(data);
-        if (changeRoot)
-        {
-            Desktop.Root = project.Root;
-        }
-
+        AddElement(project.Root);
         return project;
     }
     #endregion

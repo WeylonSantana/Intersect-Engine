@@ -1,98 +1,51 @@
-using Intersect.Client.Core;
-using Intersect.Client.Framework.File_Management;
-using Intersect.Client.Framework.Gwen.Control;
-using Intersect.Client.Framework.Gwen.Control.EventArguments;
 using Intersect.Client.Localization;
-using Intersect.Configuration;
-using Newtonsoft.Json;
+using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class CreditsWindow : ImagePanel, IMainMenuWindow
+public partial class CreditsWindow : IMainMenuWindow
 {
-    private readonly MainMenu _mainMenu;
-    private readonly RichLabel _richLabel;
+    private MainMenu _mainMenu = null!;
+    private Panel? _creditsPanel;
+    private Label? _labelTitle;
+    private Label? _labelBack;
+    private Button? _buttonBack;
 
-    public CreditsWindow(Canvas parent, MainMenu mainMenu) : base(parent, "CreditsWindow")
+    public bool IsHidden => _creditsPanel!.Visible;
+
+    public void Load(MainMenu menu)
     {
-        _mainMenu = mainMenu;
+        _mainMenu = menu;
 
-        _ = new Label(this, "CreditsHeader")
+        _creditsPanel = (Panel)Interface.LoadContent(Path.Combine("menu", "CreditsWindow.xmmp")).Root;
+        if (Interface.GetChildById<Label>("_labelTitle", out var labelTitle))
         {
-            Text = Strings.Credits.Title,
-        };
+            _labelTitle = labelTitle;
+            _labelTitle.Text = Strings.Credits.Title;
+        }
 
-        var creditsContent = new ScrollControl(this, "CreditsScrollview");
-        creditsContent.EnableScroll(false, true);
-
-        _richLabel = new RichLabel(creditsContent, "CreditsLabel");
-
-        var btnBack = new Button(this, "BackButton")
+        if (Interface.GetChildById<Label>("_labelBack", out var labelBack))
         {
-            Text = Strings.Credits.Back,
-        };
-        btnBack.Clicked += BackBtn_Clicked;
+            _labelBack = labelTitle;
+            _labelBack.Text = Strings.Credits.Back;
+        }
 
-        LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer?.GetResolutionString());
+        if (Interface.GetChildById<Button>("_buttonBack", out var buttonBack))
+        {
+            _buttonBack = buttonBack;
+            _buttonBack.Click += BackBtn_Clicked;
+        }
+
+        _creditsPanel.Visible = false;
     }
 
-    private void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
+    private void BackBtn_Clicked(object? sender, EventArgs e)
     {
-        Hide();
         _mainMenu.SwitchToWindow<LoginWindow>();
     }
 
-    public void Toggle()
+    public void Toggle(bool value)
     {
-        base.Show();
-        _richLabel.ClearText();
-        var credits = new Credits();
-        var creditsFile = Path.Combine(ClientConfiguration.ResourcesDirectory, "credits.json");
-
-        if (File.Exists(creditsFile))
-        {
-            credits = JsonConvert.DeserializeObject<Credits>(File.ReadAllText(creditsFile));
-        }
-        else
-        {
-            var line = new Credits.CreditsLine
-            {
-                Text = "Insert your credits here!",
-                Alignment = "center",
-                Size = 12,
-                TextColor = Color.White,
-                Font = "sourcesansproblack",
-            };
-
-            credits.Lines.Add(line);
-        }
-
-        File.WriteAllText(creditsFile, JsonConvert.SerializeObject(credits, Formatting.Indented));
-
-        foreach (var line in credits?.Lines ?? [])
-        {
-            if (line.Text.Trim().Length == 0)
-            {
-                _richLabel.AddLineBreak();
-            }
-            else
-            {
-                _richLabel.AddText(
-                    line.Text,
-                    new Color(
-                        line.TextColor?.A ?? 255,
-                        line.TextColor?.R ?? 255,
-                        line.TextColor?.G ?? 255,
-                        line.TextColor?.B ?? 255
-                    ),
-                    line.GetAlignment(),
-                    GameContentManager.Current.GetFont(line.Font, line.Size)
-                );
-
-                _richLabel.AddLineBreak();
-            }
-        }
-
-        _ = _richLabel.SizeToChildren(false, true);
+        _creditsPanel!.Visible = value;
     }
 }

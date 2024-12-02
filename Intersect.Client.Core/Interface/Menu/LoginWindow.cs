@@ -48,7 +48,7 @@ public partial class LoginWindow : IMainMenuWindow
     public void Load(MainMenu mainMenu)
     {
         _mainMenu = mainMenu;
-        _loginWindow = (Panel)Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"), true).Root;
+        _loginWindow = (Panel)Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp")).Root;
         if (Interface.GetChildById<Label>("_labelTitle", out var labelTitle))
         {
             _labelTitle = labelTitle;
@@ -173,14 +173,14 @@ public partial class LoginWindow : IMainMenuWindow
         LoadCredentials();
     }
 
-    public void Toggle()
+    public void Toggle(bool value)
     {
         if (_loginWindow == default)
         {
             return;
         }
 
-        _loginWindow.Visible = !_loginWindow.Visible;
+        _loginWindow.Visible = value;
 
         if (_loginWindow.Visible)
         {
