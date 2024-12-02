@@ -11,19 +11,11 @@ public partial class RegisterWindow : IMainMenuWindow
 {
     private MainMenu _mainMenu = null!;
     private Widget? _registerWindow;
-    private Label? _labelRegisterTitle;
-    private Label? _labelRegisterUsername;
     private TextBox? _textboxRegisterUsername;
-    private Label? _labelEmail;
     private TextBox? _textboxEmail;
-    private Label? _labelRegisterPassword;
     private TextBox? _textboxRegisterPassword;
-    private Label? _labelPasswordConfirm;
     private TextBox? _textboxPasswordConfirm;
-    private Label? _labelRegister;
     private Button? _buttonRegister;
-    private Label? _labelRegisterBack;
-    private Button? _buttonRegisterBack;
 
     public bool IsHidden => _registerWindow?.Visible == false;
 
@@ -32,16 +24,14 @@ public partial class RegisterWindow : IMainMenuWindow
         _mainMenu = mainMenu;
         _registerWindow = Interface.LoadContent(Path.Combine("menu", "RegisterWindow.xmmp"));
 
-        if (Interface.GetChildById<Label>("_labelRegisterTitle", out var labelTitle))
+        if (Interface.GetChildById<Label>("_labelRegisterTitle", out var labelRegisterTitle))
         {
-            _labelRegisterTitle = labelTitle;
-            _labelRegisterTitle.Text = Strings.Registration.Title;
+            labelRegisterTitle.Text = Strings.Registration.Title;
         }
 
-        if (Interface.GetChildById<Label>("_labelRegisterUsername", out var labelUsername))
+        if (Interface.GetChildById<Label>("_labelRegisterUsername", out var labelRegisterUsername))
         {
-            _labelRegisterUsername = labelUsername;
-            _labelRegisterUsername.Text = Strings.Registration.Username;
+            labelRegisterUsername.Text = Strings.Registration.Username;
         }
 
         if (Interface.GetChildById<TextBox>("_textboxRegisterUsername", out var textboxUsername))
@@ -51,8 +41,7 @@ public partial class RegisterWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelEmail", out var labelEmail))
         {
-            _labelEmail = labelEmail;
-            _labelEmail.Text = Strings.Registration.Email;
+            labelEmail.Text = Strings.Registration.Email;
         }
 
         if (Interface.GetChildById<TextBox>("_textboxEmail", out var textboxEmail))
@@ -60,10 +49,9 @@ public partial class RegisterWindow : IMainMenuWindow
             _textboxEmail = textboxEmail;
         }
 
-        if (Interface.GetChildById<Label>("_labelRegisterPassword", out var labelPassword))
+        if (Interface.GetChildById<Label>("_labelRegisterPassword", out var labelRegisterPassword))
         {
-            _labelRegisterPassword = labelPassword;
-            _labelRegisterPassword.Text = Strings.Registration.Password;
+            labelRegisterPassword.Text = Strings.Registration.Password;
         }
 
         if (Interface.GetChildById<TextBox>("_textboxRegisterPassword", out var textboxPassword))
@@ -74,8 +62,7 @@ public partial class RegisterWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelPasswordConfirm", out var labelPasswordConfirm))
         {
-            _labelPasswordConfirm = labelPasswordConfirm;
-            _labelPasswordConfirm.Text = Strings.Registration.ConfirmPassword;
+            labelPasswordConfirm.Text = Strings.Registration.ConfirmPassword;
         }
 
         if (Interface.GetChildById<TextBox>("_textboxPasswordConfirm", out var textboxPasswordConfirm))
@@ -86,8 +73,7 @@ public partial class RegisterWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelRegister", out var labelRegister))
         {
-            _labelRegister = labelRegister;
-            _labelRegister.Text = Strings.Registration.Register;
+            labelRegister.Text = Strings.Registration.Register;
         }
 
         if (Interface.GetChildById<Button>("_buttonRegister", out var buttonRegister))
@@ -96,16 +82,14 @@ public partial class RegisterWindow : IMainMenuWindow
             _buttonRegister.Click += (sender, args) => TryRegister();
         }
 
-        if (Interface.GetChildById<Label>("_labelRegisterBack", out var labelBack))
+        if (Interface.GetChildById<Label>("_labelRegisterBack", out var labelRegisterBack))
         {
-            _labelRegisterBack = labelBack;
-            _labelRegisterBack.Text = Strings.Registration.Back;
+            labelRegisterBack.Text = Strings.Registration.Back;
         }
 
-        if (Interface.GetChildById<Button>("_buttonRegisterBack", out var buttonBack))
+        if (Interface.GetChildById<Button>("_buttonRegisterBack", out var buttonRegisterBack))
         {
-            _buttonRegisterBack = buttonBack;
-            _buttonRegisterBack.Click += (sender, args) =>
+            buttonRegisterBack.Click += (sender, args) =>
             {
                 Networking.Network.DebounceClose("returning_to_main_menu");
                 _mainMenu.SwitchToWindow<LoginWindow>();
@@ -115,7 +99,6 @@ public partial class RegisterWindow : IMainMenuWindow
         _registerWindow.Visible = false;
     }
 
-    //Methods
     public void Update()
     {
         if (!Networking.Network.IsConnected)

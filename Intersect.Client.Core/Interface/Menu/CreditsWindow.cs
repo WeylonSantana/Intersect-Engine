@@ -7,33 +7,25 @@ public partial class CreditsWindow : IMainMenuWindow
 {
     private MainMenu _mainMenu = null!;
     private Widget? _creditsPanel;
-    private Label? _labelCreditsTitle;
-    private Label? _labelCreditsBack;
-    private Button? _buttonCreditsBack;
-
-    public bool IsHidden => _creditsPanel!.Visible;
 
     public void Load(MainMenu menu)
     {
         _mainMenu = menu;
 
         _creditsPanel = Interface.LoadContent(Path.Combine("menu", "CreditsWindow.xmmp"));
-        if (Interface.GetChildById<Label>("_labelCreditsTitle", out var labelTitle))
+        if (Interface.GetChildById<Label>("_labelCreditsTitle", out var labelCreditsTitle))
         {
-            _labelCreditsTitle = labelTitle;
-            _labelCreditsTitle.Text = Strings.Credits.Title;
+            labelCreditsTitle.Text = Strings.Credits.Title;
         }
 
-        if (Interface.GetChildById<Label>("_labelCreditsBack", out var labelBack))
+        if (Interface.GetChildById<Label>("_labelCreditsBack", out var labelCreditsBack))
         {
-            _labelCreditsBack = labelBack;
-            _labelCreditsBack.Text = Strings.Credits.Back;
+            labelCreditsBack.Text = Strings.Credits.Back;
         }
 
-        if (Interface.GetChildById<Button>("_buttonCreditsBack", out var buttonBack))
+        if (Interface.GetChildById<Button>("_buttonCreditsBack", out var buttonCreditsBack))
         {
-            _buttonCreditsBack = buttonBack;
-            _buttonCreditsBack.Click += BackBtn_Clicked;
+            buttonCreditsBack.Click += BackBtn_Clicked;
         }
 
         _creditsPanel.Visible = false;

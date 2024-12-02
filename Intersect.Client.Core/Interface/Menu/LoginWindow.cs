@@ -16,25 +16,12 @@ public partial class LoginWindow : IMainMenuWindow
 {
     private MainMenu _mainMenu = null!;
     private Widget? _loginWindow;
-    private Label? _labelLoginTitle;
-    private Label? _labelLoginUsername;
     private TextBox? _textboxLoginUsername;
-    private Label? _labelLoginPassword;
     private TextBox? _textboxLoginPassword;
-    private Label? _labelSave;
     private CheckButton? _checkboxSave;
-    private Label? _labelLogin;
     private Button? _buttonLogin;
-    private Label? _labelForgotPassword;
     private Button? _buttonForgotPassword;
-    private Label? _labelRegister;
     private Button? _buttonRegister;
-    private Label? _labelSettings;
-    private Button? _buttonSettings;
-    private Label? _labelCredits;
-    private Button? _buttonCredits;
-    private Label? _labelExit;
-    private Button? _buttonExit;
 
     private bool _useSavedPass;
     private string _savedPass = string.Empty;
@@ -46,16 +33,14 @@ public partial class LoginWindow : IMainMenuWindow
     {
         _mainMenu = mainMenu;
         _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
-        if (Interface.GetChildById<Label>("_labelLoginTitle", out var labelTitle))
+        if (Interface.GetChildById<Label>("_labelLoginTitle", out var labelLoginTitle))
         {
-            _labelLoginTitle = labelTitle;
-            _labelLoginTitle.Text = Strings.LoginWindow.Title;
+            labelLoginTitle.Text = Strings.LoginWindow.Title;
         }
 
-        if (Interface.GetChildById<Label>("_labelLoginUsername", out var labelUsername))
+        if (Interface.GetChildById<Label>("_labelLoginUsername", out var labelLoginUsername))
         {
-            _labelLoginUsername = labelUsername;
-            _labelLoginUsername.Text = Strings.LoginWindow.Username;
+            labelLoginUsername.Text = Strings.LoginWindow.Username;
         }
 
         if (Interface.GetChildById<TextBox>("_textboxLoginUsername", out var textboxUsername))
@@ -65,10 +50,9 @@ public partial class LoginWindow : IMainMenuWindow
             Interface.SetInputFocus(_textboxLoginUsername);
         }
 
-        if (Interface.GetChildById<Label>("_labelLoginPassword", out var labelPassword))
+        if (Interface.GetChildById<Label>("_labelLoginPassword", out var labelLoginPassword))
         {
-            _labelLoginPassword = labelPassword;
-            _labelLoginPassword.Text = Strings.LoginWindow.Password;
+            labelLoginPassword.Text = Strings.LoginWindow.Password;
         }
 
         if (Interface.GetChildById<TextBox>("_textboxLoginPassword", out var textboxPassword))
@@ -81,8 +65,7 @@ public partial class LoginWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelSave", out var labelSave))
         {
-            _labelSave = labelSave;
-            _labelSave.Text = Strings.LoginWindow.SavePassword;
+            labelSave.Text = Strings.LoginWindow.SavePassword;
         }
 
         if (Interface.GetChildById<CheckButton>("_checkboxSave", out var checkboxSave))
@@ -92,8 +75,7 @@ public partial class LoginWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelLogin", out var labelLogin))
         {
-            _labelLogin = labelLogin;
-            _labelLogin.Text = Strings.MainMenu.Login;
+            labelLogin.Text = Strings.MainMenu.Login;
         }
 
         if (Interface.GetChildById<Button>("_buttonLogin", out var buttonLogin))
@@ -105,8 +87,7 @@ public partial class LoginWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelForgotPassword", out var labelForgotPassword))
         {
-            _labelForgotPassword = labelForgotPassword;
-            _labelForgotPassword.Text = Strings.LoginWindow.ForgotPassword;
+            labelForgotPassword.Text = Strings.LoginWindow.ForgotPassword;
         }
 
         if (Interface.GetChildById<Button>("_buttonForgotPassword", out var buttonForgotPassword))
@@ -117,8 +98,7 @@ public partial class LoginWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelRegister", out var labelRegister))
         {
-            _labelRegister = labelRegister;
-            _labelRegister.Text = Strings.MainMenu.Register;
+            labelRegister.Text = Strings.MainMenu.Register;
         }
 
         if (Interface.GetChildById<Button>("_buttonRegister", out var buttonRegister))
@@ -141,38 +121,32 @@ public partial class LoginWindow : IMainMenuWindow
 
         if (Interface.GetChildById<Label>("_labelSettings", out var labelSettings))
         {
-            _labelSettings = labelSettings;
-            _labelSettings.Text = Strings.MainMenu.Settings;
+            labelSettings.Text = Strings.MainMenu.Settings;
         }
 
         if (Interface.GetChildById<Button>("_buttonSettings", out var buttonSettings))
         {
-            _buttonSettings = buttonSettings;
-            _buttonSettings.Click += (sender, args) => _mainMenu.SwitchToWindow<SettingsWindow>();
+            buttonSettings.Click += (sender, args) => _mainMenu.SwitchToWindow<SettingsWindow>();
         }
 
         if (Interface.GetChildById<Label>("_labelCredits", out var labelCredits))
         {
-            _labelCredits = labelCredits;
-            _labelCredits.Text = Strings.MainMenu.Credits;
+            labelCredits.Text = Strings.MainMenu.Credits;
         }
 
         if (Interface.GetChildById<Button>("_buttonCredits", out var buttonCredits))
         {
-            _buttonCredits = buttonCredits;
-            _buttonCredits.Click += (sender, args) => _mainMenu.SwitchToWindow<CreditsWindow>();
+            buttonCredits.Click += (sender, args) => _mainMenu.SwitchToWindow<CreditsWindow>();
         }
 
         if (Interface.GetChildById<Label>("_labelExit", out var labelExit))
         {
-            _labelExit = labelExit;
-            _labelExit.Text = Strings.MainMenu.Exit;
+            labelExit.Text = Strings.MainMenu.Exit;
         }
 
         if (Interface.GetChildById<Button>("_buttonExit", out var buttonExit))
         {
-            _buttonExit = buttonExit;
-            _buttonExit.Click += (sender, args) =>
+            buttonExit.Click += (sender, args) =>
             {
                 Log.Info("User clicked exit button.");
                 Globals.IsRunning = false;
@@ -206,6 +180,62 @@ public partial class LoginWindow : IMainMenuWindow
             {
                 Interface.SetInputFocus(_textboxLoginPassword);
             }
+        }
+    }
+
+    public void Update()
+    {
+        if (_buttonLogin != default)
+        {
+            _buttonLogin.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
+        }
+
+        if (_buttonRegister != default)
+        {
+            _buttonRegister.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
+        }
+    }
+
+    private void SaveCredentials()
+    {
+        string username = string.Empty, password = string.Empty;
+
+        if (_textboxLoginUsername == default || _textboxLoginPassword == default)
+        {
+            return;
+        }
+
+        if (_checkboxSave?.IsChecked == true)
+        {
+            username = _textboxLoginUsername.Text.Trim();
+            password = _useSavedPass ? _savedPass : PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
+        }
+
+        Globals.Database.SavePreference("Username", username);
+        Globals.Database.SavePreference("Password", password);
+    }
+
+    private void LoadCredentials()
+    {
+        var name = Globals.Database.LoadPreference("Username");
+        if (string.IsNullOrEmpty(name) || _textboxLoginUsername == default || _textboxLoginPassword == default)
+        {
+            return;
+        }
+
+        _textboxLoginUsername.Text = name;
+        var pass = Globals.Database.LoadPreference("Password");
+        if (string.IsNullOrEmpty(pass))
+        {
+            return;
+        }
+
+        _textboxLoginPassword.Text = "****************";
+        _savedPass = pass;
+        _useSavedPass = true;
+        if (_checkboxSave != default)
+        {
+            _checkboxSave.IsChecked = true;
         }
     }
 
@@ -257,20 +287,7 @@ public partial class LoginWindow : IMainMenuWindow
     }
     #endregion
 
-    public void Update()
-    {
-        if (_buttonLogin != default)
-        {
-            _buttonLogin.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
-        }
-
-        if (_buttonRegister != default)
-        {
-            _buttonRegister.Enabled = MainMenu.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
-        }
-    }
-
-    # region Login
+    # region Login Handler
     private void TryLogin()
     {
         if (Globals.WaitingOnServer)
@@ -347,7 +364,7 @@ public partial class LoginWindow : IMainMenuWindow
     }
     #endregion
 
-    #region Register Handling
+    #region Register Handler
     private void _addRegisterEvents()
     {
         MainMenu.ReceivedConfiguration += _registerConnected;
@@ -372,47 +389,4 @@ public partial class LoginWindow : IMainMenuWindow
         _mainMenu.SwitchToWindow<RegisterWindow>();
     }
     #endregion
-
-    private void SaveCredentials()
-    {
-        string username = string.Empty, password = string.Empty;
-
-        if (_textboxLoginUsername == default || _textboxLoginPassword == default)
-        {
-            return;
-        }
-
-        if (_checkboxSave?.IsChecked == true)
-        {
-            username = _textboxLoginUsername.Text.Trim();
-            password = _useSavedPass ? _savedPass : PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
-        }
-
-        Globals.Database.SavePreference("Username", username);
-        Globals.Database.SavePreference("Password", password);
-    }
-
-    private void LoadCredentials()
-    {
-        var name = Globals.Database.LoadPreference("Username");
-        if (string.IsNullOrEmpty(name) || _textboxLoginUsername == default || _textboxLoginPassword == default)
-        {
-            return;
-        }
-
-        _textboxLoginUsername.Text = name;
-        var pass = Globals.Database.LoadPreference("Password");
-        if (string.IsNullOrEmpty(pass))
-        {
-            return;
-        }
-
-        _textboxLoginPassword.Text = "****************";
-        _savedPass = pass;
-        _useSavedPass = true;
-        if (_checkboxSave != default)
-        {
-            _checkboxSave.IsChecked = true;
-        }
-    }
 }

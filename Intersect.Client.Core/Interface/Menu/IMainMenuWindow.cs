@@ -2,7 +2,7 @@ namespace Intersect.Client.Interface.Menu;
 
 public interface IMainMenuWindow
 {
-    bool IsHidden { get; }
+    void Load(MainMenu mainMenu);
 
     void Toggle(bool value);
 }

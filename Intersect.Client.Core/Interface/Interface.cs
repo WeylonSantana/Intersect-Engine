@@ -16,9 +16,6 @@ public static partial class Interface
 
     public static MainMenu? MenuUi { get; private set; }
 
-    //MYRA-TODO: fix this
-    //public static MutableInterface? CurrentInterface => GameUi as MutableInterface ?? MenuUi?.MainMenu;
-
     public static List<Widget> FocusElements { get; set; } = [];
 
     public static List<Widget> InputBlockingElements { get; set; } = [];
