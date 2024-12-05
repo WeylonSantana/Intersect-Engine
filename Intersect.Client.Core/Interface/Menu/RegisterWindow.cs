@@ -17,11 +17,7 @@ public partial class RegisterWindow : IMainMenuWindow
     private TextBox? _textboxPasswordConfirm;
     private Button? _buttonRegister;
 
-    public bool IsHidden
-    {
-        get => _registerWindow?.Visible == false;
-        set => Toggle(!value);
-    }
+    public bool Visible => _registerWindow?.Visible ?? false;
 
     public void Load(MenuInterface mainMenu)
     {
@@ -69,7 +65,12 @@ public partial class RegisterWindow : IMainMenuWindow
             labelPasswordConfirm.Text = Strings.Registration.ConfirmPassword;
         }
 
-        if (Interface.GetChildById<TextBox>("_textboxPasswordConfirm", out var textboxPasswordConfirm))
+        if (
+            Interface.GetChildById<TextBox>(
+                "_textboxPasswordConfirm",
+                out var textboxPasswordConfirm
+            )
+        )
         {
             _textboxPasswordConfirm = textboxPasswordConfirm;
             _textboxPasswordConfirm.PasswordField = true;
@@ -116,18 +117,25 @@ public partial class RegisterWindow : IMainMenuWindow
         }
     }
 
-    public void Toggle(bool value)
+    public void Show()
     {
-        if(_registerWindow == default)
+        if (_registerWindow == default)
         {
             return;
         }
 
-        _registerWindow.Visible = value;
-        if (value)
+        _registerWindow.Visible = true;
+        Interface.SetInputFocus(_textboxRegisterUsername);
+    }
+
+    public void Hide()
+    {
+        if (_registerWindow == default)
         {
-            Interface.SetInputFocus(_textboxRegisterUsername);
+            return;
         }
+
+        _registerWindow.Visible = false;
     }
 
     private void TryRegister()

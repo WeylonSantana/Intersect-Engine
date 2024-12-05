@@ -9,7 +9,6 @@ using Newtonsoft.Json.Linq;
 
 namespace Intersect.Client.Localization;
 
-
 public static partial class Strings
 {
     private const string StringsFileName = "client_strings.json";
@@ -31,21 +30,18 @@ public static partial class Strings
             {
                 returnVal = value;
             }
-
             // thousands
             else if (value >= 1000 && value <= 999999)
             {
                 returnVal = value / 1000.0;
                 postfix = Numbers.Thousands;
             }
-
             // millions
             else if (value >= 1000000 && value <= 999999999)
             {
                 returnVal = value / 1000000.0;
                 postfix = Numbers.Millions;
             }
-
             // billions
             else if (value >= 1000000000 && value <= 999999999999)
             {
@@ -67,11 +63,11 @@ public static partial class Strings
             {
                 returnVal = Math.Floor(returnVal * 10) / 10.0;
 
-                return returnVal.ToString("F1")
-                           .TrimEnd(mQuantityTrimChars)
-                           .ToString()
-                           .Replace(".", Numbers.Decimal) +
-                       postfix;
+                return returnVal
+                        .ToString("F1")
+                        .TrimEnd(mQuantityTrimChars)
+                        .ToString()
+                        .Replace(".", Numbers.Decimal) + postfix;
             }
         }
     }
@@ -83,7 +79,11 @@ public static partial class Strings
             return;
         }
 
-        for (var rarityCode = 0; rarityCode < Options.Instance.Items.RarityTiers.Count; rarityCode++)
+        for (
+            var rarityCode = 0;
+            rarityCode < Options.Instance.Items.RarityTiers.Count;
+            rarityCode++
+        )
         {
             var rarityName = Options.Instance.Items.RarityTiers[rarityCode];
             if (!ItemDescription.Rarity.ContainsKey(rarityName))
@@ -95,7 +95,6 @@ public static partial class Strings
 
     private static void PostLoad()
     {
-
         Intersect.Client.Core.Program.OpenGLLink = Errors.OpenGlLink.ToString();
         Intersect.Client.Core.Program.OpenALLink = Errors.OpenAllLink.ToString();
     }
@@ -107,8 +106,12 @@ public static partial class Strings
         try
         {
             var serialized = new Dictionary<string, Dictionary<string, object>>();
-            serialized = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(
-                File.ReadAllText(Path.Combine(ClientConfiguration.ResourcesDirectory, StringsFileName))
+            serialized = JsonConvert.DeserializeObject<
+                Dictionary<string, Dictionary<string, object>>
+            >(
+                File.ReadAllText(
+                    Path.Combine(ClientConfiguration.ResourcesDirectory, StringsFileName)
+                )
             );
 
             var rootType = typeof(Strings);
@@ -123,12 +126,21 @@ public static partial class Strings
                     continue;
                 }
 
-                foreach (var fieldInfo in groupType.GetFields(BindingFlags.Public | BindingFlags.Static))
+                foreach (
+                    var fieldInfo in groupType.GetFields(BindingFlags.Public | BindingFlags.Static)
+                )
                 {
                     var fieldValue = fieldInfo.GetValue(null);
                     if (!serializedGroup.TryGetValue(fieldInfo.Name, out var serializedValue))
                     {
-                        var foundKey = serializedGroup.Keys.FirstOrDefault(key => string.Equals(fieldInfo.Name, key, StringComparison.OrdinalIgnoreCase));
+                        var foundKey = serializedGroup.Keys.FirstOrDefault(
+                            key =>
+                                string.Equals(
+                                    fieldInfo.Name,
+                                    key,
+                                    StringComparison.OrdinalIgnoreCase
+                                )
+                        );
                         if (foundKey != default)
                         {
                             _ = serializedGroup.TryGetValue(foundKey, out serializedValue);
@@ -152,49 +164,83 @@ public static partial class Strings
                             break;
 
                         case Dictionary<int, LocalizedString> intDictionary:
-                            DeserializeDictionary(missingStrings, groupType, fieldInfo, fieldValue, serializedGroup, serializedValue, intDictionary);
+                            DeserializeDictionary(
+                                missingStrings,
+                                groupType,
+                                fieldInfo,
+                                fieldValue,
+                                serializedGroup,
+                                serializedValue,
+                                intDictionary
+                            );
                             break;
 
                         case Dictionary<string, LocalizedString> stringDictionary:
-                            DeserializeDictionary(missingStrings, groupType, fieldInfo, fieldValue, serializedGroup, serializedValue, stringDictionary);
+                            DeserializeDictionary(
+                                missingStrings,
+                                groupType,
+                                fieldInfo,
+                                fieldValue,
+                                serializedGroup,
+                                serializedValue,
+                                stringDictionary
+                            );
                             break;
 
                         default:
+                        {
+                            var fieldType = fieldInfo.FieldType;
+                            if (
+                                !fieldType.IsGenericType
+                                || typeof(Dictionary<,>) != fieldType.GetGenericTypeDefinition()
+                            )
                             {
-                                var fieldType = fieldInfo.FieldType;
-                                if (!fieldType.IsGenericType || typeof(Dictionary<,>) != fieldType.GetGenericTypeDefinition())
-                                {
-                                    Log.Error(new NotSupportedException($"Unsupported localization type for {groupType.Name}.{fieldInfo.Name}: {fieldInfo.FieldType.FullName}"));
-                                    break;
-                                }
-
-                                var parameters = fieldType.GenericTypeArguments;
-                                var localizedParameterType = parameters.Last();
-                                if (localizedParameterType != typeof(LocalizedString))
-                                {
-                                    Log.Error(new NotSupportedException($"Unsupported localization dictionary value type for {groupType.Name}.{fieldInfo.Name}: {localizedParameterType.FullName}"));
-                                    break;
-                                }
-
-                                _ = _methodInfoDeserializeDictionary.MakeGenericMethod(parameters.First()).Invoke(default, new object[]
-                                {
-                                            missingStrings,
-                                            groupType,
-                                            fieldInfo,
-                                            fieldValue,
-                                            serializedGroup,
-                                            serializedValue,
-                                            fieldValue
-                                });
+                                Log.Error(
+                                    new NotSupportedException(
+                                        $"Unsupported localization type for {groupType.Name}.{fieldInfo.Name}: {fieldInfo.FieldType.FullName}"
+                                    )
+                                );
                                 break;
                             }
+
+                            var parameters = fieldType.GenericTypeArguments;
+                            var localizedParameterType = parameters.Last();
+                            if (localizedParameterType != typeof(LocalizedString))
+                            {
+                                Log.Error(
+                                    new NotSupportedException(
+                                        $"Unsupported localization dictionary value type for {groupType.Name}.{fieldInfo.Name}: {localizedParameterType.FullName}"
+                                    )
+                                );
+                                break;
+                            }
+
+                            _ = _methodInfoDeserializeDictionary
+                                .MakeGenericMethod(parameters.First())
+                                .Invoke(
+                                    default,
+                                    new object[]
+                                    {
+                                        missingStrings,
+                                        groupType,
+                                        fieldInfo,
+                                        fieldValue,
+                                        serializedGroup,
+                                        serializedValue,
+                                        fieldValue
+                                    }
+                                );
+                            break;
+                        }
                     }
                 }
             }
 
             if (missingStrings.Count > 0)
             {
-                Log.Warn($"Missing strings, overwriting strings file:\n\t{string.Join(",\n\t", missingStrings)}");
+                Log.Warn(
+                    $"Missing strings, overwriting strings file:\n\t{string.Join(",\n\t", missingStrings)}"
+                );
                 SaveSerialized(serialized);
             }
         }
@@ -207,10 +253,11 @@ public static partial class Strings
         PostLoad();
     }
 
-    private static readonly MethodInfo _methodInfoDeserializeDictionary = typeof(Strings).GetMethod(
-                                            nameof(DeserializeDictionary),
-                                            BindingFlags.NonPublic | BindingFlags.Static
-                                        ) ?? throw new InvalidOperationException();
+    private static readonly MethodInfo _methodInfoDeserializeDictionary =
+        typeof(Strings).GetMethod(
+            nameof(DeserializeDictionary),
+            BindingFlags.NonPublic | BindingFlags.Static
+        ) ?? throw new InvalidOperationException();
 
     private static void DeserializeDictionary<TKey>(
         List<string> missingStrings,
@@ -235,7 +282,10 @@ public static partial class Strings
             foreach (var key in keys)
             {
                 var stringKey = key.ToString();
-                if (!serializedDictionary.TryGetValue(stringKey, out var token) || token?.Type != JTokenType.String)
+                if (
+                    !serializedDictionary.TryGetValue(stringKey, out var token)
+                    || token?.Type != JTokenType.String
+                )
                 {
                     missingStrings.Add($"{groupType.Name}.{fieldInfo.Name}[{key}]");
                     serializedDictionary[stringKey] = (string)dictionary[key];
@@ -247,7 +297,9 @@ public static partial class Strings
         }
     }
 
-    private static Dictionary<string, string> SerializeDictionary<TKey>(Dictionary<TKey, LocalizedString> localizedDictionary)
+    private static Dictionary<string, string> SerializeDictionary<TKey>(
+        Dictionary<TKey, LocalizedString> localizedDictionary
+    )
     {
         return localizedDictionary.ToDictionary(
             pair => pair.Key.ToString(),
@@ -267,15 +319,24 @@ public static partial class Strings
                     break;
 
                 case Dictionary<int, LocalizedString> localizedIntKeyDictionary:
-                    serializedGroup.Add(fieldInfo.Name, SerializeDictionary(localizedIntKeyDictionary));
+                    serializedGroup.Add(
+                        fieldInfo.Name,
+                        SerializeDictionary(localizedIntKeyDictionary)
+                    );
                     break;
 
                 case Dictionary<string, LocalizedString> localizedStringKeyDictionary:
-                    serializedGroup.Add(fieldInfo.Name, SerializeDictionary(localizedStringKeyDictionary));
+                    serializedGroup.Add(
+                        fieldInfo.Name,
+                        SerializeDictionary(localizedStringKeyDictionary)
+                    );
                     break;
 
                 case Dictionary<ChatboxTab, LocalizedString> localizedChatboxTabKeyDictionary:
-                    serializedGroup.Add(fieldInfo.Name, SerializeDictionary(localizedChatboxTabKeyDictionary));
+                    serializedGroup.Add(
+                        fieldInfo.Name,
+                        SerializeDictionary(localizedChatboxTabKeyDictionary)
+                    );
                     break;
             }
         }
@@ -303,7 +364,9 @@ public static partial class Strings
         foreach (var groupType in groupTypes)
         {
             var serializedGroup = new Dictionary<string, object>();
-            foreach (var fieldInfo in groupType.GetFields(BindingFlags.Static | BindingFlags.Public))
+            foreach (
+                var fieldInfo in groupType.GetFields(BindingFlags.Static | BindingFlags.Public)
+            )
             {
                 switch (fieldInfo.GetValue(null))
                 {
@@ -312,11 +375,23 @@ public static partial class Strings
                         break;
 
                     case Dictionary<int, LocalizedString> localizedIntKeyDictionary:
-                        serializedGroup.Add(fieldInfo.Name, localizedIntKeyDictionary.ToDictionary(pair => pair.Key, pair => pair.Value.ToString()));
+                        serializedGroup.Add(
+                            fieldInfo.Name,
+                            localizedIntKeyDictionary.ToDictionary(
+                                pair => pair.Key,
+                                pair => pair.Value.ToString()
+                            )
+                        );
                         break;
 
                     case Dictionary<string, LocalizedString> localizedStringKeyDictionary:
-                        serializedGroup.Add(fieldInfo.Name, localizedStringKeyDictionary.ToDictionary(pair => pair.Key, pair => pair.Value.ToString()));
+                        serializedGroup.Add(
+                            fieldInfo.Name,
+                            localizedStringKeyDictionary.ToDictionary(
+                                pair => pair.Key,
+                                pair => pair.Value.ToString()
+                            )
+                        );
                         break;
                 }
             }
@@ -348,7 +423,8 @@ public static partial class Strings
         public static LocalizedString BanCaption = @"Ban {00}";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString BanPrompt = @"Banning {00} will not allow them to access this game for the duration you set!";
+        public static LocalizedString BanPrompt =
+            @"Banning {00} will not allow them to access this game for the duration you set!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Chronological = @"123...";
@@ -375,7 +451,8 @@ public static partial class Strings
         public static LocalizedString MuteCaption = @"Mute {00}";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString MutePrompt = @"Muting {00} will not allow them to chat in game for the duration you set!";
+        public static LocalizedString MutePrompt =
+            @"Muting {00} will not allow them to chat in game for the duration you set!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Name = @"Name:";
@@ -432,13 +509,15 @@ public static partial class Strings
         public static LocalizedString RetrieveItem = @"Retrieve Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString RetrieveItemPrompt = @"How many/much {00} would you like to retrieve?";
+        public static LocalizedString RetrieveItemPrompt =
+            @"How many/much {00} would you like to retrieve?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString StoreItem = @"Store Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString StoreItemPrompt = @"How many/much {00} would you like to store?";
+        public static LocalizedString StoreItemPrompt =
+            @"How many/much {00} would you like to store?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Title = @"Bag";
@@ -450,10 +529,12 @@ public static partial class Strings
         public static LocalizedString DepositItem = @"Deposit Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DepositItemPrompt = @"How many/much {00} would you like to deposit?";
+        public static LocalizedString DepositItemPrompt =
+            @"How many/much {00} would you like to deposit?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString NoSpace = @"There is no space left in your bank for that item!";
+        public static LocalizedString NoSpace =
+            @"There is no space left in your bank for that item!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Title = @"Bank";
@@ -462,10 +543,12 @@ public static partial class Strings
         public static LocalizedString WithdrawItem = @"Withdraw Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString WithdrawItemPrompt = @"How many/much {00} would you like to withdraw?";
+        public static LocalizedString WithdrawItemPrompt =
+            @"How many/much {00} would you like to withdraw?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString WithdrawItemNoSpace = @"There is no space left in your inventory for that item!";
+        public static LocalizedString WithdrawItemNoSpace =
+            @"There is no space left in your inventory for that item!";
     }
 
     public partial struct BanMute
@@ -609,7 +692,8 @@ public static partial class Strings
         public static LocalizedString Hint2 = @"Your Character";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString InvalidName = @"Character name is invalid. Please use alphanumeric characters with a length between 2 and 20.";
+        public static LocalizedString InvalidName =
+            @"Character name is invalid. Please use alphanumeric characters with a length between 2 and 20.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Male = @"Male";
@@ -627,7 +711,8 @@ public static partial class Strings
         public static LocalizedString Delete = @"Delete";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DeletePrompt = @"Are you sure you want to delete {00}? This action is irreversible!";
+        public static LocalizedString DeletePrompt =
+            @"Are you sure you want to delete {00}? This action is irreversible!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString DeleteTitle = @"Delete {00}";
@@ -663,19 +748,26 @@ public static partial class Strings
         public static LocalizedString ChannelAdmin = @"admin";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> Channels = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> Channels = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"local"},
-            {1, @"global"},
-            {2, @"party"},
-            {3, @"guild"}
+            { 0, @"local" },
+            { 1, @"global" },
+            { 2, @"party" },
+            { 3, @"guild" }
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString ClearLogButtonToolTip = @"Clear chat log messages";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<ChatboxTab, LocalizedString> ChatTabButtons = new Dictionary<ChatboxTab, LocalizedString>() {
+        public static Dictionary<ChatboxTab, LocalizedString> ChatTabButtons = new Dictionary<
+            ChatboxTab,
+            LocalizedString
+        >()
+        {
             { ChatboxTab.All, @"All" },
             { ChatboxTab.Local, @"Local" },
             { ChatboxTab.Party, @"Party" },
@@ -706,33 +798,36 @@ public static partial class Strings
         public static LocalizedString TooFast = @"You are chatting too fast!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString UnableToCopy = @"It appears you are not able to copy/paste on this platform. Please make sure you have either the 'xclip' or 'wl-clipboard' packages installed if you are running Linux.";
+        public static LocalizedString UnableToCopy =
+            @"It appears you are not able to copy/paste on this platform. Please make sure you have either the 'xclip' or 'wl-clipboard' packages installed if you are running Linux.";
     }
 
     public partial struct Colors
     {
-
-        public static Dictionary<int, LocalizedString> presets = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> presets = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"Black"},
-            {1, @"White"},
-            {2, @"Pink"},
-            {3, @"Blue"},
-            {4, @"Red"},
-            {5, @"Green"},
-            {6, @"Yellow"},
-            {7, @"Orange"},
-            {8, @"Purple"},
-            {9, @"Gray"},
-            {10, @"Cyan"}
+            { 0, @"Black" },
+            { 1, @"White" },
+            { 2, @"Pink" },
+            { 3, @"Blue" },
+            { 4, @"Red" },
+            { 5, @"Green" },
+            { 6, @"Yellow" },
+            { 7, @"Orange" },
+            { 8, @"Purple" },
+            { 9, @"Gray" },
+            { 10, @"Cyan" }
         };
-
     }
 
     public partial struct Combat
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString AttackWhileCastingDeny = @"You cannot attack while casting a spell.";
+        public static LocalizedString AttackWhileCastingDeny =
+            @"You cannot attack while casting a spell.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Stat0 = @"Attack";
@@ -750,13 +845,16 @@ public static partial class Strings
         public static LocalizedString Stat4 = @"Speed";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString WarningCharacterSelect = @"You are attempting to logout while in combat! Your character will remain in-game until combat has ended. Are you sure you want to logout now?";
+        public static LocalizedString WarningCharacterSelect =
+            @"You are attempting to logout while in combat! Your character will remain in-game until combat has ended. Are you sure you want to logout now?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString WarningExitDesktop = @"You are attempting to exit while in combat! Your character will remain in-game until combat has ended. Are you sure you want to quit now?";
+        public static LocalizedString WarningExitDesktop =
+            @"You are attempting to exit while in combat! Your character will remain in-game until combat has ended. Are you sure you want to quit now?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString WarningLogout = @"You are attempting to logout while in combat! Your character will remain in-game until combat has ended. Are you sure you want to logout now?";
+        public static LocalizedString WarningLogout =
+            @"You are attempting to logout while in combat! Your character will remain in-game until combat has ended. Are you sure you want to logout now?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString WarningTitle = @"Combat Warning!";
@@ -764,53 +862,54 @@ public static partial class Strings
 
     public partial struct Controls
     {
-
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<string, LocalizedString> KeyDictionary = new Dictionary<string, LocalizedString>
+        public static Dictionary<string, LocalizedString> KeyDictionary = new Dictionary<
+            string,
+            LocalizedString
+        >
         {
-            {"attackinteract", @"Attack/Interact:"},
-            {"block", @"Block:"},
-            {"autotarget", @"Auto Target:"},
-            {"enter", @"Chat:"},
-            {"hotkey0", @"Hot Key 0:"},
-            {"hotkey1", @"Hot Key 1:"},
-            {"hotkey2", @"Hot Key 2:"},
-            {"hotkey3", @"Hot Key 3:"},
-            {"hotkey4", @"Hot Key 4:"},
-            {"hotkey5", @"Hot Key 5:"},
-            {"hotkey6", @"Hot Key 6:"},
-            {"hotkey7", @"Hot Key 7:"},
-            {"hotkey8", @"Hot Key 8:"},
-            {"hotkey9", @"Hot Key 9:"},
-            {"movedown", @"Down:"},
-            {"moveleft", @"Left:"},
-            {"moveright", @"Right:"},
-            {"moveup", @"Up:"},
-            {"pickup", @"Pick Up:"},
-            {"screenshot", @"Screenshot:"},
-            {"openmenu", @"Open Menu:"},
-            {"openinventory", @"Open Inventory:"},
-            {"openquests", @"Open Quests:"},
-            {"opencharacterinfo", @"Open Character Info:"},
-            {"openparties", @"Open Parties:"},
-            {"openspells", @"Open Spells:"},
-            {"openfriends", @"Open Friends:"},
-            {"openguild", @"Open Guild:"},
-            {"opensettings", @"Open Settings:"},
-            {"opendebugger", @"Open Debugger:"},
-            {"openadminpanel", @"Open Admin Panel:"},
-            {"togglegui", @"Toggle Interface:"},
-            {"turnaround", @"Hold to turn around:"},
-            {"togglezoomin", "Toggle Zoom In:"},
-            {"holdtozoomin", "Hold to Zoom In:"},
-            {"togglezoomout", "Toggle Zoom Out:"},
-            {"holdtozoomout", "Hold to Zoom Out:"},
-            {"togglefullscreen", "Toggle Fullscreen:"},
+            { "attackinteract", @"Attack/Interact:" },
+            { "block", @"Block:" },
+            { "autotarget", @"Auto Target:" },
+            { "enter", @"Chat:" },
+            { "hotkey0", @"Hot Key 0:" },
+            { "hotkey1", @"Hot Key 1:" },
+            { "hotkey2", @"Hot Key 2:" },
+            { "hotkey3", @"Hot Key 3:" },
+            { "hotkey4", @"Hot Key 4:" },
+            { "hotkey5", @"Hot Key 5:" },
+            { "hotkey6", @"Hot Key 6:" },
+            { "hotkey7", @"Hot Key 7:" },
+            { "hotkey8", @"Hot Key 8:" },
+            { "hotkey9", @"Hot Key 9:" },
+            { "movedown", @"Down:" },
+            { "moveleft", @"Left:" },
+            { "moveright", @"Right:" },
+            { "moveup", @"Up:" },
+            { "pickup", @"Pick Up:" },
+            { "screenshot", @"Screenshot:" },
+            { "openmenu", @"Open Menu:" },
+            { "openinventory", @"Open Inventory:" },
+            { "openquests", @"Open Quests:" },
+            { "opencharacterinfo", @"Open Character Info:" },
+            { "openparties", @"Open Parties:" },
+            { "openspells", @"Open Spells:" },
+            { "openfriends", @"Open Friends:" },
+            { "openguild", @"Open Guild:" },
+            { "opensettings", @"Open Settings:" },
+            { "opendebugger", @"Open Debugger:" },
+            { "openadminpanel", @"Open Admin Panel:" },
+            { "togglegui", @"Toggle Interface:" },
+            { "turnaround", @"Hold to turn around:" },
+            { "togglezoomin", "Toggle Zoom In:" },
+            { "holdtozoomin", "Hold to Zoom In:" },
+            { "togglezoomout", "Toggle Zoom Out:" },
+            { "holdtozoomout", "Hold to Zoom Out:" },
+            { "togglefullscreen", "Toggle Fullscreen:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Listening = @"Listening";
-
     }
 
     public partial struct Crafting
@@ -831,10 +930,12 @@ public static partial class Strings
         public static LocalizedString CraftStop = "Stop";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DestroyMaterialsChance = @"Chance to destroy materials: {00}%";
+        public static LocalizedString DestroyMaterialsChance =
+            @"Chance to destroy materials: {00}%";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString IncorrectResources = @"You do not have the necessary resources to craft this item.";
+        public static LocalizedString IncorrectResources =
+            @"You do not have the necessary resources to craft this item.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Ingredients = @"Required:";
@@ -848,13 +949,11 @@ public static partial class Strings
 
     public partial struct Credits
     {
-
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Back = @"Back to Main Menu";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Title = @"Credits";
-
     }
 
     public partial struct Debug
@@ -869,7 +968,8 @@ public static partial class Strings
         public static LocalizedString Draws = @"Draws";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString EnableLayoutHotReloading = @"Enable Experimental Layout Hot Reloading";
+        public static LocalizedString EnableLayoutHotReloading =
+            @"Enable Experimental Layout Hot Reloading";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString EntitiesDrawn = @"Entities Drawn";
@@ -956,25 +1056,31 @@ public static partial class Strings
     public partial struct Errors
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DisconnectionEvent = @"Please provide this message to your administrator: {0}";
+        public static LocalizedString DisconnectionEvent =
+            @"Please provide this message to your administrator: {0}";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString DisplayNotSupported = @"Invalid Display Configuration!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DisplayNotSupportedError = @"Fullscreen {00} resolution is not supported on this device!";
+        public static LocalizedString DisplayNotSupportedError =
+            @"Fullscreen {00} resolution is not supported on this device!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString HostNotFound = @"DNS resolution error, please report this to the game administrator.";
+        public static LocalizedString HostNotFound =
+            @"DNS resolution error, please report this to the game administrator.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString LoadFile = @"Failed to load a {00}. Please send the game administrator a copy of your errors log file in the logs directory.";
+        public static LocalizedString LoadFile =
+            @"Failed to load a {00}. Please send the game administrator a copy of your errors log file in the logs directory.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString LostConnection = @"Lost connection to the game server. Please make sure you're connected to the internet and try again!";
+        public static LocalizedString LostConnection =
+            @"Lost connection to the game server. Please make sure you're connected to the internet and try again!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString NotConnected = @"Not connected to the game server. Is it online?";
+        public static LocalizedString NotConnected =
+            @"Not connected to the game server. Is it online?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString OpenAllLink = @"https://goo.gl/Nbx6hx";
@@ -983,16 +1089,19 @@ public static partial class Strings
         public static LocalizedString OpenGlLink = @"https://goo.gl/RSP3ts";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString PasswordInvalid = @"Password is invalid. Please use alphanumeric characters with a length between 4 and 20.";
+        public static LocalizedString PasswordInvalid =
+            @"Password is invalid. Please use alphanumeric characters with a length between 4 and 20.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ResourcesNotFound = @"The resources directory could not be found! Intersect will now close.";
+        public static LocalizedString ResourcesNotFound =
+            @"The resources directory could not be found! Intersect will now close.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Title = @"Error!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString UsernameInvalid = @"Username is invalid. Please use alphanumeric characters with a length between 2 and 20.";
+        public static LocalizedString UsernameInvalid =
+            @"Username is invalid. Please use alphanumeric characters with a length between 2 and 20.";
     }
 
     public partial struct Words
@@ -1012,10 +1121,8 @@ public static partial class Strings
 
     public partial struct EventWindow
     {
-
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Continue = @"Continue";
-
     }
 
     public partial struct ForgotPass
@@ -1024,7 +1131,8 @@ public static partial class Strings
         public static LocalizedString Back = @"Back";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Hint = @"If your account exists, we will send you a temporary password reset code.";
+        public static LocalizedString Hint =
+            @"If your account exists, we will send you a temporary password reset code.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Label = @"Enter your username or email below:";
@@ -1054,13 +1162,15 @@ public static partial class Strings
         public static LocalizedString RemoveFriend = @"Remove Friend";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString RemoveFriendPrompt = @"Do you wish to remove {00} from your friends list?";
+        public static LocalizedString RemoveFriendPrompt =
+            @"Do you wish to remove {00} from your friends list?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Request = @"Friend Request";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString RequestPrompt = @"{00} has sent you a friend request. Do you accept?";
+        public static LocalizedString RequestPrompt =
+            @"{00} has sent you a friend request. Do you accept?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Title = @"Friends";
@@ -1111,7 +1221,8 @@ public static partial class Strings
         public static LocalizedString Demote = @"Demote to {00}";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DemotePrompt = @"Are you sure you want to demote {00} to rank {01}?";
+        public static LocalizedString DemotePrompt =
+            @"Are you sure you want to demote {00} to rank {01}?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString DemoteTitle = @"Demote Guild Member";
@@ -1126,7 +1237,8 @@ public static partial class Strings
         public static LocalizedString Invite = @"Invite";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString InviteAlreadyInGuild = @"The player you're trying to invite is already in a guild or has a pending invite.";
+        public static LocalizedString InviteAlreadyInGuild =
+            @"The player you're trying to invite is already in a guild or has a pending invite.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString InviteMemberPrompt = @"Who would you like to invite to {00}?";
@@ -1135,7 +1247,8 @@ public static partial class Strings
         public static LocalizedString InviteMemberTitle = @"Invite Player";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString InviteRequestPrompt = @"{00} would like to invite you to join their guild, {01}. Do you accept?";
+        public static LocalizedString InviteRequestPrompt =
+            @"{00} would like to invite you to join their guild, {01}. Do you accept?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString InviteRequestTitle = @"Guild Invite";
@@ -1159,13 +1272,16 @@ public static partial class Strings
         public static LocalizedString LeaveTitle = @"Leave Guild";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString NotAllowedDeposit = @"You do not have permission to deposit items into {00}'s guild bank.";
+        public static LocalizedString NotAllowedDeposit =
+            @"You do not have permission to deposit items into {00}'s guild bank.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString NotAllowedSwap = @"You do not have permission to swap items within {00}'s guild bank.";
+        public static LocalizedString NotAllowedSwap =
+            @"You do not have permission to swap items within {00}'s guild bank.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString NotAllowedWithdraw = @"You do not have permission to withdraw from {00}'s guild bank.";
+        public static LocalizedString NotAllowedWithdraw =
+            @"You do not have permission to withdraw from {00}'s guild bank.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString NotInGuild = @"You are not currently in a guild!";
@@ -1183,7 +1299,8 @@ public static partial class Strings
         public static LocalizedString Promote = @"Promote to {00}";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString PromotePrompt = @"Are you sure you want to promote {00} to rank {01}?";
+        public static LocalizedString PromotePrompt =
+            @"Are you sure you want to promote {00} to rank {01}?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString PromoteTitle = @"Promote Guild Member";
@@ -1195,7 +1312,8 @@ public static partial class Strings
         public static LocalizedString Transfer = @"Transfer";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString TransferPrompt = @"This action will completely transfer all ownership of your guild to {00} and you will lose your rank of {01}. If you are sure you want to hand over your guild enter '{02}' below.";
+        public static LocalizedString TransferPrompt =
+            @"This action will completely transfer all ownership of your guild to {00} and you will lose your rank of {01}. If you are sure you want to hand over your guild enter '{02}' below.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString TransferTitle = @"Transfer Guild";
@@ -1246,7 +1364,8 @@ public static partial class Strings
         public static LocalizedString CoordinateZ = @"Z";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ExperimentalFeatureTooltip = @"This feature is experimental and may cause issues when enabled.";
+        public static LocalizedString ExperimentalFeatureTooltip =
+            @"This feature is experimental and may cause issues when enabled.";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString GlobalItem = @"Global {00}";
@@ -1270,7 +1389,8 @@ public static partial class Strings
     public partial struct Inventory
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DropItemPrompt = @"How many units of {00} would you like to discard?";
+        public static LocalizedString DropItemPrompt =
+            @"How many units of {00} would you like to discard?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString DropItemTitle = @"Drop Item";
@@ -1463,102 +1583,130 @@ public static partial class Strings
         // Integer Dictionaries (A - Z):
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> BonusEffects = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> BonusEffects = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @""},
-            {1, @"Cooldown Reduction:"},
-            {2, @"Lifesteal:"},
-            {3, @"Tenacity:"},
-            {4, @"Luck:"},
-            {5, @"Bonus Experience:"},
-            {6, @"Manasteal:"},
+            { 0, @"" },
+            { 1, @"Cooldown Reduction:" },
+            { 2, @"Lifesteal:" },
+            { 3, @"Tenacity:" },
+            { 4, @"Luck:" },
+            { 5, @"Bonus Experience:" },
+            { 6, @"Manasteal:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> ConsumableTypes = new Dictionary<int, LocalizedString>()
+        public static Dictionary<int, LocalizedString> ConsumableTypes = new Dictionary<
+            int,
+            LocalizedString
+        >()
         {
-            {0, "Restores HP:"},
-            {1, "Restores MP:"},
-            {2, "Grants Experience:"},
+            { 0, "Restores HP:" },
+            { 1, "Restores MP:" },
+            { 2, "Grants Experience:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> DamageTypes = new Dictionary<int, LocalizedString>()
+        public static Dictionary<int, LocalizedString> DamageTypes = new Dictionary<
+            int,
+            LocalizedString
+        >()
         {
-            {0, @"Physical"},
-            {1, @"Magic"},
-            {2, @"True"},
+            { 0, @"Physical" },
+            { 1, @"Magic" },
+            { 2, @"True" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> ItemTypes = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> ItemTypes = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"None"},
-            {1, @"Equipment"},
-            {2, @"Consumable"},
-            {3, @"Currency"},
-            {4, @"Spell"},
-            {5, @"Special"},
-            {6, @"Bag"},
+            { 0, @"None" },
+            { 1, @"Equipment" },
+            { 2, @"Consumable" },
+            { 3, @"Currency" },
+            { 4, @"Spell" },
+            { 5, @"Special" },
+            { 6, @"Bag" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> StatCounts = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> StatCounts = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"Attack:"},
-            {1, @"Ability Power:"},
-            {2, @"Defense:"},
-            {3, @"Magic Resist:"},
-            {4, @"Speed:"},
+            { 0, @"Attack:" },
+            { 1, @"Ability Power:" },
+            { 2, @"Defense:" },
+            { 3, @"Magic Resist:" },
+            { 4, @"Speed:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static Dictionary<int, LocalizedString> Stats = new Dictionary<int, LocalizedString>
         {
-            {0, @"Attack"},
-            {1, @"Ability Power"},
-            {2, @"Defense"},
-            {3, @"Magic Resist"},
-            {4, @"Speed"},
+            { 0, @"Attack" },
+            { 1, @"Ability Power" },
+            { 2, @"Defense" },
+            { 3, @"Magic Resist" },
+            { 4, @"Speed" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static Dictionary<int, LocalizedString> Vitals = new Dictionary<int, LocalizedString>
         {
-            {0, @"HP:"},
-            {1, @"MP:"},
+            { 0, @"HP:" },
+            { 1, @"MP:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> VitalsRegen = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> VitalsRegen = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"HP Regen:"},
-            {1, @"MP Regen:"},
+            { 0, @"HP Regen:" },
+            { 1, @"MP Regen:" },
         };
 
         // String Dictionaries (A - Z):
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<string, LocalizedString> Rarity = new Dictionary<string, LocalizedString>
+        public static Dictionary<string, LocalizedString> Rarity = new Dictionary<
+            string,
+            LocalizedString
+        >
         {
-            {"None", @"None"},
-            {"Common", @"Common"},
-            {"Uncommon", @"Uncommon"},
-            {"Rare", @"Rare"},
-            {"Epic", @"Epic"},
-            {"Legendary", @"Legendary"},
+            { "None", @"None" },
+            { "Common", @"Common" },
+            { "Uncommon", @"Uncommon" },
+            { "Rare", @"Rare" },
+            { "Epic", @"Epic" },
+            { "Legendary", @"Legendary" },
         };
     }
 
     public partial struct Keys
     {
-        public static string FormatKeyName(Framework.GenericClasses.Keys modifier, Framework.GenericClasses.Keys key)
+        public static string FormatKeyName(
+            Framework.GenericClasses.Keys modifier,
+            Framework.GenericClasses.Keys key
+        )
         {
-            var formatted = KeyDictionary[Enum.GetName(typeof(Framework.GenericClasses.Keys), key).ToLower()];
+            var formatted = KeyDictionary[
+                Enum.GetName(typeof(Framework.GenericClasses.Keys), key).ToLower()
+            ];
 
             if (modifier != Framework.GenericClasses.Keys.None)
             {
-                var modifierName = KeyDictionary[Enum.GetName(typeof(Framework.GenericClasses.Keys), modifier).ToLower()];
+                var modifierName = KeyDictionary[
+                    Enum.GetName(typeof(Framework.GenericClasses.Keys), modifier).ToLower()
+                ];
                 formatted = KeyNameWithModifier.ToString(modifierName, formatted);
             }
 
@@ -1566,207 +1714,209 @@ public static partial class Strings
         }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<string, LocalizedString> KeyDictionary = new Dictionary<string, LocalizedString>()
+        public static Dictionary<string, LocalizedString> KeyDictionary = new Dictionary<
+            string,
+            LocalizedString
+        >()
         {
-            {"a", @"A"},
-            {"add", @"Add"},
-            {"alt", @"Alt"},
-            {"apps", @"Apps"},
-            {"attn", @"Attn"},
-            {"b", @"B"},
-            {"back", @"Back"},
-            {"browserback", @"BrowserBack"},
-            {"browserfavorites", @"BrowserFavorites"},
-            {"browserforward", @"BrowserForward"},
-            {"browserhome", @"BrowserHome"},
-            {"browserrefresh", @"BrowserRefresh"},
-            {"browsersearch", @"BrowserSearch"},
-            {"browserstop", @"BrowserStop"},
-            {"c", @"C"},
-            {"cancel", @"Cancel"},
-            {"capital", @"Capital"},
-            {"capslock", @"CapsLock"},
-            {"clear", @"Clear"},
-            {"control", @"Control"},
-            {"controlkey", @"ControlKey"},
-            {"crsel", @"Crsel"},
-            {"d", @"D"},
-            {"d0", @"0"},
-            {"d1", @"1"},
-            {"d2", @"2"},
-            {"d3", @"3"},
-            {"d4", @"4"},
-            {"d5", @"5"},
-            {"d6", @"6"},
-            {"d7", @"7"},
-            {"d8", @"8"},
-            {"d9", @"9"},
-            {"decimal", @"Decimal"},
-            {"delete", @"Delete"},
-            {"divide", @"Divide"},
-            {"down", @"Down"},
-            {"e", @"E"},
-            {"end", @"End"},
-            {"enter", @"Enter"},
-            {"eraseeof", @"EraseEof"},
-            {"escape", @"Escape"},
-            {"execute", @"Execute"},
-            {"exsel", @"Exsel"},
-            {"f", @"F"},
-            {"f1", @"F1"},
-            {"f10", @"F10"},
-            {"f11", @"F11"},
-            {"f12", @"F12"},
-            {"f13", @"F13"},
-            {"f14", @"F14"},
-            {"f15", @"F15"},
-            {"f16", @"F16"},
-            {"f17", @"F17"},
-            {"f18", @"F18"},
-            {"f19", @"F19"},
-            {"f2", @"F2"},
-            {"f20", @"F20"},
-            {"f21", @"F21"},
-            {"f22", @"F22"},
-            {"f23", @"F23"},
-            {"f24", @"F24"},
-            {"f3", @"F3"},
-            {"f4", @"F4"},
-            {"f5", @"F5"},
-            {"f6", @"F6"},
-            {"f7", @"F7"},
-            {"f8", @"F8"},
-            {"f9", @"F9"},
-            {"finalmode", @"FinalMode"},
-            {"g", @"G"},
-            {"h", @"H"},
-            {"hanguelmode", @"HanguelMode"},
-            {"hangulmode", @"HangulMode"},
-            {"hanjamode", @"HanjaMode"},
-            {"help", @"Help"},
-            {"home", @"Home"},
-            {"i", @"I"},
-            {"imeaccept", @"IMEAccept"},
-            {"imeaceept", @"IMEAceept"},
-            {"imeconvert", @"IMEConvert"},
-            {"imemodechange", @"IMEModeChange"},
-            {"imenonconvert", @"IMENonconvert"},
-            {"insert", @"Insert"},
-            {"j", @"J"},
-            {"junjamode", @"JunjaMode"},
-            {"k", @"K"},
-            {"kanamode", @"KanaMode"},
-            {"kanjimode", @"KanjiMode"},
-            {"keycode", @"KeyCode"},
-            {"l", @"L"},
-            {"launchapplication1", @"LaunchApplication1"},
-            {"launchapplication2", @"LaunchApplication2"},
-            {"launchmail", @"LaunchMail"},
-            {"lbutton", @"Left Mouse"},
-            {"lcontrolkey", @"L Control"},
-            {"left", @"Left"},
-            {"linefeed", @"LineFeed"},
-            {"lmenu", @"L Menu"},
-            {"lshiftkey", @"L Shift"},
-            {"lwin", @"LWin"},
-            {"m", @"M"},
-            {"mbutton", @"Middle Mouse"},
-            {"medianexttrack", @"MediaNextTrack"},
-            {"mediaplaypause", @"MediaPlayPause"},
-            {"mediaprevioustrack", @"MediaPreviousTrack"},
-            {"mediastop", @"MediaStop"},
-            {"menu", @"Menu"},
-            {"modifiers", @"Modifiers"},
-            {"multiply", @"Multiply"},
-            {"n", @"N"},
-            {"next", @"Next"},
-            {"noname", @"NoName"},
-            {"none", @"None"},
-            {"numlock", @"NumLock"},
-            {"numpad0", @"NumPad 0"},
-            {"numpad1", @"NumPad 1"},
-            {"numpad2", @"NumPad 2"},
-            {"numpad3", @"NumPad 3"},
-            {"numpad4", @"NumPad 4"},
-            {"numpad5", @"NumPad 5"},
-            {"numpad6", @"NumPad 6"},
-            {"numpad7", @"NumPad 7"},
-            {"numpad8", @"NumPad 8"},
-            {"numpad9", @"NumPad 9"},
-            {"o", @"O"},
-            {"oem1", @"1"},
-            {"oem102", @"0"},
-            {"oem2", @"2"},
-            {"oem3", @"3"},
-            {"oem4", @"4"},
-            {"oem5", @"5"},
-            {"oem6", @"6"},
-            {"oem7", @"7"},
-            {"oem8", @"8"},
-            {"oembackslash", @"\"},
-            {"oemclear", @"OemClear"},
-            {"oemclosebrackets", @"]"},
-            {"oemcomma", @","},
-            {"oemminus", @"-"},
-            {"oemopenbrackets", @"["},
-            {"oemperiod", @"."},
-            {"oempipe", @"|"},
-            {"oemplus", @"+"},
-            {"oemquestion", @"?"},
-            {"oemquotes", @"'"},
-            {"oemsemicolon", @"OemSemicolon"},
-            {"oemtilde", @"`"},
-            {"p", @"P"},
-            {"pa1", @"Pa1"},
-            {"packet", @"Packet"},
-            {"pagedown", @"Page Down"},
-            {"pageup", @"Page Up"},
-            {"pause", @"Pause"},
-            {"play", @"Play"},
-            {"print", @"Print"},
-            {"printscreen", @"PrintScreen"},
-            {"prior", @"Prior"},
-            {"processkey", @"ProcessKey"},
-            {"q", @"Q"},
-            {"r", @"R"},
-            {"rbutton", @"Right Mouse"},
-            {"rcontrolkey", @"R Control"},
-            {"return", @"Return"},
-            {"right", @"Right"},
-            {"rmenu", @"R Menu"},
-            {"rshiftkey", @"R Shift"},
-            {"rwin", @"RWin"},
-            {"s", @"S"},
-            {"scroll", @"Scroll"},
-            {"select", @"Select"},
-            {"selectmedia", @"SelectMedia"},
-            {"separator", @"Separator"},
-            {"shift", @"Shift"},
-            {"shiftkey", @"ShiftKey"},
-            {"sleep", @"Sleep"},
-            {"snapshot", @"Snapshot"},
-            {"space", @"Space"},
-            {"subtract", @"Subtract"},
-            {"t", @"T"},
-            {"tab", @"Tab"},
-            {"u", @"U"},
-            {"up", @"Up"},
-            {"v", @"V"},
-            {"volumedown", @"VolumeDown"},
-            {"volumemute", @"VolumeMute"},
-            {"volumeup", @"VolumeUp"},
-            {"w", @"W"},
-            {"x", @"X"},
-            {"xbutton1", @"XButton1"},
-            {"xbutton2", @"XButton2"},
-            {"y", @"Y"},
-            {"z", @"Z"},
-            {"zoom", @"Zoom"},
+            { "a", @"A" },
+            { "add", @"Add" },
+            { "alt", @"Alt" },
+            { "apps", @"Apps" },
+            { "attn", @"Attn" },
+            { "b", @"B" },
+            { "back", @"Back" },
+            { "browserback", @"BrowserBack" },
+            { "browserfavorites", @"BrowserFavorites" },
+            { "browserforward", @"BrowserForward" },
+            { "browserhome", @"BrowserHome" },
+            { "browserrefresh", @"BrowserRefresh" },
+            { "browsersearch", @"BrowserSearch" },
+            { "browserstop", @"BrowserStop" },
+            { "c", @"C" },
+            { "cancel", @"Cancel" },
+            { "capital", @"Capital" },
+            { "capslock", @"CapsLock" },
+            { "clear", @"Clear" },
+            { "control", @"Control" },
+            { "controlkey", @"ControlKey" },
+            { "crsel", @"Crsel" },
+            { "d", @"D" },
+            { "d0", @"0" },
+            { "d1", @"1" },
+            { "d2", @"2" },
+            { "d3", @"3" },
+            { "d4", @"4" },
+            { "d5", @"5" },
+            { "d6", @"6" },
+            { "d7", @"7" },
+            { "d8", @"8" },
+            { "d9", @"9" },
+            { "decimal", @"Decimal" },
+            { "delete", @"Delete" },
+            { "divide", @"Divide" },
+            { "down", @"Down" },
+            { "e", @"E" },
+            { "end", @"End" },
+            { "enter", @"Enter" },
+            { "eraseeof", @"EraseEof" },
+            { "escape", @"Escape" },
+            { "execute", @"Execute" },
+            { "exsel", @"Exsel" },
+            { "f", @"F" },
+            { "f1", @"F1" },
+            { "f10", @"F10" },
+            { "f11", @"F11" },
+            { "f12", @"F12" },
+            { "f13", @"F13" },
+            { "f14", @"F14" },
+            { "f15", @"F15" },
+            { "f16", @"F16" },
+            { "f17", @"F17" },
+            { "f18", @"F18" },
+            { "f19", @"F19" },
+            { "f2", @"F2" },
+            { "f20", @"F20" },
+            { "f21", @"F21" },
+            { "f22", @"F22" },
+            { "f23", @"F23" },
+            { "f24", @"F24" },
+            { "f3", @"F3" },
+            { "f4", @"F4" },
+            { "f5", @"F5" },
+            { "f6", @"F6" },
+            { "f7", @"F7" },
+            { "f8", @"F8" },
+            { "f9", @"F9" },
+            { "finalmode", @"FinalMode" },
+            { "g", @"G" },
+            { "h", @"H" },
+            { "hanguelmode", @"HanguelMode" },
+            { "hangulmode", @"HangulMode" },
+            { "hanjamode", @"HanjaMode" },
+            { "help", @"Help" },
+            { "home", @"Home" },
+            { "i", @"I" },
+            { "imeaccept", @"IMEAccept" },
+            { "imeaceept", @"IMEAceept" },
+            { "imeconvert", @"IMEConvert" },
+            { "imemodechange", @"IMEModeChange" },
+            { "imenonconvert", @"IMENonconvert" },
+            { "insert", @"Insert" },
+            { "j", @"J" },
+            { "junjamode", @"JunjaMode" },
+            { "k", @"K" },
+            { "kanamode", @"KanaMode" },
+            { "kanjimode", @"KanjiMode" },
+            { "keycode", @"KeyCode" },
+            { "l", @"L" },
+            { "launchapplication1", @"LaunchApplication1" },
+            { "launchapplication2", @"LaunchApplication2" },
+            { "launchmail", @"LaunchMail" },
+            { "lbutton", @"Left Mouse" },
+            { "lcontrolkey", @"L Control" },
+            { "left", @"Left" },
+            { "linefeed", @"LineFeed" },
+            { "lmenu", @"L Menu" },
+            { "lshiftkey", @"L Shift" },
+            { "lwin", @"LWin" },
+            { "m", @"M" },
+            { "mbutton", @"Middle Mouse" },
+            { "medianexttrack", @"MediaNextTrack" },
+            { "mediaplaypause", @"MediaPlayPause" },
+            { "mediaprevioustrack", @"MediaPreviousTrack" },
+            { "mediastop", @"MediaStop" },
+            { "menu", @"Menu" },
+            { "modifiers", @"Modifiers" },
+            { "multiply", @"Multiply" },
+            { "n", @"N" },
+            { "next", @"Next" },
+            { "noname", @"NoName" },
+            { "none", @"None" },
+            { "numlock", @"NumLock" },
+            { "numpad0", @"NumPad 0" },
+            { "numpad1", @"NumPad 1" },
+            { "numpad2", @"NumPad 2" },
+            { "numpad3", @"NumPad 3" },
+            { "numpad4", @"NumPad 4" },
+            { "numpad5", @"NumPad 5" },
+            { "numpad6", @"NumPad 6" },
+            { "numpad7", @"NumPad 7" },
+            { "numpad8", @"NumPad 8" },
+            { "numpad9", @"NumPad 9" },
+            { "o", @"O" },
+            { "oem1", @"1" },
+            { "oem102", @"0" },
+            { "oem2", @"2" },
+            { "oem3", @"3" },
+            { "oem4", @"4" },
+            { "oem5", @"5" },
+            { "oem6", @"6" },
+            { "oem7", @"7" },
+            { "oem8", @"8" },
+            { "oembackslash", @"\" },
+            { "oemclear", @"OemClear" },
+            { "oemclosebrackets", @"]" },
+            { "oemcomma", @"," },
+            { "oemminus", @"-" },
+            { "oemopenbrackets", @"[" },
+            { "oemperiod", @"." },
+            { "oempipe", @"|" },
+            { "oemplus", @"+" },
+            { "oemquestion", @"?" },
+            { "oemquotes", @"'" },
+            { "oemsemicolon", @"OemSemicolon" },
+            { "oemtilde", @"`" },
+            { "p", @"P" },
+            { "pa1", @"Pa1" },
+            { "packet", @"Packet" },
+            { "pagedown", @"Page Down" },
+            { "pageup", @"Page Up" },
+            { "pause", @"Pause" },
+            { "play", @"Play" },
+            { "print", @"Print" },
+            { "printscreen", @"PrintScreen" },
+            { "prior", @"Prior" },
+            { "processkey", @"ProcessKey" },
+            { "q", @"Q" },
+            { "r", @"R" },
+            { "rbutton", @"Right Mouse" },
+            { "rcontrolkey", @"R Control" },
+            { "return", @"Return" },
+            { "right", @"Right" },
+            { "rmenu", @"R Menu" },
+            { "rshiftkey", @"R Shift" },
+            { "rwin", @"RWin" },
+            { "s", @"S" },
+            { "scroll", @"Scroll" },
+            { "select", @"Select" },
+            { "selectmedia", @"SelectMedia" },
+            { "separator", @"Separator" },
+            { "shift", @"Shift" },
+            { "shiftkey", @"ShiftKey" },
+            { "sleep", @"Sleep" },
+            { "snapshot", @"Snapshot" },
+            { "space", @"Space" },
+            { "subtract", @"Subtract" },
+            { "t", @"T" },
+            { "tab", @"Tab" },
+            { "u", @"U" },
+            { "up", @"Up" },
+            { "v", @"V" },
+            { "volumedown", @"VolumeDown" },
+            { "volumemute", @"VolumeMute" },
+            { "volumeup", @"VolumeUp" },
+            { "w", @"W" },
+            { "x", @"X" },
+            { "xbutton1", @"XButton1" },
+            { "xbutton2", @"XButton2" },
+            { "y", @"Y" },
+            { "z", @"Z" },
+            { "zoom", @"Zoom" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString KeyNameWithModifier = @"{00} + {01}";
-
     }
 
     public partial struct LoginWindow
@@ -1886,7 +2036,7 @@ public static partial class Strings
         public static LocalizedString ResolutionCustom = @"Custom Resolution";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Restore = @"Restore Defaults";
+        public static LocalizedString Restore = @"Restore";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString SoundVolume = @"Sound Volume: {00}%";
@@ -1941,7 +2091,7 @@ public static partial class Strings
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString ShowPlayerOverheadInformation = @"Players";
-        
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString SimplifiedEscapeMenu = @"Simplified escape menu";
 
@@ -1985,7 +2135,8 @@ public static partial class Strings
         public static LocalizedString InFight = @"You are currently fighting!";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString InvitePrompt = @"{00} has invited you to their party. Do you accept?";
+        public static LocalizedString InvitePrompt =
+            @"{00} has invited you to their party. Do you accept?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Kick = @"Kick {00}";
@@ -2033,7 +2184,8 @@ public static partial class Strings
         public static LocalizedString Abandon = @"Abandon";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString AbandonPrompt = @"Are you sure that you want to quit the quest ""{00}""?";
+        public static LocalizedString AbandonPrompt =
+            @"Are you sure that you want to quit the quest ""{00}""?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString AbandonTitle = @"Abandon Quest: {00}";
@@ -2082,7 +2234,8 @@ public static partial class Strings
             @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|([a-zA-Z]+[\w-]+\.)+[a-zA-Z]{2,4})$";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Password = @"^[-_=\+`~!@#\$%\^&\*()\[\]{}\\|;\:'"",<\.>/\?a-zA-Z0-9]{4,64}$";
+        public static LocalizedString Password =
+            @"^[-_=\+`~!@#\$%\^&\*()\[\]{}\\|;\:'"",<\.>/\?a-zA-Z0-9]{4,64}$";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Username = @"^[a-zA-Z0-9]{2,20}$";
@@ -2191,7 +2344,8 @@ public static partial class Strings
         public static LocalizedString BuyItem = @"Buy Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString BuyItemPrompt = @"How many units of {00} would you like to buy?";
+        public static LocalizedString BuyItemPrompt =
+            @"How many units of {00} would you like to buy?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString CannotSell = @"This shop does not accept that item!";
@@ -2203,7 +2357,8 @@ public static partial class Strings
         public static LocalizedString SellItem = @"Sell Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString SellItemPrompt = @"How many units of {00} would you like to sell?";
+        public static LocalizedString SellItemPrompt =
+            @"How many units of {00} would you like to sell?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString SellPrompt = @"Do you wish to sell the item: {00}?";
@@ -2306,95 +2461,118 @@ public static partial class Strings
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Unfriendly = @"Damaging Spell";
 
-
         // Integer Dictionaries (A - Z):
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> DamageTypes = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> DamageTypes = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"Physical"},
-            {1, @"Magic"},
-            {2, @"True"},
+            { 0, @"Physical" },
+            { 1, @"Magic" },
+            { 2, @"True" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> Effects = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> Effects = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @""},
-            {1, @"Silence"},
-            {2, @"Stun"},
-            {3, @"Snare"},
-            {4, @"Blind"},
-            {5, @"Stealth"},
-            {6, @"Transforms"},
-            {7, @"Cleanse"},
-            {8, @"Invulnerable"},
-            {9, @"Shield"},
-            {10, @"Sleep"},
-            {11, @"On-Hit"},
-            {12, @"Taunt"},
+            { 0, @"" },
+            { 1, @"Silence" },
+            { 2, @"Stun" },
+            { 3, @"Snare" },
+            { 4, @"Blind" },
+            { 5, @"Stealth" },
+            { 6, @"Transforms" },
+            { 7, @"Cleanse" },
+            { 8, @"Invulnerable" },
+            { 9, @"Shield" },
+            { 10, @"Sleep" },
+            { 11, @"On-Hit" },
+            { 12, @"Taunt" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> SpellTypes = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> SpellTypes = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"Combat Spell"},
-            {1, @"Warp to Map"},
-            {2, @"Warp to Target"},
-            {3, @"Dash"},
-            {4, @"Special"},
+            { 0, @"Combat Spell" },
+            { 1, @"Warp to Map" },
+            { 2, @"Warp to Target" },
+            { 3, @"Dash" },
+            { 4, @"Special" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static Dictionary<int, LocalizedString> Stats = new Dictionary<int, LocalizedString>
         {
-            {0, @"Attack"},
-            {1, @"Ability Power"},
-            {2, @"Defense"},
-            {3, @"Magic Resist"},
-            {4, @"Speed"},
+            { 0, @"Attack" },
+            { 1, @"Ability Power" },
+            { 2, @"Defense" },
+            { 3, @"Magic Resist" },
+            { 4, @"Speed" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> StatCounts = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> StatCounts = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"Attack:"},
-            {1, @"Ability Power:"},
-            {2, @"Defense:"},
-            {3, @"Magic Resist:"},
-            {4, @"Speed:"},
+            { 0, @"Attack:" },
+            { 1, @"Ability Power:" },
+            { 2, @"Defense:" },
+            { 3, @"Magic Resist:" },
+            { 4, @"Speed:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> TargetTypes = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> TargetTypes = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"Self Cast"},
-            {1, @"Targetted - Range: {00} Tiles"},
-            {2, @"AOE"},
-            {3, @"Projectile - Range: {00} Tiles"},
-            {4, @"On Hit"},
-            {5, @"Trap"},
+            { 0, @"Self Cast" },
+            { 1, @"Targetted - Range: {00} Tiles" },
+            { 2, @"AOE" },
+            { 3, @"Projectile - Range: {00} Tiles" },
+            { 4, @"On Hit" },
+            { 5, @"Trap" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> VitalCosts = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> VitalCosts = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"HP Cost:"},
-            {1, @"MP Cost:"},
+            { 0, @"HP Cost:" },
+            { 1, @"MP Cost:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> VitalDamage = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> VitalDamage = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"HP Damage:"},
-            {1, @"MP Damage:"},
+            { 0, @"HP Damage:" },
+            { 1, @"MP Damage:" },
         };
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static Dictionary<int, LocalizedString> VitalRecovery = new Dictionary<int, LocalizedString>
+        public static Dictionary<int, LocalizedString> VitalRecovery = new Dictionary<
+            int,
+            LocalizedString
+        >
         {
-            {0, @"HP Recovery:"},
-            {1, @"MP Recovery:"},
+            { 0, @"HP Recovery:" },
+            { 1, @"MP Recovery:" },
         };
     }
 
@@ -2422,7 +2600,8 @@ public static partial class Strings
         public static LocalizedString OfferItem = @"Offer Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString OfferItemPrompt = @"How many units of {00} would you like to offer?";
+        public static LocalizedString OfferItemPrompt =
+            @"How many units of {00} would you like to offer?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Pending = @"Pending";
@@ -2435,7 +2614,8 @@ public static partial class Strings
         public static LocalizedString RevokeItem = @"Revoke Item";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString RevokeItemPrompt = @"How many units of {00} would you like to revoke?";
+        public static LocalizedString RevokeItemPrompt =
+            @"How many units of {00} would you like to revoke?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString TheirOffer = @"Their Offer:";
@@ -2524,5 +2704,4 @@ public static partial class Strings
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString EntityNameAndLevel = @"{00} [Lv. {01}]";
     }
-
 }

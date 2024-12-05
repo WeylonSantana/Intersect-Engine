@@ -27,11 +27,7 @@ public partial class LoginWindow : IMainMenuWindow
     private string _savedPass = string.Empty;
     private string _storedPassword = string.Empty;
 
-    public bool IsHidden
-    {
-        get => _loginWindow?.Visible == false;
-        set => Toggle(!value);
-    }
+    public bool Visible => _loginWindow?.Visible ?? false;
 
     public void Load(MenuInterface mainMenu)
     {
@@ -160,49 +156,61 @@ public partial class LoginWindow : IMainMenuWindow
         LoadCredentials();
     }
 
-    public void Toggle(bool value)
+    public void Show()
     {
         if (_loginWindow == default)
         {
             return;
         }
 
-        _loginWindow.Visible = value;
+        _loginWindow.Visible = true;
 
-        if (_loginWindow.Visible)
+        if (_buttonForgotPassword?.Visible == false)
         {
-            if (_buttonForgotPassword?.Visible == false)
-            {
-                _buttonForgotPassword.Visible = !Options.Instance.SmtpValid;
-            }
-
-            if (string.IsNullOrWhiteSpace(_textboxLoginUsername?.Text))
-            {
-                Interface.SetInputFocus(_textboxLoginUsername);
-            }
-            else
-            {
-                Interface.SetInputFocus(_textboxLoginPassword);
-            }
+            _buttonForgotPassword.Visible = !Options.Instance.SmtpValid;
         }
+
+        if (string.IsNullOrWhiteSpace(_textboxLoginUsername?.Text))
+        {
+            Interface.SetInputFocus(_textboxLoginUsername);
+        }
+        else
+        {
+            Interface.SetInputFocus(_textboxLoginPassword);
+        }
+    }
+
+    public void Hide()
+    {
+        if (_loginWindow == default)
+        {
+            return;
+        }
+
+        _loginWindow.Visible = false;
     }
 
     public void Update()
     {
         if (_buttonLogin != default)
         {
-            _buttonLogin.Enabled = MenuInterface.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
+            _buttonLogin.Enabled =
+                MenuInterface.ActiveNetworkStatus == NetworkStatus.Online
+                && !Globals.WaitingOnServer;
         }
 
         if (_buttonRegister != default)
         {
-            _buttonRegister.Enabled = MenuInterface.ActiveNetworkStatus == NetworkStatus.Online && !Globals.WaitingOnServer;
+            _buttonRegister.Enabled =
+                MenuInterface.ActiveNetworkStatus == NetworkStatus.Online
+                && !Globals.WaitingOnServer;
         }
     }
 
     private void SaveCredentials()
     {
-        string username = string.Empty, password = string.Empty;
+        string username = string.Empty,
+            password = string.Empty;
 
         if (_textboxLoginUsername == default || _textboxLoginPassword == default)
         {
@@ -212,7 +220,9 @@ public partial class LoginWindow : IMainMenuWindow
         if (_checkboxSave?.IsChecked == true)
         {
             username = _textboxLoginUsername.Text.Trim();
-            password = _useSavedPass ? _savedPass : PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
+            password = _useSavedPass
+                ? _savedPass
+                : PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
         }
 
         Globals.Database.SavePreference("Username", username);
@@ -222,7 +232,11 @@ public partial class LoginWindow : IMainMenuWindow
     private void LoadCredentials()
     {
         var name = Globals.Database.LoadPreference("Username");
-        if (string.IsNullOrEmpty(name) || _textboxLoginUsername == default || _textboxLoginPassword == default)
+        if (
+            string.IsNullOrEmpty(name)
+            || _textboxLoginUsername == default
+            || _textboxLoginPassword == default
+        )
         {
             return;
         }
@@ -244,6 +258,7 @@ public partial class LoginWindow : IMainMenuWindow
     }
 
     #region Input Handling
+
     private void _textboxUsername_Clicked(object? sender, EventArgs e)
     {
         if (_textboxLoginUsername == default)
@@ -289,9 +304,11 @@ public partial class LoginWindow : IMainMenuWindow
     {
         Interface.MenuUi?.NotifyOpenForgotPassword();
     }
+
     #endregion
 
     # region Login Handler
+
     private void TryLogin()
     {
         if (Globals.WaitingOnServer)
@@ -342,6 +359,7 @@ public partial class LoginWindow : IMainMenuWindow
             Networking.Network.TryConnect();
         }
     }
+
     private void _addLoginEvents()
     {
         MenuInterface.ReceivedConfiguration += _loginConnected;
@@ -356,9 +374,14 @@ public partial class LoginWindow : IMainMenuWindow
         Networking.Network.Socket.Disconnected -= _loginDisconnected;
     }
 
-    private void _loginConnectionFailed(INetworkLayerInterface nli, ConnectionEventArgs args, bool denied) => _removeLoginEvents();
+    private void _loginConnectionFailed(
+        INetworkLayerInterface nli,
+        ConnectionEventArgs args,
+        bool denied
+    ) => _removeLoginEvents();
 
-    private void _loginDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) => _removeLoginEvents();
+    private void _loginDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) =>
+        _removeLoginEvents();
 
     private void _loginConnected(object? sender, EventArgs eventArgs)
     {
@@ -366,9 +389,11 @@ public partial class LoginWindow : IMainMenuWindow
         SaveCredentials();
         _removeLoginEvents();
     }
+
     #endregion
 
     #region Register Handler
+
     private void _addRegisterEvents()
     {
         MenuInterface.ReceivedConfiguration += _registerConnected;
@@ -383,14 +408,20 @@ public partial class LoginWindow : IMainMenuWindow
         Networking.Network.Socket.Disconnected -= _registerDisconnected;
     }
 
-    private void _registerConnectionFailed(INetworkLayerInterface nli, ConnectionEventArgs args, bool denied) => _removeRegisterEvents();
+    private void _registerConnectionFailed(
+        INetworkLayerInterface nli,
+        ConnectionEventArgs args,
+        bool denied
+    ) => _removeRegisterEvents();
 
-    private void _registerDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) => _removeRegisterEvents();
+    private void _registerDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) =>
+        _removeRegisterEvents();
 
     private void _registerConnected(object? sender, EventArgs eventArgs)
     {
         _removeRegisterEvents();
         _mainMenu.SwitchToWindow<RegisterWindow>();
     }
+
     #endregion
 }

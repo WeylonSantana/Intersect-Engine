@@ -36,8 +36,13 @@ public partial class CreditsWindow : IMainMenuWindow
         _mainMenu.SwitchToWindow<LoginWindow>();
     }
 
-    public void Toggle(bool value)
+    public void Show()
     {
-        _creditsPanel!.Visible = value;
+        _creditsPanel!.Visible = true;
+    }
+
+    public void Hide()
+    {
+        _creditsPanel!.Visible = false;
     }
 }

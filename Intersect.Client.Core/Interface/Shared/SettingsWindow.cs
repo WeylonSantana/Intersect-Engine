@@ -103,29 +103,43 @@ public class SettingsWindow : IMainMenuWindow
         _gameSettingsTab = Interface.GetChildById<Button>("settingsGameTab");
         if (_gameSettingsTab != default)
         {
-            _gameSettingsTab.Click += (s, e) => SwitchToContainer(_settingsGamePanel);
-            _gameSettingsTab.SetText(Strings.Settings.Title);
+            _gameSettingsTab.Click += (s, e) => SwitchToContainer(_settingsGamePanel, _gameSettingsTab);
+            _gameSettingsTab.SetText(Strings.Settings.GameSettingsTab);
         }
 
         _videoSettingsTab = Interface.GetChildById<Button>("settingsVideoTab");
         if (_videoSettingsTab != default)
         {
-            _videoSettingsTab.Click += (s, e) => SwitchToContainer(_settingsVideoPanel);
+            _videoSettingsTab.Click += (s, e) => SwitchToContainer(_settingsVideoPanel, _videoSettingsTab);
             _videoSettingsTab.SetText(Strings.Settings.VideoSettingsTab);
         }
 
         _audioSettingsTab = Interface.GetChildById<Button>("settingsAudioTab");
         if (_audioSettingsTab != default)
         {
-            _audioSettingsTab.Click += (s, e) => SwitchToContainer(_settingsAudioPanel);
+            _audioSettingsTab.Click += (s, e) => SwitchToContainer(_settingsAudioPanel, _audioSettingsTab);
             _audioSettingsTab.SetText(Strings.Settings.AudioSettingsTab);
         }
 
         _keybindingSettingsTab = Interface.GetChildById<Button>("settingsKeybindingTab");
         if (_keybindingSettingsTab != default)
         {
-            _keybindingSettingsTab.Click += (s, e) => SwitchToContainer(_settingsKeybindingPanel);
+            _keybindingSettingsTab.Click += (s, e) => SwitchToContainer(_settingsKeybindingPanel, _keybindingSettingsTab);
             _keybindingSettingsTab.SetText(Strings.Settings.KeyBindingSettingsTab);
+        }
+
+        _settingsApplyBtn = Interface.GetChildById<Button>("settingsSave");
+        if (_settingsApplyBtn != default)
+        {
+            _settingsApplyBtn.Click += SettingsApplyBtn_Clicked;
+            _settingsApplyBtn.SetText(Strings.Settings.Apply);
+        }
+
+        _settingsCancelBtn = Interface.GetChildById<Button>("settingsCancel");
+        if (_settingsCancelBtn != default)
+        {
+            _settingsCancelBtn.Click += SettingsCancelBtn_Clicked;
+            _settingsCancelBtn.SetText(Strings.Settings.Cancel);
         }
 
         #endregion
@@ -263,32 +277,36 @@ public class SettingsWindow : IMainMenuWindow
 
         if (_fpsList != default)
         {
-            var validFps = new List<string>
+            var validFps = new Dictionary<int, string>
             {
-                Strings.Settings.Vsync,
-                Strings.Settings.Fps30,
-                Strings.Settings.Fps60,
-                Strings.Settings.Fps90,
-                Strings.Settings.Fps120,
-                Strings.Settings.UnlimitedFps,
+                {
+                    0, Strings.Settings.Vsync
+                },
+                {
+                    1, Strings.Settings.Fps30
+                },
+                {
+                    2, Strings.Settings.Fps60
+                },
+                {
+                    3, Strings.Settings.Fps90
+                },
+                {
+                    4, Strings.Settings.Fps120
+                },
+                {
+                    5, Strings.Settings.UnlimitedFps
+                },
             };
 
             // Add valid fps to the fps list.
-            validFps.ForEach(t => { _fpsList.AddItem(t); });
+            foreach (var fps in validFps)
+            {
+                _fpsList.AddItem(fps.Value, fps.Key.ToString());
+            }
 
             // Select the current fps.
-            _fpsList.SelectByText(
-                Globals.Database.TargetFps switch
-                {
-                    -1 => Strings.Settings.UnlimitedFps,
-                    0 => Strings.Settings.Vsync,
-                    1 => Strings.Settings.Fps30,
-                    2 => Strings.Settings.Fps60,
-                    3 => Strings.Settings.Fps90,
-                    4 => Strings.Settings.Fps120,
-                    _ => Strings.Settings.Vsync
-                }
-            );
+            _fpsList.SelectByKey(Globals.Database.TargetFps.ToString());
         }
 
         Interface.GetChildById<Label>("settingsWorldScaleLabel")?.SetText(Strings.Settings.WorldScale);
@@ -341,6 +359,8 @@ public class SettingsWindow : IMainMenuWindow
         #region Keybinding Settings Load
 
         _settingsKeybindingPanel = Interface.GetChildById<Panel>("settingsKeybinding");
+        _keybindingRestoreBtn = Interface.GetChildById<Button>("settingsRestoreDefaults");
+        _keybindingRestoreBtn?.SetText(Strings.Settings.Restore);
 
         #endregion
 
@@ -372,45 +392,47 @@ public class SettingsWindow : IMainMenuWindow
 
     #region Settings Setup
 
-    private void SwitchToContainer(Panel? container)
+    private void SwitchToContainer(Panel? container, Button? tab)
     {
-        if (container == default)
+        if (container == default || tab == default)
         {
             return;
         }
 
-        _settingsGamePanel.ToggleVisibility(false);
-        _settingsVideoPanel.ToggleVisibility(false);
-        _settingsAudioPanel.ToggleVisibility(false);
-        _settingsKeybindingPanel.ToggleVisibility(false);
+        _settingsGamePanel?.ToggleVisibility(false);
+        _settingsVideoPanel?.ToggleVisibility(false);
+        _settingsAudioPanel?.ToggleVisibility(false);
+        _settingsKeybindingPanel?.ToggleVisibility(false);
+
+        _gameSettingsTab?.ToggleEnabled(true);
+        _videoSettingsTab?.ToggleEnabled(true);
+        _audioSettingsTab?.ToggleEnabled(true);
+        _keybindingSettingsTab?.ToggleEnabled(true);
+
+        _keybindingRestoreBtn?.ToggleVisibility(container.Id == _settingsKeybindingPanel?.Id);
 
         container.Visible = true;
+        tab?.ToggleEnabled(false);
     }
 
-    public void Toggle(bool value)
+    // inherited from IMainMenuWindow
+    public void Show()
     {
-        if (!Visible)
-        {
-            Show();
-        }
-        else
-        {
-            Hide();
-        }
+        Show(false);
     }
 
-    public void Show(bool returnToMenu = false)
+    public void Show(bool returnToMenu)
     {
         Visible = true;
+
+        // Set up whether we're supposed to return to the previous menu.
+        _returnToMenu = returnToMenu;
 
         // Control Settings.
         _keybindingEditControls = new Controls(Controls.ActiveControls);
 
         // Load every GUI element to their default state when showing up the settings window (pressed tabs, containers, etc.)
         LoadSettingsWindow();
-
-        // Set up whether we're supposed to return to the previous menu.
-        _returnToMenu = returnToMenu;
     }
 
     public void Hide()
@@ -423,6 +445,7 @@ public class SettingsWindow : IMainMenuWindow
             return;
         }
 
+        _returnToMenu = false;
         switch (Globals.GameState)
         {
             case GameStates.Menu:
@@ -437,8 +460,6 @@ public class SettingsWindow : IMainMenuWindow
             default:
                 throw new NotImplementedException();
         }
-
-        _returnToMenu = false;
     }
 
     private void LoadSettingsWindow()
@@ -601,6 +622,7 @@ public class SettingsWindow : IMainMenuWindow
 
     private void KeybindingsRestoreBtn_Clicked(object? sender, EventArgs _)
     {
+        var t = "";
         // _keybindingEditControls.ResetDefaults();
         // foreach (Control control in Enum.GetValues(typeof(Control)))
         // {

@@ -94,12 +94,12 @@ public partial class MenuInterface
             CreateCharacterCreation();
         }
 
-        if (!_loginWindow.IsHidden)
+        if (_loginWindow.Visible)
         {
             _loginWindow.Update();
         }
 
-        if (!_registerWindow.IsHidden)
+        if (_registerWindow.Visible)
         {
             _registerWindow.Update();
         }
@@ -120,10 +120,10 @@ public partial class MenuInterface
 
     public void Reset()
     {
-        _loginWindow.Toggle(false);
-        _registerWindow.Toggle(false);
-        _settingsWindow?.Hide();
-        _creditsWindow.Toggle(false);
+        _loginWindow.Hide();
+        _registerWindow.Hide();
+        _settingsWindow.Hide();
+        _creditsWindow.Hide();
         _forgotPasswordWindow?.Hide();
         _resetPasswordWindow?.Hide();
         _createCharacterWindow?.Hide();
@@ -145,7 +145,7 @@ public partial class MenuInterface
     public void NotifyOpenLogin()
     {
         Reset();
-        _loginWindow.Toggle(true);
+        _loginWindow.Show();
     }
 
     public void OpenResetPassword(string nameEmail)
@@ -177,19 +177,19 @@ public partial class MenuInterface
         Reset();
         if (typeof(TMainMenuWindow) == typeof(LoginWindow))
         {
-            _loginWindow.Toggle(true);
+            _loginWindow.Show();
         }
         else if (typeof(TMainMenuWindow) == typeof(RegisterWindow))
         {
-            _registerWindow.Toggle(true);
+            _registerWindow.Show();
         }
         else if (typeof(TMainMenuWindow) == typeof(SettingsWindow))
         {
-            _settingsWindow.Show();
+            _settingsWindow.Show(true);
         }
         else if (typeof(TMainMenuWindow) == typeof(CreditsWindow))
         {
-            _creditsWindow.Toggle(true);
+            _creditsWindow.Show();
         }
     }
 
