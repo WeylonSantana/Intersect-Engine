@@ -13,7 +13,7 @@ namespace Intersect.Client.Interface;
 
 public static partial class Interface
 {
-    private static Desktop Desktop { get; set; } = new Desktop();
+    public static Desktop Desktop { get; set; } = new Desktop();
 
     public static GameInterface? GameUi { get; private set; }
 

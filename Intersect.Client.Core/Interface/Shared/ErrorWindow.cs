@@ -11,17 +11,13 @@ public partial class ErrorHandler
         while (Interface.TryDequeueErrorMessage(out var message))
         {
             _windows.Add(
-                _ = new InputBox(
+                new InputBox(
                     title: string.IsNullOrWhiteSpace(message.Key) ? Strings.Errors.Title.ToString() : message.Key,
                     prompt: message.Value,
                     inputType: InputBox.InputType.OkayOnly,
                     onSuccess: (sender, e) =>
                     {
-                        foreach (var window in _windows)
-                        {
-                            window.Dispose();
-                        }
-
+                        // Clear window after iteration is complete
                         _windows.Clear();
                     }
                 )
