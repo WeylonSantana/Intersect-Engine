@@ -1,101 +1,100 @@
 <Project>
-  <Project.ExportOptions />
   <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="420" Padding="5, 10" Background="#202020FF">
-    <Label Text="Credits" HorizontalAlignment="Center" Id="_labelCreditsTitle" />
+    <Label Text="Credits" HorizontalAlignment="Center" Id="_labelCreditsTitle" TextColor="#6495ed" />
     <ScrollViewer ShowHorizontalScrollBar="False" Top="30" Width="420" Height="330" >
       <VerticalStackPanel HorizontalAlignment="Center" Width="400">
-        <Label Text="Intersect Engine" HorizontalAlignment="Center" />
-        <Label Text="www.freemmorpgmaker.com" HorizontalAlignment="Center" />
-        <Label Text="Copyright 2022 (C) Ascension Game Dev" HorizontalAlignment="Center" />
+        <Label Text="Intersect Engine" HorizontalAlignment="Center" TextColor="#cca01d" />
+        <Label Text="www.freemmorpgmaker.com" HorizontalAlignment="Center" TextColor="#cca01d" />
+        <Label Text="Copyright 2024 (C) Ascension Game Dev" HorizontalAlignment="Center" TextColor="#cca01d" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Authors" HorizontalAlignment="Center" />
+        <Label Text="Authors" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="JC Snider" HorizontalAlignment="Center" />
-        <Label Text="Joe Bridges" HorizontalAlignment="Center" />
-        <Label Text="Robbie Lodico" HorizontalAlignment="Center" />
+        <Label Text="JC Snider" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Joe Bridges" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Robbie Lodico" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Maintainers" HorizontalAlignment="Center" />
+        <Label Text="Maintainers" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Jocelyn Cobb" HorizontalAlignment="Center" />
+        <Label Text="Jocelyn Cobb" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Contributors" HorizontalAlignment="Center" />
+        <Label Text="Contributors" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Alex Vild" HorizontalAlignment="Center" />
-        <Label Text="A.I. Robin" HorizontalAlignment="Center" />
-        <Label Text="Dog from the Kash Shop" HorizontalAlignment="Center" />
-        <Label Text="Fernando Arzola Lagos" HorizontalAlignment="Center" />
+        <Label Text="Alex Vild" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="A.I. Robin" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Dog from the Kash Shop" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Fernando Arzola Lagos" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Graphics" HorizontalAlignment="Center" />
+        <Label Text="Graphics" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="7Soul" HorizontalAlignment="Center" />
-        <Label Text="Item and Skill Icons" HorizontalAlignment="Center" />
+        <Label Text="7Soul" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Item and Skill Icons" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Cordell Carrier (aka Murdoc)" HorizontalAlignment="Center" />
-        <Label Text="Tilesets and Sprite Modifications" HorizontalAlignment="Center" />
+        <Label Text="Cordell Carrier (aka Murdoc)" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Tilesets and Sprite Modifications" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="George Bailey (aka George)" HorizontalAlignment="Center" />
-        <Label Text="Graphic Style, Original Tilesets, and Items" HorizontalAlignment="Center" />
+        <Label Text="George Bailey (aka George)" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Graphic Style, Original Tilesets, and Items" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Joe Williamson (aka @JoeCreates)" HorizontalAlignment="Center" />
-        <Label Text="Item Icons" HorizontalAlignment="Center" />
+        <Label Text="Joe Williamson (aka @JoeCreates)" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Item Icons" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Jon Collier (aka Zetasis)" HorizontalAlignment="Center" />
-        <Label Text="Tiles, Characters, Resources, Generator Components, Paperdolls, UI Icons, and so much more!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="Jon Collier (aka Zetasis)" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Tiles, Characters, Resources, Generator Components, Paperdolls, UI Icons, and so much more!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="PixelFox" HorizontalAlignment="Center" />
-        <Label Text="Animations, Characters, Monsters, Paperdolls, and Tiles" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="PixelFox" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Animations, Characters, Monsters, Paperdolls, and Tiles" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="User Interface" HorizontalAlignment="Center" />
+        <Label Text="User Interface" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Aesthetic" HorizontalAlignment="Center" />
-        <Label Text="Original UI Design" HorizontalAlignment="Center" />
+        <Label Text="Aesthetic" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Original UI Design" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="FontAwesome" HorizontalAlignment="Center" />
-        <Label Text="UI Icons" HorizontalAlignment="Center" />
+        <Label Text="FontAwesome" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="UI Icons" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Vincent Garreau (particles.js)" HorizontalAlignment="Center" />
-        <Label Text="Button Textures" HorizontalAlignment="Center" />
+        <Label Text="Vincent Garreau (particles.js)" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Button Textures" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Sound Effects" HorizontalAlignment="Center" />
+        <Label Text="Sound Effects" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="artisticdude" HorizontalAlignment="Center" />
-        <Label Text="Various RPG Sound Effects" HorizontalAlignment="Center" />
+        <Label Text="artisticdude" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Various RPG Sound Effects" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Kenney" HorizontalAlignment="Center" />
-        <Label Text="RPG and UI Sound Effects" HorizontalAlignment="Center" />
+        <Label Text="Kenney" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="RPG and UI Sound Effects" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Octave Sounds" HorizontalAlignment="Center" />
-        <Label Text="UI Sound Effects" HorizontalAlignment="Center" />
+        <Label Text="Octave Sounds" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="UI Sound Effects" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Music" HorizontalAlignment="Center" />
+        <Label Text="Music" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Eric Matyas" HorizontalAlignment="Center" />
-        <Label Text="SoundImage.org" HorizontalAlignment="Center" />
+        <Label Text="Eric Matyas" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="SoundImage.org" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Fonts" HorizontalAlignment="Center" />
+        <Label Text="Fonts" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Adobe" HorizontalAlignment="Center" />
-        <Label Text="Source Sans Pro and Source Sans Pro Black" HorizontalAlignment="Center" />
+        <Label Text="Adobe" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Source Sans Pro and Source Sans Pro Black" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Special Thanks" HorizontalAlignment="Center" />
+        <Label Text="Special Thanks" HorizontalAlignment="Center" TextColor="#6495ed" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Nightmare" HorizontalAlignment="Center" />
-        <Label Text="Acting as an incredible testing environment, and helping us conquer engine limitations!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="Nightmare" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Acting as an incredible testing environment, and helping us conquer engine limitations!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Internal Testing Team(s)" HorizontalAlignment="Center" />
-        <Label Text="Khaikaa, Zetasis, Niko, Raku, Mcadams, BiGG, Ainz Ooal Gown, davidsaid06, dxxknight, and hiroman!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="Internal Testing Team(s)" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Khaikaa, Zetasis, Niko, Raku, Mcadams, BiGG, Ainz Ooal Gown, davidsaid06, dxxknight, and hiroman!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Zetasis" HorizontalAlignment="Center" />
-        <Label Text="The amount of miscellaneous graphics he created for us on a whim, free of charge, and throughout all hours of the night is insane. Thanks Zeta!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="Zetasis" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="The amount of miscellaneous graphics he created for us on a whim, free of charge, and throughout all hours of the night is insane. Thanks Zeta!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Robin Perris" HorizontalAlignment="Center" />
-        <Label Text="DarkUI library and various development consultations." Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="Robin Perris" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="DarkUI library and various development consultations." Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="MonoGame Framework" HorizontalAlignment="Center" />
-        <Label Text="Engine rendering, input handling, audio playback systems, and more!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="MonoGame Framework" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Engine rendering, input handling, audio playback systems, and more!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
-        <Label Text="Ascension Game Dev Community" HorizontalAlignment="Center" />
-        <Label Text="Moral support, financial support, alpha/beta testing, and so much more!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" />
+        <Label Text="Ascension Game Dev Community" HorizontalAlignment="Center" TextColor="#FFFFFF" />
+        <Label Text="Moral support, financial support, alpha/beta testing, and so much more!" Wrap="True" TextAlign="Center" HorizontalAlignment="Center" TextColor="#FFFFFF" />
         <Label HorizontalAlignment="Center" />
       </VerticalStackPanel>
     </ScrollViewer>

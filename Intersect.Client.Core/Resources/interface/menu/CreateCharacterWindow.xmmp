@@ -1,0 +1,49 @@
+﻿<Project>
+  <VerticalStackPanel Id="_createCharacterWindow" Width="420" Height="300" Padding="0,0,0,0" Margin="0,0,0,0" Background="#202020FF" HorizontalAlignment="Center" VerticalAlignment="Center">
+    
+    <Label Id="_labelCreateCharacterTitle" Text="Create a New Character" HorizontalAlignment="Center" Margin="0,10,0,10" />
+
+    <HorizontalStackPanel HorizontalAlignment="Center" Margin="0,10,0,5">
+      <Label Text="Name:" VerticalAlignment="Center" />
+      <TextBox Id="CharacterNameField" Width="200" Margin="10,0,0,0" />
+    </HorizontalStackPanel>
+
+    <HorizontalStackPanel HorizontalAlignment="Center" Margin="0,5,0,5">
+      <Label Text="Class:" VerticalAlignment="Center" />
+      <ComboBox Id="_classComboBox" Width="200" Margin="10,0,0,0" />
+    </HorizontalStackPanel>
+
+    <HorizontalStackPanel HorizontalAlignment="Center" Margin="0,5,0,5">
+      <Label Text="Gender:" VerticalAlignment="Center" />
+      <HorizontalStackPanel Margin="10,0,0,0">
+        <CheckButton Id="_maleCheckbutton" IsChecked="true" Margin="0,0,10,0">
+			<Label Text="Male" VerticalAlignment="Center" />
+		</CheckButton>
+        <CheckButton Id="_femaleCheckbutton">
+			<Label Text="Female" VerticalAlignment="Center" />
+		</CheckButton>
+      </HorizontalStackPanel>
+    </HorizontalStackPanel>
+
+    <Image Id="_characterPortrait" Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,10" />
+
+    <HorizontalStackPanel HorizontalAlignment="Center" Margin="0,55,0,5">
+      <Button Id="_previousSpriteButton" Margin="0,0,10,0">
+        <Label Text="Previous" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Button>
+      <Button Id="_nextSpriteButton">
+        <Label Text="Next" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Button>
+    </HorizontalStackPanel>
+
+    <HorizontalStackPanel HorizontalAlignment="Center" Margin="0,10,0,5">
+      <Button Id="_createButton" Margin="0,0,10,0">
+        <Label Text="Create" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Button>
+      <Button Id="_backButton">
+        <Label Text="Back" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Button>
+    </HorizontalStackPanel>
+
+  </VerticalStackPanel>
+</Project>
