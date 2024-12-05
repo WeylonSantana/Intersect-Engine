@@ -55,8 +55,13 @@ public partial class MenuInterface
 
         //_forgotPasswordWindow = new ForgotPasswordWindow(_menuCanvas, this);
         //_resetPasswordWindow = new ResetPasswordWindow(_menuCanvas, this);
-        //SelectCharacterWindow = new SelectCharacterWindow(_menuCanvas, this);
-        //_createCharacterWindow = new CreateCharacterWindow(_menuCanvas, this, SelectCharacterWindow);
+
+        SelectCharacterWindow = new SelectCharacterWindow();
+        SelectCharacterWindow.Load(this);
+
+        _createCharacterWindow = new CreateCharacterWindow();
+        _createCharacterWindow.Load(this);
+
         _settingsWindow = new SettingsWindow();
         _settingsWindow.Load(this);
 
@@ -104,15 +109,17 @@ public partial class MenuInterface
             _registerWindow.Update();
         }
 
-        _settingsWindow.Update();
-        return;
+        if (_settingsWindow.Visible)
+        {
+            _settingsWindow.Update();
+        }
 
-        if (!_createCharacterWindow.IsHidden)
+        if (_createCharacterWindow.Visible)
         {
             _createCharacterWindow.Update();
         }
 
-        if (!SelectCharacterWindow.IsHidden)
+        if (SelectCharacterWindow.Visible)
         {
             SelectCharacterWindow.Update();
         }
@@ -168,7 +175,6 @@ public partial class MenuInterface
     {
         Reset();
         _createCharacterWindow.Show();
-        _createCharacterWindow.Init();
         mShouldOpenCharacterCreation = false;
     }
 
@@ -190,6 +196,14 @@ public partial class MenuInterface
         else if (typeof(TMainMenuWindow) == typeof(CreditsWindow))
         {
             _creditsWindow.Show();
+        }
+        else if (typeof(TMainMenuWindow) == typeof(SelectCharacterWindow))
+        {
+            SelectCharacterWindow.Show();
+        }
+        else if (typeof(TMainMenuWindow) == typeof(CreateCharacterWindow))
+        {
+            _createCharacterWindow.Show();
         }
     }
 

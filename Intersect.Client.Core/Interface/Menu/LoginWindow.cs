@@ -320,20 +320,20 @@ public partial class LoginWindow : IMainMenuWindow
         {
             return;
         }
-
-        if (!Networking.Network.IsConnected)
-        {
+        
+        /*if (!Networking.Network.IsConnected)
+        { // unable to go past this :S
             Interface.ShowError(Strings.Errors.NotConnected);
             return;
-        }
+        }*/
 
-        if (!FieldChecking.IsValidUsername(_textboxLoginUsername.Text, Strings.Regex.Username))
+        if (!FieldChecking.IsValidUsername(_textboxLoginUsername?.Text, Strings.Regex.Username))
         {
             Interface.ShowError(Strings.Errors.UsernameInvalid);
             return;
         }
 
-        if (!FieldChecking.IsValidPassword(_textboxLoginPassword.Text, Strings.Regex.Password))
+        if (!FieldChecking.IsValidPassword(_textboxLoginPassword?.Text, Strings.Regex.Password))
         {
             if (!_useSavedPass)
             {
@@ -345,7 +345,7 @@ public partial class LoginWindow : IMainMenuWindow
         _storedPassword = _savedPass;
         if (!_useSavedPass)
         {
-            _storedPassword = PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
+            _storedPassword = PasswordUtils.ComputePasswordHash(_textboxLoginPassword?.Text.Trim());
         }
 
         Globals.WaitingOnServer = true;
@@ -387,6 +387,7 @@ public partial class LoginWindow : IMainMenuWindow
     {
         PacketSender.SendLogin(_textboxLoginUsername!.Text, _storedPassword);
         SaveCredentials();
+        //ChatboxMsg.ClearMessages();
         _removeLoginEvents();
     }
 

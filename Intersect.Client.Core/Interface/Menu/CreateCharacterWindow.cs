@@ -1,161 +1,118 @@
-using Intersect.Client.Core;
-using Intersect.Client.Framework.Content;
-using Intersect.Client.Framework.File_Management;
-using Intersect.Client.Framework.Gwen.Control;
-using Intersect.Client.Framework.Gwen.Control.EventArguments;
+using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Game.Chat;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.GameObjects;
 using Intersect.Logging;
 using Intersect.Utilities;
+using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class CreateCharacterWindow : ImagePanel
+public partial class CreateCharacterWindow : IMainMenuWindow
 {
     // Parent
-    private readonly MenuInterface _mainMenu;
-    private readonly SelectCharacterWindow _selectCharWindow;
-
-    // Header
-    private readonly TextBox _charNameTextbox;
-
-    // Class Combobox
-    private readonly ComboBox _classCombobox;
-
-    // Character Image Container
-    private readonly ImagePanel _charContainer;
-    private readonly ImagePanel _charPortrait;
-    private readonly Button _nextSpriteButton;
-    private readonly Button _prevSpriteButton;
-
-    // Gender Combobox
-    private readonly LabeledCheckBox _chkMale;
-    private readonly LabeledCheckBox _chkFemale;
-
-    // Buttons
-    private readonly Button _createButton;
-
+    private MenuInterface _mainMenu = null!;
+    private Widget? _createCharacterWindow;
+    private TextBox? _charNameTextbox;
+    private ComboBox? _classComboBox;
+    private CheckButton? _chkMale;
+    private CheckButton? _chkFemale;
+    private Image? _charPortrait;
+    private Button? _prevSpriteButton;
+    private Button? _nextSpriteButton;
+    private Button? _createButton;
+    private Button? _backButton;
     private int _displaySpriteIndex = -1;
-    private readonly List<KeyValuePair<int, ClassSprite>> _femaleSprites = [];
-    private readonly List<KeyValuePair<int, ClassSprite>> _maleSprites = [];
+    private readonly List<KeyValuePair<int, ClassSprite>> _femaleSprites = new();
+    private readonly List<KeyValuePair<int, ClassSprite>> _maleSprites = new();
 
-    public CreateCharacterWindow(Canvas parent, MenuInterface mainMenu, SelectCharacterWindow selectCharacterWindow) : base(parent, "CharacterCreationWindow")
+    public bool Visible => _createCharacterWindow?.Visible ?? false;
+
+    public void Load(MenuInterface mainMenu)
     {
-        // Assign References
         _mainMenu = mainMenu;
-        _selectCharWindow = selectCharacterWindow;
+        _createCharacterWindow = Interface.LoadContent(Path.Combine("menu", "CreateCharacterWindow.xmmp"));
 
-        // Menu Header
-        _ = new Label(this, "CharacterCreationHeader")
+        //Menu Header
+        if (Interface.GetChildById<Label>("_labelCreateCharacterTitle", out var labelSelectCharacterTitle))
         {
-            Text = Strings.CharacterCreation.Title
-        };
+            labelSelectCharacterTitle.Text = Strings.CharacterCreation.Title;
+        }
 
-        // Character Name Background
-        var charNameBackground = new ImagePanel(this, "CharacterNamePanel");
-
-        // Character Name Label
-        _ = new Label(charNameBackground, "CharacterNameLabel")
+        //Character Name
+        if (Interface.GetChildById<TextBox>("_characterNameField", out var characterNameField))
         {
-            Text = Strings.CharacterCreation.Name
-        };
-
-        // Character Name Textbox
-        _charNameTextbox = new TextBox(charNameBackground, "CharacterNameField");
-        _charNameTextbox.SubmitPressed += (sender, e) => TryCreateCharacter();
-
-        // Class Background
-        var classBackground = new ImagePanel(this, "ClassPanel");
-
-        // Class Label
-        _ = new Label(classBackground, "ClassLabel")
-        {
-            Text = Strings.CharacterCreation.Class
-        };
+            _charNameTextbox = characterNameField;
+            Interface.SetInputFocus(_charNameTextbox);
+            _charNameTextbox.TouchDown += _textboxCharactername_Clicked;
+        }
 
         // Class Combobox
-        _classCombobox = new ComboBox(classBackground, "ClassCombobox");
-        _classCombobox.ItemSelected += classCombobox_ItemSelected;
-
-        // Hint Label
-        _ = new Label(this, "HintLabel")
+        if (Interface.GetChildById<ComboBox>("_classComboBox", out var classCombobox))
         {
-            Text = Strings.CharacterCreation.Hint,
-            IsHidden = true
-        };
-
-        // Hint2 Label
-        _ = new Label(this, "Hint2Label")
-        {
-            Text = Strings.CharacterCreation.Hint2,
-            IsHidden = true
-        };
-
-        // Character Container
-        _charContainer = new ImagePanel(this, "CharacterContainer");
-
-        // Character sprite
-        _charPortrait = new ImagePanel(_charContainer, "CharacterPortait");
-        _ = _charPortrait.SetSize(48, 48);
-
-        // Next Sprite Button
-        _nextSpriteButton = new Button(_charContainer, "NextSpriteButton");
-        _nextSpriteButton.Clicked += _nextSpriteButton_Clicked;
-
-        // Prev Sprite Button
-        _prevSpriteButton = new Button(_charContainer, "PreviousSpriteButton");
-        _prevSpriteButton.Clicked += _prevSpriteButton_Clicked;
-
-        // Class Background
-        var genderBackground = new ImagePanel(this, "GenderPanel");
-
-        // Gender Label
-        _ = new Label(genderBackground, "GenderLabel")
-        {
-            Text = Strings.CharacterCreation.Gender
-        };
+            _classComboBox = classCombobox;
+            _classComboBox.SelectedIndexChanged += ClassComboBoxItemSelected;
+        }
 
         // Male Checkbox
-        _chkMale = new LabeledCheckBox(genderBackground, "MaleCheckbox")
+        if (Interface.GetChildById<CheckButton>("_maleCheckbutton", out var chkMale))
         {
-            Text = Strings.CharacterCreation.Male,
-            IsChecked = true
-        };
-        _chkMale.Checked += maleChk_Checked;
-        _chkMale.UnChecked += femaleChk_Checked;
+            _chkMale = chkMale;
+            _chkMale.TouchDown += maleChk_Checked;
+        }
 
         // Female Checkbox
-        _chkFemale = new LabeledCheckBox(genderBackground, "FemaleCheckbox")
+        if (Interface.GetChildById<CheckButton>("_femaleCheckbutton", out var chkFemale))
         {
-            Text = Strings.CharacterCreation.Female
-        };
+            _chkFemale = chkFemale;
+            _chkFemale.TouchDown += femaleChk_Checked;
+        }
 
-        _chkFemale.Checked += femaleChk_Checked;
-        _chkFemale.UnChecked += maleChk_Checked;
-
-        // Register - Send Registration Button
-        _createButton = new Button(this, "CreateButton")
+        // Character Portrait
+        if (Interface.GetChildById<Image>("_characterPortrait", out var charPortrait))
         {
-            Text = Strings.CharacterCreation.Create
-        };
-        _createButton.Clicked += CreateButton_Clicked;
+            _charPortrait = charPortrait;
+        }
 
-        var backButton = new Button(this, "BackButton")
+        // Previous Sprite Button
+        if (Interface.GetChildById<Button>("_previousSpriteButton", out var prevSpriteButton))
         {
-            Text = Strings.CharacterCreation.Back,
-            IsHidden = true
-        };
-        backButton.Clicked += BackButton_Clicked;
+            _prevSpriteButton = prevSpriteButton;
+            _prevSpriteButton.Click += _prevSpriteButton_Clicked;
+        }
 
-        LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer?.GetResolutionString());
+        // Next Sprite Button
+        if (Interface.GetChildById<Button>("_nextSpriteButton", out var nextSpriteButton))
+        {
+            _nextSpriteButton = nextSpriteButton;
+            _nextSpriteButton.Click += _nextSpriteButton_Clicked;
+        }
+
+        // Create Button
+        if (Interface.GetChildById<Button>("_createButton", out var createButton))
+        {
+            _createButton = createButton;
+            _createButton.Click += CreateButton_Clicked;
+        }
+
+        // Back Button
+        if (Interface.GetChildById<Button>("_backButton", out var backButton))
+        {
+            _backButton = backButton;
+            _backButton.Click += BackButton_Clicked;
+        }
     }
 
-    public void Init()
+    public void Show()
     {
-        _classCombobox.DeleteAll();
+        if (_createCharacterWindow == default)
+        {
+            return;
+        }
+
+        _createCharacterWindow.Visible = true;
+        _classComboBox?.Items.Clear();
         var classCount = 0;
         foreach (ClassBase cls in ClassBase.Lookup.Values.Cast<ClassBase>())
         {
@@ -164,50 +121,56 @@ public partial class CreateCharacterWindow : ImagePanel
                 continue;
             }
 
-            _ = _classCombobox.AddItem(cls.Name);
+            _classComboBox?.Items.Add(new ListItem(cls.Name));
             classCount++;
         }
 
         Log.Debug($"Added {classCount} classes to {nameof(CreateCharacterWindow)}");
-
         LoadClass();
         UpdateDisplay();
+    }
+
+    public void Hide()
+    {
+        if (_createCharacterWindow == default)
+        {
+            return;
+        }
+
+        _createCharacterWindow.Visible = false;
     }
 
     public void Update()
     {
         if (!Networking.Network.IsConnected)
         {
-            Hide();
             _mainMenu.SwitchToWindow<LoginWindow>();
             return;
         }
 
-        // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
-        if (!Globals.WaitingOnServer && _createButton.IsDisabled)
+        if (!Globals.WaitingOnServer && !_createButton.Enabled)
         {
-            _createButton.Enable();
+            _createButton.Enabled = true;
         }
     }
 
-    //Methods
     private void UpdateDisplay()
     {
         bool isFace;
         var cls = GetClass();
-
         if (cls == default || _displaySpriteIndex == -1)
         {
-            _charPortrait.IsHidden = true;
+            _charPortrait.Visible = false;
             return;
         }
 
-        _charPortrait.IsHidden = false;
-
+        _charPortrait.Visible = true;
         if (cls.Sprites.Count <= 0)
         {
             return;
         }
+
+        /*
 
         var source = _chkMale.IsChecked ? _maleSprites[_displaySpriteIndex] : _femaleSprites[_displaySpriteIndex];
         var faceTex = Globals.ContentManager.GetTexture(TextureType.Face, source.Value.Face);
@@ -221,34 +184,39 @@ public partial class CreateCharacterWindow : ImagePanel
             return;
         }
 
-        var imgWidth = _charPortrait.Texture.GetWidth();
-        var imgHeight = _charPortrait.Texture.GetHeight();
+        var imgWidth = _charPortrait.Texture.Width;
+        var imgHeight = _charPortrait.Texture.Height;
         var textureWidth = isFace ? imgWidth : imgWidth / Options.Instance.Sprites.NormalFrames;
         var textureHeight = isFace ? imgHeight : imgHeight / Options.Instance.Sprites.Directions;
 
-        _charPortrait.SetTextureRect(0, 0, textureWidth, textureHeight);
+        //_charPortrait.SetTextureRect(0, 0, textureWidth, textureHeight);
 
-        var scale = Math.Min(_charContainer.InnerWidth / (double)imgWidth, _charContainer.InnerHeight / (double)imgHeight);
+        var scale = Math.Min(_charPortrait.Width / (double)imgWidth, _charPortrait.Height / (double)imgHeight);
         var sizeX = isFace ? (int)(imgWidth * scale) : textureWidth;
         var sizeY = isFace ? (int)(imgHeight * scale) : textureHeight;
-        _ = _charPortrait.SetSize(sizeX, sizeY);
+        _charPortrait.Width = sizeX;
+        _charPortrait.Height = sizeY;
 
-        var centerX = (_charContainer.Width / 2) - (_charPortrait.Width / 2);
-        var centerY = (_charContainer.Height / 2) - (_charPortrait.Height / 2);
-        _charPortrait.SetPosition(centerX, centerY);
+        var centerX = (_charPortrait.Parent.Width / 2) - (_charPortrait.Width / 2);
+        var centerY = (_charPortrait.Parent.Height / 2) - (_charPortrait.Height / 2);
+        _charPortrait.Left = centerX;
+        _charPortrait.Top = centerY;
+        */
     }
 
     private ClassBase? GetClass()
     {
-        if (_classCombobox.SelectedItem == null)
+        if (_classComboBox?.SelectedItem == null)
         {
             return null;
         }
 
         return ClassBase.Lookup.Values.OfType<ClassBase>().FirstOrDefault(
-            descriptor =>
-                !descriptor.Locked &&
-                string.Equals(_classCombobox.SelectedItem.Text, descriptor.Name, StringComparison.Ordinal)
+            descriptor => !descriptor.Locked && string.Equals(
+                _classComboBox.SelectedItem.ToString(),
+                descriptor.Name,
+                StringComparison.Ordinal
+            )
         );
     }
 
@@ -278,9 +246,8 @@ public partial class CreateCharacterWindow : ImagePanel
 
     private void ResetSprite()
     {
-        _nextSpriteButton.IsHidden = true;
-        _prevSpriteButton.IsHidden = true;
-
+        _nextSpriteButton.Visible = true;
+        _prevSpriteButton.Visible = true;
         if (_chkMale.IsChecked)
         {
             if (_maleSprites.Count > 0)
@@ -288,8 +255,8 @@ public partial class CreateCharacterWindow : ImagePanel
                 _displaySpriteIndex = 0;
                 if (_maleSprites.Count > 1)
                 {
-                    _nextSpriteButton.IsHidden = false;
-                    _prevSpriteButton.IsHidden = false;
+                    _nextSpriteButton.Visible = true;
+                    _prevSpriteButton.Visible = true;
                 }
             }
             else
@@ -304,8 +271,8 @@ public partial class CreateCharacterWindow : ImagePanel
                 _displaySpriteIndex = 0;
                 if (_femaleSprites.Count > 1)
                 {
-                    _nextSpriteButton.IsHidden = false;
-                    _prevSpriteButton.IsHidden = false;
+                    _nextSpriteButton.Visible = true;
+                    _prevSpriteButton.Visible = true;
                 }
             }
             else
@@ -315,7 +282,7 @@ public partial class CreateCharacterWindow : ImagePanel
         }
     }
 
-    private void _prevSpriteButton_Clicked(Base sender, ClickedEventArgs arguments)
+    private void _prevSpriteButton_Clicked(object sender, EventArgs arguments)
     {
         _displaySpriteIndex--;
         if (_chkMale.IsChecked)
@@ -350,7 +317,7 @@ public partial class CreateCharacterWindow : ImagePanel
         UpdateDisplay();
     }
 
-    private void _nextSpriteButton_Clicked(Base sender, ClickedEventArgs arguments)
+    private void _nextSpriteButton_Clicked(object sender, EventArgs arguments)
     {
         _displaySpriteIndex++;
         if (_chkMale.IsChecked)
@@ -400,22 +367,43 @@ public partial class CreateCharacterWindow : ImagePanel
         }
 
         var charName = _charNameTextbox.Text;
-        var spriteKey = _chkMale.IsChecked ? _maleSprites[_displaySpriteIndex].Key : _femaleSprites[_displaySpriteIndex].Key;
-
+        var spriteKey = _chkMale.IsChecked
+            ? _maleSprites[_displaySpriteIndex].Key
+            : _femaleSprites[_displaySpriteIndex].Key;
         PacketSender.SendCreateCharacter(charName, cls.Id, spriteKey);
         Globals.WaitingOnServer = true;
-        _createButton.Disable();
-        ChatboxMsg.ClearMessages();
+        _createButton.Enabled = false;
+        //ChatboxMsg.ClearMessages();
     }
 
-    //Input Handlers
-    void classCombobox_ItemSelected(Base control, ItemSelectedEventArgs args)
+    private void _textboxCharactername_Clicked(object? sender, EventArgs e)
+    {
+        if (_charNameTextbox == default)
+        {
+            return;
+        }
+
+        Globals.InputManager.OpenKeyboard(
+            KeyboardType.Normal,
+            text => _charNameTextbox.Text = text ?? string.Empty,
+            Strings.LoginWindow.Username,
+            _charNameTextbox.Text,
+            inputBounds: new Framework.GenericClasses.Rectangle(
+                _charNameTextbox.Bounds.X,
+                _charNameTextbox.Bounds.Y,
+                _charNameTextbox.Bounds.Width,
+                _charNameTextbox.Bounds.Height
+            )
+        );
+    }
+
+    void ClassComboBoxItemSelected(object sender, EventArgs arguments)
     {
         LoadClass();
         UpdateDisplay();
     }
 
-    void maleChk_Checked(Base sender, EventArgs arguments)
+    void maleChk_Checked(object sender, EventArgs arguments)
     {
         _chkMale.IsChecked = true;
         _chkFemale.IsChecked = false;
@@ -423,7 +411,7 @@ public partial class CreateCharacterWindow : ImagePanel
         UpdateDisplay();
     }
 
-    void femaleChk_Checked(Base sender, EventArgs arguments)
+    void femaleChk_Checked(object sender, EventArgs arguments)
     {
         _chkFemale.IsChecked = true;
         _chkMale.IsChecked = false;
@@ -431,7 +419,7 @@ public partial class CreateCharacterWindow : ImagePanel
         UpdateDisplay();
     }
 
-    void CreateButton_Clicked(Base sender, ClickedEventArgs arguments)
+    void CreateButton_Clicked(object sender, EventArgs arguments)
     {
         if (Globals.WaitingOnServer)
         {
@@ -441,18 +429,15 @@ public partial class CreateCharacterWindow : ImagePanel
         TryCreateCharacter();
     }
 
-    private void BackButton_Clicked(Base sender, ClickedEventArgs arguments)
+    private void BackButton_Clicked(object sender, EventArgs arguments)
     {
-        Hide();
         if (Options.Player.MaxCharacters <= 1)
         {
-            //Logout
             _mainMenu.SwitchToWindow<LoginWindow>();
         }
         else
         {
-            //Character Selection Screen
-            _selectCharWindow.Show();
+            _mainMenu.SwitchToWindow<SelectCharacterWindow>();
         }
     }
 }
