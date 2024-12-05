@@ -1,0 +1,191 @@
+<Project>
+  <Project.ExportOptions />
+  <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="300" Padding="10" Background="#202020FF">
+    <VerticalStackPanel Spacing="6">
+      <Label Id="settingsTitle" Text="Settings" HorizontalAlignment="Center" />
+
+      <!-- Navigation buttons -->
+      <HorizontalStackPanel Top="5">
+        <Button Id="settingsGameTab" Width="120" Height="30">
+          <Label Id="settingsGameTabLabel" Text="Game" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button Id="settingsVideoTab" Width="120" Height="30">
+          <Label Id="settingsVideoTabLabel" Text="Video" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button Id="settingsAudioTab" Width="120" Height="30">
+          <Label Id="settingsAudioTabLabel" Text="Audio" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button Id="settingsKeybindingTab" Width="120" Height="30">
+          <Label Id="settingsKeybindingTabLabel" Text="Controls" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+      </HorizontalStackPanel>
+
+      <!-- Game settings panel -->
+      <Panel Id="settingsGame" HorizontalAlignment="Center" Width="480" Height="170" Visible="False">
+        <ScrollViewer>
+          <VerticalStackPanel Padding="10">
+            <!-- Interface Settings -->
+            <Label Id="settingsInterfaceOptions" Text="Interface Options:" Padding="5" HorizontalAlignment="Stretch" Background="#404040FF" />
+            <CheckButton Id="settingsAutoCloseWindows" Margin="0, 5">
+              <Label Id="settingsAutoCloseWindowsLabel" Text="Auto-close Windows" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsAutoToggleChatLog" Margin="0, 0, 0, 5">
+              <Label Id="settingsAutoToggleChatLogLabel" Text="Auto-toggle chat log visibility" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsShowHealthAsPercentage" Margin="0, 0, 0, 5">
+              <Label Id="settingsShowHealthAsPercentageLabel" Text="Show health as percentage" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsShowManaAsPercentage" Margin="0, 0, 0, 5">
+              <Label Id="settingsShowManaAsPercentageLabel" Text="Show mana as percentage" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsShowExperienceAsPercentage" Margin="0, 0, 0, 5">
+              <Label Id="settingsShowExperienceAsPercentageLabel" Text="Show experience as percentage" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsTypewriter" Margin="0, 0, 0, 5">
+              <Label Id="settingsTypewriterLabel" Text="Typewriter text" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsSimplifiedEscapeMenu" Margin="0, 0, 0, 5">
+              <Label Id="settingsSimplifiedEscapeMenuLabel" Text="Simplified Escape Menu" Margin="5, 0, 0, 0" />
+            </CheckButton>
+
+            <!-- Information Settings -->
+            <Label Id="settingsShowOverheadInfo" Text="Show Overhead Information:" Margin="0, 10, 0, 0" Padding="5" HorizontalAlignment="Stretch" Background="#404040FF" />
+            <Panel Margin="0, 5, 0, 0">
+              <CheckButton Id="settingsMyOverheadInfo" Margin="0, 0, 0, 5">
+                <Label Id="settingsMyOverheadInfoLabel" Text="My" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsPlayerOverheadInfo" Margin="0, 0, 0, 5" HorizontalAlignment="Right">
+                <Label Id="settingsPlayerOverheadInfoLabel" Text="Players" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsNpcOverheadInfo" Margin="0, 0, 0, 5">
+                <Label Id="settingsNpcOverheadInfoLabel" Text="NPC" Margin="5, 0, 0, 0" />
+              </CheckButton>
+            </Panel>
+            <Panel>
+              <CheckButton Id="settingsFriendOverheadInfo" Margin="0, 0, 0, 5" HorizontalAlignment="Center">
+                <Label Id="settingsFriendOverheadInfoLabel" Text="Friends" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsPartyOverheadInfo" Left="-17" Margin="0, 0, 0, 5" HorizontalAlignment="Right">
+                <Label Id="settingsPartyOverheadInfoLabel" Text="Party" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsGuildOverheadInfo" Left="-9" Margin="0, 0, 0, 5" HorizontalAlignment="Center">
+                <Label Id="settingsGuildOverheadInfoLabel" Text="Guild" Margin="5, 0, 0, 0" />
+              </CheckButton>
+            </Panel>
+
+            <!-- HP Bar Settings -->
+            <Label Id="settingsShowOverheadHPBar" Text="Show Overhead HP Bar:" Margin="0, 10, 0, 0" Padding="5" HorizontalAlignment="Stretch" Background="#404040FF" />
+            <Panel Margin="0, 5, 0, 0">
+              <CheckButton Id="settingsMyOverheadHPBar" Margin="0, 0, 0, 5">
+                <Label Id="settingsMyOverheadHPBarLabel" Text="My" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsPlayerOverheadHPBar" Margin="0, 0, 0, 5" HorizontalAlignment="Right">
+                <Label Id="settingsPlayerOverheadHPBarLabel" Text="Players" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsNpcOverheadHPBar" Margin="0, 0, 0, 5">
+                <Label Id="settingsNpcOverheadHPBarLabel" Text="NPC" Margin="5, 0, 0, 0" />
+              </CheckButton>
+            </Panel>
+            <Panel>
+              <CheckButton Id="settingsFriendOverheadHPBar" Margin="0, 0, 0, 5" HorizontalAlignment="Center">
+                <Label Id="settingsFriendOverheadHPBarLabel" Text="Friends" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsPartyOverheadHPBar" Left="-17" Margin="0, 0, 0, 5" HorizontalAlignment="Right">
+                <Label Id="settingsPartyOverheadHPBarLabel" Text="Party" Margin="5, 0, 0, 0" />
+              </CheckButton>
+              <CheckButton Id="settingsGuildOverheadHPBar" Left="-9" Margin="0, 0, 0, 5" HorizontalAlignment="Center">
+                <Label Id="settingsGuildOverheadHPBarLabel" Text="Guild" Margin="5, 0, 0, 0" />
+              </CheckButton>
+            </Panel>
+
+            <!-- Targetting Settings -->
+            <Label Id="settingsTargeting" Text="Targetting Options:" Margin="0, 10, 0, 0" Padding="5" HorizontalAlignment="Stretch" Background="#404040FF" />
+            <CheckButton Id="settingsStickyTarget" Margin="0, 5">
+              <Label Id="settingsStickyTargetLabel" Text="Sticky Target" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsAutoTurnToTarget" Margin="0, 0, 0, 5">
+              <Label Id="settingsAutoTurnToTargetLabel" Text="Auto-turn to target" Margin="5, 0, 0, 0" />
+            </CheckButton>
+          </VerticalStackPanel>
+        </ScrollViewer>
+      </Panel>
+
+      <!-- Video settings panel -->
+      <Panel Id="settingsVideo" HorizontalAlignment="Center" Width="480" Height="170" Visible="False">
+        <VerticalStackPanel Spacing="15">
+          <HorizontalStackPanel Spacing="100">
+            <VerticalStackPanel Spacing="5" StackPanel.ProportionType="Part">
+              <Label Id="settingsResolutionLabel" Text="Resolution:" />
+              <ComboView Id="settingsResolution" HorizontalAlignment="Stretch" />
+            </VerticalStackPanel>
+            <VerticalStackPanel Spacing="5" StackPanel.ProportionType="Part">
+              <Label Id="settingsFpsLabel" Text="Target FPS:" />
+              <ComboView Id="settingsFps" HorizontalAlignment="Stretch" />
+            </VerticalStackPanel>
+          </HorizontalStackPanel>
+          <VerticalStackPanel Spacing="5">
+            <Label Id="settingsWorldScaleLabel" Text="World Scale:" />
+            <HorizontalStackPanel Spacing="5">
+              <HorizontalSlider Id="settingsWorldScale" Minimum="1" Maximum="4" Value="1" Width="150" />
+              <TextBox Id="settingsWorldScaleValue" Text="1" Width="35" VerticalAlignment="Stretch" />
+            </HorizontalStackPanel>
+          </VerticalStackPanel>
+          <HorizontalStackPanel>
+            <CheckButton Id="settingsFullscreen" StackPanel.ProportionType="Part">
+              <Label Id="settingsFullscreenLabel" Text="Fullscreen" Margin="5, 0, 0, 0" />
+            </CheckButton>
+            <CheckButton Id="settingsLightingEnabled" StackPanel.ProportionType="Part">
+              <Label Id="settingsLightingEnabledLabel" Text="Enable Lights Effects" Margin="5, 0, 0, 0" />
+            </CheckButton>
+          </HorizontalStackPanel>
+        </VerticalStackPanel>
+      </Panel>
+
+      <!-- Audio settings panel -->
+      <Panel Id="settingsAudio" HorizontalAlignment="Center" Width="480" Height="170" Visible="false">
+        <HorizontalStackPanel Spacing="5">
+          <VerticalStackPanel Spacing="5" StackPanel.ProportionType="Part">
+            <Label Id="settingsSoundVolumeLabel" Text="Sound Volume: 100%" />
+            <HorizontalSlider Id="settingsSoundVolume" Minimum="0" Maximum="100" Value="100" Width="200" />
+          </VerticalStackPanel>
+          <VerticalStackPanel Spacing="5" StackPanel.ProportionType="Part">
+            <Label Id="settingsMusicVolumeLabel" Text="Music Volume: 100%" />
+            <HorizontalSlider Id="settingsMusicVolume" Minimum="0" Maximum="100" Value="100" Width="200" />
+          </VerticalStackPanel>
+        </HorizontalStackPanel>
+      </Panel>
+
+      <!-- Controls settings panel -->
+      <Panel Id="settingsKeybinding" HorizontalAlignment="Center" Width="480" Height="170">
+        <ScrollViewer>
+          <VerticalStackPanel>
+            <HorizontalStackPanel Spacing="5" Margin="0, 5">
+              <Label Id="settingsMoveForward" Text="Move Forward:" StackPanel.ProportionType="Part" VerticalAlignment="Center" />
+              <HorizontalStackPanel Spacing="5" StackPanel.ProportionType="Part">
+                <Button Id="settingsMoveForwardW" Width="100" Height="30">
+                  <Label Id="settingsMoveForwardW" Text="W" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+                <Button Id="settingsMoveForwardUp" Width="100" Height="30">
+                  <Label Id="settingsMoveForwardUp" Text="Up" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+              </HorizontalStackPanel>
+            </HorizontalStackPanel>
+          </VerticalStackPanel>
+        </ScrollViewer>
+      </Panel>
+
+      <!-- Bottom buttons -->
+      <HorizontalStackPanel Spacing="45" Top="5">
+        <Button Id="settingsBack" Width="120" Height="30">
+          <Label Id="settingsBack" Text="Back" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button Id="settingsRestoreDefaults" Width="150" Height="30">
+          <Label Id="settingsRestoreDefaults" Text="Restore Defaults" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button Id="settingsSave" Width="120" Height="30">
+          <Label Id="settingsSave" Text="Save" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+      </HorizontalStackPanel>
+    </VerticalStackPanel>
+  </Panel>
+</Project>

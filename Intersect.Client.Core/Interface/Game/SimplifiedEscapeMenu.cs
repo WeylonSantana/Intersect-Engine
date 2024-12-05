@@ -18,11 +18,12 @@ public sealed partial class SimplifiedEscapeMenu : Framework.Gwen.Control.Menu
     private readonly MenuItem _logout;
     private readonly MenuItem _exit;
 
-    public SimplifiedEscapeMenu(Canvas gameCanvas) : base(gameCanvas, nameof(SimplifiedEscapeMenu))
+    public SimplifiedEscapeMenu(Canvas gameCanvas)
+        : base(gameCanvas, nameof(SimplifiedEscapeMenu))
     {
         IsHidden = true;
         IconMarginDisabled = true;
-        _settingsWindow = new SettingsWindow(gameCanvas, null, null);
+        // _settingsWindow = new SettingsWindow(gameCanvas, null, null);
 
         Children.Clear();
 
@@ -41,10 +42,10 @@ public sealed partial class SimplifiedEscapeMenu : Framework.Gwen.Control.Menu
 
     public void ToggleHidden(Button? target)
     {
-        if (!_settingsWindow.IsHidden || target == null)
-        {
-            return;
-        }
+        // if (!_settingsWindow.IsHidden || target == null)
+        // {
+        //     return;
+        // }
 
         if (this.IsHidden)
         {
@@ -127,10 +128,10 @@ public sealed partial class SimplifiedEscapeMenu : Framework.Gwen.Control.Menu
 
     private void OpenSettingsWindow(object? sender, EventArgs? e)
     {
-        if (!_settingsWindow.IsHidden)
-        {
-            return;
-        }
+        // if (!_settingsWindow.IsHidden)
+        // {
+        //     return;
+        // }
 
         _settingsWindow.Show();
     }

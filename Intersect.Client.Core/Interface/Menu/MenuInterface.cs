@@ -27,7 +27,9 @@ public partial class MenuInterface
 
     // Network status
     public static NetworkStatus ActiveNetworkStatus;
+
     public delegate void NetworkStatusHandler();
+
     public static NetworkStatusHandler? NetworkStatusChanged;
     internal static event EventHandler? ReceivedConfiguration;
 
@@ -55,7 +57,8 @@ public partial class MenuInterface
         //_resetPasswordWindow = new ResetPasswordWindow(_menuCanvas, this);
         //SelectCharacterWindow = new SelectCharacterWindow(_menuCanvas, this);
         //_createCharacterWindow = new CreateCharacterWindow(_menuCanvas, this, SelectCharacterWindow);
-        //_settingsWindow = new SettingsWindow(_menuCanvas, this, null);
+        _settingsWindow = new SettingsWindow();
+        _settingsWindow.Load(this);
 
         _creditsWindow = new CreditsWindow();
         _creditsWindow.Load(this);
@@ -101,6 +104,7 @@ public partial class MenuInterface
             _registerWindow.Update();
         }
 
+        _settingsWindow.Update();
         return;
 
         if (!_createCharacterWindow.IsHidden)
@@ -112,8 +116,6 @@ public partial class MenuInterface
         {
             SelectCharacterWindow.Update();
         }
-
-        _settingsWindow.Update();
     }
 
     public void Reset()

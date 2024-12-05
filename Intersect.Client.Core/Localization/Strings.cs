@@ -1868,6 +1868,9 @@ public static partial class Strings
         public static LocalizedString InformationSettings = @"Information";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString InterfaceOptions = @"Interface Options:";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString InterfaceSettings = @"Interface";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -1892,46 +1895,52 @@ public static partial class Strings
         public static LocalizedString ShowExperienceAsPercentage = @"Show experience as percentage";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowFriendOverheadHpBar = @"Show friends overhead HP bar";
+        public static LocalizedString ShowFriendOverheadHPBar = @"Friends";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowFriendOverheadInformation = @"Show friends overhead information";
+        public static LocalizedString ShowFriendOverheadInformation = @"Friends";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowGuildOverheadHpBar = @"Show guild member overhead HP bar";
+        public static LocalizedString ShowGuildOverheadHPBar = @"Guild";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowGuildOverheadInformation = @"Show guild member overhead information";
+        public static LocalizedString ShowGuildOverheadInformation = @"Guild";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString ShowHealthAsPercentage = @"Show health as percentage";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowNpcOverheadHpBar = @"Show NPC overhead HP bar";
+        public static LocalizedString ShowNpcOverheadHPBar = @"NPC";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowNpcOverheadInformation = @"Show NPC overhead information";
+        public static LocalizedString ShowNpcOverheadInformation = @"NPC";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString ShowOverheadHPBarTitle = @"Show Overhead HP Bar";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString ShowOverheadInformationTitle = @"Show Overhead Information";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString ShowManaAsPercentage = @"Show mana as percentage";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowMyOverheadHpBar = @"Show my overhead HP bar";
+        public static LocalizedString ShowMyOverheadHPBar = @"Mine";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowMyOverheadInformation = @"Show my overhead information";
+        public static LocalizedString ShowMyOverheadInformation = @"Mine";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowPartyOverheadHpBar = @"Show party member overhead HP bar";
+        public static LocalizedString ShowPartyOverheadHPBar = @"Party";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowPartyOverheadInformation = @"Show party member overhead information";
+        public static LocalizedString ShowPartyOverheadInformation = @"Party";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowPlayerOverheadHpBar = @"Show players overhead HP bar";
+        public static LocalizedString ShowPlayerOverheadHPBar = @"Players";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ShowPlayerOverheadInformation = @"Show players overhead information";
+        public static LocalizedString ShowPlayerOverheadInformation = @"Players";
         
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString SimplifiedEscapeMenu = @"Simplified escape menu";
@@ -1941,6 +1950,9 @@ public static partial class Strings
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString TargetFps = @"Target FPS:";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString TargettingTitle = @"Targetting Options:";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString TargetingSettings = @"Targeting";

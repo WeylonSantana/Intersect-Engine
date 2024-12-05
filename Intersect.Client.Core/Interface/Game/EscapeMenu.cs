@@ -14,7 +14,8 @@ public partial class EscapeMenu : ImagePanel
     private readonly SettingsWindow _settingsWindow;
     private readonly Button _buttonCharacterSelect;
 
-    public EscapeMenu(Canvas gameCanvas) : base(gameCanvas, nameof(EscapeMenu))
+    public EscapeMenu(Canvas gameCanvas)
+        : base(gameCanvas, nameof(EscapeMenu))
     {
         //Interface.InputBlockingElements?.Add(this);
 
@@ -25,13 +26,10 @@ public partial class EscapeMenu : ImagePanel
         var container = new ImagePanel(this, nameof(EscapeMenu));
 
         // Title Label
-        _ = new Label(container, "TitleLabel")
-        {
-            Text = Strings.EscapeMenu.Title,
-        };
+        _ = new Label(container, "TitleLabel") { Text = Strings.EscapeMenu.Title, };
 
         // Settings Window and Button
-        _settingsWindow = new SettingsWindow(gameCanvas, null, this);
+        // _settingsWindow = new SettingsWindow(gameCanvas, null, this);
 
         var buttonSettings = new Button(container, "SettingsButton")
         {
@@ -67,7 +65,10 @@ public partial class EscapeMenu : ImagePanel
         };
         buttonContinue.Clicked += (s, e) => Hide();
 
-        container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer?.GetResolutionString());
+        container.LoadJsonUi(
+            GameContentManager.UI.InGame,
+            Graphics.Renderer?.GetResolutionString()
+        );
 
         if (Options.Player.MaxCharacters <= 1)
         {
@@ -96,10 +97,10 @@ public partial class EscapeMenu : ImagePanel
     /// <inheritdoc />
     public override void ToggleHidden()
     {
-        if (!_settingsWindow.IsHidden)
-        {
-            return;
-        }
+        // if (!_settingsWindow.IsHidden)
+        // {
+        //     return;
+        // }
 
         base.ToggleHidden();
     }

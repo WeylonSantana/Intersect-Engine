@@ -20,6 +20,7 @@
     <None Remove="Resources\interface\menu\LoginWindow.xmmp" />
     <None Remove="Resources\interface\menu\RegisterWindow.xmmp" />
     <None Remove="Resources\interface\menu\ServerStatus.xmmp" />
+    <None Remove="Resources\interface\shared\SettingsWindow.xmmp"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +50,7 @@
     <EmbeddedResource Include="Resources\MonoGame.Framework.dll.config" />
     <EmbeddedResource Include="Resources\openal32.dll" />
     <EmbeddedResource Include="Resources\Shaders\radialgradient.xnb" />
+    <EmbeddedResource Include="Resources\interface\shared\SettingsWindow.xmmp"/>
   </ItemGroup>
 
   <ItemGroup Label="Package Embedded Resources">

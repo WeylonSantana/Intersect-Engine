@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Intersect.Client.Core;
 using Intersect.Client.Framework.Graphics;
@@ -12,6 +13,8 @@ namespace Intersect.Client.Interface;
 
 public static partial class Interface
 {
+    private static Desktop Desktop { get; set; } = new Desktop();
+
     public static GameInterface? GameUi { get; private set; }
 
     public static MenuInterface? MenuUi { get; private set; }
@@ -24,7 +27,7 @@ public static partial class Interface
 
     private static readonly Queue<KeyValuePair<string, string>> _errorMessages = new();
 
-    private static Desktop Desktop { get; set; } = new Desktop();
+    public static List<Widget> Widgets => Desktop.Widgets.ToList();
 
     public static bool IsVisible
     {
@@ -37,6 +40,7 @@ public static partial class Interface
     public static bool HideUi;
 
     #region "Interface Setup"
+
     public static void Initialization()
     {
         // Preserve the debug window
@@ -127,9 +131,11 @@ public static partial class Interface
         AddElement(project.Root);
         return project.Root;
     }
+
     #endregion
 
     #region "Functions"
+
     public static void Update()
     {
         if (Globals.GameState == GameStates.Menu)
@@ -144,7 +150,8 @@ public static partial class Interface
         ErrorMsgHandler.Update();
 
         //Do not allow hiding of UI under several conditions
-        var forceShowUi = Globals.InCraft || Globals.InBank || Globals.InShop || Globals.InTrade || Globals.InBag || Globals.EventDialogs?.Count > 0 || HasInputFocus() || (!GameUi?.EscapeMenu?.IsHidden ?? true);
+        var forceShowUi = Globals.InCraft || Globals.InBank || Globals.InShop || Globals.InTrade || Globals.InBag || Globals.EventDialogs?.Count > 0 ||
+                          HasInputFocus() || (!GameUi?.EscapeMenu?.IsHidden ?? true);
 
         if (HideUi && !forceShowUi && IsVisible)
         {
@@ -173,7 +180,7 @@ public static partial class Interface
         return default;
     }
 
-    public static bool GetChildById<T>(string id, out T widget) where T : Widget
+    public static bool GetChildById<T>(string id, [NotNullWhen(true)] out T? widget) where T : Widget
     {
         widget = GetChildById<T>(id);
         return widget != null;
@@ -218,7 +225,7 @@ public static partial class Interface
                         case '-':
                             lastSpace = curLen;
 
-                            break;
+                        break;
 
                         case '\n':
                             myOutput.Add(input.Substring(curPos, curLen).Trim());
@@ -226,7 +233,7 @@ public static partial class Interface
                             curPos = curPos + curLen + 1;
                             curLen = 1;
 
-                            break;
+                        break;
                     }
                 }
                 else
@@ -252,14 +259,17 @@ public static partial class Interface
 
         return [.. myOutput];
     }
+
     #endregion
 
     #region Error Handler
+
     public static bool TryDequeueErrorMessage(out KeyValuePair<string, string> message) => _errorMessages.TryDequeue(out message);
 
     public static void ShowError(string message, string? header = default)
     {
         _errorMessages.Enqueue(new KeyValuePair<string, string>(header ?? string.Empty, message));
     }
+
     #endregion
 }
