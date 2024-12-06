@@ -224,7 +224,7 @@ public static partial class Input
                             switch (control)
                             {
                                 case Control.Enter:
-                                    if (selectCharacterWindow.Visible && selectCharacterWindow.Characters[selectCharacterWindow.mSelectedChar] != null)
+                                    if (selectCharacterWindow.Visible && selectCharacterWindow.Characters[selectCharacterWindow.SelectedChar] != null)
                                     {
                                         selectCharacterWindow.ButtonPlay_Clicked(null, null);
                                         consumeKey = true;

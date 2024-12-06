@@ -87,7 +87,7 @@ public class SettingsWindow : IMainMenuWindow
     public bool Visible
     {
         get => _settingsWindow?.Visible ?? false;
-        set => _settingsWindow?.ToggleVisibility(value);
+        set => _settingsWindow?.ToggleVisible(value);
     }
 
     private int _previousMusicVolume;
@@ -399,17 +399,17 @@ public class SettingsWindow : IMainMenuWindow
             return;
         }
 
-        _settingsGamePanel?.ToggleVisibility(false);
-        _settingsVideoPanel?.ToggleVisibility(false);
-        _settingsAudioPanel?.ToggleVisibility(false);
-        _settingsKeybindingPanel?.ToggleVisibility(false);
+        _settingsGamePanel?.ToggleVisible(false);
+        _settingsVideoPanel?.ToggleVisible(false);
+        _settingsAudioPanel?.ToggleVisible(false);
+        _settingsKeybindingPanel?.ToggleVisible(false);
 
         _gameSettingsTab?.ToggleEnabled(true);
         _videoSettingsTab?.ToggleEnabled(true);
         _audioSettingsTab?.ToggleEnabled(true);
         _keybindingSettingsTab?.ToggleEnabled(true);
 
-        _keybindingRestoreBtn?.ToggleVisibility(container.Id == _settingsKeybindingPanel?.Id);
+        _keybindingRestoreBtn?.ToggleVisible(container.Id == _settingsKeybindingPanel?.Id);
 
         container.Visible = true;
         tab?.ToggleEnabled(false);
@@ -465,10 +465,10 @@ public class SettingsWindow : IMainMenuWindow
     private void LoadSettingsWindow()
     {
         // Containers.
-        _settingsGamePanel.ToggleVisibility(true);
-        _settingsVideoPanel.ToggleVisibility(false);
-        _settingsAudioPanel.ToggleVisibility(false);
-        _settingsKeybindingPanel.ToggleVisibility(false);
+        _settingsGamePanel.ToggleVisible(true);
+        _settingsVideoPanel.ToggleVisible(false);
+        _settingsAudioPanel.ToggleVisible(false);
+        _settingsKeybindingPanel.ToggleVisible(false);
 
         // Disable the GameSettingsTab to fake it being selected visually by default.
         _gameSettingsTab.ToggleEnabled(false);
@@ -477,9 +477,9 @@ public class SettingsWindow : IMainMenuWindow
         _keybindingSettingsTab.ToggleEnabled(true);
 
         // Buttons.
-        _settingsApplyBtn.ToggleVisibility(true);
-        _settingsCancelBtn.ToggleVisibility(true);
-        _keybindingRestoreBtn.ToggleVisibility(false);
+        _settingsApplyBtn.ToggleVisible(true);
+        _settingsCancelBtn.ToggleVisible(true);
+        _keybindingRestoreBtn.ToggleVisible(false);
 
         var worldScaleNotches = new float[]
         {

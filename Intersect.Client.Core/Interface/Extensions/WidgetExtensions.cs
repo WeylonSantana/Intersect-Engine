@@ -4,7 +4,7 @@ namespace Intersect.Client.Interface.Extensions;
 
 public static class WidgetExtensions
 {
-    public static void ToggleVisibility(this Widget? widget, bool? visible = null)
+    public static void ToggleVisible(this Widget? widget, bool? visible = null)
     {
         if (widget == default)
         {

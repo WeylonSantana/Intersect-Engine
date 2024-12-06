@@ -12,19 +12,19 @@
       </Button>
     </Panel>
     <Button Id="_buttonEditorMode" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="54" Left="288">
-      <Label Id="_labelEditorMode" TextAlign="Center" Text="Editor Mode" HorizontalAlignment="Center" VerticalAlignment="Center" />
-    </Button>    
+      <Label TextAlign="Center" Text="Editor Mode" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Button>
     <Button Id="_buttonPlay" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="97" Left="288">
-      <Label Id="_labelPlay" TextAlign="Center" Text="Play" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      <Label TextAlign="Center" Text="Play" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
     <Button Id="_buttonNew" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="97" Left="288">
-      <Label Id="_labelNew" TextAlign="Center" Text="New" HorizontalAlignment="Center" VerticalAlignment="Center" />
-    </Button>    
+      <Label TextAlign="Center" Text="New" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Button>
     <Button Id="_buttonDelete" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="140" Left="288">
-      <Label Id="_labelDelete" TextAlign="Center" Text="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      <Label TextAlign="Center" Text="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
     <Button Id="_buttonLogout" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="183" Left="288">
-      <Label Id="_labelLogout" TextAlign="Center" Text="Logout" HorizontalAlignment="Center" VerticalAlignment="Center" />
+      <Label TextAlign="Center" Text="Logout" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
   </Panel>
 </Project>

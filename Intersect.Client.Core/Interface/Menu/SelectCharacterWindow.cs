@@ -1,6 +1,7 @@
 using Intersect.Client.Core;
-using Intersect.Client.Framework.Content;
 using Intersect.Client.General;
+using Intersect.Client.Interface.Extensions;
+using Intersect.Client.Interface.Shared;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Network.Packets.Server;
@@ -14,7 +15,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
     private Widget? _selectCharacterWindow;
     private Label? _labelCharname;
     private Label? _labelInfo;
-    //private Panel? _charContainer;
+    private Panel? _charContainer;
     private Button? _buttonNextChar;
     private Button? _buttonPrevChar;
     private Button? _buttonPlay;
@@ -22,8 +23,8 @@ public partial class SelectCharacterWindow : IMainMenuWindow
     private Button? _buttonNew;
     private Button? _buttonLogout;
     //private Image[]? _renderLayers;
-    public Character[] Characters;
-    public int mSelectedChar = 0;
+    public Character[]? Characters;
+    public int SelectedChar = 0;
 
     public bool Visible => _selectCharacterWindow?.Visible ?? false;
 
@@ -39,86 +40,71 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Character Name
-        if (Interface.GetChildById<Label>("_labelCharname", out var labelCharname))
+        _labelCharname = Interface.GetChildById<Label>("_labelCharname");
+        if (_labelCharname != default)
         {
-            labelCharname.Text = Strings.CharacterSelection.Empty;
-            _labelCharname = labelCharname;
+            _labelCharname.Text = Strings.CharacterSelection.Empty;
         }
 
         //Character Info
-        if (Interface.GetChildById<Label>("_labelInfo", out var labelInfo))
+        _labelInfo = Interface.GetChildById<Label>("_labelInfo");
+        if (_labelInfo != default)
         {
-            labelInfo.Text = Strings.CharacterSelection.New;
-            _labelInfo = labelInfo;
+            _labelInfo.Text = Strings.CharacterSelection.New;
         }
 
         //Character Container
-        if (Interface.GetChildById<Panel>("_charContainer", out var charContainer))
+        _charContainer = Interface.GetChildById<Panel>("_charContainer");
+        if (_charContainer != default)
         {
             //_charContainer = charContainer;
         }
 
         //Next char Button
-        if (Interface.GetChildById<Button>("_buttonNextChar", out var buttonNextChar))
+        _buttonNextChar = Interface.GetChildById<Button>("_buttonNextChar");
+        if (_buttonNextChar != default)
         {
-            buttonNextChar.Click += _buttonNextChar_Clicked;
-            _buttonNextChar = buttonNextChar;
+            _buttonNextChar.Click += _buttonNextChar_Clicked;
         }
 
         //Prev Char Button
-        if (Interface.GetChildById<Button>("_buttonPrevChar", out var buttonPrevChar))
+        _buttonPrevChar = Interface.GetChildById<Button>("_buttonPrevChar");
+        if (_buttonPrevChar != default)
         {
-            buttonPrevChar.Click += _buttonPrevChar_Clicked;
-            _buttonPrevChar = buttonPrevChar;
+            _buttonPrevChar.Click += _buttonPrevChar_Clicked;
         }
 
         //Play Button
-        if (Interface.GetChildById<Label>("_labelPlay", out var labelPlay))
+        _buttonPlay = Interface.GetChildById<Button>("_buttonPlay");
+        if (_buttonPlay != default)
         {
-            labelPlay.Text = Strings.CharacterSelection.Play;
-        }
-
-        if (Interface.GetChildById<Button>("_buttonPlay", out var buttonPlay))
-        {
-            _buttonPlay = buttonPlay;
+            _buttonPlay.SetText(Strings.CharacterSelection.Play);
             _buttonPlay.Visible = false;
             _buttonPlay.Click += ButtonPlay_Clicked;
         }
 
         //Delete Button
-        if (Interface.GetChildById<Label>("_labelDelete", out var labelDelete))
+        _buttonDelete = Interface.GetChildById<Button>("_buttonDelete");
+        if (_buttonDelete != default)
         {
-            labelDelete.Text = Strings.CharacterSelection.Delete;
-        }
-
-        if (Interface.GetChildById<Button>("_buttonDelete", out var buttonDelete))
-        {
-            _buttonDelete = buttonDelete;
+            _buttonDelete.SetText(Strings.CharacterSelection.Delete);
             _buttonDelete.Visible = false;
             _buttonDelete.Click += _buttonDelete_Clicked;
         }
 
         //Create new char Button
-        if (Interface.GetChildById<Label>("_labelNew", out var labelNew))
+        _buttonNew = Interface.GetChildById<Button>("_buttonNew");
+        if (_buttonNew != default)
         {
-            labelNew.Text = Strings.CharacterSelection.New;
-        }
-
-        if (Interface.GetChildById<Button>("_buttonNew", out var buttonNew))
-        {
-            _buttonNew = buttonNew;
+            _buttonNew.SetText(Strings.CharacterSelection.New);
             _buttonNew.Click += _buttonNew_Clicked;
         }
 
         //Logout Button
-        if (Interface.GetChildById<Label>("_labelLogout", out var labelLogout))
+        _buttonLogout = Interface.GetChildById<Button>("_buttonLogout");
+        if (_buttonLogout != default)
         {
-            labelLogout.Text = Strings.CharacterSelection.Logout;
-        }
-
-        if (Interface.GetChildById<Button>("_buttonLogout", out var buttonLogout))
-        {
-            _buttonLogout = buttonLogout;
+            _buttonLogout.SetText(Strings.CharacterSelection.Logout);
             _buttonLogout.Visible = true;
             _buttonLogout.Click += _buttonLogout_Clicked;
         }
@@ -149,7 +135,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         {
             Characters = new Character[Options.MaxCharacters];
         }*/
-        mSelectedChar = 0;
+        SelectedChar = 0;
         UpdateDisplay();
     }
 
@@ -171,10 +157,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
-        _buttonPlay.Enabled = !Globals.WaitingOnServer;
-        _buttonNew.Enabled = !Globals.WaitingOnServer;
-        _buttonDelete.Enabled = !Globals.WaitingOnServer;
-        _buttonLogout.Enabled = !Globals.WaitingOnServer;
+        _buttonPlay.ToggleEnabled(!Globals.WaitingOnServer);
+        _buttonNew.ToggleEnabled(!Globals.WaitingOnServer);
+        _buttonDelete.ToggleEnabled(!Globals.WaitingOnServer);
+        _buttonLogout.ToggleEnabled(!Globals.WaitingOnServer);
     }
 
     private void UpdateDisplay()
@@ -189,66 +175,68 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         var charCount = Characters.Length >= 1;
-        _buttonNextChar.Visible = charCount;
-        _buttonPrevChar.Visible = charCount;
+        _buttonNextChar.ToggleVisible(charCount);
+        _buttonPrevChar.ToggleVisible(charCount);
         if (charCount)
         {
-            _buttonNextChar.BringToFront();
-            _buttonPrevChar.BringToFront();
+            _buttonNextChar?.BringToFront();
+            _buttonPrevChar?.BringToFront();
         }
 
         /*foreach (var paperdollPortrait in _renderLayers)
         {
             paperdollPortrait.Visible = false;
         }*/
-        if (Characters[mSelectedChar] == default)
+        if (Characters?[SelectedChar] == default)
         {
-            _buttonPlay.Visible = false;
-            _buttonDelete.Visible = false;
-            _buttonNew.Visible = true;
-            _labelCharname.Text = Strings.CharacterSelection.Empty;
-            _labelInfo.Text = string.Empty;
+            _buttonPlay.ToggleVisible(false);
+            _buttonDelete.ToggleVisible(false);
+            _buttonNew.ToggleVisible(true);
+            _labelCharname.SetText(Strings.CharacterSelection.Empty);
+            _labelInfo.SetText(string.Empty);
             return;
         }
 
-        _labelCharname.Text = Strings.CharacterSelection.Name.ToString(Characters[mSelectedChar].Name);
-        _labelInfo.Text = Strings.CharacterSelection.Info.ToString(
-            Characters[mSelectedChar].Level,
-            Characters[mSelectedChar].Class
-        );
-        _buttonPlay.Visible = true;
-        _buttonDelete.Visible = true;
-        _buttonNew.Visible = false;
+        _labelCharname.SetText(Strings.CharacterSelection.Name.ToString(Characters[SelectedChar].Name));
+        _labelInfo.SetText(Strings.CharacterSelection.Info.ToString(
+            Characters[SelectedChar].Level,
+            Characters[SelectedChar].Class
+        ));
+        _buttonPlay.ToggleVisible(true);
+        _buttonDelete.ToggleVisible(true);
+        _buttonNew.ToggleVisible(false);
+        
+        /*
         for (var i = 0; i < Options.Equipment.Paperdoll.Down.Count; i++)
         {
             var equipment = Options.Equipment.Paperdoll.Down[i];
-            //var paperdollContainer = _renderLayers[i];
+            var paperdollContainer = _renderLayers[i];
             var isFace = false;
             if (string.Equals("Player", equipment, StringComparison.Ordinal))
             {
-                var faceSource = Characters[mSelectedChar].Face;
-                var spriteSource = Characters[mSelectedChar].Sprite;
+                var faceSource = Characters[SelectedChar].Face;
+                var spriteSource = Characters[SelectedChar].Sprite;
                 var faceTex = Globals.ContentManager.GetTexture(TextureType.Face, faceSource);
                 var spriteTex = Globals.ContentManager.GetTexture(TextureType.Entity, spriteSource);
                 isFace = faceTex != default;
-                //paperdollContainer.Renderable = isFace ? new TextureRegion(faceTex) : new TextureRegion(spriteTex);
+                paperdollContainer.Renderable = isFace ? new TextureRegion(faceTex) : new TextureRegion(spriteTex);
             }
             else
             {
-                if (i >= Characters[mSelectedChar].Equipment.Length)
+                if (i >= Characters[SelectedChar].Equipment.Length)
                 {
                     continue;
                 }
 
-                var equipFragment = Characters[mSelectedChar].Equipment[i];
+                var equipFragment = Characters[SelectedChar].Equipment[i];
                 if (equipFragment == default)
                 {
-                    //paperdollContainer.Renderable = default;
+                    paperdollContainer.Renderable = default;
                     continue;
                 }
 
-                //paperdollContainer.Renderable = new TextureRegion(Globals.ContentManager.GetTexture(TextureType.Paperdoll, equipFragment.Name).Texture);
-                /*if (paperdollContainer.Renderable != default)
+                paperdollContainer.Renderable = new TextureRegion(Globals.ContentManager.GetTexture(TextureType.Paperdoll, equipFragment.Name).Texture);
+                if (paperdollContainer.Renderable != default)
                 {
                     paperdollContainer.Color = new Microsoft.Xna.Framework.Color(
                         equipFragment.RenderColor.R,
@@ -256,17 +244,17 @@ public partial class SelectCharacterWindow : IMainMenuWindow
                         equipFragment.RenderColor.B,
                         equipFragment.RenderColor.A
                     );
-                }*/
+                }
             }
 
-            /*if (paperdollContainer.Renderable == default)
+            if (paperdollContainer.Renderable == default)
             {
                 paperdollContainer.Visible = false;
                 continue;
             }
 
-            paperdollContainer.Visible = true;*/
-        }
+            paperdollContainer.Visible = true;
+        }*/
     }
 
     private void _buttonLogout_Clicked(object? sender, EventArgs? arguments)
@@ -277,10 +265,15 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
     private void _buttonPrevChar_Clicked(object? sender, EventArgs? arguments)
     {
-        mSelectedChar--;
-        if (mSelectedChar < 0)
+        if (Characters == default)
         {
-            mSelectedChar = Characters!.Length - 1;
+            return;
+        }
+        
+        SelectedChar--;
+        if (SelectedChar < 0)
+        {
+            SelectedChar = Characters.Length - 1;
         }
 
         UpdateDisplay();
@@ -288,10 +281,15 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
     private void _buttonNextChar_Clicked(object? sender, EventArgs? arguments)
     {
-        mSelectedChar++;
-        if (mSelectedChar >= Characters!.Length)
+        if (Characters == default)
         {
-            mSelectedChar = 0;
+            return;
+        }
+        
+        SelectedChar++;
+        if (SelectedChar >= Characters.Length)
+        {
+            SelectedChar = 0;
         }
 
         UpdateDisplay();
@@ -304,33 +302,32 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             return;
         }
 
-        var dialog = Dialog.CreateMessageBox(
-            Strings.CharacterSelection.DeleteTitle.ToString(Characters[mSelectedChar].Name),
-            Strings.CharacterSelection.DeletePrompt.ToString(Characters[mSelectedChar].Name)
+        _ = new InputBox(
+            Strings.CharacterSelection.DeleteTitle.ToString(Characters[SelectedChar].Name),
+            Strings.CharacterSelection.DeletePrompt.ToString(Characters[SelectedChar].Name),
+            InputBox.InputType.YesNo,
+            DeleteCharacter
         );
-        dialog.Closed += (s, a) =>
-        {
-            if (dialog.Result)
-            {
-                DeleteCharacter(Characters[mSelectedChar].Id);
-            }
-        };
-        dialog.ShowModal(Interface.Desktop);
     }
 
-    private void DeleteCharacter(Guid charId)
+    private void DeleteCharacter(object? sender, EventArgs? arguments)
     {
-        PacketSender.SendDeleteCharacter(charId);
+        if (Globals.WaitingOnServer || Characters == default)
+        {
+            return;
+        }
+
+        PacketSender.SendDeleteCharacter(Characters[SelectedChar].Id);
         Globals.WaitingOnServer = true;
-        _buttonPlay.Enabled = false;
-        _buttonNew.Enabled = false;
-        _buttonDelete.Enabled = false;
-        _buttonLogout.Enabled = false;
-        mSelectedChar = 0;
+        _buttonPlay.ToggleEnabled(false);
+        _buttonNew.ToggleEnabled(false);
+        _buttonDelete.ToggleEnabled(false);
+        _buttonLogout.ToggleEnabled(false);
+        SelectedChar = 0;
         UpdateDisplay();
     }
 
-    private void _buttonNew_Clicked(object sender, EventArgs arguments)
+    private void _buttonNew_Clicked(object? sender, EventArgs? arguments)
     {
         if (Globals.WaitingOnServer)
         {
@@ -339,13 +336,13 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
         PacketSender.SendNewCharacter();
         Globals.WaitingOnServer = true;
-        _buttonPlay.Enabled = false;
-        _buttonNew.Enabled = false;
-        _buttonDelete.Enabled = false;
-        _buttonLogout.Enabled = false;
+        _buttonPlay.ToggleEnabled(false);
+        _buttonNew.ToggleEnabled(false);
+        _buttonDelete.ToggleEnabled(false);
+        _buttonLogout.ToggleEnabled(false);
     }
 
-    public void ButtonPlay_Clicked(object sender, EventArgs arguments)
+    public void ButtonPlay_Clicked(object? sender, EventArgs? arguments)
     {
         if (Globals.WaitingOnServer || Characters == default)
         {
@@ -353,12 +350,12 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //ChatboxMsg.ClearMessages();
-        PacketSender.SendSelectCharacter(Characters[mSelectedChar].Id);
+        PacketSender.SendSelectCharacter(Characters[SelectedChar].Id);
         Globals.WaitingOnServer = true;
-        _buttonPlay.Enabled = false;
-        _buttonNew.Enabled = false;
-        _buttonDelete.Enabled = false;
-        _buttonLogout.Enabled = false;
+        _buttonPlay.ToggleEnabled(false);
+        _buttonNew.ToggleEnabled(false);
+        _buttonDelete.ToggleEnabled(false);
+        _buttonLogout.ToggleEnabled(false);
     }
 }
 
@@ -372,10 +369,10 @@ public partial class Character(
     EquipmentFragment[] equipment)
 {
     public Guid Id = id;
-    public string Class = charClass;
+    public readonly string Class = charClass;
     public EquipmentFragment?[] Equipment = equipment;
     public string Face = face;
-    public int Level = level;
-    public string Name = name;
+    public readonly int Level = level;
+    public readonly string Name = name;
     public string Sprite = sprite;
 }
