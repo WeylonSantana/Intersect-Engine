@@ -1924,7 +1924,7 @@ public partial class Player : Entity, IPlayer
             }
         }
 
-        var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.GetMousePosition());
+        var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.PointerPosition);
         var x = (int)mouseInWorld.X;
         var y = (int)mouseInWorld.Y;
         var targetRect = new FloatRect(x - 8, y - 8, 16, 16); //Adjust to allow more/less error
@@ -2667,7 +2667,7 @@ public partial class Player : Entity, IPlayer
         //MYRA-TODO: old !Interface.Interface.MouseHitGui()
         if (false)
         {
-            var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.GetMousePosition());
+            var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.PointerPosition);
             foreach (MapInstance map in Maps.MapInstance.Lookup.Values.Cast<MapInstance>())
             {
                 if (mouseInWorld.X >= map.GetX() && mouseInWorld.X <= map.GetX() + Options.MapWidth * Options.TileWidth)

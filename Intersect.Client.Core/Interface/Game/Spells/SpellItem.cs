@@ -11,10 +11,8 @@ using Intersect.Utilities;
 
 namespace Intersect.Client.Interface.Game.Spells;
 
-
 public partial class SpellItem
 {
-
     public ImagePanel Container;
 
     public bool IsDragging;
@@ -86,7 +84,7 @@ public partial class SpellItem
         else
         {
             Globals.Me.TryForgetSpell(mYindex);
-        }   
+        }
     }
 
     void pnl_HoverLeave(Base sender, EventArgs arguments)
@@ -110,7 +108,7 @@ public partial class SpellItem
 
         mMouseOver = true;
         mCanDrag = true;
-        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
         {
             mCanDrag = false;
 
@@ -201,7 +199,7 @@ public partial class SpellItem
         {
             if (mMouseOver)
             {
-                if (!Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+                if (!Globals.InputManager.IsPointerDown(MouseButtons.Left))
                 {
                     mCanDrag = true;
                     mMouseX = -1;
@@ -324,5 +322,4 @@ public partial class SpellItem
             }
         }
     }
-
 }

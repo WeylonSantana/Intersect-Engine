@@ -13,10 +13,8 @@ using Intersect.Network.Packets.Server;
 
 namespace Intersect.Client.Interface.Game.Shop;
 
-
 public partial class ShopItem
 {
-
     public ImagePanel Container;
 
     private int mCurrentItem = -2;
@@ -110,7 +108,7 @@ public partial class ShopItem
             return;
         }
 
-        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
         {
             return;
         }
@@ -149,8 +147,5 @@ public partial class ShopItem
         return rect;
     }
 
-    public void Update()
-    {
-    }
-
+    public void Update() { }
 }

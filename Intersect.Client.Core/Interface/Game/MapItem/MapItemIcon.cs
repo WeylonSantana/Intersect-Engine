@@ -11,10 +11,8 @@ using Intersect.GameObjects;
 
 namespace Intersect.Client.Interface.Game.Inventory;
 
-
 public partial class MapItemIcon
 {
-
     public ImagePanel Container;
 
     public MapItemInstance MyItem;
@@ -73,7 +71,7 @@ public partial class MapItemIcon
             return;
         }
 
-        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
         {
             return;
         }
@@ -132,7 +130,6 @@ public partial class MapItemIcon
             {
                 Pnl.Texture = null;
             }
-
         }
 
         if (mDescWindow != null)

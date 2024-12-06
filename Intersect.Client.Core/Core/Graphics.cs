@@ -593,7 +593,7 @@ public static partial class Graphics
         // Draw our mousecursor at the very end, but not when taking screenshots.
         if (!takingScreenshot && !string.IsNullOrWhiteSpace(ClientConfiguration.Instance.MouseCursor))
         {
-            var renderLoc = ConvertToWorldPointNoZoom(Globals.InputManager.GetMousePosition());
+            var renderLoc = ConvertToWorldPointNoZoom(Globals.InputManager.PointerPosition);
             DrawGameTexture(
                 Globals.ContentManager.GetTexture(Framework.Content.TextureType.Misc, ClientConfiguration.Instance.MouseCursor), renderLoc.X, renderLoc.Y
            );
@@ -1360,6 +1360,8 @@ public static partial class Graphics
             (int)Math.Floor(windowPoint.Y / Globals.Database.WorldZoom + CurrentView.Top)
         );
     }
+    
+    public static Pointf ConvertToWorldPoint(Point windowPoint) => ConvertToWorldPoint(new Pointf(windowPoint.X, windowPoint.Y));
 
     /// <summary>
     /// Converts a point in the window to its place in the world view without respecting zoom
@@ -1370,6 +1372,8 @@ public static partial class Graphics
     {
         return new Pointf((int)Math.Floor(windowPoint.X + CurrentView.Left), (int)Math.Floor(windowPoint.Y + CurrentView.Top));
     }
+    
+    public static Pointf ConvertToWorldPointNoZoom(Point windowPoint) => ConvertToWorldPointNoZoom(new Pointf(windowPoint.X, windowPoint.Y));
 
     //Rendering Functions
 

@@ -14,10 +14,8 @@ using Intersect.Utilities;
 
 namespace Intersect.Client.Interface.Game.Inventory;
 
-
 public partial class InventoryItem
 {
-
     public ImagePanel Container;
 
     public Label EquipLabel;
@@ -95,7 +93,7 @@ public partial class InventoryItem
         }
         else if (Globals.InBank)
         {
-            if (Globals.InputManager.KeyDown(Keys.Shift))
+            if (Globals.InputManager.IsKeyDown(Keys.Shift))
             {
                 Globals.Me.TryDepositItem(
                     mMySlot,
@@ -184,7 +182,7 @@ public partial class InventoryItem
 
         mMouseOver = true;
         mCanDrag = true;
-        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
         {
             mCanDrag = false;
 
@@ -355,7 +353,7 @@ public partial class InventoryItem
         {
             if (mMouseOver)
             {
-                if (!Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+                if (!Globals.InputManager.IsPointerDown(MouseButtons.Left))
                 {
                     mCanDrag = true;
                     mMouseX = -1;
@@ -541,5 +539,4 @@ public partial class InventoryItem
             }
         }
     }
-
 }

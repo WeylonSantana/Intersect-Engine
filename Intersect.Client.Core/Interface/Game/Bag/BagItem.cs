@@ -112,7 +112,7 @@ public partial class BagItem
 
         mMouseOver = true;
         mCanDrag = true;
-        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
         {
             mCanDrag = false;
 
@@ -182,7 +182,7 @@ public partial class BagItem
         {
             if (mMouseOver)
             {
-                if (!Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+                if (!Globals.InputManager.IsPointerDown(MouseButtons.Left))
                 {
                     mCanDrag = true;
                     mMouseX = -1;

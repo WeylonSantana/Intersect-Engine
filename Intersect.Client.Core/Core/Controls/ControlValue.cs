@@ -51,35 +51,35 @@ public partial class ControlValue
                 switch (Key)
                 {
                     case Keys.LButton:
-                        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+                        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
                         {
                             return true;
                         }
 
                         break;
                     case Keys.RButton:
-                        if (Globals.InputManager.MouseButtonDown(MouseButtons.Right))
+                        if (Globals.InputManager.IsPointerDown(MouseButtons.Right))
                         {
                             return true;
                         }
 
                         break;
                     case Keys.MButton:
-                        if (Globals.InputManager.MouseButtonDown(MouseButtons.Middle))
+                        if (Globals.InputManager.IsPointerDown(MouseButtons.Middle))
                         {
                             return true;
                         }
 
                         break;
                     case Keys.XButton1:
-                        if (Globals.InputManager.MouseButtonDown(MouseButtons.X1))
+                        if (Globals.InputManager.IsPointerDown(MouseButtons.X1))
                         {
                             return true;
                         }
 
                         break;
                     case Keys.XButton2:
-                        if (Globals.InputManager.MouseButtonDown(MouseButtons.X2))
+                        if (Globals.InputManager.IsPointerDown(MouseButtons.X2))
                         {
                             return true;
                         }
@@ -95,10 +95,10 @@ public partial class ControlValue
                 }
             }
         }
-       
+
         // If we get this far, clearly our buttons aren't pressed.
         return false;
     }
 
-    private static bool KeyDown(Keys key) => Globals.InputManager.KeyDown(key);
+    private static bool KeyDown(Keys key) => Globals.InputManager.IsKeyDown(key);
 }

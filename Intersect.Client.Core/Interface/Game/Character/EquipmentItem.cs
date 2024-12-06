@@ -86,7 +86,7 @@ public partial class EquipmentItem
             return;
         }
 
-        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
         {
             return;
         }

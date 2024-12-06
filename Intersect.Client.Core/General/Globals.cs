@@ -8,6 +8,7 @@ using Intersect.Client.Framework.Input;
 using Intersect.Client.Framework.Sys;
 using Intersect.Client.Items;
 using Intersect.Client.Maps;
+using Intersect.Client.MonoGame.Input;
 using Intersect.Client.Plugins.Interfaces;
 using Intersect.Enums;
 using Intersect.GameObjects;
@@ -163,7 +164,7 @@ public static partial class Globals
 
     public static bool CanCloseInventory => !(InBag || InBank || InCraft || InShop || InTrade);
 
-    public static GameInput InputManager;
+    public static MonoInput InputManager;
 
     public static bool IntroComing = true;
 

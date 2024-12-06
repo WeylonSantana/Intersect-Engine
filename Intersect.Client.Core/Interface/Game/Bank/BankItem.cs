@@ -85,7 +85,7 @@ public partial class BankItem
     {
         if (Globals.InBank)
         {
-            if (Globals.InputManager.KeyDown(Keys.Shift))
+            if (Globals.InputManager.IsKeyDown(Keys.Shift))
             {
                 Globals.Me.TryWithdrawItem(
                     mMySlot,
@@ -131,7 +131,7 @@ public partial class BankItem
 
         mMouseOver = true;
         mCanDrag = true;
-        if (Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+        if (Globals.InputManager.IsPointerDown(MouseButtons.Left))
         {
             mCanDrag = false;
 
@@ -201,7 +201,7 @@ public partial class BankItem
         {
             if (mMouseOver)
             {
-                if (!Globals.InputManager.MouseButtonDown(MouseButtons.Left))
+                if (!Globals.InputManager.IsPointerDown(MouseButtons.Left))
                 {
                     mCanDrag = true;
                     mMouseX = -1;

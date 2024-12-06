@@ -1,6 +1,5 @@
 using System.Diagnostics;
 
-using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Gwen.Control;
 using Intersect.Client.Framework.Gwen.Input;
 using Intersect.Client.Framework.Input;
@@ -12,92 +11,85 @@ using Intersect.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Keys = Intersect.Client.Framework.GenericClasses.Keys;
+using MonoKeys = Microsoft.Xna.Framework.Input.Keys;
 using Rectangle = Intersect.Client.Framework.GenericClasses.Rectangle;
 
 namespace Intersect.Client.MonoGame.Input;
 
-
 public partial class MonoInput : GameInput
 {
+    private Game _myGame;
+    
+    private readonly Dictionary<Keys, MonoKeys> _intersectKeys;
+    
+    private readonly Dictionary<MonoKeys, Keys> _monoKeys;
 
-    private Dictionary<Keys, Microsoft.Xna.Framework.Input.Keys> mKeyDictionary;
+    private KeyboardState _lastKeyboardState;
 
-    private KeyboardState mLastKeyboardState;
+    private MouseState _lastMouseState;
 
-    private MouseState mLastMouseState;
+    public Point PointerPosition = new();
 
-    private int mMouseX;
+    public Point PointerScroll = new();
 
-    private int mMouseY;
-
-    private int mMouseVScroll;
-
-    private int mMouseHScroll;
-
-    private Game mMyGame;
-
-    private readonly GamePadCapabilities[] _gamePadCapabilities =
-        new GamePadCapabilities[GamePad.MaximumGamePadCount];
-
-    private GamePadState _lastGamePadState;
-
-    private int _activeGamePad;
+    private readonly GamePadCapabilities[] _gamePadCapabilities = new GamePadCapabilities[
+        GamePad.MaximumGamePadCount
+    ];
 
     private bool _keyboardOpened;
 
     public MonoInput(Game myGame)
     {
-        myGame.Window.TextInput += Window_TextInput;
-        mMyGame = myGame;
-        mKeyDictionary = new Dictionary<Keys, Microsoft.Xna.Framework.Input.Keys>();
+        _myGame = myGame;
+        _intersectKeys = [];
+        _monoKeys = [];
+        
         foreach (Keys key in Enum.GetValues(typeof(Keys)))
         {
-            if (!mKeyDictionary.ContainsKey(key))
+            if (!_intersectKeys.ContainsKey(key))
             {
-                foreach (Microsoft.Xna.Framework.Input.Keys monoKey in Enum.GetValues(
-                    typeof(Microsoft.Xna.Framework.Input.Keys)
-                ))
+                foreach (MonoKeys monoKey in Enum.GetValues(typeof(MonoKeys)))
                 {
                     if (key == Keys.Shift)
                     {
-                        mKeyDictionary.Add(key, Microsoft.Xna.Framework.Input.Keys.LeftShift);
-
+                        _intersectKeys.TryAdd(key, MonoKeys.LeftShift);
+                        _monoKeys.TryAdd(MonoKeys.LeftShift, key);
                         break;
                     }
 
-                    if (key == Keys.Control || key == Keys.LControlKey)
+                    if (key is Keys.Control or Keys.LControlKey)
                     {
-                        mKeyDictionary.Add(key, Microsoft.Xna.Framework.Input.Keys.LeftControl);
-
+                        _intersectKeys.TryAdd(key, MonoKeys.LeftControl);
+                        _monoKeys.TryAdd(MonoKeys.LeftControl, key);
                         break;
                     }
 
                     if (key == Keys.RControlKey)
                     {
-                        mKeyDictionary.Add(key, Microsoft.Xna.Framework.Input.Keys.RightControl);
-
+                        _intersectKeys.TryAdd(key, MonoKeys.RightControl);
+                        _monoKeys.TryAdd(MonoKeys.RightControl, key);
                         break;
                     }
 
                     if (key == Keys.Return)
                     {
-                        mKeyDictionary.Add(key, Microsoft.Xna.Framework.Input.Keys.Enter);
-
+                        _intersectKeys.TryAdd(key, MonoKeys.Enter);
+                        _monoKeys.TryAdd(MonoKeys.Enter, key);
                         break;
                     }
-                    else
-                    {
-                        if (key.ToString() == monoKey.ToString())
-                        {
-                            mKeyDictionary.Add(key, monoKey);
 
-                            break;
-                        }
+                    if (key.ToString() != monoKey.ToString())
+                    {
+                        continue;
                     }
+
+                    _intersectKeys.TryAdd(key, monoKey);
+                    _monoKeys.TryAdd(monoKey, key);
+                    break;
                 }
             }
 
-            if (!mKeyDictionary.ContainsKey(key))
+            if (!_intersectKeys.ContainsKey(key))
             {
                 Debug.WriteLine("Mono does not have a key to match: " + key);
             }
@@ -124,111 +116,60 @@ public partial class MonoInput : GameInput
         );
 
         Mouse.SetPosition((int)center.X, (int)center.Y);
-        var mouseState = Mouse.GetState();
-        //Interface.Interface.GwenInput.ProcessMessage(
-        //    new GwenInputMessage(IntersectInput.InputEvent.MouseMove, new Pointf(mouseState.X, mouseState.Y), (int)MouseButtons.None, Keys.Alt)
-        //);
     }
 
-    private void Window_TextInput(object sender, TextInputEventArgs e)
+    public override bool IsPointerDown(MouseButtons mb) => mb switch
     {
-        //Interface.Interface.GwenInput.ProcessMessage(
-        //    new GwenInputMessage(
-        //        IntersectInput.InputEvent.TextEntered, GetMousePosition(), (int) MouseButtons.None, Keys.Alt, false,
-        //        false, false, e.Character.ToString()
-        //    )
-        //);
-    }
+        MouseButtons.Left => _lastMouseState.LeftButton == ButtonState.Pressed,
+        MouseButtons.Right => _lastMouseState.RightButton == ButtonState.Pressed,
+        MouseButtons.Middle => _lastMouseState.MiddleButton == ButtonState.Pressed,
+        MouseButtons.X1 => _lastMouseState.XButton1 == ButtonState.Pressed,
+        MouseButtons.X2 => _lastMouseState.XButton2 == ButtonState.Pressed,
+        _ => throw new ArgumentOutOfRangeException(nameof(mb), mb, null)
+    };
 
-    public override bool MouseButtonDown(MouseButtons mb)
-    {
-        switch (mb)
-        {
-            case MouseButtons.Left:
-                return mLastMouseState.LeftButton == ButtonState.Pressed;
-            case MouseButtons.Right:
-                return mLastMouseState.RightButton == ButtonState.Pressed;
-            case MouseButtons.Middle:
-                return mLastMouseState.MiddleButton == ButtonState.Pressed;
-            case MouseButtons.X1:
-                return mLastMouseState.XButton1 == ButtonState.Pressed;
-            case MouseButtons.X2:
-                return mLastMouseState.XButton2 == ButtonState.Pressed;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(mb), mb, null);
-        }
-    }
-
-    public override bool KeyDown(Keys key)
-    {
-        if (mKeyDictionary.ContainsKey(key))
-        {
-            if (mLastKeyboardState.IsKeyDown(mKeyDictionary[key]))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public override Pointf GetMousePosition()
-    {
-        return new Pointf(mMouseX, mMouseY);
-    }
+    public override bool IsKeyDown(Keys key) => _intersectKeys.ContainsKey(key) && _lastKeyboardState.IsKeyDown(_intersectKeys[key]);
+    
+    public bool IsKeyDown(MonoKeys key) => IsKeyDown(_monoKeys[key]);
 
     private void CheckMouseButton(Keys modifier, ButtonState bs, MouseButtons mb)
     {
         if (Globals.GameState == GameStates.Intro)
         {
-            return; //No mouse input allowed while showing intro slides
+            //No mouse input allowed while showing intro slides
+            return;
         }
 
-        if (bs == ButtonState.Pressed && !MouseButtonDown(mb))
+        if (bs == ButtonState.Pressed && !IsPointerDown(mb))
         {
-            //Interface.Interface.GwenInput.ProcessMessage(
-            //    new GwenInputMessage(IntersectInput.InputEvent.MouseDown, GetMousePosition(), (int) mb, Keys.Alt)
-            //);
-
             Core.Input.OnMouseDown(modifier, mb);
         }
-        else if (bs == ButtonState.Released && MouseButtonDown(mb))
+        else if (bs == ButtonState.Released && IsPointerDown(mb))
         {
-            //Interface.Interface.GwenInput.ProcessMessage(
-            //    new GwenInputMessage(IntersectInput.InputEvent.MouseUp, GetMousePosition(), (int) mb, Keys.Alt)
-            //);
-
             Core.Input.OnMouseUp(modifier, mb);
         }
     }
 
     private void CheckMouseScrollWheel(int scrlVValue, int scrlHValue)
     {
-        Pointf p = new Pointf(0, 0);
-
-        if (scrlVValue != mMouseVScroll || scrlHValue != mMouseHScroll)
+        if (scrlVValue != PointerScroll.Y || scrlHValue != PointerScroll.X)
         {
-            p = new Pointf(scrlHValue - mMouseHScroll, scrlVValue - mMouseVScroll);
-
-            //Interface.Interface.GwenInput.ProcessMessage(
-            //    new GwenInputMessage(IntersectInput.InputEvent.MouseScroll, p, (int)MouseButtons.Middle, Keys.Alt)
-            //);
-
-            mMouseVScroll = scrlVValue;
-            mMouseHScroll = scrlHValue;
+            PointerScroll.Y = scrlVValue;
+            PointerScroll.X = scrlHValue;
         }
     }
 
     public override void Update(TimeSpan elapsed)
     {
-        if (mMyGame.IsActive)
+        if (_myGame.IsActive)
         {
             if (_keyboardOpened)
             {
                 Steam.PumpEvents();
             }
 
-            var gamePadCapabilities = Enumerable.Range(0, GamePad.MaximumGamePadCount)
+            var gamePadCapabilities = Enumerable
+                .Range(0, GamePad.MaximumGamePadCount)
                 .Select(GamePad.GetCapabilities)
                 .ToArray();
 
@@ -241,7 +182,6 @@ public partial class MonoInput : GameInput
             var gamePadState = Enumerable
                 .Range(0, GamePad.MaximumGamePadCount)
                 .Select(GamePad.GetState)
-                .Skip(_activeGamePad)
                 .FirstOrDefault(gamePad => gamePad.IsConnected);
 
             if (gamePadState.IsConnected)
@@ -256,15 +196,12 @@ public partial class MonoInput : GameInput
             var keyboardState = Keyboard.GetState();
             var mouseState = Mouse.GetState();
 
-            if (mouseState.X != mMouseX || mouseState.Y != mMouseY)
+            if (mouseState.X != PointerPosition.X || mouseState.Y != PointerPosition.Y)
             {
-                mMouseX = (int)(mouseState.X * ((MonoRenderer)Core.Graphics.Renderer).GetMouseOffset().X);
-                mMouseY = (int)(mouseState.Y * ((MonoRenderer)Core.Graphics.Renderer).GetMouseOffset().Y);
-                //Interface.Interface.GwenInput.ProcessMessage(
-                //    new GwenInputMessage(
-                //        IntersectInput.InputEvent.MouseMove, GetMousePosition(), (int)MouseButtons.None, Keys.Alt
-                //    )
-                //);
+                PointerPosition = new(
+                    (int)(mouseState.X * ((MonoRenderer)Core.Graphics.Renderer!).GetMouseOffset().X),
+                    (int)(mouseState.Y * ((MonoRenderer)Core.Graphics.Renderer).GetMouseOffset().Y)
+                );
             }
 
             if (gamePadState.IsConnected)
@@ -294,38 +231,38 @@ public partial class MonoInput : GameInput
                     .Select(
                         button => button switch
                         {
-                            Buttons.None => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.DPadUp => Microsoft.Xna.Framework.Input.Keys.Up,
-                            Buttons.DPadDown => Microsoft.Xna.Framework.Input.Keys.Down,
-                            Buttons.DPadLeft => Microsoft.Xna.Framework.Input.Keys.Left,
-                            Buttons.DPadRight => Microsoft.Xna.Framework.Input.Keys.Right,
-                            Buttons.Start => Microsoft.Xna.Framework.Input.Keys.Escape,
-                            Buttons.Back => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.LeftStick => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.RightStick => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.LeftShoulder => Microsoft.Xna.Framework.Input.Keys.Back,
-                            Buttons.RightShoulder => Microsoft.Xna.Framework.Input.Keys.Tab,
-                            Buttons.BigButton => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.A => Microsoft.Xna.Framework.Input.Keys.Enter,
-                            Buttons.B => Microsoft.Xna.Framework.Input.Keys.Back,
-                            Buttons.X => Microsoft.Xna.Framework.Input.Keys.E,
-                            Buttons.Y => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.LeftThumbstickLeft => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.RightTrigger => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.LeftTrigger => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.RightThumbstickUp => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.RightThumbstickDown => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.RightThumbstickRight => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.RightThumbstickLeft => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.LeftThumbstickUp => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.LeftThumbstickDown => Microsoft.Xna.Framework.Input.Keys.None,
-                            Buttons.LeftThumbstickRight => Microsoft.Xna.Framework.Input.Keys.None,
+                            Buttons.None => MonoKeys.None,
+                            Buttons.DPadUp => MonoKeys.Up,
+                            Buttons.DPadDown => MonoKeys.Down,
+                            Buttons.DPadLeft => MonoKeys.Left,
+                            Buttons.DPadRight => MonoKeys.Right,
+                            Buttons.Start => MonoKeys.Escape,
+                            Buttons.Back => MonoKeys.None,
+                            Buttons.LeftStick => MonoKeys.None,
+                            Buttons.RightStick => MonoKeys.None,
+                            Buttons.LeftShoulder => MonoKeys.Back,
+                            Buttons.RightShoulder => MonoKeys.Tab,
+                            Buttons.BigButton => MonoKeys.None,
+                            Buttons.A => MonoKeys.Enter,
+                            Buttons.B => MonoKeys.Back,
+                            Buttons.X => MonoKeys.E,
+                            Buttons.Y => MonoKeys.None,
+                            Buttons.LeftThumbstickLeft => MonoKeys.None,
+                            Buttons.RightTrigger => MonoKeys.None,
+                            Buttons.LeftTrigger => MonoKeys.None,
+                            Buttons.RightThumbstickUp => MonoKeys.None,
+                            Buttons.RightThumbstickDown => MonoKeys.None,
+                            Buttons.RightThumbstickRight => MonoKeys.None,
+                            Buttons.RightThumbstickLeft => MonoKeys.None,
+                            Buttons.LeftThumbstickUp => MonoKeys.None,
+                            Buttons.LeftThumbstickDown => MonoKeys.None,
+                            Buttons.LeftThumbstickRight => MonoKeys.None,
                             _ => throw new ArgumentOutOfRangeException(nameof(button), button, null)
                         }
                     );
 
                 keyboardState = new KeyboardState(
-                    keyboardState.GetPressedKeys().Concat(gamePadKeys).ToArray(),
+                    [.. keyboardState.GetPressedKeys(), .. gamePadKeys],
                     keyboardState.CapsLock,
                     keyboardState.NumLock
                 );
@@ -343,49 +280,32 @@ public partial class MonoInput : GameInput
 
             CheckMouseScrollWheel(mouseState.ScrollWheelValue, mouseState.HorizontalScrollWheelValue);
 
-            foreach (var key in mKeyDictionary)
+            foreach (var key in _intersectKeys)
             {
-                if (keyboardState.IsKeyDown(key.Value) && !mLastKeyboardState.IsKeyDown(key.Value))
+                if (keyboardState.IsKeyDown(key.Value) && !_lastKeyboardState.IsKeyDown(key.Value))
                 {
                     Log.Diagnostic("{0} -> {1}", key.Key, key.Value);
-                    //Interface.Interface.GwenInput.ProcessMessage(
-                    //    new GwenInputMessage(
-                    //        IntersectInput.InputEvent.KeyDown, GetMousePosition(), (int) MouseButtons.None, key.Key
-                    //    )
-                    //);
-
                     Core.Input.OnKeyPressed(modifier, key.Key);
                 }
-                else if (!keyboardState.IsKeyDown(key.Value) && mLastKeyboardState.IsKeyDown(key.Value))
+                else if (
+                    !keyboardState.IsKeyDown(key.Value) && _lastKeyboardState.IsKeyDown(key.Value)
+                )
                 {
-                    //Interface.Interface.GwenInput.ProcessMessage(
-                    //    new GwenInputMessage(
-                    //        IntersectInput.InputEvent.KeyUp, GetMousePosition(), (int) MouseButtons.None, key.Key
-                    //    )
-                    //);
-
                     Core.Input.OnKeyReleased(modifier, key.Key);
                 }
             }
 
-            mLastKeyboardState = keyboardState;
-            mLastMouseState = mouseState;
-            _lastGamePadState = gamePadState;
+            _lastKeyboardState = keyboardState;
+            _lastMouseState = mouseState;
         }
         else
         {
-            var modifier = GetPressedModifier(mLastKeyboardState);
+            var modifier = GetPressedModifier(_lastKeyboardState);
 
-            foreach (var key in mKeyDictionary)
+            foreach (var key in _intersectKeys)
             {
-                if (mLastKeyboardState.IsKeyDown(key.Value))
+                if (_lastKeyboardState.IsKeyDown(key.Value))
                 {
-                    //Interface.Interface.GwenInput.ProcessMessage(
-                    //    new GwenInputMessage(
-                    //        IntersectInput.InputEvent.KeyUp, GetMousePosition(), (int) MouseButtons.None, key.Key
-                    //    )
-                    //);
-
                     Core.Input.OnKeyReleased(modifier, key.Key);
                 }
             }
@@ -395,31 +315,33 @@ public partial class MonoInput : GameInput
             CheckMouseButton(modifier, ButtonState.Released, MouseButtons.Middle);
             CheckMouseButton(modifier, ButtonState.Released, MouseButtons.X1);
             CheckMouseButton(modifier, ButtonState.Released, MouseButtons.X2);
-            mLastKeyboardState = new KeyboardState();
-            mLastMouseState = new MouseState();
+
+            _lastKeyboardState = new KeyboardState();
+            _lastMouseState = new MouseState();
         }
     }
 
     public Keys GetPressedModifier(KeyboardState state)
     {
         var modifier = Keys.None;
-        if (state.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || state.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl))
+        if (state.IsKeyDown(MonoKeys.LeftControl) || state.IsKeyDown(MonoKeys.RightControl))
         {
             modifier = Keys.Control;
         }
 
-        if (state.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift) || state.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightShift))
+        if (state.IsKeyDown(MonoKeys.LeftShift) || state.IsKeyDown(MonoKeys.RightShift))
         {
             modifier = Keys.Shift;
         }
 
-        if (state.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) || state.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt))
+        if (state.IsKeyDown(MonoKeys.LeftAlt) || state.IsKeyDown(MonoKeys.RightAlt))
         {
             modifier = Keys.Alt;
         }
 
         return modifier;
     }
+
     public override void OpenKeyboard(
         KeyboardType type,
         string text,
@@ -428,7 +350,7 @@ public partial class MonoInput : GameInput
         bool secure
     )
     {
-        return; //no on screen keyboard for pc clients
+        //no on screen keyboard for pc clients
     }
 
     public override void OpenKeyboard(

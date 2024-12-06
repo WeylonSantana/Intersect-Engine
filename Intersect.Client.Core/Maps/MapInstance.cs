@@ -777,7 +777,7 @@ public partial class MapInstance : MapBase, IGameObject<Guid, MapInstance>, IMap
         //}
         // Get where our mouse is located and convert it to a tile based location.
         var mousePos = Graphics.ConvertToWorldPoint(
-                Globals.InputManager.GetMousePosition()
+                Globals.InputManager.PointerPosition
         );
         var x = (int)(mousePos.X - (int)GetX()) / Options.TileWidth;
         var y = (int)(mousePos.Y - (int)GetY()) / Options.TileHeight;

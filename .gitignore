@@ -213,6 +213,7 @@ pip-log.txt
 packages/
 
 .vs/
+.vscode/
 .idea
 
 /assets/**
