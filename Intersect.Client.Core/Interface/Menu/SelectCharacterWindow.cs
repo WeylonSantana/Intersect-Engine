@@ -1,10 +1,13 @@
 using Intersect.Client.Core;
+using Intersect.Client.Framework.Content;
 using Intersect.Client.General;
+using Intersect.Client.Interface.Editor;
 using Intersect.Client.Interface.Extensions;
 using Intersect.Client.Interface.Shared;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Network.Packets.Server;
+using Myra.Graphics2D;
 using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
@@ -15,14 +18,15 @@ public partial class SelectCharacterWindow : IMainMenuWindow
     private Widget? _selectCharacterWindow;
     private Label? _labelCharname;
     private Label? _labelInfo;
-    private Panel? _charContainer;
     private Button? _buttonNextChar;
     private Button? _buttonPrevChar;
+    private Button? _editorMode;
     private Button? _buttonPlay;
     private Button? _buttonDelete;
     private Button? _buttonNew;
     private Button? _buttonLogout;
-    //private Image[]? _renderLayers;
+    private Panel? _charContainer;
+    private Image[]? _renderLayers;
     public Character[]? Characters;
     public int SelectedChar = 0;
 
@@ -74,6 +78,19 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             _buttonPrevChar.Click += _buttonPrevChar_Clicked;
         }
 
+        //EditorMode Button
+        _editorMode = Interface.GetChildById<Button>("_buttonEditorMode");
+        if (_editorMode != default)
+        {
+            _editorMode.SetText("Editor Mode");
+            _editorMode.Click += (sender, args) =>
+            {
+                _mainMenu.Reset();
+                _ = new EditorInterface();
+            };
+            //_editorMode.Visible = Globals.Me.AccessLevel = 2;
+        }
+
         //Play Button
         _buttonPlay = Interface.GetChildById<Button>("_buttonPlay");
         if (_buttonPlay != default)
@@ -118,7 +135,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         _selectCharacterWindow.Visible = true;
-        /*if (_renderLayers == default)
+        if (_renderLayers == default)
         {
             _renderLayers = new Image[Options.Equipment.Paperdoll.Down.Count];
             for (var i = 0; i < _renderLayers.Length; i++)
@@ -131,10 +148,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             }
         }
 
-        if (Characters == default)
-        {
-            Characters = new Character[Options.MaxCharacters];
-        }*/
+        Characters ??= new Character[Options.MaxCharacters];
         SelectedChar = 0;
         UpdateDisplay();
     }
@@ -165,10 +179,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
     private void UpdateDisplay()
     {
-        /*if (_renderLayers == default || Characters == default)
+        if (_renderLayers == default || Characters == default)
         {
             return;
-        }*/
+        }
         if (Characters == default)
         {
             return;
@@ -183,10 +197,11 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             _buttonPrevChar?.BringToFront();
         }
 
-        /*foreach (var paperdollPortrait in _renderLayers)
+        foreach (var paperdollPortrait in _renderLayers)
         {
             paperdollPortrait.Visible = false;
-        }*/
+        }
+
         if (Characters?[SelectedChar] == default)
         {
             _buttonPlay.ToggleVisible(false);
@@ -198,15 +213,23 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         _labelCharname.SetText(Strings.CharacterSelection.Name.ToString(Characters[SelectedChar].Name));
-        _labelInfo.SetText(Strings.CharacterSelection.Info.ToString(
-            Characters[SelectedChar].Level,
-            Characters[SelectedChar].Class
-        ));
+        _labelInfo.SetText(Strings.CharacterSelection.Info.ToString(Characters[SelectedChar].Level, Characters[SelectedChar].Class));
         _buttonPlay.ToggleVisible(true);
         _buttonDelete.ToggleVisible(true);
         _buttonNew.ToggleVisible(false);
-        
-        /*
+        if (_renderLayers == default)
+        {
+            _renderLayers = new Image[Options.Equipment.Paperdoll.Down.Count];
+            for (var i = 0; i < _renderLayers.Length; i++)
+            {
+                _renderLayers[i] = new Image
+                {
+                    HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center
+                };
+                _charContainer?.Widgets.Add(_renderLayers[i]);
+            }
+        }
+
         for (var i = 0; i < Options.Equipment.Paperdoll.Down.Count; i++)
         {
             var equipment = Options.Equipment.Paperdoll.Down[i];
@@ -216,10 +239,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             {
                 var faceSource = Characters[SelectedChar].Face;
                 var spriteSource = Characters[SelectedChar].Sprite;
-                var faceTex = Globals.ContentManager.GetTexture(TextureType.Face, faceSource);
-                var spriteTex = Globals.ContentManager.GetTexture(TextureType.Entity, spriteSource);
+                var faceTex = (IImage)Globals.ContentManager.GetTexture(TextureType.Face, faceSource);
+                var spriteTex = (IImage)Globals.ContentManager.GetTexture(TextureType.Entity, spriteSource);
                 isFace = faceTex != default;
-                paperdollContainer.Renderable = isFace ? new TextureRegion(faceTex) : new TextureRegion(spriteTex);
+                paperdollContainer.Renderable = isFace ? faceTex : spriteTex;
             }
             else
             {
@@ -235,7 +258,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
                     continue;
                 }
 
-                paperdollContainer.Renderable = new TextureRegion(Globals.ContentManager.GetTexture(TextureType.Paperdoll, equipFragment.Name).Texture);
+                paperdollContainer.Renderable = (IImage)Globals.ContentManager.GetTexture(TextureType.Paperdoll, equipFragment.Name);
                 if (paperdollContainer.Renderable != default)
                 {
                     paperdollContainer.Color = new Microsoft.Xna.Framework.Color(
@@ -254,7 +277,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             }
 
             paperdollContainer.Visible = true;
-        }*/
+        }
     }
 
     private void _buttonLogout_Clicked(object? sender, EventArgs? arguments)

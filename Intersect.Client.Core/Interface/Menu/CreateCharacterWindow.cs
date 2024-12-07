@@ -1,3 +1,4 @@
+using Intersect.Client.Framework.Content;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
 using Intersect.Client.Interface.Extensions;
@@ -7,6 +8,7 @@ using Intersect.GameObjects;
 using Intersect.Logging;
 using Intersect.Utilities;
 using Myra.Graphics2D.UI;
+using Myra.Graphics2D;
 
 namespace Intersect.Client.Interface.Menu;
 
@@ -153,7 +155,6 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
     private void UpdateDisplay()
     {
-        bool isFace;
         var cls = GetClass();
         if (cls == default || _displaySpriteIndex == -1)
         {
@@ -167,28 +168,30 @@ public partial class CreateCharacterWindow : IMainMenuWindow
             return;
         }
 
-        /*
-
+        bool isFace;
         var source = _chkMale.IsChecked ? _maleSprites[_displaySpriteIndex] : _femaleSprites[_displaySpriteIndex];
-        var faceTex = Globals.ContentManager.GetTexture(TextureType.Face, source.Value.Face);
-        var entityTex = Globals.ContentManager.GetTexture(TextureType.Entity, source.Value.Sprite);
+        var faceTex = Globals.ContentManager.GetTexture(TextureType.Face, source.Value.Face).GetTexture();
+        var entityTex = Globals.ContentManager.GetTexture(TextureType.Entity, source.Value.Sprite).GetTexture();
 
         isFace = faceTex != null;
-        _charPortrait.Texture = isFace ? faceTex : entityTex;
+        _charPortrait.Renderable = isFace ? (IImage)faceTex : (IImage)entityTex;
 
-        if (_charPortrait.Texture == null)
+        if (_charPortrait.Renderable == null)
+
+
+        if (_charPortrait.Renderable == null)
         {
             return;
         }
 
-        var imgWidth = _charPortrait.Texture.Width;
-        var imgHeight = _charPortrait.Texture.Height;
+        var imgWidth = _charPortrait.Width;
+        var imgHeight = _charPortrait.Height;
         var textureWidth = isFace ? imgWidth : imgWidth / Options.Instance.Sprites.NormalFrames;
         var textureHeight = isFace ? imgHeight : imgHeight / Options.Instance.Sprites.Directions;
 
-        //_charPortrait.SetTextureRect(0, 0, textureWidth, textureHeight);
+        //_charPortrait.Renderable.SetTextureRect(0, 0, textureWidth, textureHeight);
 
-        var scale = Math.Min(_charPortrait.Width / (double)imgWidth, _charPortrait.Height / (double)imgHeight);
+        var scale = Math.Min(_charPortrait.Width / (double?)imgWidth ?? 0, _charPortrait.Height / (double?)imgHeight ?? 0);
         var sizeX = isFace ? (int)(imgWidth * scale) : textureWidth;
         var sizeY = isFace ? (int)(imgHeight * scale) : textureHeight;
         _charPortrait.Width = sizeX;
@@ -196,9 +199,9 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
         var centerX = (_charPortrait.Parent.Width / 2) - (_charPortrait.Width / 2);
         var centerY = (_charPortrait.Parent.Height / 2) - (_charPortrait.Height / 2);
-        _charPortrait.Left = centerX;
-        _charPortrait.Top = centerY;
-        */
+        _charPortrait.Left = centerX ?? 0;
+        _charPortrait.Top = centerY ?? 0;
+        
     }
 
     private ClassBase? GetClass()
@@ -357,13 +360,13 @@ public partial class CreateCharacterWindow : IMainMenuWindow
             return;
         }
 
-        if (!FieldChecking.IsValidUsername(_charNameTextbox.Text, Strings.Regex.Username))
+        if (!FieldChecking.IsValidUsername(_charNameTextbox?.Text, Strings.Regex.Username))
         {
             Interface.ShowError(Strings.CharacterCreation.InvalidName);
             return;
         }
 
-        var charName = _charNameTextbox.Text;
+        var charName = _charNameTextbox?.Text;
         var spriteKey = _chkMale.IsChecked
             ? _maleSprites[_displaySpriteIndex].Key
             : _femaleSprites[_displaySpriteIndex].Key;

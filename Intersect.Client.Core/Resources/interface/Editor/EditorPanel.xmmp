@@ -1,0 +1,60 @@
+<Project>
+  <Panel>
+    <VerticalStackPanel Spacing="8">
+      <HorizontalMenu VerticalAlignment="Stretch" Id="_mainMenu">
+        <MenuItem Text="File" Id="_menuFile">
+          <MenuItem Text="New Map" ShortcutText="Ctrl+N" Id="_fileNewMap" />
+          <MenuItem Text="Save" ShortcutText="Ctrl+S" Id="_fileSave" />
+          <MenuItem Text="Options" ShortcutText="Ctrl+O" Id="_fileOption" />
+          <MenuSeparator />
+          <MenuItem Text="Quit" ShortcutText="Ctrl+Q" Id="_fileQuit" />
+        </MenuItem>
+        <MenuItem Text="Map Editor" Id="_menuMapEdit">
+          <MenuItem Text="Undo" ShortcutText="Ctrl+Z" Id="_mapEditUndo" />
+          <MenuItem Text="Redo" ShortcutText="Ctrl+Y" Id="_mapEditRedo" />
+          <MenuSeparator />
+          <MenuItem Text="Cut" ShortcutText="Ctrl+X" Id="_mapEditCut" />
+          <MenuItem Text="Copy" ShortcutText="Ctrl+C" Id="_mapEditCopy" />
+          <MenuItem Text="Paste" ShortcutText="Ctrl+V" Id="_mapEditPaste" />
+          <MenuSeparator />
+          <MenuItem Text="Fill" ShortcutText="Ctrl+F" Id="_mapEditFill" />
+          <MenuItem Text="Erase" ShortcutText="Ctrl+E" Id="_mapEditErase" />
+        </MenuItem>
+        <MenuItem Text="Game Editor" Id="_menuGameEdit">
+          <MenuItem Text="Animations" Id="_gameEditAnimation" />
+          <MenuItem Text="Classes" Id="_gameEditClass" />
+          <MenuItem Text="NPCs" Id="_gameEditNPC" />
+          <MenuSeparator />
+          <MenuItem Text="Items" Id="_gameEditItem" />
+          <MenuItem Text="Spells" Id="_gameEditSpell" />
+          <MenuItem Text="Projectiles" Id="_gameEditProjectile" />
+          <MenuItem Text="Resources" Id="_gameEditResource" />
+          <MenuSeparator />
+          <MenuItem Text="Shops" Id="_gameEditShop" />
+          <MenuItem Text="Crafts" Id="_gameEditCraft" />
+          <MenuItem Text="Crafting Tables" Id="_gameEditCraftTable" />
+          <MenuSeparator />
+          <MenuItem Text="Common Events" Id="_gameEditCommonEvent" />
+          <MenuItem Text="Quests" Id="_gameEditQuest" />
+          <MenuItem Text="Variables" Id="_gameEditVariable" />
+          <MenuItem Text="Time" Id="_gameEditTime" />
+        </MenuItem>
+        <MenuItem Text="View" Id="_menuView">
+          <MenuItem Text="Darkness" Id="_viewDarkness" />
+          <MenuItem Text="Fog" Id="_viewFog" />
+          <MenuItem Text="Overlay" Id="_viewOverlay" />
+          <MenuItem Text="Tiles" Id="_viewTile" />
+          <MenuItem Text="Resources" Id="_viewResource" />
+          <MenuItem Text="Grid" Id="_viewGrid" />
+          <MenuItem Text="Events" Id="_viewEvent" />
+          <MenuItem Text="Layers" Id="_viewLayer" />
+        </MenuItem>
+        <MenuItem Text="Help" Id="_menuHelp">
+          <MenuItem Text="Post Question" Id="_helpQuestion" />
+          <MenuItem Text="Documentation" Id="_helpDoc" />
+          <MenuItem Text="About" Id="_helpAbout" />
+        </MenuItem>
+      </HorizontalMenu>
+    </VerticalStackPanel>
+  </Panel>
+</Project>
