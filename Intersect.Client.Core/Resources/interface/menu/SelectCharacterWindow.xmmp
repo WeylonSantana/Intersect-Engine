@@ -1,29 +1,29 @@
 ﻿<Project>
   <Panel Width="420" Height="250" Background="#202020FF" HorizontalAlignment="Center" VerticalAlignment="Center">
-    <Label Id="_labelSelectCharacterTitle" Width="452" Height="393" TextAlign="Center" TextPadding="25,9,0,0" Text="Character Select" HorizontalAlignment="Center" VerticalAlignment="Top" />
-    <Label Id="_labelCharname" Width="178" Height="20" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="56" Left="68" />
-    <Label Id="_labelInfo" Width="178" Height="20" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="70" Left="68" />
-    <Panel Id="_charContainer" Width="178" Height="79" HorizontalAlignment="Left" VerticalAlignment="Top" Top="94" Left="68">
-      <Button Id="_buttonNextChar" Width="30" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Right" VerticalAlignment="Center">
+    <Label Id="SELECT_CHARACTER_TITLE_LABEL" Width="452" Height="393" TextAlign="Center" TextPadding="25,9,0,0" Text="Character Select" HorizontalAlignment="Center" VerticalAlignment="Top" />
+    <Label Id="CHARNAME_LABEL" Width="178" Height="20" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="56" Left="68" />
+    <Label Id="CHARINFO_LABEL" Width="178" Height="20" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="70" Left="68" />
+    <Panel Id="CHAR_CONTAINER" Width="178" Height="79" HorizontalAlignment="Left" VerticalAlignment="Top" Top="94" Left="68">
+      <Button Id="NEXT_CHAR_BUTTON" Width="30" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Right" VerticalAlignment="Center">
         <Label TextAlign="Center" Text="&gt;" HorizontalAlignment="Center" VerticalAlignment="Center" />
       </Button>
-      <Button Id="_buttonPrevChar" Width="30" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Center">
+      <Button Id="PREV_CHAR_BUTTON" Width="30" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Center">
         <Label TextAlign="Center" Text="&lt;" HorizontalAlignment="Center" VerticalAlignment="Center" />
       </Button>
     </Panel>
-    <Button Id="_buttonEditorMode" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="54" Left="288">
+    <Button Id="EDITOR_MODE_BUTTON" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="54" Left="288">
       <Label TextAlign="Center" Text="Editor Mode" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
-    <Button Id="_buttonPlay" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="97" Left="288">
+    <Button Id="PLAY_BUTTON" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="97" Left="288">
       <Label TextAlign="Center" Text="Play" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
-    <Button Id="_buttonNew" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="97" Left="288">
+    <Button Id="NEWCHAR_BUTTON" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="97" Left="288">
       <Label TextAlign="Center" Text="New" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
-    <Button Id="_buttonDelete" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="140" Left="288">
+    <Button Id="DELETE_BUTTON" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="140" Left="288">
       <Label TextAlign="Center" Text="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
-    <Button Id="_buttonLogout" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="183" Left="288">
+    <Button Id="LOGOUT_BUTTON" Width="96" Height="35" Padding="3,3,3,3" TextAlign="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Top="183" Left="288">
       <Label TextAlign="Center" Text="Logout" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
   </Panel>

@@ -1,7 +1,7 @@
 <Project>
   <Project.ExportOptions />
   <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="330" Padding="10" Background="#202020FF">
-    <Label Text="Register" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="TITLE" />
+    <Label Text="Register" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="TITLE_LABEL" />
     <Panel Top="45" Height="50">
       <Label Text="Username:" TextAlign="Center" Top="5" Id="USERNAME_LABEL" />
       <TextBox VerticalAlignment="Bottom" Id="USERNAME_TEXTBOX" />

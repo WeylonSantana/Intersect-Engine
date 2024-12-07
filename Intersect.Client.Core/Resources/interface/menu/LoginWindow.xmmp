@@ -2,7 +2,7 @@
   <Project.ExportOptions />
   <Panel>
     <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="250" Padding="10" Background="#202020FF">
-      <Label Text="Login" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="TITLE" />
+      <Label Text="Login" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="TITLE_LABEL" />
       <Panel Top="45" Height="50">
         <Label Text="Username:" TextAlign="Center" Top="5" Id="USERNAME_LABEL" />
         <TextBox VerticalAlignment="Bottom" Id="USERNAME_TEXTBOX" />
@@ -11,7 +11,7 @@
         <Label Text="Password:" TextAlign="Center" Top="5" Id="PASSWORD_LABEL" />
         <TextBox VerticalAlignment="Bottom" Id="PASSWORD_TEXTBOX" />
       </Panel>
-      <CheckButton Top="55" VerticalAlignment="Center" Id="SAVE_CREDENTIALS">
+      <CheckButton Top="55" VerticalAlignment="Center" Id="SAVE_CREDENTIALS_CHECK">
         <Label Text="Save Credentials" TextAlign="Center" Left="5" />
       </CheckButton>
       <Button Top="-11" Width="150" Height="25" VerticalAlignment="Bottom" Id="REGISTER_BUTTON">

@@ -18,29 +18,13 @@ public partial class RegisterWindow : IMainMenuWindow
     private TextBox? _textboxPasswordConfirm;
     private Button? _buttonRegister;
 
-    #region Constants
-
-    private const string TITLE = $"{nameof(TITLE)}";
-    private const string USERNAME_LABEL = $"{nameof(USERNAME_LABEL)}";
-    private const string USERNAME_TEXTBOX = $"{nameof(USERNAME_TEXTBOX)}";
-    private const string EMAIL_LABEL = $"{nameof(EMAIL_LABEL)}";
-    private const string EMAIL_TEXTBOX = $"{nameof(EMAIL_TEXTBOX)}";
-    private const string PASSWORD_LABEL = $"{nameof(PASSWORD_LABEL)}";
-    private const string PASSWORD_TEXTBOX = $"{nameof(PASSWORD_TEXTBOX)}";
-    private const string CONFIRM_PASSWORD_LABEL = $"{nameof(CONFIRM_PASSWORD_LABEL)}";
-    private const string CONFIRM_PASSWORD_TEXTBOX = $"{nameof(CONFIRM_PASSWORD_TEXTBOX)}";
-    private const string REGISTER_BUTTON = $"{nameof(REGISTER_BUTTON)}";
-    private const string BACK_BUTTON = $"{nameof(BACK_BUTTON)}";
-
-    #endregion
-
     public bool Visible => _registerWindow?.Visible ?? false;
 
     public void Load(MenuInterface mainMenu)
     {
         _mainMenu = mainMenu;
         _registerWindow = Interface.LoadContent(Path.Combine("menu", "RegisterWindow.xmmp"));
-        Interface.GetChildById<Label>(TITLE)?.SetText(Strings.Registration.Title);
+        Interface.GetChildById<Label>(TITLE_LABEL)?.SetText(Strings.Registration.Title);
         Interface.GetChildById<Label>(USERNAME_LABEL)?.SetText(Strings.Registration.Username);
         Interface.GetChildById<Label>(EMAIL_LABEL)?.SetText(Strings.Registration.Email);
         Interface.GetChildById<Label>(PASSWORD_LABEL)?.SetText(Strings.Registration.Password);
@@ -171,4 +155,20 @@ public partial class RegisterWindow : IMainMenuWindow
             _buttonRegister.Enabled = false;
         }
     }
+
+    #region Constants
+
+    private const string TITLE_LABEL = nameof(TITLE_LABEL);
+    private const string USERNAME_LABEL = nameof(USERNAME_LABEL);
+    private const string USERNAME_TEXTBOX = nameof(USERNAME_TEXTBOX);
+    private const string EMAIL_LABEL = nameof(EMAIL_LABEL);
+    private const string EMAIL_TEXTBOX = nameof(EMAIL_TEXTBOX);
+    private const string PASSWORD_LABEL = nameof(PASSWORD_LABEL);
+    private const string PASSWORD_TEXTBOX = nameof(PASSWORD_TEXTBOX);
+    private const string CONFIRM_PASSWORD_LABEL = nameof(CONFIRM_PASSWORD_LABEL);
+    private const string CONFIRM_PASSWORD_TEXTBOX = nameof(CONFIRM_PASSWORD_TEXTBOX);
+    private const string REGISTER_BUTTON = nameof(REGISTER_BUTTON);
+    private const string BACK_BUTTON = nameof(BACK_BUTTON);
+
+    #endregion
 }

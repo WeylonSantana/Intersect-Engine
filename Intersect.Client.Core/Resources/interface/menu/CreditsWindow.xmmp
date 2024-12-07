@@ -1,6 +1,6 @@
 <Project>
   <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="420" Padding="5, 10" Background="#202020FF">
-    <Label Text="Credits" HorizontalAlignment="Center" Id="TITLE" TextColor="#6495ed" />
+    <Label Text="Credits" HorizontalAlignment="Center" Id="TITLE_LABEL" TextColor="#6495ed" />
     <ScrollViewer ShowHorizontalScrollBar="False" Top="30" Width="420" Height="330">
       <VerticalStackPanel HorizontalAlignment="Center" Width="400">
         <Label Text="Intersect Engine" HorizontalAlignment="Center" TextColor="#cca01d" />

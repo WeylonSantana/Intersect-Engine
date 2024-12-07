@@ -28,30 +28,13 @@ public partial class LoginWindow : IMainMenuWindow
     private string _savedPass = string.Empty;
     private string _storedPassword = string.Empty;
 
-    #region Constants
-
-    private const string TITLE = $"{nameof(TITLE)}";
-    private const string USERNAME_LABEL = $"{nameof(USERNAME_LABEL)}";
-    private const string USERNAME_TEXTBOX = $"{nameof(USERNAME_TEXTBOX)}";
-    private const string PASSWORD_LABEL = $"{nameof(PASSWORD_LABEL)}";
-    private const string PASSWORD_TEXTBOX = $"{nameof(PASSWORD_TEXTBOX)}";
-    private const string SAVE_CREDENTIALS = $"{nameof(SAVE_CREDENTIALS)}";
-    private const string REGISTER_BUTTON = $"{nameof(REGISTER_BUTTON)}";
-    private const string LOGIN_BUTTON = $"{nameof(LOGIN_BUTTON)}";
-    private const string FORGOT_PASSWORD_BUTTON = $"{nameof(FORGOT_PASSWORD_BUTTON)}";
-    private const string SETTINGS_BUTTON = $"{nameof(SETTINGS_BUTTON)}";
-    private const string CREDITS_BUTTON = $"{nameof(CREDITS_BUTTON)}";
-    private const string EXIT_BUTTON = $"{nameof(EXIT_BUTTON)}";
-
-    #endregion
-
     public bool Visible => _loginWindow?.Visible ?? false;
 
     public void Load(MenuInterface mainMenu)
     {
         _mainMenu = mainMenu;
         _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
-        Interface.GetChildById<Label>(TITLE)?.SetText(Strings.LoginWindow.Title);
+        Interface.GetChildById<Label>(TITLE_LABEL)?.SetText(Strings.LoginWindow.Title);
         Interface.GetChildById<Label>(USERNAME_LABEL)?.SetText(Strings.LoginWindow.Username);
         Interface.GetChildById<Label>(PASSWORD_LABEL)?.SetText(Strings.LoginWindow.Password);
 
@@ -70,7 +53,7 @@ public partial class LoginWindow : IMainMenuWindow
             _textboxLoginPassword.TextChanged += _textboxPassword_TextChanged;
         }
 
-        if (Interface.GetChildById<CheckButton>(SAVE_CREDENTIALS, out var checkboxSave))
+        if (Interface.GetChildById<CheckButton>(SAVE_CREDENTIALS_CHECK, out var checkboxSave))
         {
             _checkboxSave = checkboxSave;
             _checkboxSave.SetText(Strings.LoginWindow.SavePassword);
@@ -403,6 +386,23 @@ public partial class LoginWindow : IMainMenuWindow
         _removeRegisterEvents();
         _mainMenu.SwitchToWindow<RegisterWindow>();
     }
+
+    #endregion
+
+    #region Constants
+
+    private const string TITLE_LABEL = nameof(TITLE_LABEL);
+    private const string USERNAME_LABEL = nameof(USERNAME_LABEL);
+    private const string USERNAME_TEXTBOX = nameof(USERNAME_TEXTBOX);
+    private const string PASSWORD_LABEL = nameof(PASSWORD_LABEL);
+    private const string PASSWORD_TEXTBOX = nameof(PASSWORD_TEXTBOX);
+    private const string SAVE_CREDENTIALS_CHECK = nameof(SAVE_CREDENTIALS_CHECK);
+    private const string REGISTER_BUTTON = nameof(REGISTER_BUTTON);
+    private const string LOGIN_BUTTON = nameof(LOGIN_BUTTON);
+    private const string FORGOT_PASSWORD_BUTTON = nameof(FORGOT_PASSWORD_BUTTON);
+    private const string SETTINGS_BUTTON = nameof(SETTINGS_BUTTON);
+    private const string CREDITS_BUTTON = nameof(CREDITS_BUTTON);
+    private const string EXIT_BUTTON = nameof(EXIT_BUTTON);
 
     #endregion
 }

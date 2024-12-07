@@ -38,48 +38,44 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         _selectCharacterWindow = Interface.LoadContent(Path.Combine("menu", "SelectCharacterWindow.xmmp"));
 
         //Menu Header
-        if (Interface.GetChildById<Label>("_labelSelectCharacterTitle", out var labelSelectCharacterTitle))
+        if (Interface.GetChildById<Label>(SELECT_CHARACTER_TITLE_LABEL, out var labelSelectCharacterTitle))
         {
             labelSelectCharacterTitle.Text = Strings.CharacterSelection.Title;
         }
 
         //Character Name
-        _labelCharname = Interface.GetChildById<Label>("_labelCharname");
+        _labelCharname = Interface.GetChildById<Label>(CHARNAME_LABEL);
         if (_labelCharname != default)
         {
             _labelCharname.Text = Strings.CharacterSelection.Empty;
         }
 
         //Character Info
-        _labelInfo = Interface.GetChildById<Label>("_labelInfo");
+        _labelInfo = Interface.GetChildById<Label>(CHARINFO_LABEL);
         if (_labelInfo != default)
         {
             _labelInfo.Text = Strings.CharacterSelection.New;
         }
 
         //Character Container
-        _charContainer = Interface.GetChildById<Panel>("_charContainer");
-        if (_charContainer != default)
-        {
-            //_charContainer = charContainer;
-        }
+        _charContainer = Interface.GetChildById<Panel>(CHAR_CONTAINER);
 
         //Next char Button
-        _buttonNextChar = Interface.GetChildById<Button>("_buttonNextChar");
+        _buttonNextChar = Interface.GetChildById<Button>(NEXT_CHAR_BUTTON);
         if (_buttonNextChar != default)
         {
             _buttonNextChar.Click += _buttonNextChar_Clicked;
         }
 
         //Prev Char Button
-        _buttonPrevChar = Interface.GetChildById<Button>("_buttonPrevChar");
+        _buttonPrevChar = Interface.GetChildById<Button>(PREV_CHAR_BUTTON);
         if (_buttonPrevChar != default)
         {
             _buttonPrevChar.Click += _buttonPrevChar_Clicked;
         }
 
         //EditorMode Button
-        _editorMode = Interface.GetChildById<Button>("_buttonEditorMode");
+        _editorMode = Interface.GetChildById<Button>(EDITOR_MODE_BUTTON);
         if (_editorMode != default)
         {
             _editorMode.SetText("Editor Mode");
@@ -92,7 +88,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Play Button
-        _buttonPlay = Interface.GetChildById<Button>("_buttonPlay");
+        _buttonPlay = Interface.GetChildById<Button>(PLAY_BUTTON);
         if (_buttonPlay != default)
         {
             _buttonPlay.SetText(Strings.CharacterSelection.Play);
@@ -101,7 +97,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Delete Button
-        _buttonDelete = Interface.GetChildById<Button>("_buttonDelete");
+        _buttonDelete = Interface.GetChildById<Button>(DELETE_BUTTON);
         if (_buttonDelete != default)
         {
             _buttonDelete.SetText(Strings.CharacterSelection.Delete);
@@ -110,7 +106,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Create new char Button
-        _buttonNew = Interface.GetChildById<Button>("_buttonNew");
+        _buttonNew = Interface.GetChildById<Button>(NEWCHAR_BUTTON);
         if (_buttonNew != default)
         {
             _buttonNew.SetText(Strings.CharacterSelection.New);
@@ -118,7 +114,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Logout Button
-        _buttonLogout = Interface.GetChildById<Button>("_buttonLogout");
+        _buttonLogout = Interface.GetChildById<Button>(LOGOUT_BUTTON);
         if (_buttonLogout != default)
         {
             _buttonLogout.SetText(Strings.CharacterSelection.Logout);
@@ -142,9 +138,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             {
                 _renderLayers[i] = new Image
                 {
-                    HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
                 };
-                _charContainer.Widgets.Add(_renderLayers[i]);
+                _charContainer?.Widgets.Add(_renderLayers[i]);
             }
         }
 
@@ -224,7 +221,8 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             {
                 _renderLayers[i] = new Image
                 {
-                    HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
                 };
                 _charContainer?.Widgets.Add(_renderLayers[i]);
             }
@@ -292,7 +290,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         {
             return;
         }
-        
+
         SelectedChar--;
         if (SelectedChar < 0)
         {
@@ -308,7 +306,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         {
             return;
         }
-        
+
         SelectedChar++;
         if (SelectedChar >= Characters.Length)
         {
@@ -380,6 +378,22 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         _buttonDelete.ToggleEnabled(false);
         _buttonLogout.ToggleEnabled(false);
     }
+
+    #region Constants
+
+    private const string SELECT_CHARACTER_TITLE_LABEL = nameof(SELECT_CHARACTER_TITLE_LABEL);
+    private const string CHARNAME_LABEL = nameof(CHARNAME_LABEL);
+    private const string CHARINFO_LABEL = nameof(CHARINFO_LABEL);
+    private const string NEXT_CHAR_BUTTON = nameof(NEXT_CHAR_BUTTON);
+    private const string PREV_CHAR_BUTTON = nameof(PREV_CHAR_BUTTON);
+    private const string EDITOR_MODE_BUTTON = nameof(EDITOR_MODE_BUTTON);
+    private const string PLAY_BUTTON = nameof(PLAY_BUTTON);
+    private const string DELETE_BUTTON = nameof(DELETE_BUTTON);
+    private const string NEWCHAR_BUTTON = nameof(NEWCHAR_BUTTON);
+    private const string LOGOUT_BUTTON = nameof(LOGOUT_BUTTON);
+    private const string CHAR_CONTAINER = nameof(CHAR_CONTAINER);
+
+    #endregion
 }
 
 public partial class Character(

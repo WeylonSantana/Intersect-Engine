@@ -30,28 +30,13 @@ public partial class CreateCharacterWindow : IMainMenuWindow
     private readonly List<KeyValuePair<int, ClassSprite>> _femaleSprites = [];
     private readonly List<KeyValuePair<int, ClassSprite>> _maleSprites = [];
 
-    #region Constants
-
-    private const string CREATE_CHARACTER_TITLE = "CREATE_CHARACTER_TITLE_LABEL";
-    private const string CHARACTER_NAME_TEXTBOX = "CHARACTER_NAME_TEXTBOX";
-    private const string CLASS_COMBO_VIEW = "CLASS_COMBO_VIEW";
-    private const string MALE_CHECK = "MALE_CHECK";
-    private const string FEMALE_CHECK = "FEMALE_CHECK";
-    private const string CHARACTER_IMAGE = "CHARACTER_IMAGE";
-    private const string PREVIOUS_SPRITE_BUTTON = "PREVIOUS_SPRITE_BUTTON";
-    private const string NEXT_SPRITE_BUTTON = "NEXT_SPRITE_BUTTON";
-    private const string CREATE_BUTTON = "CREATE_BUTTON";
-    private const string BACK_BUTTON = "BACK_BUTTON";
-
-    #endregion
-
     public bool Visible => _createCharacterWindow?.Visible ?? false;
 
     public void Load(MenuInterface mainMenu)
     {
         _mainMenu = mainMenu;
         _createCharacterWindow = Interface.LoadContent(Path.Combine("menu", "CreateCharacterWindow.xmmp"));
-        Interface.GetChildById<Label>(CREATE_CHARACTER_TITLE)?.SetText(Strings.CharacterCreation.Title);
+        Interface.GetChildById<Label>(CREATE_CHARACTER_TITLE_LABEL)?.SetText(Strings.CharacterCreation.Title);
 
         //Character Name
         if (Interface.GetChildById<TextBox>(CHARACTER_NAME_TEXTBOX, out var charNameTextbox))
@@ -448,4 +433,19 @@ public partial class CreateCharacterWindow : IMainMenuWindow
             _mainMenu.SwitchToWindow<SelectCharacterWindow>();
         }
     }
+
+    #region Constants
+
+    private const string CREATE_CHARACTER_TITLE_LABEL = nameof(CREATE_CHARACTER_TITLE_LABEL);
+    private const string CHARACTER_NAME_TEXTBOX = nameof(CHARACTER_NAME_TEXTBOX);
+    private const string CLASS_COMBO_VIEW = nameof(CLASS_COMBO_VIEW);
+    private const string MALE_CHECK = nameof(MALE_CHECK);
+    private const string FEMALE_CHECK = nameof(FEMALE_CHECK);
+    private const string CHARACTER_IMAGE = nameof(CHARACTER_IMAGE);
+    private const string PREVIOUS_SPRITE_BUTTON = nameof(PREVIOUS_SPRITE_BUTTON);
+    private const string NEXT_SPRITE_BUTTON = nameof(NEXT_SPRITE_BUTTON);
+    private const string CREATE_BUTTON = nameof(CREATE_BUTTON);
+    private const string BACK_BUTTON = nameof(BACK_BUTTON);
+
+    #endregion
 }

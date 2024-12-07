@@ -27,7 +27,6 @@ public class SettingsWindow : IMainMenuWindow
     private Button? _settingsCancelBtn;
 
     // Game Settings - Interface.
-    private Panel? _settingsGamePanel;
     private CheckButton? _autoCloseWindowsCheckButton;
     private CheckButton? _autoToggleChatLogCheckButton;
     private CheckButton? _showHealthAsPercentageCheckButton;
@@ -57,7 +56,6 @@ public class SettingsWindow : IMainMenuWindow
     private CheckButton? _autoTurnToTargetCheckButton;
 
     // Video Settings.
-    private Panel? _settingsVideoPanel;
     private ComboView? _resolutionList;
     private ComboView? _fpsList;
     private HorizontalSlider? _worldScale;
@@ -65,14 +63,12 @@ public class SettingsWindow : IMainMenuWindow
     private CheckButton? _lightingEnabledCheckbox;
 
     // Audio Settings.
-    private Panel? _settingsAudioPanel;
     private HorizontalSlider? _musicSlider;
     private Label? _musicLabel;
     private HorizontalSlider? _soundSlider;
     private Label? _soundLabel;
 
     // Keybinding Settings.
-    private Panel? _settingsKeybindingPanel;
     private Button? _keybindingRestoreBtn;
     private Container? _keybindingControlsContainer;
     private Container? _keybindingControlsRow;
@@ -103,42 +99,42 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Basic Load
 
-        _gameSettingsTab = Interface.GetChildById<Button>("settingsGameTab");
+        _gameSettingsTab = Interface.GetChildById<Button>(GAME_TAB);
         if (_gameSettingsTab != default)
         {
-            _gameSettingsTab.Click += (s, e) => SwitchToContainer(_settingsGamePanel, _gameSettingsTab);
+            _gameSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(false);
             _gameSettingsTab.SetText(Strings.Settings.GameSettingsTab);
         }
 
-        _videoSettingsTab = Interface.GetChildById<Button>("settingsVideoTab");
+        _videoSettingsTab = Interface.GetChildById<Button>(VIDEO_TAB);
         if (_videoSettingsTab != default)
         {
-            _videoSettingsTab.Click += (s, e) => SwitchToContainer(_settingsVideoPanel, _videoSettingsTab);
+            _videoSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(false);
             _videoSettingsTab.SetText(Strings.Settings.VideoSettingsTab);
         }
 
-        _audioSettingsTab = Interface.GetChildById<Button>("settingsAudioTab");
+        _audioSettingsTab = Interface.GetChildById<Button>(AUDIO_TAB);
         if (_audioSettingsTab != default)
         {
-            _audioSettingsTab.Click += (s, e) => SwitchToContainer(_settingsAudioPanel, _audioSettingsTab);
+            _audioSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(false);
             _audioSettingsTab.SetText(Strings.Settings.AudioSettingsTab);
         }
 
-        _keybindingSettingsTab = Interface.GetChildById<Button>("settingsKeybindingTab");
+        _keybindingSettingsTab = Interface.GetChildById<Button>(KEYBINDING_TAB);
         if (_keybindingSettingsTab != default)
         {
-            _keybindingSettingsTab.Click += (s, e) => SwitchToContainer(_settingsKeybindingPanel, _keybindingSettingsTab);
+            _keybindingSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(true);
             _keybindingSettingsTab.SetText(Strings.Settings.KeyBindingSettingsTab);
         }
 
-        _settingsApplyBtn = Interface.GetChildById<Button>("settingsSave");
+        _settingsApplyBtn = Interface.GetChildById<Button>(SAVE_BUTTON);
         if (_settingsApplyBtn != default)
         {
             _settingsApplyBtn.Click += SettingsApplyBtn_Clicked;
             _settingsApplyBtn.SetText(Strings.Settings.Apply);
         }
 
-        _settingsCancelBtn = Interface.GetChildById<Button>("settingsCancel");
+        _settingsCancelBtn = Interface.GetChildById<Button>(CANCEL_BUTTON);
         if (_settingsCancelBtn != default)
         {
             _settingsCancelBtn.Click += SettingsCancelBtn_Clicked;
@@ -149,33 +145,31 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Game Settings Load - Interface
 
-        _settingsGamePanel = Interface.GetChildById<Panel>("settingsGame");
-
-        _autoCloseWindowsCheckButton = Interface.GetChildById<CheckButton>("settingsAutoCloseWindows");
+        _autoCloseWindowsCheckButton = Interface.GetChildById<CheckButton>(AUTO_CLOSE_WINDOW_CHECK);
         _autoCloseWindowsCheckButton?.SetText(Strings.Settings.AutoCloseWindows);
         _autoCloseWindowsCheckButton?.SetValue(Globals.Database.HideOthersOnWindowOpen);
 
-        _autoToggleChatLogCheckButton = Interface.GetChildById<CheckButton>("settingsAutoToggleChatLog");
+        _autoToggleChatLogCheckButton = Interface.GetChildById<CheckButton>(AUTO_TOGGLE_CHAT_LOG_CHECK);
         _autoToggleChatLogCheckButton?.SetValue(Globals.Database.AutoToggleChatLog);
         _autoToggleChatLogCheckButton?.SetText(Strings.Settings.AutoToggleChatLog);
 
-        _showHealthAsPercentageCheckButton = Interface.GetChildById<CheckButton>("settingsShowHealthAsPercentage");
+        _showHealthAsPercentageCheckButton = Interface.GetChildById<CheckButton>(SHOW_HEALTH_AS_PERCENTAGE_CHECK);
         _showHealthAsPercentageCheckButton?.SetText(Strings.Settings.ShowHealthAsPercentage);
         _showHealthAsPercentageCheckButton?.SetValue(Globals.Database.ShowHealthAsPercentage);
 
-        _showManaAsPercentageCheckButton = Interface.GetChildById<CheckButton>("settingsShowManaAsPercentage");
+        _showManaAsPercentageCheckButton = Interface.GetChildById<CheckButton>(SHOW_MANA_AS_PERCENTAGE_CHECK);
         _showManaAsPercentageCheckButton?.SetText(Strings.Settings.ShowManaAsPercentage);
         _showManaAsPercentageCheckButton?.SetValue(Globals.Database.ShowManaAsPercentage);
 
-        _showExperienceAsPercentageCheckButton = Interface.GetChildById<CheckButton>("settingsShowExperienceAsPercentage");
+        _showExperienceAsPercentageCheckButton = Interface.GetChildById<CheckButton>(SHOW_EXPERIENCE_AS_PERCENTAGE_CHECK);
         _showExperienceAsPercentageCheckButton?.SetText(Strings.Settings.ShowExperienceAsPercentage);
         _showExperienceAsPercentageCheckButton?.SetValue(Globals.Database.ShowExperienceAsPercentage);
 
-        _typewriterCheckButton = Interface.GetChildById<CheckButton>("settingsTypewriter");
+        _typewriterCheckButton = Interface.GetChildById<CheckButton>(TYPEWRITER_CHECK);
         _typewriterCheckButton?.SetText(Strings.Settings.TypewriterText);
         _typewriterCheckButton?.SetValue(Globals.Database.TypewriterBehavior == TypewriterBehavior.Word);
 
-        _simplifiedEscapeMenuCheckButton = Interface.GetChildById<CheckButton>("settingsSimplifiedEscapeMenu");
+        _simplifiedEscapeMenuCheckButton = Interface.GetChildById<CheckButton>(SIMPLIFIED_ESCAPE_MENU_CHECK);
         _simplifiedEscapeMenuCheckButton?.SetText(Strings.Settings.SimplifiedEscapeMenu);
         _simplifiedEscapeMenuCheckButton?.SetValue(Globals.Database.SimplifiedEscapeMenu);
 
@@ -183,28 +177,28 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Game Settings Load - Overhead Information
 
-        Interface.GetChildById<Label>("settingsShowOverheadInfo")?.SetText(Strings.Settings.ShowOverheadInformationTitle);
-        _myOverheadInfoCheckButton = Interface.GetChildById<CheckButton>("settingsMyOverheadInfo");
+        Interface.GetChildById<Label>(GAME_OVERHEAD_INFO_LABEL)?.SetText(Strings.Settings.ShowOverheadInformationTitle);
+        _myOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(MY_OVERHEAD_INFO_CHECK);
         _myOverheadInfoCheckButton?.SetText(Strings.Settings.ShowMyOverheadInformation);
         _myOverheadInfoCheckButton?.SetValue(Globals.Database.MyOverheadInfo);
 
-        _playerOverheadInfoCheckButton = Interface.GetChildById<CheckButton>("settingsPlayerOverheadInfo");
+        _playerOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(PLAYER_OVERHEAD_INFO_CHECK);
         _playerOverheadInfoCheckButton?.SetText(Strings.Settings.ShowPlayerOverheadInformation);
         _playerOverheadInfoCheckButton?.SetValue(Globals.Database.PlayerOverheadInfo);
 
-        _npcOverheadInfoCheckButton = Interface.GetChildById<CheckButton>("settingsNpcOverheadInfo");
+        _npcOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(NPC_OVERHEAD_INFO_CHECK);
         _npcOverheadInfoCheckButton?.SetText(Strings.Settings.ShowNpcOverheadInformation);
         _npcOverheadInfoCheckButton?.SetValue(Globals.Database.NpcOverheadInfo);
 
-        _friendOverheadInfoCheckbox = Interface.GetChildById<CheckButton>("settingsFriendOverheadInfo");
+        _friendOverheadInfoCheckbox = Interface.GetChildById<CheckButton>(FRIEND_OVERHEAD_INFO_CHECK);
         _friendOverheadInfoCheckbox?.SetValue(Globals.Database.FriendOverheadInfo);
         _friendOverheadInfoCheckbox?.SetText(Strings.Settings.ShowFriendOverheadInformation);
 
-        _partyOverheadInfoCheckButton = Interface.GetChildById<CheckButton>("settingsPartyOverheadInfo");
+        _partyOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(PARTY_OVERHEAD_INFO_CHECK);
         _partyOverheadInfoCheckButton?.SetText(Strings.Settings.ShowPartyOverheadInformation);
         _partyOverheadInfoCheckButton?.SetValue(Globals.Database.PartyMemberOverheadInfo);
 
-        _guildOverheadInfoCheckButton = Interface.GetChildById<CheckButton>("settingsGuildOverheadInfo");
+        _guildOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(GUILD_OVERHEAD_INFO_CHECK);
         _guildOverheadInfoCheckButton?.SetText(Strings.Settings.ShowGuildOverheadInformation);
         _guildOverheadInfoCheckButton?.SetValue(Globals.Database.GuildMemberOverheadInfo);
 
@@ -212,28 +206,28 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Game Settings Load - Overhead HP Bar
 
-        Interface.GetChildById<Label>("settingsShowOverheadHPBar")?.SetText(Strings.Settings.ShowOverheadHPBarTitle);
-        _myOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>("settingsMyOverheadHPBar");
+        Interface.GetChildById<Label>(GAME_OVERHEAD_HP_BAR_LABEL)?.SetText(Strings.Settings.ShowOverheadHPBarTitle);
+        _myOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(MY_OVERHEAD_HP_BAR_CHECK);
         _myOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowMyOverheadHPBar);
         _myOverheadHpBarCheckButton?.SetValue(Globals.Database.MyOverheadHpBar);
 
-        _playerOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>("settingsPlayerOverheadHPBar");
+        _playerOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(PLAYER_OVERHEAD_HP_BAR_CHECK);
         _playerOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowPlayerOverheadHPBar);
         _playerOverheadHpBarCheckButton?.SetValue(Globals.Database.PlayerOverheadHpBar);
 
-        _npcOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>("settingsNpcOverheadHPBar");
+        _npcOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(NPC_OVERHEAD_HP_BAR_CHECK);
         _npcOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowNpcOverheadHPBar);
         _npcOverheadHpBarCheckButton?.SetValue(Globals.Database.NpcOverheadHpBar);
 
-        _friendOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>("settingsFriendOverheadHPBar");
+        _friendOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(FRIEND_OVERHEAD_HP_BAR_CHECK);
         _friendOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowFriendOverheadHPBar);
         _friendOverheadHpBarCheckButton?.SetValue(Globals.Database.FriendOverheadHpBar);
 
-        _partyOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>("settingsPartyOverheadHPBar");
+        _partyOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(PARTY_OVERHEAD_HP_BAR_CHECK);
         _partyOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowPartyOverheadHPBar);
         _partyOverheadHpBarCheckButton?.SetValue(Globals.Database.PartyMemberOverheadHpBar);
 
-        _guildOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>("settingsGuildOverheadHPBar");
+        _guildOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(GUILD_OVERHEAD_HP_BAR_CHECK);
         _guildOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowGuildOverheadHPBar);
         _guildOverheadHpBarCheckButton?.SetValue(Globals.Database.GuildMemberOverheadHpBar);
 
@@ -241,12 +235,12 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Game Settings Load - Targeting
 
-        Interface.GetChildById<Label>("settingsTargeting")?.SetText(Strings.Settings.TargettingTitle);
-        _stickyTargetCheckButton = Interface.GetChildById<CheckButton>("settingsStickyTarget");
+        Interface.GetChildById<Label>(TARGETING_LABEL)?.SetText(Strings.Settings.TargettingTitle);
+        _stickyTargetCheckButton = Interface.GetChildById<CheckButton>(STICKY_TARGET_CHECK);
         _stickyTargetCheckButton?.SetText(Strings.Settings.StickyTarget);
         _stickyTargetCheckButton?.SetValue(Globals.Database.StickyTarget);
 
-        _autoTurnToTargetCheckButton = Interface.GetChildById<CheckButton>("settingsAutoTurnToTarget");
+        _autoTurnToTargetCheckButton = Interface.GetChildById<CheckButton>(AUTO_TURN_TO_TARGET_CHECK);
         _autoTurnToTargetCheckButton?.SetText(Strings.Settings.AutoTurnToTarget);
         _autoTurnToTargetCheckButton?.SetValue(Globals.Database.AutoTurnToTarget);
 
@@ -254,9 +248,8 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Video Settings Load
 
-        _settingsVideoPanel = Interface.GetChildById<Panel>("settingsVideo");
-        Interface.GetChildById<Label>("settingsResolutionLabel")?.SetText(Strings.Settings.Resolution);
-        _resolutionList = Interface.GetChildById<ComboView>("settingsResolution");
+        Interface.GetChildById<Label>(RESOLUTION_LABEL)?.SetText(Strings.Settings.Resolution);
+        _resolutionList = Interface.GetChildById<ComboView>(RESOLUTION_COMBO_VIEW);
         if (_resolutionList != default)
         {
             // Add valid video modes to the resolution list.
@@ -274,32 +267,20 @@ public class SettingsWindow : IMainMenuWindow
             }
         }
 
-        Interface.GetChildById<Label>("settingsFpsLabel")?.SetText(Strings.Settings.TargetFps);
-        _fpsList = Interface.GetChildById<ComboView>("settingsFps");
+        Interface.GetChildById<Label>(FPS_LABEL)?.SetText(Strings.Settings.TargetFps);
+        _fpsList = Interface.GetChildById<ComboView>(FPS_COMBO_VIEW);
 
 
         if (_fpsList != default)
         {
             var validFps = new Dictionary<int, string>
             {
-                {
-                    0, Strings.Settings.Vsync
-                },
-                {
-                    1, Strings.Settings.Fps30
-                },
-                {
-                    2, Strings.Settings.Fps60
-                },
-                {
-                    3, Strings.Settings.Fps90
-                },
-                {
-                    4, Strings.Settings.Fps120
-                },
-                {
-                    5, Strings.Settings.UnlimitedFps
-                },
+                { 0, Strings.Settings.Vsync},
+                { 1, Strings.Settings.Fps30},
+                { 2, Strings.Settings.Fps60},
+                { 3, Strings.Settings.Fps90},
+                { 4, Strings.Settings.Fps120},
+                { 5, Strings.Settings.UnlimitedFps},
             };
 
             // Add valid fps to the fps list.
@@ -312,15 +293,15 @@ public class SettingsWindow : IMainMenuWindow
             _fpsList.SelectByKey(Globals.Database.TargetFps.ToString());
         }
 
-        Interface.GetChildById<Label>("settingsWorldScaleLabel")?.SetText(Strings.Settings.WorldScale);
-        _worldScale = Interface.GetChildById<HorizontalSlider>("settingsWorldScale");
+        Interface.GetChildById<Label>(WORLD_SCALE_LABEL)?.SetText(Strings.Settings.WorldScale);
+        _worldScale = Interface.GetChildById<HorizontalSlider>(WORLD_SCALE_SLIDER);
         _worldScale?.SetValue(Globals.Database.WorldZoom);
 
-        _fullscreenCheckbox = Interface.GetChildById<CheckButton>("settingsFullscreen");
+        _fullscreenCheckbox = Interface.GetChildById<CheckButton>(FULLSCREEN_CHECK);
         _fullscreenCheckbox?.SetText(Strings.Settings.Fullscreen);
         _fullscreenCheckbox?.SetValue(Globals.Database.FullScreen);
 
-        _lightingEnabledCheckbox = Interface.GetChildById<CheckButton>("settingsLightingEnabled");
+        _lightingEnabledCheckbox = Interface.GetChildById<CheckButton>(LIGHTING_ENABLED_CHECK);
         _lightingEnabledCheckbox?.SetText(Strings.Settings.EnableLighting);
         _lightingEnabledCheckbox?.SetValue(Globals.Database.EnableLighting);
 
@@ -328,24 +309,23 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Audio Settings Load
 
-        _settingsAudioPanel = Interface.GetChildById<Panel>("settingsAudio");
         _previousMusicVolume = Globals.Database.MusicVolume;
         _previousSoundVolume = Globals.Database.SoundVolume;
 
-        _musicLabel = Interface.GetChildById<Label>("settingsMusicVolumeLabel");
+        _musicLabel = Interface.GetChildById<Label>(MUSIC_VOLUME_LABEL);
         _musicLabel?.SetText(Strings.Settings.MusicVolume);
 
-        _musicSlider = Interface.GetChildById<HorizontalSlider>("settingsMusicVolume");
+        _musicSlider = Interface.GetChildById<HorizontalSlider>(MUSIC_VOLUME_SLIDER);
         if (_musicSlider != default)
         {
             _musicSlider.ValueChangedByUser += MusicSlider_ValueChanged;
             _musicSlider.SetValue(Globals.Database.MusicVolume);
         }
 
-        _soundLabel = Interface.GetChildById<Label>("settingsSoundVolumeLabel");
+        _soundLabel = Interface.GetChildById<Label>(SOUND_VOLUME_LABEL);
         _soundLabel?.SetText(Strings.Settings.SoundVolume);
 
-        _soundSlider = Interface.GetChildById<HorizontalSlider>("settingsSoundVolume");
+        _soundSlider = Interface.GetChildById<HorizontalSlider>(SOUND_VOLUME_SLIDER);
         if (_soundSlider != default)
         {
             _soundSlider.ValueChangedByUser += SoundSlider_ValueChanged;
@@ -361,12 +341,11 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Keybinding Settings Load
 
-        _settingsKeybindingPanel = Interface.GetChildById<Panel>("settingsKeybinding");
-        _keybindingRestoreBtn = Interface.GetChildById<Button>("settingsRestoreDefaults");
+        _keybindingRestoreBtn = Interface.GetChildById<Button>(KEYBINDING_RESTORE_BUTTON);
         _keybindingRestoreBtn?.SetText(Strings.Settings.Restore);
 
-        _keybindingControlsContainer = Interface.GetChildById<Container>("settingsKeybindingContainer");
-        _keybindingControlsRow = Interface.GetChildById<Container>("settingsKeybindingRow");
+        _keybindingControlsContainer = Interface.GetChildById<Container>(KEYBINDING_CONTROLS_CONTAINER);
+        _keybindingControlsRow = Interface.GetChildById<Container>(KEYBINDING_CONTROLS_ROW);
 
         if (_keybindingControlsContainer != default && _keybindingControlsRow != default)
         {
@@ -449,29 +428,6 @@ public class SettingsWindow : IMainMenuWindow
 
     #region Settings Setup
 
-    private void SwitchToContainer(Panel? container, Button? tab)
-    {
-        if (container == default || tab == default)
-        {
-            return;
-        }
-
-        _settingsGamePanel?.ToggleVisible(false);
-        _settingsVideoPanel?.ToggleVisible(false);
-        _settingsAudioPanel?.ToggleVisible(false);
-        _settingsKeybindingPanel?.ToggleVisible(false);
-
-        _gameSettingsTab?.ToggleEnabled(true);
-        _videoSettingsTab?.ToggleEnabled(true);
-        _audioSettingsTab?.ToggleEnabled(true);
-        _keybindingSettingsTab?.ToggleEnabled(true);
-
-        _keybindingRestoreBtn?.ToggleVisible(container.Id == _settingsKeybindingPanel?.Id);
-
-        container.Visible = true;
-        tab?.ToggleEnabled(false);
-    }
-
     // inherited from IMainMenuWindow
     public void Show()
     {
@@ -507,12 +463,12 @@ public class SettingsWindow : IMainMenuWindow
         {
             case GameStates.Menu:
                 _menuInterface?.SwitchToWindow<LoginWindow>();
-            break;
+                break;
 
             case GameStates.InGame:
                 // MYRA-TODO: Show the escape menu.
                 // _escapeMenu?.Show();
-            break;
+                break;
 
             default:
                 throw new NotImplementedException();
@@ -521,21 +477,7 @@ public class SettingsWindow : IMainMenuWindow
 
     private void LoadSettingsWindow()
     {
-        // Containers.
-        _settingsGamePanel.ToggleVisible(true);
-        _settingsVideoPanel.ToggleVisible(false);
-        _settingsAudioPanel.ToggleVisible(false);
-        _settingsKeybindingPanel.ToggleVisible(false);
-
-        // Disable the GameSettingsTab to fake it being selected visually by default.
-        _gameSettingsTab.ToggleEnabled(false);
-        _videoSettingsTab.ToggleEnabled(true);
-        _audioSettingsTab.ToggleEnabled(true);
-        _keybindingSettingsTab.ToggleEnabled(true);
-
         // Buttons.
-        _settingsApplyBtn.ToggleVisible(true);
-        _settingsCancelBtn.ToggleVisible(true);
         _keybindingRestoreBtn.ToggleVisible(false);
 
         var worldScaleNotches = new float[]
@@ -576,7 +518,7 @@ public class SettingsWindow : IMainMenuWindow
                 {
                     button.UserData.Add("modifier", binding.Modifier.ToString());
                 }
-                
+
                 if (button.UserData.ContainsKey("key"))
                 {
                     button.UserData["key"] = binding.Key.ToString();
@@ -851,5 +793,63 @@ public class SettingsWindow : IMainMenuWindow
         _keybindingEditControls = new Controls(Controls.ActiveControls);
         Hide();
     }
+
+    #endregion
+
+    #region Constants
+
+    private const string GAME_TAB = nameof(GAME_TAB);
+    private const string VIDEO_TAB = nameof(VIDEO_TAB);
+    private const string AUDIO_TAB = nameof(AUDIO_TAB);
+    private const string KEYBINDING_TAB = nameof(KEYBINDING_TAB);
+    private const string SAVE_BUTTON = nameof(SAVE_BUTTON);
+    private const string CANCEL_BUTTON = nameof(CANCEL_BUTTON);
+
+    private const string AUTO_CLOSE_WINDOW_CHECK = nameof(AUTO_CLOSE_WINDOW_CHECK);
+    private const string AUTO_TOGGLE_CHAT_LOG_CHECK = nameof(AUTO_TOGGLE_CHAT_LOG_CHECK);
+    private const string SHOW_HEALTH_AS_PERCENTAGE_CHECK = nameof(SHOW_HEALTH_AS_PERCENTAGE_CHECK);
+    private const string SHOW_MANA_AS_PERCENTAGE_CHECK = nameof(SHOW_MANA_AS_PERCENTAGE_CHECK);
+    private const string SHOW_EXPERIENCE_AS_PERCENTAGE_CHECK = nameof(SHOW_EXPERIENCE_AS_PERCENTAGE_CHECK);
+    private const string TYPEWRITER_CHECK = nameof(TYPEWRITER_CHECK);
+    private const string SIMPLIFIED_ESCAPE_MENU_CHECK = nameof(SIMPLIFIED_ESCAPE_MENU_CHECK);
+
+    private const string GAME_OVERHEAD_INFO_LABEL = nameof(GAME_OVERHEAD_INFO_LABEL);
+    private const string MY_OVERHEAD_INFO_CHECK = nameof(MY_OVERHEAD_INFO_CHECK);
+    private const string PLAYER_OVERHEAD_INFO_CHECK = nameof(PLAYER_OVERHEAD_INFO_CHECK);
+    private const string NPC_OVERHEAD_INFO_CHECK = nameof(NPC_OVERHEAD_INFO_CHECK);
+    private const string FRIEND_OVERHEAD_INFO_CHECK = nameof(FRIEND_OVERHEAD_INFO_CHECK);
+    private const string PARTY_OVERHEAD_INFO_CHECK = nameof(PARTY_OVERHEAD_INFO_CHECK);
+    private const string GUILD_OVERHEAD_INFO_CHECK = nameof(GUILD_OVERHEAD_INFO_CHECK);
+
+    private const string GAME_OVERHEAD_HP_BAR_LABEL = nameof(GAME_OVERHEAD_HP_BAR_LABEL);
+    private const string MY_OVERHEAD_HP_BAR_CHECK = nameof(MY_OVERHEAD_HP_BAR_CHECK);
+    private const string PLAYER_OVERHEAD_HP_BAR_CHECK = nameof(PLAYER_OVERHEAD_HP_BAR_CHECK);
+    private const string NPC_OVERHEAD_HP_BAR_CHECK = nameof(NPC_OVERHEAD_HP_BAR_CHECK);
+    private const string FRIEND_OVERHEAD_HP_BAR_CHECK = nameof(FRIEND_OVERHEAD_HP_BAR_CHECK);
+    private const string PARTY_OVERHEAD_HP_BAR_CHECK = nameof(PARTY_OVERHEAD_HP_BAR_CHECK);
+    private const string GUILD_OVERHEAD_HP_BAR_CHECK = nameof(GUILD_OVERHEAD_HP_BAR_CHECK);
+
+    private const string TARGETING_LABEL = nameof(TARGETING_LABEL);
+    private const string STICKY_TARGET_CHECK = nameof(STICKY_TARGET_CHECK);
+    private const string AUTO_TURN_TO_TARGET_CHECK = nameof(AUTO_TURN_TO_TARGET_CHECK);
+
+    private const string RESOLUTION_LABEL = nameof(RESOLUTION_LABEL);
+    private const string RESOLUTION_COMBO_VIEW = nameof(RESOLUTION_COMBO_VIEW);
+    private const string FPS_LABEL = nameof(FPS_LABEL);
+    private const string FPS_COMBO_VIEW = nameof(FPS_COMBO_VIEW);
+    private const string WORLD_SCALE_LABEL = nameof(WORLD_SCALE_LABEL);
+    private const string WORLD_SCALE_SLIDER = nameof(WORLD_SCALE_SLIDER);
+    private const string FULLSCREEN_CHECK = nameof(FULLSCREEN_CHECK);
+    private const string LIGHTING_ENABLED_CHECK = nameof(LIGHTING_ENABLED_CHECK);
+
+    private const string MUSIC_VOLUME_LABEL = nameof(MUSIC_VOLUME_LABEL);
+    private const string MUSIC_VOLUME_SLIDER = nameof(MUSIC_VOLUME_SLIDER);
+    private const string SOUND_VOLUME_LABEL = nameof(SOUND_VOLUME_LABEL);
+    private const string SOUND_VOLUME_SLIDER = nameof(SOUND_VOLUME_SLIDER);
+
+    private const string KEYBINDING_RESTORE_BUTTON = nameof(KEYBINDING_RESTORE_BUTTON);
+    private const string KEYBINDING_CONTROLS_CONTAINER = nameof(KEYBINDING_CONTROLS_CONTAINER);
+    private const string KEYBINDING_CONTROLS_ROW = nameof(KEYBINDING_CONTROLS_ROW);
+
     #endregion
 }
