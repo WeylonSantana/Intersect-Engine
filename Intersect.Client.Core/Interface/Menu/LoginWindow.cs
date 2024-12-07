@@ -34,18 +34,18 @@ public partial class LoginWindow : IMainMenuWindow
     {
         _mainMenu = mainMenu;
         _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
-        Interface.GetChildById<Label>("_labelLoginTitle")?.SetText(Strings.LoginWindow.Title);
-        Interface.GetChildById<Label>("_labelLoginUsername")?.SetText(Strings.LoginWindow.Username);
-        Interface.GetChildById<Label>("_labelLoginPassword")?.SetText(Strings.LoginWindow.Password);
+        Interface.GetChildById<Label>(LoginIdentifiers.Title)?.SetText(Strings.LoginWindow.Title);
+        Interface.GetChildById<Label>(LoginIdentifiers.UsernameLabel)?.SetText(Strings.LoginWindow.Username);
+        Interface.GetChildById<Label>(LoginIdentifiers.PasswordLabel)?.SetText(Strings.LoginWindow.Password);
 
-        if (Interface.GetChildById<TextBox>("_textboxLoginUsername", out var textboxUsername))
+        if (Interface.GetChildById<TextBox>(LoginIdentifiers.UsernameTextBox, out var textboxUsername))
         {
             _textboxLoginUsername = textboxUsername;
             _textboxLoginUsername.TouchDown += _textboxUsername_Clicked;
             Interface.SetInputFocus(_textboxLoginUsername);
         }
 
-        if (Interface.GetChildById<TextBox>("_textboxLoginPassword", out var textboxPassword))
+        if (Interface.GetChildById<TextBox>(LoginIdentifiers.PasswordTextBox, out var textboxPassword))
         {
             _textboxLoginPassword = textboxPassword;
             _textboxLoginPassword.PasswordField = true;
@@ -53,13 +53,13 @@ public partial class LoginWindow : IMainMenuWindow
             _textboxLoginPassword.TextChanged += _textboxPassword_TextChanged;
         }
 
-        if (Interface.GetChildById<CheckButton>("_checkboxSave", out var checkboxSave))
+        if (Interface.GetChildById<CheckButton>(LoginIdentifiers.SaveCredentials, out var checkboxSave))
         {
             _checkboxSave = checkboxSave;
             _checkboxSave.SetText(Strings.LoginWindow.SavePassword);
         }
 
-        if (Interface.GetChildById<Button>("_buttonLogin", out var buttonLogin))
+        if (Interface.GetChildById<Button>(LoginIdentifiers.LoginButton, out var buttonLogin))
         {
             _buttonLogin = buttonLogin;
             _buttonLogin.Enabled = false;
@@ -67,14 +67,14 @@ public partial class LoginWindow : IMainMenuWindow
             _buttonLogin.SetText(Strings.LoginWindow.Login);
         }
 
-        if (Interface.GetChildById<Button>("_buttonForgotPassword", out var buttonForgotPassword))
+        if (Interface.GetChildById<Button>(LoginIdentifiers.ForgotPasswordButton, out var buttonForgotPassword))
         {
             _buttonForgotPassword = buttonForgotPassword;
             _buttonForgotPassword.Click += _buttonForgotPassword_Clicked;
             _buttonForgotPassword.SetText(Strings.LoginWindow.ForgotPassword);
         }
 
-        if (Interface.GetChildById<Button>("_buttonRegister", out var buttonRegister))
+        if (Interface.GetChildById<Button>(LoginIdentifiers.RegisterButton, out var buttonRegister))
         {
             _buttonRegister = buttonRegister;
             _buttonRegister.Enabled = false;
@@ -93,19 +93,19 @@ public partial class LoginWindow : IMainMenuWindow
             };
         }
 
-        if (Interface.GetChildById<Button>("_buttonSettings", out var buttonSettings))
+        if (Interface.GetChildById<Button>(LoginIdentifiers.SettingsButton, out var buttonSettings))
         {
             buttonSettings.Click += (sender, args) => _mainMenu.SwitchToWindow<SettingsWindow>();
             buttonSettings.SetText(Strings.LoginWindow.Settings);
         }
 
-        if (Interface.GetChildById<Button>("_buttonCredits", out var buttonCredits))
+        if (Interface.GetChildById<Button>(LoginIdentifiers.CreditsButton, out var buttonCredits))
         {
             buttonCredits.Click += (sender, args) => _mainMenu.SwitchToWindow<CreditsWindow>();
             buttonCredits.SetText(Strings.LoginWindow.Credits);
         }
 
-        if (Interface.GetChildById<Button>("_buttonExit", out var buttonExit))
+        if (Interface.GetChildById<Button>(LoginIdentifiers.ExitButton, out var buttonExit))
         {
             buttonExit.SetText(Strings.LoginWindow.Exit);
             buttonExit.Click += (sender, args) =>
@@ -282,7 +282,7 @@ public partial class LoginWindow : IMainMenuWindow
         {
             return;
         }
-        
+
         if (!Networking.Network.IsConnected)
         {
             Interface.ShowError(Strings.Errors.NotConnected);
