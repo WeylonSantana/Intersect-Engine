@@ -1,5 +1,6 @@
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
+using Intersect.Client.Interface.Extensions;
 using Intersect.Client.Interface.Shared;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
@@ -33,26 +34,15 @@ public partial class LoginWindow : IMainMenuWindow
     {
         _mainMenu = mainMenu;
         _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
-        if (Interface.GetChildById<Label>("_labelLoginTitle", out var labelLoginTitle))
-        {
-            labelLoginTitle.Text = Strings.LoginWindow.Title;
-        }
-
-        if (Interface.GetChildById<Label>("_labelLoginUsername", out var labelLoginUsername))
-        {
-            labelLoginUsername.Text = Strings.LoginWindow.Username;
-        }
+        Interface.GetChildById<Label>("_labelLoginTitle")?.SetText(Strings.LoginWindow.Title);
+        Interface.GetChildById<Label>("_labelLoginUsername")?.SetText(Strings.LoginWindow.Username);
+        Interface.GetChildById<Label>("_labelLoginPassword")?.SetText(Strings.LoginWindow.Password);
 
         if (Interface.GetChildById<TextBox>("_textboxLoginUsername", out var textboxUsername))
         {
             _textboxLoginUsername = textboxUsername;
             _textboxLoginUsername.TouchDown += _textboxUsername_Clicked;
             Interface.SetInputFocus(_textboxLoginUsername);
-        }
-
-        if (Interface.GetChildById<Label>("_labelLoginPassword", out var labelLoginPassword))
-        {
-            labelLoginPassword.Text = Strings.LoginWindow.Password;
         }
 
         if (Interface.GetChildById<TextBox>("_textboxLoginPassword", out var textboxPassword))
@@ -63,19 +53,10 @@ public partial class LoginWindow : IMainMenuWindow
             _textboxLoginPassword.TextChanged += _textboxPassword_TextChanged;
         }
 
-        if (Interface.GetChildById<Label>("_labelSave", out var labelSave))
-        {
-            labelSave.Text = Strings.LoginWindow.SavePassword;
-        }
-
         if (Interface.GetChildById<CheckButton>("_checkboxSave", out var checkboxSave))
         {
             _checkboxSave = checkboxSave;
-        }
-
-        if (Interface.GetChildById<Label>("_labelLogin", out var labelLogin))
-        {
-            labelLogin.Text = Strings.MainMenu.Login;
+            _checkboxSave.SetText(Strings.LoginWindow.SavePassword);
         }
 
         if (Interface.GetChildById<Button>("_buttonLogin", out var buttonLogin))
@@ -83,28 +64,21 @@ public partial class LoginWindow : IMainMenuWindow
             _buttonLogin = buttonLogin;
             _buttonLogin.Enabled = false;
             _buttonLogin.Click += (sender, args) => TryLogin();
-        }
-
-        if (Interface.GetChildById<Label>("_labelForgotPassword", out var labelForgotPassword))
-        {
-            labelForgotPassword.Text = Strings.LoginWindow.ForgotPassword;
+            _buttonLogin.SetText(Strings.LoginWindow.Login);
         }
 
         if (Interface.GetChildById<Button>("_buttonForgotPassword", out var buttonForgotPassword))
         {
             _buttonForgotPassword = buttonForgotPassword;
             _buttonForgotPassword.Click += _buttonForgotPassword_Clicked;
-        }
-
-        if (Interface.GetChildById<Label>("_labelRegister", out var labelRegister))
-        {
-            labelRegister.Text = Strings.MainMenu.Register;
+            _buttonForgotPassword.SetText(Strings.LoginWindow.ForgotPassword);
         }
 
         if (Interface.GetChildById<Button>("_buttonRegister", out var buttonRegister))
         {
             _buttonRegister = buttonRegister;
             _buttonRegister.Enabled = false;
+            _buttonRegister.SetText(Strings.LoginWindow.Register);
             _buttonRegister.Click += (sender, args) =>
             {
                 if (Networking.Network.InterruptDisconnectsIfConnected())
@@ -119,33 +93,21 @@ public partial class LoginWindow : IMainMenuWindow
             };
         }
 
-        if (Interface.GetChildById<Label>("_labelSettings", out var labelSettings))
-        {
-            labelSettings.Text = Strings.MainMenu.Settings;
-        }
-
         if (Interface.GetChildById<Button>("_buttonSettings", out var buttonSettings))
         {
             buttonSettings.Click += (sender, args) => _mainMenu.SwitchToWindow<SettingsWindow>();
-        }
-
-        if (Interface.GetChildById<Label>("_labelCredits", out var labelCredits))
-        {
-            labelCredits.Text = Strings.MainMenu.Credits;
+            buttonSettings.SetText(Strings.LoginWindow.Settings);
         }
 
         if (Interface.GetChildById<Button>("_buttonCredits", out var buttonCredits))
         {
             buttonCredits.Click += (sender, args) => _mainMenu.SwitchToWindow<CreditsWindow>();
-        }
-
-        if (Interface.GetChildById<Label>("_labelExit", out var labelExit))
-        {
-            labelExit.Text = Strings.MainMenu.Exit;
+            buttonCredits.SetText(Strings.LoginWindow.Credits);
         }
 
         if (Interface.GetChildById<Button>("_buttonExit", out var buttonExit))
         {
+            buttonExit.SetText(Strings.LoginWindow.Exit);
             buttonExit.Click += (sender, args) =>
             {
                 Log.Info("User clicked exit button.");
@@ -321,11 +283,11 @@ public partial class LoginWindow : IMainMenuWindow
             return;
         }
         
-        /*if (!Networking.Network.IsConnected)
-        { // unable to go past this :S
+        if (!Networking.Network.IsConnected)
+        {
             Interface.ShowError(Strings.Errors.NotConnected);
             return;
-        }*/
+        }
 
         if (!FieldChecking.IsValidUsername(_textboxLoginUsername?.Text, Strings.Regex.Username))
         {
@@ -387,6 +349,7 @@ public partial class LoginWindow : IMainMenuWindow
     {
         PacketSender.SendLogin(_textboxLoginUsername!.Text, _storedPassword);
         SaveCredentials();
+        //MYRA-TODO
         //ChatboxMsg.ClearMessages();
         _removeLoginEvents();
     }

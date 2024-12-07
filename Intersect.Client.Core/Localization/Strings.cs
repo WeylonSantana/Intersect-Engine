@@ -1775,6 +1775,12 @@ public static partial class Strings
         public static LocalizedString Back = @"Back";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString Credits = @"Credits";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString Exit = @"Exit";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString ForgotPassword = @"Forgot Password?";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -1784,7 +1790,16 @@ public static partial class Strings
         public static LocalizedString Password = @"Password:";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString Register = @"Register";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString SavePassword = @"Save Password";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString Settings = @"Settings";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString Start = @"Start";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Title = @"Login";
@@ -1797,33 +1812,6 @@ public static partial class Strings
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString GameName = @"Intersect Client";
-    }
-
-    public partial struct MainMenu
-    {
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Credits = @"Credits";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Exit = @"Exit";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Login = @"Login";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Register = @"Register";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Settings = @"Settings";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString SettingsTooltip = @"";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Start = @"Start";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Title = @"Main Menu";
     }
 
     public partial struct Settings
