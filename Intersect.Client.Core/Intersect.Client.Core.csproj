@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\interface\Editor\EditorPanel.xmmp" />
+    <None Remove="Resources\interface\editor\EditorPanel.xmmp" />
     <None Remove="Resources\interface\menu\CreateCharacterWindow.xmmp" />
     <None Remove="Resources\interface\menu\CreditsWindow.xmmp" />
     <None Remove="Resources\interface\menu\LoginWindow.xmmp" />
@@ -46,7 +46,7 @@
 
   <ItemGroup Label="Project Embedded Resources">
     <EmbeddedResource Include="$(NetworkHandshakePublicKey)" />
-    <EmbeddedResource Include="Resources\interface\Editor\EditorPanel.xmmp" />
+    <EmbeddedResource Include="Resources\interface\editor\EditorPanel.xmmp" />
     <EmbeddedResource Include="Resources\interface\menu\CreateCharacterWindow.xmmp" />
     <EmbeddedResource Include="Resources\interface\menu\CreditsWindow.xmmp" />
 		<EmbeddedResource Include="Resources\interface\menu\LoginWindow.xmmp" />

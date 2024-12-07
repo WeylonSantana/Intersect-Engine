@@ -516,12 +516,12 @@ public static partial class Input
             return;
         }
 
-        if (Globals.InputManager.KeyDown(Keys.Shift) != true)
+        if (Globals.InputManager.IsKeyDown(Keys.Shift) != true)
         {
             return;
         }
 
-        var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.GetMousePosition());
+        var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.PointerPosition);
         var x = (int)mouseInWorld.X;
         var y = (int)mouseInWorld.Y;
 
