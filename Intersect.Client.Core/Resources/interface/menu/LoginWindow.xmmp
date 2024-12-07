@@ -2,32 +2,32 @@
   <Project.ExportOptions />
   <Panel>
     <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="250" Padding="10" Background="#202020FF">
-      <Label Text="Login" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="LoginTitleLabel" />
+      <Label Text="Login" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="TITLE" />
       <Panel Top="45" Height="50">
-        <Label Text="Username:" TextAlign="Center" Top="5" Id="LoginUsernameLabel" />
-        <TextBox VerticalAlignment="Bottom" Id="LoginUsernameTextBox" />
+        <Label Text="Username:" TextAlign="Center" Top="5" Id="USERNAME_LABEL" />
+        <TextBox VerticalAlignment="Bottom" Id="USERNAME_TEXTBOX" />
       </Panel>
       <Panel Top="100" Height="50">
-        <Label Text="Password:" TextAlign="Center" Top="5" Id="LoginPasswordLabel" />
-        <TextBox VerticalAlignment="Bottom" Id="LoginPasswordTextBox" />
+        <Label Text="Password:" TextAlign="Center" Top="5" Id="PASSWORD_LABEL" />
+        <TextBox VerticalAlignment="Bottom" Id="PASSWORD_TEXTBOX" />
       </Panel>
-      <CheckButton Top="55" VerticalAlignment="Center" Id="LoginSaveCredentialsCheck">
+      <CheckButton Top="55" VerticalAlignment="Center" Id="SAVE_CREDENTIALS">
         <Label Text="Save Credentials" TextAlign="Center" Left="5" />
       </CheckButton>
-      <Button Top="-11" Width="150" Height="25" VerticalAlignment="Bottom" Id="LoginRegisterButton">
+      <Button Top="-11" Width="150" Height="25" VerticalAlignment="Bottom" Id="REGISTER_BUTTON">
         <Label Text="Register" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
       </Button>
-      <Button Top="-11" Width="150" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Id="LoginButton">
+      <Button Top="-11" Width="150" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Id="LOGIN_BUTTON">
         <Label Text="Login" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
       </Button>
     </Panel>
-    <Button Left="-10" Top="10" Width="150" Height="25" HorizontalAlignment="Right" Id="LoginSettingsButton">
+    <Button Left="-10" Top="10" Width="150" Height="25" HorizontalAlignment="Right" Id="SETTINGS_BUTTON">
       <Label Text="Settings" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
-    <Button Left="-10" Top="40" Width="150" Height="25" HorizontalAlignment="Right" Id="LoginCreditsButton">
+    <Button Left="-10" Top="40" Width="150" Height="25" HorizontalAlignment="Right" Id="CREDITS_BUTTON">
       <Label Text="Credits" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
-    <Button Left="-10" Top="70" Width="150" Height="25" HorizontalAlignment="Right" Id="LoginExitButton">
+    <Button Left="-10" Top="70" Width="150" Height="25" HorizontalAlignment="Right" Id="EXIT_BUTTON">
       <Label Text="Exit" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
   </Panel>

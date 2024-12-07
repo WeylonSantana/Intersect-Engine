@@ -1,6 +1,6 @@
 <Project>
   <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="420" Padding="5, 10" Background="#202020FF">
-    <Label Text="Credits" HorizontalAlignment="Center" Id="CreditsTitleLabel" TextColor="#6495ed" />
+    <Label Text="Credits" HorizontalAlignment="Center" Id="TITLE" TextColor="#6495ed" />
     <ScrollViewer ShowHorizontalScrollBar="False" Top="30" Width="420" Height="330">
       <VerticalStackPanel HorizontalAlignment="Center" Width="400">
         <Label Text="Intersect Engine" HorizontalAlignment="Center" TextColor="#cca01d" />
@@ -98,7 +98,7 @@
         <Label HorizontalAlignment="Center" />
       </VerticalStackPanel>
     </ScrollViewer>
-    <Button Width="170" Height="30" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Bottom" Id="CreditsBackButton">
+    <Button Width="170" Height="30" Padding="5" HorizontalAlignment="Center" VerticalAlignment="Bottom" Id="BACK_BUTTON">
       <Label Text="Back To Main Menu" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
   </Panel>

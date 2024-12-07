@@ -18,48 +18,64 @@ public partial class RegisterWindow : IMainMenuWindow
     private TextBox? _textboxPasswordConfirm;
     private Button? _buttonRegister;
 
+    #region Constants
+
+    private const string TITLE = $"{nameof(TITLE)}";
+    private const string USERNAME_LABEL = $"{nameof(USERNAME_LABEL)}";
+    private const string USERNAME_TEXTBOX = $"{nameof(USERNAME_TEXTBOX)}";
+    private const string EMAIL_LABEL = $"{nameof(EMAIL_LABEL)}";
+    private const string EMAIL_TEXTBOX = $"{nameof(EMAIL_TEXTBOX)}";
+    private const string PASSWORD_LABEL = $"{nameof(PASSWORD_LABEL)}";
+    private const string PASSWORD_TEXTBOX = $"{nameof(PASSWORD_TEXTBOX)}";
+    private const string CONFIRM_PASSWORD_LABEL = $"{nameof(CONFIRM_PASSWORD_LABEL)}";
+    private const string CONFIRM_PASSWORD_TEXTBOX = $"{nameof(CONFIRM_PASSWORD_TEXTBOX)}";
+    private const string REGISTER_BUTTON = $"{nameof(REGISTER_BUTTON)}";
+    private const string BACK_BUTTON = $"{nameof(BACK_BUTTON)}";
+
+    #endregion
+
     public bool Visible => _registerWindow?.Visible ?? false;
 
     public void Load(MenuInterface mainMenu)
     {
         _mainMenu = mainMenu;
         _registerWindow = Interface.LoadContent(Path.Combine("menu", "RegisterWindow.xmmp"));
-        Interface.GetChildById<Label>(RegisterIdentifiers.Title)?.SetText(Strings.Registration.Title);
-        Interface.GetChildById<Label>(RegisterIdentifiers.UsernameLabel)?.SetText(Strings.Registration.Username);
-        Interface.GetChildById<Label>(RegisterIdentifiers.EmailLabel)?.SetText(Strings.Registration.Email);
-        Interface.GetChildById<Label>(RegisterIdentifiers.PasswordLabel)?.SetText(Strings.Registration.Password);
-        Interface.GetChildById<Label>(RegisterIdentifiers.ConfirmPasswordLabel)?.SetText(Strings.Registration.ConfirmPassword);
+        Interface.GetChildById<Label>(TITLE)?.SetText(Strings.Registration.Title);
+        Interface.GetChildById<Label>(USERNAME_LABEL)?.SetText(Strings.Registration.Username);
+        Interface.GetChildById<Label>(EMAIL_LABEL)?.SetText(Strings.Registration.Email);
+        Interface.GetChildById<Label>(PASSWORD_LABEL)?.SetText(Strings.Registration.Password);
+        Interface.GetChildById<Label>(CONFIRM_PASSWORD_LABEL)?.SetText(Strings.Registration.ConfirmPassword);
 
-        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.UsernameTextBox, out var textboxUsername))
+        if (Interface.GetChildById<TextBox>(USERNAME_TEXTBOX, out var textboxUsername))
         {
             _textboxRegisterUsername = textboxUsername;
         }
 
-        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.EmailTextBox, out var textboxEmail))
+        if (Interface.GetChildById<TextBox>(EMAIL_TEXTBOX, out var textboxEmail))
         {
             _textboxEmail = textboxEmail;
         }
 
-        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.PasswordTextBox, out var textboxPassword))
+        if (Interface.GetChildById<TextBox>(PASSWORD_TEXTBOX, out var textboxPassword))
         {
             _textboxRegisterPassword = textboxPassword;
             _textboxRegisterPassword.PasswordField = true;
         }
 
-        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.ConfirmPasswordTextBox, out var textboxPasswordConfirm))
+        if (Interface.GetChildById<TextBox>(CONFIRM_PASSWORD_TEXTBOX, out var textboxPasswordConfirm))
         {
             _textboxPasswordConfirm = textboxPasswordConfirm;
             _textboxPasswordConfirm.PasswordField = true;
         }
 
-        if (Interface.GetChildById<Button>(RegisterIdentifiers.RegisterButton, out var buttonRegister))
+        if (Interface.GetChildById<Button>(REGISTER_BUTTON, out var buttonRegister))
         {
             _buttonRegister = buttonRegister;
             _buttonRegister.Click += (sender, args) => TryRegister();
             _buttonRegister.SetText(Strings.Registration.Register);
         }
 
-        if (Interface.GetChildById<Button>(RegisterIdentifiers.BackButton, out var buttonRegisterBack))
+        if (Interface.GetChildById<Button>(BACK_BUTTON, out var buttonRegisterBack))
         {
             buttonRegisterBack.SetText(Strings.Registration.Back);
             buttonRegisterBack.Click += (sender, args) =>
