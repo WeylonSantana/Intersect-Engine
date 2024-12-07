@@ -21,14 +21,29 @@ public partial class CreateCharacterWindow : IMainMenuWindow
     private ComboView? _classComboView;
     private CheckButton? _chkMale;
     private CheckButton? _chkFemale;
-    private Image? _charPortrait;
+    private Image? _charImage;
     private Button? _prevSpriteButton;
     private Button? _nextSpriteButton;
     private Button? _createButton;
     private Button? _backButton;
     private int _displaySpriteIndex = -1;
-    private readonly List<KeyValuePair<int, ClassSprite>> _femaleSprites = new();
-    private readonly List<KeyValuePair<int, ClassSprite>> _maleSprites = new();
+    private readonly List<KeyValuePair<int, ClassSprite>> _femaleSprites = [];
+    private readonly List<KeyValuePair<int, ClassSprite>> _maleSprites = [];
+
+    #region Constants
+
+    private const string CREATE_CHARACTER_TITLE = "CREATE_CHARACTER_TITLE_LABEL";
+    private const string CHARACTER_NAME_TEXTBOX = "CHARACTER_NAME_TEXTBOX";
+    private const string CLASS_COMBO_VIEW = "CLASS_COMBO_VIEW";
+    private const string MALE_CHECK = "MALE_CHECK";
+    private const string FEMALE_CHECK = "FEMALE_CHECK";
+    private const string CHARACTER_IMAGE = "CHARACTER_IMAGE";
+    private const string PREVIOUS_SPRITE_BUTTON = "PREVIOUS_SPRITE_BUTTON";
+    private const string NEXT_SPRITE_BUTTON = "NEXT_SPRITE_BUTTON";
+    private const string CREATE_BUTTON = "CREATE_BUTTON";
+    private const string BACK_BUTTON = "BACK_BUTTON";
+
+    #endregion
 
     public bool Visible => _createCharacterWindow?.Visible ?? false;
 
@@ -36,65 +51,65 @@ public partial class CreateCharacterWindow : IMainMenuWindow
     {
         _mainMenu = mainMenu;
         _createCharacterWindow = Interface.LoadContent(Path.Combine("menu", "CreateCharacterWindow.xmmp"));
-        Interface.GetChildById<Label>("_labelCreateCharacterTitle")?.SetText(Strings.CharacterCreation.Title);
+        Interface.GetChildById<Label>(CREATE_CHARACTER_TITLE)?.SetText(Strings.CharacterCreation.Title);
 
         //Character Name
-        if (Interface.GetChildById<TextBox>("_characterNameField", out var charNameTextbox))
+        if (Interface.GetChildById<TextBox>(CHARACTER_NAME_TEXTBOX, out var charNameTextbox))
         {
             _charNameTextbox = charNameTextbox;
             _charNameTextbox.TouchDown += _textboxCharactername_Clicked;
         }
 
         // Class Combobox
-        if (Interface.GetChildById<ComboView>("_classComboBox", out var classComboView))
+        if (Interface.GetChildById<ComboView>(CLASS_COMBO_VIEW, out var classComboView))
         {
             _classComboView = classComboView;
             _classComboView.SelectedIndexChanged += ClassComboBoxItemSelected;
         }
 
         // Male Checkbox
-        if (Interface.GetChildById<CheckButton>("_maleCheckbutton", out var maleChk))
+        if (Interface.GetChildById<CheckButton>(MALE_CHECK, out var maleChk))
         {
             _chkMale = maleChk;
             _chkMale.TouchDown += maleChk_Checked;
         }
 
         // Female Checkbox
-        if (Interface.GetChildById<CheckButton>("_femaleCheckbutton", out var femaleChk))
+        if (Interface.GetChildById<CheckButton>(FEMALE_CHECK, out var femaleChk))
         {
             _chkFemale = femaleChk;
             _chkFemale.TouchDown += femaleChk_Checked;
         }
 
         // Character Portrait
-        if (Interface.GetChildById<Image>("_characterPortrait", out var charPortrait))
+        if (Interface.GetChildById<Image>(CHARACTER_IMAGE, out var charPortrait))
         {
-            _charPortrait = charPortrait;
+            _charImage = charPortrait;
         }
 
         // Previous Sprite Button
-        if (Interface.GetChildById<Button>("_previousSpriteButton", out var prevSpriteButton))
+        if (Interface.GetChildById<Button>(PREVIOUS_SPRITE_BUTTON, out var prevSpriteButton))
         {
             _prevSpriteButton = prevSpriteButton;
             _prevSpriteButton.Click += _prevSpriteButton_Clicked;
         }
 
         // Next Sprite Button
-        if (Interface.GetChildById<Button>("_nextSpriteButton", out var nextSpriteButton))
+        if (Interface.GetChildById<Button>(NEXT_SPRITE_BUTTON, out var nextSpriteButton))
         {
             _nextSpriteButton = nextSpriteButton;
             _nextSpriteButton.Click += _nextSpriteButton_Clicked;
         }
 
         // Create Button
-        if (Interface.GetChildById<Button>("_createButton", out var createButton))
+        if (Interface.GetChildById<Button>(CREATE_BUTTON, out var createButton))
         {
             _createButton = createButton;
             _createButton.Click += CreateButton_Clicked;
         }
 
         // Back Button
-        if (Interface.GetChildById<Button>("_backButton", out var backButton))
+        if (Interface.GetChildById<Button>(BACK_BUTTON, out var backButton))
         {
             _backButton = backButton;
             _backButton.Click += BackButton_Clicked;
@@ -151,11 +166,11 @@ public partial class CreateCharacterWindow : IMainMenuWindow
         var cls = GetClass();
         if (cls == default || _displaySpriteIndex == -1)
         {
-            _charPortrait.ToggleVisible(false);
+            _charImage.ToggleVisible(false);
             return;
         }
 
-        _charPortrait.ToggleVisible(true);
+        _charImage.ToggleVisible(true);
         if (cls.Sprites.Count <= 0)
         {
             return;
@@ -168,27 +183,27 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
         isFace = faceTex != null;
 
-        if (_charPortrait?.Renderable == null)
+        if (_charImage?.Renderable == null)
         {
             return;
         }
 
-        _charPortrait.Renderable = isFace ? (IImage)faceTex : (IImage)entityTex;
-        var imgWidth = _charPortrait.Width;
-        var imgHeight = _charPortrait.Height;
+        _charImage.Renderable = isFace ? (IImage)faceTex : (IImage)entityTex;
+        var imgWidth = _charImage.Width;
+        var imgHeight = _charImage.Height;
         var textureWidth = isFace ? imgWidth : imgWidth / Options.Instance.Sprites.NormalFrames;
         var textureHeight = isFace ? imgHeight : imgHeight / Options.Instance.Sprites.Directions;
 
-        var scale = Math.Min(_charPortrait.Width / (double?)imgWidth ?? 0, _charPortrait.Height / (double?)imgHeight ?? 0);
+        var scale = Math.Min(_charImage.Width / (double?)imgWidth ?? 0, _charImage.Height / (double?)imgHeight ?? 0);
         var sizeX = isFace ? (int)(imgWidth * scale) : textureWidth;
         var sizeY = isFace ? (int)(imgHeight * scale) : textureHeight;
-        _charPortrait.Width = sizeX;
-        _charPortrait.Height = sizeY;
+        _charImage.Width = sizeX;
+        _charImage.Height = sizeY;
 
-        var centerX = (_charPortrait.Parent.Width / 2) - (_charPortrait.Width / 2);
-        var centerY = (_charPortrait.Parent.Height / 2) - (_charPortrait.Height / 2);
-        _charPortrait.Left = centerX ?? 0;
-        _charPortrait.Top = centerY ?? 0;
+        var centerX = (_charImage.Parent.Width / 2) - (_charImage.Width / 2);
+        var centerY = (_charImage.Parent.Height / 2) - (_charImage.Height / 2);
+        _charImage.Left = centerX ?? 0;
+        _charImage.Top = centerY ?? 0;
     }
 
     private ClassBase? GetClass()
