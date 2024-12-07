@@ -21,8 +21,6 @@ public partial class MonoInput : GameInput
     private Game _myGame;
     
     private readonly Dictionary<Keys, MonoKeys> _intersectKeys;
-    
-    private readonly Dictionary<MonoKeys, Keys> _monoKeys;
 
     private KeyboardState _lastKeyboardState;
 
@@ -42,7 +40,6 @@ public partial class MonoInput : GameInput
     {
         _myGame = myGame;
         _intersectKeys = [];
-        _monoKeys = [];
         
         foreach (Keys key in Enum.GetValues(typeof(Keys)))
         {
@@ -53,28 +50,24 @@ public partial class MonoInput : GameInput
                     if (key == Keys.Shift)
                     {
                         _intersectKeys.TryAdd(key, MonoKeys.LeftShift);
-                        _monoKeys.TryAdd(MonoKeys.LeftShift, key);
                         break;
                     }
 
                     if (key is Keys.Control or Keys.LControlKey)
                     {
                         _intersectKeys.TryAdd(key, MonoKeys.LeftControl);
-                        _monoKeys.TryAdd(MonoKeys.LeftControl, key);
                         break;
                     }
 
                     if (key == Keys.RControlKey)
                     {
                         _intersectKeys.TryAdd(key, MonoKeys.RightControl);
-                        _monoKeys.TryAdd(MonoKeys.RightControl, key);
                         break;
                     }
 
                     if (key == Keys.Return)
                     {
                         _intersectKeys.TryAdd(key, MonoKeys.Enter);
-                        _monoKeys.TryAdd(MonoKeys.Enter, key);
                         break;
                     }
 
@@ -84,7 +77,6 @@ public partial class MonoInput : GameInput
                     }
 
                     _intersectKeys.TryAdd(key, monoKey);
-                    _monoKeys.TryAdd(monoKey, key);
                     break;
                 }
             }
@@ -129,8 +121,6 @@ public partial class MonoInput : GameInput
     };
 
     public override bool IsKeyDown(Keys key) => _intersectKeys.ContainsKey(key) && _lastKeyboardState.IsKeyDown(_intersectKeys[key]);
-    
-    public bool IsKeyDown(MonoKeys key) => IsKeyDown(_monoKeys[key]);
 
     private void CheckMouseButton(Keys modifier, ButtonState bs, MouseButtons mb)
     {

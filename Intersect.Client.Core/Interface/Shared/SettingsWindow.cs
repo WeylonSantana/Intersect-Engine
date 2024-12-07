@@ -73,14 +73,16 @@ public class SettingsWindow : IMainMenuWindow
 
     // Keybinding Settings.
     private Panel? _settingsKeybindingPanel;
-    private Button? _keybindingEditBtn;
     private Button? _keybindingRestoreBtn;
+    private Container? _keybindingControlsContainer;
+    private Container? _keybindingControlsRow;
+    private Button? _currentListeningButton;
+
     private Controls _keybindingEditControls = default!;
     private HashSet<Keys> _keysDown = [];
-    private Dictionary<Control, Button[]> mKeybindingBtns = [];
+    private Dictionary<Control, Button[]> _keybindingButtons = [];
     private Control _keybindingEditControl;
     private long _keybindingListeningTimer;
-    private int _keyEdit = -1;
 
     private bool _returnToMenu;
 
@@ -97,6 +99,7 @@ public class SettingsWindow : IMainMenuWindow
     {
         _menuInterface = menu;
         _settingsWindow = Interface.LoadContent(Path.Combine("shared", "SettingsWindow.xmmp"));
+        _keybindingEditControls = new Controls(Controls.ActiveControls);
 
         #region Basic Load
 
@@ -362,6 +365,55 @@ public class SettingsWindow : IMainMenuWindow
         _keybindingRestoreBtn = Interface.GetChildById<Button>("settingsRestoreDefaults");
         _keybindingRestoreBtn?.SetText(Strings.Settings.Restore);
 
+        _keybindingControlsContainer = Interface.GetChildById<Container>("settingsKeybindingContainer");
+        _keybindingControlsRow = Interface.GetChildById<Container>("settingsKeybindingRow");
+
+        if (_keybindingControlsContainer != default && _keybindingControlsRow != default)
+        {
+            foreach (Control control in Enum.GetValues(typeof(Control)))
+            {
+                var row = _keybindingControlsRow.Clone() as Container;
+
+                if (row == default)
+                {
+                    continue;
+                }
+
+                // Get elements we need or throw an exception.
+                var label = row.Widgets.OfType<Label>().FirstOrDefault();
+                var buttonPrimary = row.Widgets.OfType<Button>().FirstOrDefault();
+                var buttonSecondary = row.Widgets.OfType<Button>().LastOrDefault();
+
+                if (label == default || buttonPrimary == default || buttonSecondary == default)
+                {
+                    throw new Exception("Invalid keybinding row.");
+                }
+
+                var name = Enum.GetName(typeof(Control), control)?.ToLower() ?? string.Empty;
+                label.SetText(Strings.Controls.KeyDictionary[name]);
+
+                buttonPrimary.Click += (s, e) => EditKeyPressed(buttonPrimary);
+                buttonPrimary.UserData.Add("control", control.ToString());
+                buttonPrimary.UserData.Add("bindingIndex", "0");
+
+                buttonSecondary.Click += (s, e) => EditKeyPressed(buttonSecondary);
+                buttonSecondary.UserData.Add("control", control.ToString());
+                buttonSecondary.UserData.Add("bindingIndex", "1");
+
+                _keybindingButtons.Add(control, [buttonPrimary, buttonSecondary]);
+                _keybindingControlsContainer.Widgets.Add(row);
+            }
+
+            // remove the original "template" row.
+            _keybindingControlsContainer.Widgets.RemoveAt(0);
+            UpdateKeybindingControlsLabels();
+
+            Input.KeyDown += OnKeyDown;
+            Input.MouseDown += OnKeyDown;
+            Input.KeyUp += OnKeyUp;
+            Input.MouseUp += OnKeyUp;
+        }
+
         #endregion
 
         #region Actions
@@ -383,7 +435,12 @@ public class SettingsWindow : IMainMenuWindow
         _keybindingRestoreBtn = Interface.GetChildById<Button>("keybindingRestore");
         if (_keybindingRestoreBtn != default)
         {
-            _keybindingRestoreBtn.Click += KeybindingsRestoreBtn_Clicked;
+            _keybindingRestoreBtn.Click += (s, e) =>
+            {
+                ResetKeybindingListener();
+                _keybindingEditControls.ResetDefaults();
+                UpdateKeybindingControlsLabels();
+            };
             _keybindingRestoreBtn.SetText(Strings.Settings.Restore);
         }
 
@@ -499,16 +556,59 @@ public class SettingsWindow : IMainMenuWindow
         }
     }
 
+    private void UpdateKeybindingControlsLabels()
+    {
+        foreach (Control control in Enum.GetValues(typeof(Control)))
+        {
+            var controlMapping = _keybindingEditControls.ControlMapping[control];
+            for (var bindingIndex = 0; bindingIndex < controlMapping.Bindings.Count; bindingIndex++)
+            {
+                var binding = controlMapping.Bindings[bindingIndex];
+                var text = Strings.Keys.FormatKeyName(binding.Modifier, binding.Key);
+                var button = _keybindingButtons[control][bindingIndex];
+                button.SetText(text);
+
+                if (button.UserData.ContainsKey("modifier"))
+                {
+                    button.UserData["modifier"] = binding.Modifier.ToString();
+                }
+                else
+                {
+                    button.UserData.Add("modifier", binding.Modifier.ToString());
+                }
+                
+                if (button.UserData.ContainsKey("key"))
+                {
+                    button.UserData["key"] = binding.Key.ToString();
+                }
+                else
+                {
+                    button.UserData.Add("key", binding.Key.ToString());
+                }
+            }
+        }
+    }
+
     #endregion
 
     public void Update()
     {
-        if (Visible &&
-            _keybindingEditBtn != null &&
-            _keybindingListeningTimer < Timing.Global.MillisecondsUtc)
+        if (!Visible)
         {
-            OnKeyUp(Keys.None, Keys.None);
+            return;
         }
+
+        if (_currentListeningButton == default)
+        {
+            return;
+        }
+
+        if (_keybindingListeningTimer >= Timing.Global.MillisecondsUtc)
+        {
+            return;
+        }
+
+        OnKeyUp(Keys.None, Keys.None);
     }
 
     #region Controls Handling
@@ -529,40 +629,63 @@ public class SettingsWindow : IMainMenuWindow
         Audio.UpdateGlobalVolume();
     }
 
-    #endregion
+    private void EditKeyPressed(Button sender)
+    {
+        if (_currentListeningButton != null)
+        {
+            return;
+        }
+
+        sender.SetText(Strings.Controls.Listening);
+        _keybindingEditControl = (Control)Enum.Parse(typeof(Control), sender.UserData["control"]);
+        _currentListeningButton = sender;
+        _keybindingListeningTimer = Timing.Global.MillisecondsUtc + 3000;
+        Interface.SetInputFocus(default);
+    }
 
     private void OnKeyDown(Keys modifier, Keys key)
     {
-        if (_keybindingEditBtn != default)
+        if (_currentListeningButton == null)
         {
-            _ = _keysDown.Add(key);
+            return;
         }
+
+        if (_keysDown.Count == 2)
+        {
+            return;
+        }
+
+        _keysDown.Add(key);
     }
 
     private void OnKeyUp(Keys modifier, Keys key)
     {
-        if (_keybindingEditBtn == null)
+        if (_currentListeningButton == null)
         {
             return;
         }
 
-        if (key != Keys.None && !_keysDown.Remove(key))
+        // if we have no keybinding, then we're done.
+        if (key == Keys.None)
         {
+            ResetKeybindingListener();
             return;
         }
 
+        // ok, we have a valid keybinding: single keybinding, or a modifier + keybinding.
         _keybindingEditControls.UpdateControl(
             _keybindingEditControl,
-            _keyEdit,
+            int.Parse(_currentListeningButton.UserData["bindingIndex"]),
             modifier,
             key
         );
-        _keybindingEditBtn.SetText(Strings.Keys.FormatKeyName(modifier, key));
 
+        // Check for duplicate keybindings.
         if (key != Keys.None)
         {
             foreach (var control in _keybindingEditControls.ControlMapping)
             {
+                // Skip the control we're currently editing.
                 if (control.Key == _keybindingEditControl)
                 {
                     continue;
@@ -573,22 +696,16 @@ public class SettingsWindow : IMainMenuWindow
                 {
                     var binding = bindings[bindingIndex];
 
-                    if (binding.Modifier != modifier || binding.Key != key)
-                    {
-                        continue;
-                    }
-
                     // Remove this mapping.
-                    _keybindingEditControls.UpdateControl(
-                        control.Key,
-                        bindingIndex,
-                        Keys.None,
-                        Keys.None
-                    );
-
-                    // Update UI.
-                    var text = Strings.Keys.KeyDictionary[Enum.GetName(typeof(Keys), Keys.None)];
-                    mKeybindingBtns[control.Key][bindingIndex].SetText(text);
+                    if (binding.Modifier == modifier && binding.Key == key)
+                    {
+                        _keybindingEditControls.UpdateControl(
+                            control.Key,
+                            bindingIndex,
+                            Keys.None,
+                            Keys.None
+                        );
+                    }
                 }
             }
 
@@ -596,44 +713,27 @@ public class SettingsWindow : IMainMenuWindow
             // _keybindingEditBtn.PlayHoverSound();
         }
 
-        _keybindingEditBtn = null;
-        _keysDown.Clear();
+        ResetKeybindingListener();
+        UpdateKeybindingControlsLabels();
     }
 
-    private void Key_Clicked(object? sender, EventArgs _)
+    private void ResetKeybindingListener()
     {
-        EditKeyPressed((Button)sender);
-    }
-
-    private void EditKeyPressed(Button sender)
-    {
-        if (_keybindingEditBtn != null)
+        if (_currentListeningButton != default)
         {
-            return;
+            var defaultModifier = Enum.Parse<Keys>(_currentListeningButton.UserData["modifier"]);
+            var defaultKey = Enum.Parse<Keys>(_currentListeningButton.UserData["key"]);
+            _currentListeningButton.SetText(Strings.Keys.FormatKeyName(defaultModifier, defaultKey));
+            _currentListeningButton = default;
         }
 
-        // sender.Text = Strings.Controls.Listening;
-        // _keyEdit = ((KeyValuePair<Control, int>)sender.UserData).Value;
-        // _keybindingEditControl = ((KeyValuePair<Control, int>)sender.UserData).Key;
-        // _keybindingEditBtn = sender;
-        // //Interface.GwenInput.HandleInput = false;
-        // _keybindingListeningTimer = Timing.Global.MillisecondsUtc + 3000;
+        _keysDown.Clear();
+        _keybindingListeningTimer = 0;
     }
 
-    private void KeybindingsRestoreBtn_Clicked(object? sender, EventArgs _)
-    {
-        var t = "";
-        // _keybindingEditControls.ResetDefaults();
-        // foreach (Control control in Enum.GetValues(typeof(Control)))
-        // {
-        //     var controlMapping = _keybindingEditControls.ControlMapping[control];
-        //     for (var bindingIndex = 0; bindingIndex < controlMapping.Bindings.Count; bindingIndex++)
-        //     {
-        //         var binding = controlMapping.Bindings[bindingIndex];
-        //         mKeybindingBtns[control][bindingIndex].Text = Strings.Keys.FormatKeyName(binding.Modifier, binding.Key);
-        //     }
-        // }
-    }
+    #endregion
+
+    #region Settings Actions
 
     private void SettingsApplyBtn_Clicked(object? sender, EventArgs _)
     {
@@ -749,8 +849,7 @@ public class SettingsWindow : IMainMenuWindow
         Globals.Database.SoundVolume = _previousSoundVolume;
         Audio.UpdateGlobalVolume();
         _keybindingEditControls = new Controls(Controls.ActiveControls);
-
-        // Hide our current window.
         Hide();
     }
+    #endregion
 }

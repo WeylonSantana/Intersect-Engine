@@ -185,6 +185,14 @@ public partial class Controls
 
         mapping.Bindings[keyNum].Modifier = modifier;
         mapping.Bindings[keyNum].Key = key;
+
+        // remove duplicates on the other binding
+        var otherKeyNum = keyNum == 0 ? 1 : 0;
+        if (mapping.Bindings[0].Modifier == mapping.Bindings[1].Modifier && mapping.Bindings[0].Key == mapping.Bindings[1].Key)
+        {
+            mapping.Bindings[otherKeyNum].Modifier = Keys.None;
+            mapping.Bindings[otherKeyNum].Key = Keys.None;
+        }
     }
 
     private void CreateControlMap(Control control, ControlValue binding, params ControlValue[] alternateBindings)
