@@ -1,4 +1,5 @@
 using Intersect.Client.General;
+using Intersect.Client.Interface.Extensions;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Security;
@@ -23,77 +24,44 @@ public partial class RegisterWindow : IMainMenuWindow
     {
         _mainMenu = mainMenu;
         _registerWindow = Interface.LoadContent(Path.Combine("menu", "RegisterWindow.xmmp"));
+        Interface.GetChildById<Label>(RegisterIdentifiers.Title)?.SetText(Strings.Registration.Title);
+        Interface.GetChildById<Label>(RegisterIdentifiers.UsernameLabel)?.SetText(Strings.Registration.Username);
+        Interface.GetChildById<Label>(RegisterIdentifiers.EmailLabel)?.SetText(Strings.Registration.Email);
+        Interface.GetChildById<Label>(RegisterIdentifiers.PasswordLabel)?.SetText(Strings.Registration.Password);
+        Interface.GetChildById<Label>(RegisterIdentifiers.ConfirmPasswordLabel)?.SetText(Strings.Registration.ConfirmPassword);
 
-        if (Interface.GetChildById<Label>("_labelRegisterTitle", out var labelRegisterTitle))
-        {
-            labelRegisterTitle.Text = Strings.Registration.Title;
-        }
-
-        if (Interface.GetChildById<Label>("_labelRegisterUsername", out var labelRegisterUsername))
-        {
-            labelRegisterUsername.Text = Strings.Registration.Username;
-        }
-
-        if (Interface.GetChildById<TextBox>("_textboxRegisterUsername", out var textboxUsername))
+        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.UsernameTextBox, out var textboxUsername))
         {
             _textboxRegisterUsername = textboxUsername;
         }
 
-        if (Interface.GetChildById<Label>("_labelEmail", out var labelEmail))
-        {
-            labelEmail.Text = Strings.Registration.Email;
-        }
-
-        if (Interface.GetChildById<TextBox>("_textboxEmail", out var textboxEmail))
+        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.EmailTextBox, out var textboxEmail))
         {
             _textboxEmail = textboxEmail;
         }
 
-        if (Interface.GetChildById<Label>("_labelRegisterPassword", out var labelRegisterPassword))
-        {
-            labelRegisterPassword.Text = Strings.Registration.Password;
-        }
-
-        if (Interface.GetChildById<TextBox>("_textboxRegisterPassword", out var textboxPassword))
+        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.PasswordTextBox, out var textboxPassword))
         {
             _textboxRegisterPassword = textboxPassword;
             _textboxRegisterPassword.PasswordField = true;
         }
 
-        if (Interface.GetChildById<Label>("_labelPasswordConfirm", out var labelPasswordConfirm))
-        {
-            labelPasswordConfirm.Text = Strings.Registration.ConfirmPassword;
-        }
-
-        if (
-            Interface.GetChildById<TextBox>(
-                "_textboxPasswordConfirm",
-                out var textboxPasswordConfirm
-            )
-        )
+        if (Interface.GetChildById<TextBox>(RegisterIdentifiers.ConfirmPasswordTextBox, out var textboxPasswordConfirm))
         {
             _textboxPasswordConfirm = textboxPasswordConfirm;
             _textboxPasswordConfirm.PasswordField = true;
         }
 
-        if (Interface.GetChildById<Label>("_labelRegister", out var labelRegister))
-        {
-            labelRegister.Text = Strings.Registration.Register;
-        }
-
-        if (Interface.GetChildById<Button>("_buttonRegister", out var buttonRegister))
+        if (Interface.GetChildById<Button>(RegisterIdentifiers.RegisterButton, out var buttonRegister))
         {
             _buttonRegister = buttonRegister;
             _buttonRegister.Click += (sender, args) => TryRegister();
+            _buttonRegister.SetText(Strings.Registration.Register);
         }
 
-        if (Interface.GetChildById<Label>("_labelRegisterBack", out var labelRegisterBack))
+        if (Interface.GetChildById<Button>(RegisterIdentifiers.BackButton, out var buttonRegisterBack))
         {
-            labelRegisterBack.Text = Strings.Registration.Back;
-        }
-
-        if (Interface.GetChildById<Button>("_buttonRegisterBack", out var buttonRegisterBack))
-        {
+            buttonRegisterBack.SetText(Strings.Registration.Back);
             buttonRegisterBack.Click += (sender, args) =>
             {
                 Networking.Network.DebounceClose("returning_to_main_menu");

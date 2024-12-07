@@ -15,3 +15,18 @@ public static partial class LoginIdentifiers
     public const string CreditsButton = "LoginCreditsButton";
     public const string ExitButton = "LoginExitButton";
 }
+
+public static partial class RegisterIdentifiers
+{
+    public const string Title = "RegisterTitleLabel";
+    public const string UsernameLabel = "RegisterUsernameLabel";
+    public const string UsernameTextBox = "RegisterUsernameTextBox";
+    public const string EmailLabel = "RegisterEmailLabel";
+    public const string EmailTextBox = "RegisterEmailTextBox";
+    public const string PasswordLabel = "RegisterPasswordLabel";
+    public const string PasswordTextBox = "RegisterPasswordTextBox";
+    public const string ConfirmPasswordLabel = "RegisterConfirmPasswordLabel";
+    public const string ConfirmPasswordTextBox = "RegisterConfirmPasswordTextBox";
+    public const string RegisterButton = "RegisterButton";
+    public const string BackButton = "RegisterBackButton";
+}

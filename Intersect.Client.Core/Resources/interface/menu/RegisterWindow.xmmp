@@ -1,28 +1,28 @@
 <Project>
   <Project.ExportOptions />
-  <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="330" Padding="10" Background="#202020FF" Id="_registerWindow">
-    <Label Text="Register" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="_labelRegisterTitle" />
+  <Panel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420" Height="330" Padding="10" Background="#202020FF">
+    <Label Text="Register" TextAlign="Center" Top="10" HorizontalAlignment="Center" Id="RegisterTitleLabel" />
     <Panel Top="45" Height="50">
-      <Label Text="Username:" TextAlign="Center" Top="5" Id="_labelRegisterUsername" />
-      <TextBox VerticalAlignment="Bottom" Id="_textboxRegisterUsername" />
+      <Label Text="Username:" TextAlign="Center" Top="5" Id="RegisterUsernameLabel" />
+      <TextBox VerticalAlignment="Bottom" Id="RegisterUsernameTextBox" />
     </Panel>
     <Panel Top="100" Height="50">
-      <Label Text="Email:" TextAlign="Center" Top="5" Id="_labelEmail" />
-      <TextBox VerticalAlignment="Bottom" Id="_textboxEmail" />
+      <Label Text="Email:" TextAlign="Center" Top="5" Id="RegisterEmailLabel" />
+      <TextBox VerticalAlignment="Bottom" Id="RegisterEmailTextBox" />
     </Panel>
     <Panel Top="155" Height="50">
-      <Label Text="Password:" TextAlign="Center" Top="5" Id="_labelRegisterPassword" />
-      <TextBox VerticalAlignment="Bottom" Id="_textboxRegisterPassword" />
+      <Label Text="Password:" TextAlign="Center" Top="5" Id="RegisterPasswordLabel" />
+      <TextBox VerticalAlignment="Bottom" Id="RegisterPasswordTextBox" />
     </Panel>
     <Panel Top="210" Height="50">
-      <Label Text="Password Confirm:" TextAlign="Center" Top="5" Id="_labelPasswordConfirm" />
-      <TextBox VerticalAlignment="Bottom" Id="_textboxPasswordConfirm" />
+      <Label Text="Password Confirm:" TextAlign="Center" Top="5" Id="RegisterConfirmPasswordLabel" />
+      <TextBox VerticalAlignment="Bottom" Id="RegisterConfirmPasswordTextBox" />
     </Panel>
-    <Button Left="11" Top="-11" Width="150" Height="25" VerticalAlignment="Bottom" Id="_buttonRegisterBack" >
-      <Label Text="Back" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelRegisterBack" />
+    <Button Left="11" Top="-11" Width="150" Height="25" VerticalAlignment="Bottom" Id="RegisterButton">
+      <Label Text="Back" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
-    <Button Left="-11" Top="-11" Width="150" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Id="_buttonRegister" >
-      <Label Text="Register" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Id="_labelRegister" />
+    <Button Left="-11" Top="-11" Width="150" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Id="RegisterBackButton">
+      <Label Text="Register" TextAlign="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Button>
   </Panel>
 </Project>
