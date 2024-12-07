@@ -30,3 +30,9 @@ public static partial class RegisterIdentifiers
     public const string RegisterButton = "RegisterButton";
     public const string BackButton = "RegisterBackButton";
 }
+
+public static partial class CreditsIdentifiers
+{
+    public const string Title = "CreditsTitleLabel";
+    public const string BackButton = "CreditsBackButton";
+}

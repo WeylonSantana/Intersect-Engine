@@ -1,3 +1,4 @@
+using Intersect.Client.Interface.Extensions;
 using Intersect.Client.Localization;
 using Myra.Graphics2D.UI;
 
@@ -13,19 +14,12 @@ public partial class CreditsWindow : IMainMenuWindow
         _mainMenu = menu;
 
         _creditsPanel = Interface.LoadContent(Path.Combine("menu", "CreditsWindow.xmmp"));
-        if (Interface.GetChildById<Label>("_labelCreditsTitle", out var labelCreditsTitle))
-        {
-            labelCreditsTitle.Text = Strings.Credits.Title;
-        }
+        Interface.GetChildById<Label>(CreditsIdentifiers.Title)?.SetText(Strings.Credits.Title);
 
-        if (Interface.GetChildById<Label>("_labelCreditsBack", out var labelCreditsBack))
-        {
-            labelCreditsBack.Text = Strings.Credits.Back;
-        }
-
-        if (Interface.GetChildById<Button>("_buttonCreditsBack", out var buttonCreditsBack))
+        if (Interface.GetChildById<Button>(CreditsIdentifiers.BackButton, out var buttonCreditsBack))
         {
             buttonCreditsBack.Click += BackBtn_Clicked;
+            buttonCreditsBack.SetText(Strings.Credits.Back);
         }
 
         _creditsPanel.Visible = false;
