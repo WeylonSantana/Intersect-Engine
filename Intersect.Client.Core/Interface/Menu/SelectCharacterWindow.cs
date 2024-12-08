@@ -38,44 +38,44 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         _selectCharacterWindow = Interface.LoadContent(Path.Combine("menu", "SelectCharacterWindow.xmmp"));
 
         //Menu Header
-        if (Interface.GetChildById<Label>(SELECT_CHARACTER_TITLE_LABEL, out var labelSelectCharacterTitle))
+        if (_selectCharacterWindow.FindChildById<Label>(SELECT_CHARACTER_TITLE_LABEL, out var labelSelectCharacterTitle))
         {
             labelSelectCharacterTitle.Text = Strings.CharacterSelection.Title;
         }
 
         //Character Name
-        _labelCharname = Interface.GetChildById<Label>(CHARNAME_LABEL);
+        _labelCharname = _selectCharacterWindow.FindChildById<Label>(CHARNAME_LABEL);
         if (_labelCharname != default)
         {
             _labelCharname.Text = Strings.CharacterSelection.Empty;
         }
 
         //Character Info
-        _labelInfo = Interface.GetChildById<Label>(CHARINFO_LABEL);
+        _labelInfo = _selectCharacterWindow.FindChildById<Label>(CHARINFO_LABEL);
         if (_labelInfo != default)
         {
             _labelInfo.Text = Strings.CharacterSelection.New;
         }
 
         //Character Container
-        _charContainer = Interface.GetChildById<Panel>(CHAR_CONTAINER);
+        _charContainer = _selectCharacterWindow.FindChildById<Panel>(CHAR_CONTAINER);
 
         //Next char Button
-        _buttonNextChar = Interface.GetChildById<Button>(NEXT_CHAR_BUTTON);
+        _buttonNextChar = _selectCharacterWindow.FindChildById<Button>(NEXT_CHAR_BUTTON);
         if (_buttonNextChar != default)
         {
             _buttonNextChar.Click += _buttonNextChar_Clicked;
         }
 
         //Prev Char Button
-        _buttonPrevChar = Interface.GetChildById<Button>(PREV_CHAR_BUTTON);
+        _buttonPrevChar = _selectCharacterWindow.FindChildById<Button>(PREV_CHAR_BUTTON);
         if (_buttonPrevChar != default)
         {
             _buttonPrevChar.Click += _buttonPrevChar_Clicked;
         }
 
         //EditorMode Button
-        _editorMode = Interface.GetChildById<Button>(EDITOR_MODE_BUTTON);
+        _editorMode = _selectCharacterWindow.FindChildById<Button>(EDITOR_MODE_BUTTON);
         if (_editorMode != default)
         {
             _editorMode.SetText("Editor Mode");
@@ -88,7 +88,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Play Button
-        _buttonPlay = Interface.GetChildById<Button>(PLAY_BUTTON);
+        _buttonPlay = _selectCharacterWindow.FindChildById<Button>(PLAY_BUTTON);
         if (_buttonPlay != default)
         {
             _buttonPlay.SetText(Strings.CharacterSelection.Play);
@@ -97,7 +97,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Delete Button
-        _buttonDelete = Interface.GetChildById<Button>(DELETE_BUTTON);
+        _buttonDelete = _selectCharacterWindow.FindChildById<Button>(DELETE_BUTTON);
         if (_buttonDelete != default)
         {
             _buttonDelete.SetText(Strings.CharacterSelection.Delete);
@@ -106,7 +106,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Create new char Button
-        _buttonNew = Interface.GetChildById<Button>(NEWCHAR_BUTTON);
+        _buttonNew = _selectCharacterWindow.FindChildById<Button>(NEWCHAR_BUTTON);
         if (_buttonNew != default)
         {
             _buttonNew.SetText(Strings.CharacterSelection.New);
@@ -114,7 +114,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         //Logout Button
-        _buttonLogout = Interface.GetChildById<Button>(LOGOUT_BUTTON);
+        _buttonLogout = _selectCharacterWindow.FindChildById<Button>(LOGOUT_BUTTON);
         if (_buttonLogout != default)
         {
             _buttonLogout.SetText(Strings.CharacterSelection.Logout);

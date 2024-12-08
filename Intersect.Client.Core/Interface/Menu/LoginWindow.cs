@@ -34,18 +34,18 @@ public partial class LoginWindow : IMainMenuWindow
     {
         _mainMenu = mainMenu;
         _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
-        Interface.GetChildById<Label>(TITLE_LABEL)?.SetText(Strings.LoginWindow.Title);
-        Interface.GetChildById<Label>(USERNAME_LABEL)?.SetText(Strings.LoginWindow.Username);
-        Interface.GetChildById<Label>(PASSWORD_LABEL)?.SetText(Strings.LoginWindow.Password);
+        _loginWindow.FindChildById<Label>(TITLE_LABEL)?.SetText(Strings.LoginWindow.Title);
+        _loginWindow.FindChildById<Label>(USERNAME_LABEL)?.SetText(Strings.LoginWindow.Username);
+        _loginWindow.FindChildById<Label>(PASSWORD_LABEL)?.SetText(Strings.LoginWindow.Password);
 
-        if (Interface.GetChildById<TextBox>(USERNAME_TEXTBOX, out var textboxUsername))
+        if (_loginWindow.FindChildById<TextBox>(USERNAME_TEXTBOX, out var textboxUsername))
         {
             _textboxLoginUsername = textboxUsername;
             _textboxLoginUsername.TouchDown += _textboxUsername_Clicked;
             Interface.SetInputFocus(_textboxLoginUsername);
         }
 
-        if (Interface.GetChildById<TextBox>(PASSWORD_TEXTBOX, out var textboxPassword))
+        if (_loginWindow.FindChildById<TextBox>(PASSWORD_TEXTBOX, out var textboxPassword))
         {
             _textboxLoginPassword = textboxPassword;
             _textboxLoginPassword.PasswordField = true;
@@ -53,13 +53,13 @@ public partial class LoginWindow : IMainMenuWindow
             _textboxLoginPassword.TextChanged += _textboxPassword_TextChanged;
         }
 
-        if (Interface.GetChildById<CheckButton>(SAVE_CREDENTIALS_CHECK, out var checkboxSave))
+        if (_loginWindow.FindChildById<CheckButton>(SAVE_CREDENTIALS_CHECK, out var checkboxSave))
         {
             _checkboxSave = checkboxSave;
             _checkboxSave.SetText(Strings.LoginWindow.SavePassword);
         }
 
-        if (Interface.GetChildById<Button>(LOGIN_BUTTON, out var buttonLogin))
+        if (_loginWindow.FindChildById<Button>(LOGIN_BUTTON, out var buttonLogin))
         {
             _buttonLogin = buttonLogin;
             _buttonLogin.Enabled = false;
@@ -67,14 +67,14 @@ public partial class LoginWindow : IMainMenuWindow
             _buttonLogin.SetText(Strings.LoginWindow.Login);
         }
 
-        if (Interface.GetChildById<Button>(FORGOT_PASSWORD_BUTTON, out var buttonForgotPassword))
+        if (_loginWindow.FindChildById<Button>(FORGOT_PASSWORD_BUTTON, out var buttonForgotPassword))
         {
             _buttonForgotPassword = buttonForgotPassword;
             _buttonForgotPassword.Click += _buttonForgotPassword_Clicked;
             _buttonForgotPassword.SetText(Strings.LoginWindow.ForgotPassword);
         }
 
-        if (Interface.GetChildById<Button>(REGISTER_BUTTON, out var buttonRegister))
+        if (_loginWindow.FindChildById<Button>(REGISTER_BUTTON, out var buttonRegister))
         {
             _buttonRegister = buttonRegister;
             _buttonRegister.Enabled = false;
@@ -93,19 +93,19 @@ public partial class LoginWindow : IMainMenuWindow
             };
         }
 
-        if (Interface.GetChildById<Button>(SETTINGS_BUTTON, out var buttonSettings))
+        if (_loginWindow.FindChildById<Button>(SETTINGS_BUTTON, out var buttonSettings))
         {
             buttonSettings.Click += (sender, args) => _mainMenu.SwitchToWindow<SettingsWindow>();
             buttonSettings.SetText(Strings.LoginWindow.Settings);
         }
 
-        if (Interface.GetChildById<Button>(CREDITS_BUTTON, out var buttonCredits))
+        if (_loginWindow.FindChildById<Button>(CREDITS_BUTTON, out var buttonCredits))
         {
             buttonCredits.Click += (sender, args) => _mainMenu.SwitchToWindow<CreditsWindow>();
             buttonCredits.SetText(Strings.LoginWindow.Credits);
         }
 
-        if (Interface.GetChildById<Button>(EXIT_BUTTON, out var buttonExit))
+        if (_loginWindow.FindChildById<Button>(EXIT_BUTTON, out var buttonExit))
         {
             buttonExit.SetText(Strings.LoginWindow.Exit);
             buttonExit.Click += (sender, args) =>

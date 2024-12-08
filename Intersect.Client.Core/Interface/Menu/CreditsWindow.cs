@@ -14,9 +14,9 @@ public partial class CreditsWindow : IMainMenuWindow
         _mainMenu = menu;
 
         _creditsPanel = Interface.LoadContent(Path.Combine("menu", "CreditsWindow.xmmp"));
-        Interface.GetChildById<Label>(TITLE_LABEL)?.SetText(Strings.Credits.Title);
+        _creditsPanel.FindChildById<Label>(TITLE_LABEL)?.SetText(Strings.Credits.Title);
 
-        if (Interface.GetChildById<Button>(BACK_BUTTON, out var buttonCreditsBack))
+        if (_creditsPanel.FindChildById<Button>(BACK_BUTTON, out var buttonCreditsBack))
         {
             buttonCreditsBack.Click += BackBtn_Clicked;
             buttonCreditsBack.SetText(Strings.Credits.Back);

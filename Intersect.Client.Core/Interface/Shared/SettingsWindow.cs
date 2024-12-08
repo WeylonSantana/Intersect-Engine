@@ -18,13 +18,7 @@ public class SettingsWindow : IMainMenuWindow
     private MenuInterface _menuInterface = default!;
     private Widget? _settingsWindow;
 
-    // Settings Window.
-    private Button? _gameSettingsTab;
-    private Button? _videoSettingsTab;
-    private Button? _audioSettingsTab;
-    private Button? _keybindingSettingsTab;
-    private Button? _settingsApplyBtn;
-    private Button? _settingsCancelBtn;
+    private TabControl? _tabControl;
 
     // Game Settings - Interface.
     private CheckButton? _autoCloseWindowsCheckButton;
@@ -63,10 +57,10 @@ public class SettingsWindow : IMainMenuWindow
     private CheckButton? _lightingEnabledCheckbox;
 
     // Audio Settings.
-    private HorizontalSlider? _musicSlider;
     private Label? _musicLabel;
-    private HorizontalSlider? _soundSlider;
+    private HorizontalSlider? _musicSlider;
     private Label? _soundLabel;
+    private HorizontalSlider? _soundSlider;
 
     // Keybinding Settings.
     private Button? _keybindingRestoreBtn;
@@ -99,77 +93,80 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Basic Load
 
-        _gameSettingsTab = Interface.GetChildById<Button>(GAME_TAB);
-        if (_gameSettingsTab != default)
+        if (_settingsWindow.FindChildById<TabControl>(TAB_CONTROL, out var tabControl))
         {
-            _gameSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(false);
-            _gameSettingsTab.SetText(Strings.Settings.GameSettingsTab);
+            _tabControl = tabControl;
+            _tabControl.SelectedIndexChanged += (s, e) =>
+            {
+                _keybindingRestoreBtn.ToggleVisible(_tabControl.SelectedItem.Id == KEYBINDING_TAB);
+            };
+
+            foreach (var tab in _tabControl.Items)
+            {
+                switch (tab.Id)
+                {
+                    case GAME_TAB:
+                        tab.Text = Strings.Settings.GameSettingsTab;
+                        break;
+
+                    case VIDEO_TAB:
+                        tab.Text = Strings.Settings.VideoSettingsTab;
+                        break;
+
+                    case AUDIO_TAB:
+                        tab.Text = Strings.Settings.AudioSettingsTab;
+                        break;
+
+                    case KEYBINDING_TAB:
+                        tab.Text = Strings.Settings.KeyBindingSettingsTab;
+                        break;
+                }
+            }
         }
 
-        _videoSettingsTab = Interface.GetChildById<Button>(VIDEO_TAB);
-        if (_videoSettingsTab != default)
+        if (_settingsWindow.FindChildById<Button>(SAVE_BUTTON, out var saveButton))
         {
-            _videoSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(false);
-            _videoSettingsTab.SetText(Strings.Settings.VideoSettingsTab);
+            saveButton.Click += SettingsApplyBtn_Clicked;
+            saveButton.SetText(Strings.Settings.Apply);
         }
 
-        _audioSettingsTab = Interface.GetChildById<Button>(AUDIO_TAB);
-        if (_audioSettingsTab != default)
+        if (_settingsWindow.FindChildById<Button>(CANCEL_BUTTON, out var cancelButton))
         {
-            _audioSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(false);
-            _audioSettingsTab.SetText(Strings.Settings.AudioSettingsTab);
-        }
-
-        _keybindingSettingsTab = Interface.GetChildById<Button>(KEYBINDING_TAB);
-        if (_keybindingSettingsTab != default)
-        {
-            _keybindingSettingsTab.Click += (s, e) => _keybindingRestoreBtn.ToggleVisible(true);
-            _keybindingSettingsTab.SetText(Strings.Settings.KeyBindingSettingsTab);
-        }
-
-        _settingsApplyBtn = Interface.GetChildById<Button>(SAVE_BUTTON);
-        if (_settingsApplyBtn != default)
-        {
-            _settingsApplyBtn.Click += SettingsApplyBtn_Clicked;
-            _settingsApplyBtn.SetText(Strings.Settings.Apply);
-        }
-
-        _settingsCancelBtn = Interface.GetChildById<Button>(CANCEL_BUTTON);
-        if (_settingsCancelBtn != default)
-        {
-            _settingsCancelBtn.Click += SettingsCancelBtn_Clicked;
-            _settingsCancelBtn.SetText(Strings.Settings.Cancel);
+            cancelButton.Click += SettingsCancelBtn_Clicked;
+            cancelButton.SetText(Strings.Settings.Cancel);
         }
 
         #endregion
 
         #region Game Settings Load - Interface
 
-        _autoCloseWindowsCheckButton = Interface.GetChildById<CheckButton>(AUTO_CLOSE_WINDOW_CHECK);
+        var gameTabContent = _tabControl?.Items.FirstOrDefault(t => t.Id == GAME_TAB)?.Content;
+
+        _autoCloseWindowsCheckButton = gameTabContent?.FindChildById<CheckButton>(AUTO_CLOSE_WINDOW_CHECK);
         _autoCloseWindowsCheckButton?.SetText(Strings.Settings.AutoCloseWindows);
         _autoCloseWindowsCheckButton?.SetValue(Globals.Database.HideOthersOnWindowOpen);
 
-        _autoToggleChatLogCheckButton = Interface.GetChildById<CheckButton>(AUTO_TOGGLE_CHAT_LOG_CHECK);
+        _autoToggleChatLogCheckButton = gameTabContent?.FindChildById<CheckButton>(AUTO_TOGGLE_CHAT_LOG_CHECK);
         _autoToggleChatLogCheckButton?.SetValue(Globals.Database.AutoToggleChatLog);
         _autoToggleChatLogCheckButton?.SetText(Strings.Settings.AutoToggleChatLog);
 
-        _showHealthAsPercentageCheckButton = Interface.GetChildById<CheckButton>(SHOW_HEALTH_AS_PERCENTAGE_CHECK);
+        _showHealthAsPercentageCheckButton = gameTabContent?.FindChildById<CheckButton>(SHOW_HEALTH_AS_PERCENTAGE_CHECK);
         _showHealthAsPercentageCheckButton?.SetText(Strings.Settings.ShowHealthAsPercentage);
         _showHealthAsPercentageCheckButton?.SetValue(Globals.Database.ShowHealthAsPercentage);
 
-        _showManaAsPercentageCheckButton = Interface.GetChildById<CheckButton>(SHOW_MANA_AS_PERCENTAGE_CHECK);
+        _showManaAsPercentageCheckButton = gameTabContent?.FindChildById<CheckButton>(SHOW_MANA_AS_PERCENTAGE_CHECK);
         _showManaAsPercentageCheckButton?.SetText(Strings.Settings.ShowManaAsPercentage);
         _showManaAsPercentageCheckButton?.SetValue(Globals.Database.ShowManaAsPercentage);
 
-        _showExperienceAsPercentageCheckButton = Interface.GetChildById<CheckButton>(SHOW_EXPERIENCE_AS_PERCENTAGE_CHECK);
+        _showExperienceAsPercentageCheckButton = gameTabContent?.FindChildById<CheckButton>(SHOW_EXPERIENCE_AS_PERCENTAGE_CHECK);
         _showExperienceAsPercentageCheckButton?.SetText(Strings.Settings.ShowExperienceAsPercentage);
         _showExperienceAsPercentageCheckButton?.SetValue(Globals.Database.ShowExperienceAsPercentage);
 
-        _typewriterCheckButton = Interface.GetChildById<CheckButton>(TYPEWRITER_CHECK);
+        _typewriterCheckButton = gameTabContent?.FindChildById<CheckButton>(TYPEWRITER_CHECK);
         _typewriterCheckButton?.SetText(Strings.Settings.TypewriterText);
         _typewriterCheckButton?.SetValue(Globals.Database.TypewriterBehavior == TypewriterBehavior.Word);
 
-        _simplifiedEscapeMenuCheckButton = Interface.GetChildById<CheckButton>(SIMPLIFIED_ESCAPE_MENU_CHECK);
+        _simplifiedEscapeMenuCheckButton = gameTabContent?.FindChildById<CheckButton>(SIMPLIFIED_ESCAPE_MENU_CHECK);
         _simplifiedEscapeMenuCheckButton?.SetText(Strings.Settings.SimplifiedEscapeMenu);
         _simplifiedEscapeMenuCheckButton?.SetValue(Globals.Database.SimplifiedEscapeMenu);
 
@@ -177,28 +174,28 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Game Settings Load - Overhead Information
 
-        Interface.GetChildById<Label>(GAME_OVERHEAD_INFO_LABEL)?.SetText(Strings.Settings.ShowOverheadInformationTitle);
-        _myOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(MY_OVERHEAD_INFO_CHECK);
+        gameTabContent?.FindChildById<Label>(GAME_OVERHEAD_INFO_LABEL)?.SetText(Strings.Settings.ShowOverheadInformationTitle);
+        _myOverheadInfoCheckButton = gameTabContent?.FindChildById<CheckButton>(MY_OVERHEAD_INFO_CHECK);
         _myOverheadInfoCheckButton?.SetText(Strings.Settings.ShowMyOverheadInformation);
         _myOverheadInfoCheckButton?.SetValue(Globals.Database.MyOverheadInfo);
 
-        _playerOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(PLAYER_OVERHEAD_INFO_CHECK);
+        _playerOverheadInfoCheckButton = gameTabContent?.FindChildById<CheckButton>(PLAYER_OVERHEAD_INFO_CHECK);
         _playerOverheadInfoCheckButton?.SetText(Strings.Settings.ShowPlayerOverheadInformation);
         _playerOverheadInfoCheckButton?.SetValue(Globals.Database.PlayerOverheadInfo);
 
-        _npcOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(NPC_OVERHEAD_INFO_CHECK);
+        _npcOverheadInfoCheckButton = gameTabContent?.FindChildById<CheckButton>(NPC_OVERHEAD_INFO_CHECK);
         _npcOverheadInfoCheckButton?.SetText(Strings.Settings.ShowNpcOverheadInformation);
         _npcOverheadInfoCheckButton?.SetValue(Globals.Database.NpcOverheadInfo);
 
-        _friendOverheadInfoCheckbox = Interface.GetChildById<CheckButton>(FRIEND_OVERHEAD_INFO_CHECK);
+        _friendOverheadInfoCheckbox = gameTabContent?.FindChildById<CheckButton>(FRIEND_OVERHEAD_INFO_CHECK);
         _friendOverheadInfoCheckbox?.SetValue(Globals.Database.FriendOverheadInfo);
         _friendOverheadInfoCheckbox?.SetText(Strings.Settings.ShowFriendOverheadInformation);
 
-        _partyOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(PARTY_OVERHEAD_INFO_CHECK);
+        _partyOverheadInfoCheckButton = gameTabContent?.FindChildById<CheckButton>(PARTY_OVERHEAD_INFO_CHECK);
         _partyOverheadInfoCheckButton?.SetText(Strings.Settings.ShowPartyOverheadInformation);
         _partyOverheadInfoCheckButton?.SetValue(Globals.Database.PartyMemberOverheadInfo);
 
-        _guildOverheadInfoCheckButton = Interface.GetChildById<CheckButton>(GUILD_OVERHEAD_INFO_CHECK);
+        _guildOverheadInfoCheckButton = gameTabContent?.FindChildById<CheckButton>(GUILD_OVERHEAD_INFO_CHECK);
         _guildOverheadInfoCheckButton?.SetText(Strings.Settings.ShowGuildOverheadInformation);
         _guildOverheadInfoCheckButton?.SetValue(Globals.Database.GuildMemberOverheadInfo);
 
@@ -206,28 +203,28 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Game Settings Load - Overhead HP Bar
 
-        Interface.GetChildById<Label>(GAME_OVERHEAD_HP_BAR_LABEL)?.SetText(Strings.Settings.ShowOverheadHPBarTitle);
-        _myOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(MY_OVERHEAD_HP_BAR_CHECK);
+        gameTabContent?.FindChildById<Label>(GAME_OVERHEAD_HP_BAR_LABEL)?.SetText(Strings.Settings.ShowOverheadHPBarTitle);
+        _myOverheadHpBarCheckButton = gameTabContent?.FindChildById<CheckButton>(MY_OVERHEAD_HP_BAR_CHECK);
         _myOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowMyOverheadHPBar);
         _myOverheadHpBarCheckButton?.SetValue(Globals.Database.MyOverheadHpBar);
 
-        _playerOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(PLAYER_OVERHEAD_HP_BAR_CHECK);
+        _playerOverheadHpBarCheckButton = gameTabContent?.FindChildById<CheckButton>(PLAYER_OVERHEAD_HP_BAR_CHECK);
         _playerOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowPlayerOverheadHPBar);
         _playerOverheadHpBarCheckButton?.SetValue(Globals.Database.PlayerOverheadHpBar);
 
-        _npcOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(NPC_OVERHEAD_HP_BAR_CHECK);
+        _npcOverheadHpBarCheckButton = gameTabContent?.FindChildById<CheckButton>(NPC_OVERHEAD_HP_BAR_CHECK);
         _npcOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowNpcOverheadHPBar);
         _npcOverheadHpBarCheckButton?.SetValue(Globals.Database.NpcOverheadHpBar);
 
-        _friendOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(FRIEND_OVERHEAD_HP_BAR_CHECK);
+        _friendOverheadHpBarCheckButton = gameTabContent?.FindChildById<CheckButton>(FRIEND_OVERHEAD_HP_BAR_CHECK);
         _friendOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowFriendOverheadHPBar);
         _friendOverheadHpBarCheckButton?.SetValue(Globals.Database.FriendOverheadHpBar);
 
-        _partyOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(PARTY_OVERHEAD_HP_BAR_CHECK);
+        _partyOverheadHpBarCheckButton = gameTabContent?.FindChildById<CheckButton>(PARTY_OVERHEAD_HP_BAR_CHECK);
         _partyOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowPartyOverheadHPBar);
         _partyOverheadHpBarCheckButton?.SetValue(Globals.Database.PartyMemberOverheadHpBar);
 
-        _guildOverheadHpBarCheckButton = Interface.GetChildById<CheckButton>(GUILD_OVERHEAD_HP_BAR_CHECK);
+        _guildOverheadHpBarCheckButton = gameTabContent?.FindChildById<CheckButton>(GUILD_OVERHEAD_HP_BAR_CHECK);
         _guildOverheadHpBarCheckButton?.SetText(Strings.Settings.ShowGuildOverheadHPBar);
         _guildOverheadHpBarCheckButton?.SetValue(Globals.Database.GuildMemberOverheadHpBar);
 
@@ -235,12 +232,12 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Game Settings Load - Targeting
 
-        Interface.GetChildById<Label>(TARGETING_LABEL)?.SetText(Strings.Settings.TargettingTitle);
-        _stickyTargetCheckButton = Interface.GetChildById<CheckButton>(STICKY_TARGET_CHECK);
+        gameTabContent?.FindChildById<Label>(TARGETING_LABEL)?.SetText(Strings.Settings.TargettingTitle);
+        _stickyTargetCheckButton = gameTabContent?.FindChildById<CheckButton>(STICKY_TARGET_CHECK);
         _stickyTargetCheckButton?.SetText(Strings.Settings.StickyTarget);
         _stickyTargetCheckButton?.SetValue(Globals.Database.StickyTarget);
 
-        _autoTurnToTargetCheckButton = Interface.GetChildById<CheckButton>(AUTO_TURN_TO_TARGET_CHECK);
+        _autoTurnToTargetCheckButton = gameTabContent?.FindChildById<CheckButton>(AUTO_TURN_TO_TARGET_CHECK);
         _autoTurnToTargetCheckButton?.SetText(Strings.Settings.AutoTurnToTarget);
         _autoTurnToTargetCheckButton?.SetValue(Globals.Database.AutoTurnToTarget);
 
@@ -248,8 +245,10 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Video Settings Load
 
-        Interface.GetChildById<Label>(RESOLUTION_LABEL)?.SetText(Strings.Settings.Resolution);
-        _resolutionList = Interface.GetChildById<ComboView>(RESOLUTION_COMBO_VIEW);
+        var videoTabContent = _tabControl?.Items.FirstOrDefault(t => t.Id == VIDEO_TAB)?.Content;
+
+        videoTabContent?.FindChildById<Label>(RESOLUTION_LABEL)?.SetText(Strings.Settings.Resolution);
+        _resolutionList = videoTabContent?.FindChildById<ComboView>(RESOLUTION_COMBO_VIEW);
         if (_resolutionList != default)
         {
             // Add valid video modes to the resolution list.
@@ -267,9 +266,8 @@ public class SettingsWindow : IMainMenuWindow
             }
         }
 
-        Interface.GetChildById<Label>(FPS_LABEL)?.SetText(Strings.Settings.TargetFps);
-        _fpsList = Interface.GetChildById<ComboView>(FPS_COMBO_VIEW);
-
+        videoTabContent?.FindChildById<Label>(FPS_LABEL)?.SetText(Strings.Settings.TargetFps);
+        _fpsList = videoTabContent?.FindChildById<ComboView>(FPS_COMBO_VIEW);
 
         if (_fpsList != default)
         {
@@ -293,15 +291,15 @@ public class SettingsWindow : IMainMenuWindow
             _fpsList.SelectByKey(Globals.Database.TargetFps.ToString());
         }
 
-        Interface.GetChildById<Label>(WORLD_SCALE_LABEL)?.SetText(Strings.Settings.WorldScale);
-        _worldScale = Interface.GetChildById<HorizontalSlider>(WORLD_SCALE_SLIDER);
+        videoTabContent?.FindChildById<Label>(WORLD_SCALE_LABEL)?.SetText(Strings.Settings.WorldScale);
+        _worldScale = videoTabContent?.FindChildById<HorizontalSlider>(WORLD_SCALE_SLIDER);
         _worldScale?.SetValue(Globals.Database.WorldZoom);
 
-        _fullscreenCheckbox = Interface.GetChildById<CheckButton>(FULLSCREEN_CHECK);
+        _fullscreenCheckbox = videoTabContent?.FindChildById<CheckButton>(FULLSCREEN_CHECK);
         _fullscreenCheckbox?.SetText(Strings.Settings.Fullscreen);
         _fullscreenCheckbox?.SetValue(Globals.Database.FullScreen);
 
-        _lightingEnabledCheckbox = Interface.GetChildById<CheckButton>(LIGHTING_ENABLED_CHECK);
+        _lightingEnabledCheckbox = videoTabContent?.FindChildById<CheckButton>(LIGHTING_ENABLED_CHECK);
         _lightingEnabledCheckbox?.SetText(Strings.Settings.EnableLighting);
         _lightingEnabledCheckbox?.SetValue(Globals.Database.EnableLighting);
 
@@ -309,43 +307,41 @@ public class SettingsWindow : IMainMenuWindow
 
         #region Audio Settings Load
 
+        var audioTabContent = _tabControl?.Items.FirstOrDefault(t => t.Id == AUDIO_TAB)?.Content;
+
         _previousMusicVolume = Globals.Database.MusicVolume;
         _previousSoundVolume = Globals.Database.SoundVolume;
 
-        _musicLabel = Interface.GetChildById<Label>(MUSIC_VOLUME_LABEL);
-        _musicLabel?.SetText(Strings.Settings.MusicVolume);
-
-        _musicSlider = Interface.GetChildById<HorizontalSlider>(MUSIC_VOLUME_SLIDER);
+        _musicSlider = audioTabContent?.FindChildById<HorizontalSlider>(MUSIC_VOLUME_SLIDER);
         if (_musicSlider != default)
         {
             _musicSlider.ValueChangedByUser += MusicSlider_ValueChanged;
             _musicSlider.SetValue(Globals.Database.MusicVolume);
         }
 
-        _soundLabel = Interface.GetChildById<Label>(SOUND_VOLUME_LABEL);
-        _soundLabel?.SetText(Strings.Settings.SoundVolume);
+        _musicLabel = audioTabContent?.FindChildById<Label>(MUSIC_VOLUME_LABEL);
+        var musicLabelText = Strings.Settings.MusicVolume.ToString((int)(_musicSlider?.Value ?? 0));
+        _musicLabel?.SetText(musicLabelText);
 
-        _soundSlider = Interface.GetChildById<HorizontalSlider>(SOUND_VOLUME_SLIDER);
+        _soundSlider = audioTabContent?.FindChildById<HorizontalSlider>(SOUND_VOLUME_SLIDER);
         if (_soundSlider != default)
         {
             _soundSlider.ValueChangedByUser += SoundSlider_ValueChanged;
             _soundSlider.SetValue(Globals.Database.SoundVolume);
         }
 
-        var musicLabelText = Strings.Settings.MusicVolume.ToString((int)(_musicSlider?.Value ?? 0));
+        _soundLabel = audioTabContent?.FindChildById<Label>(SOUND_VOLUME_LABEL);
         var soundLabelText = Strings.Settings.SoundVolume.ToString((int)(_soundSlider?.Value ?? 0));
-        Interface.GetChildById<Label>("settingsMusicVolumeLabel")?.SetText(musicLabelText);
-        Interface.GetChildById<Label>("settingsSoundVolumeLabel")?.SetText(soundLabelText);
+        _soundLabel?.SetText(soundLabelText);
 
         #endregion
 
         #region Keybinding Settings Load
 
-        _keybindingRestoreBtn = Interface.GetChildById<Button>(KEYBINDING_RESTORE_BUTTON);
-        _keybindingRestoreBtn?.SetText(Strings.Settings.Restore);
+        var keybindingTabContent = _tabControl?.Items.FirstOrDefault(t => t.Id == KEYBINDING_TAB)?.Content;
 
-        _keybindingControlsContainer = Interface.GetChildById<Container>(KEYBINDING_CONTROLS_CONTAINER);
-        _keybindingControlsRow = Interface.GetChildById<Container>(KEYBINDING_CONTROLS_ROW);
+        _keybindingControlsContainer = keybindingTabContent?.FindChildById<Container>(KEYBINDING_CONTROLS_CONTAINER);
+        _keybindingControlsRow = keybindingTabContent?.FindChildById<Container>(KEYBINDING_CONTROLS_ROW);
 
         if (_keybindingControlsContainer != default && _keybindingControlsRow != default)
         {
@@ -393,34 +389,17 @@ public class SettingsWindow : IMainMenuWindow
             Input.MouseUp += OnKeyUp;
         }
 
-        #endregion
-
-        #region Actions
-
-        _settingsApplyBtn = Interface.GetChildById<Button>("settingsApply");
-        if (_settingsApplyBtn != default)
-        {
-            _settingsApplyBtn.Click += SettingsApplyBtn_Clicked;
-            _settingsApplyBtn.SetText(Strings.Settings.Apply);
-        }
-
-        _settingsCancelBtn = Interface.GetChildById<Button>("settingsCancel");
-        if (_settingsCancelBtn != default)
-        {
-            _settingsCancelBtn.Click += SettingsCancelBtn_Clicked;
-            _settingsCancelBtn.SetText(Strings.Settings.Cancel);
-        }
-
-        _keybindingRestoreBtn = Interface.GetChildById<Button>("keybindingRestore");
+        _keybindingRestoreBtn = _settingsWindow?.FindChildById<Button>(KEYBINDING_RESTORE_BUTTON);
         if (_keybindingRestoreBtn != default)
         {
+            _keybindingRestoreBtn.SetText(Strings.Settings.Restore);
+            _keybindingRestoreBtn.ToggleVisible(false);
             _keybindingRestoreBtn.Click += (s, e) =>
             {
                 ResetKeybindingListener();
                 _keybindingEditControls.ResetDefaults();
                 UpdateKeybindingControlsLabels();
             };
-            _keybindingRestoreBtn.SetText(Strings.Settings.Restore);
         }
 
         #endregion
@@ -477,8 +456,10 @@ public class SettingsWindow : IMainMenuWindow
 
     private void LoadSettingsWindow()
     {
-        // Buttons.
-        _keybindingRestoreBtn.ToggleVisible(false);
+        if (_tabControl != default)
+        {
+            _tabControl.SelectedIndex = 0;
+        }
 
         var worldScaleNotches = new float[]
         {
@@ -763,6 +744,8 @@ public class SettingsWindow : IMainMenuWindow
 
 
         // Audio Settings.
+        _previousMusicVolume = Globals.Database.MusicVolume;
+        _previousSoundVolume = Globals.Database.SoundVolume;
         Globals.Database.MusicVolume = (int)(_musicSlider?.Value ?? 0);
         Globals.Database.SoundVolume = (int)(_soundSlider?.Value ?? 0);
         Audio.UpdateGlobalVolume();
@@ -789,6 +772,10 @@ public class SettingsWindow : IMainMenuWindow
         // Update previously saved values in order to discard changes.
         Globals.Database.MusicVolume = _previousMusicVolume;
         Globals.Database.SoundVolume = _previousSoundVolume;
+        _musicSlider?.SetValue(_previousMusicVolume);
+        _soundSlider?.SetValue(_previousSoundVolume);
+        _musicLabel?.SetText(Strings.Settings.MusicVolume.ToString(_previousMusicVolume));
+        _soundLabel?.SetText(Strings.Settings.SoundVolume.ToString(_previousSoundVolume));
         Audio.UpdateGlobalVolume();
         _keybindingEditControls = new Controls(Controls.ActiveControls);
         Hide();
@@ -798,6 +785,7 @@ public class SettingsWindow : IMainMenuWindow
 
     #region Constants
 
+    private const string TAB_CONTROL = nameof(TAB_CONTROL);
     private const string GAME_TAB = nameof(GAME_TAB);
     private const string VIDEO_TAB = nameof(VIDEO_TAB);
     private const string AUDIO_TAB = nameof(AUDIO_TAB);

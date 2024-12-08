@@ -36,65 +36,65 @@ public partial class CreateCharacterWindow : IMainMenuWindow
     {
         _mainMenu = mainMenu;
         _createCharacterWindow = Interface.LoadContent(Path.Combine("menu", "CreateCharacterWindow.xmmp"));
-        Interface.GetChildById<Label>(CREATE_CHARACTER_TITLE_LABEL)?.SetText(Strings.CharacterCreation.Title);
+        _createCharacterWindow.FindChildById<Label>(CREATE_CHARACTER_TITLE_LABEL)?.SetText(Strings.CharacterCreation.Title);
 
         //Character Name
-        if (Interface.GetChildById<TextBox>(CHARACTER_NAME_TEXTBOX, out var charNameTextbox))
+        if (_createCharacterWindow.FindChildById<TextBox>(CHARACTER_NAME_TEXTBOX, out var charNameTextbox))
         {
             _charNameTextbox = charNameTextbox;
             _charNameTextbox.TouchDown += _textboxCharactername_Clicked;
         }
 
         // Class Combobox
-        if (Interface.GetChildById<ComboView>(CLASS_COMBO_VIEW, out var classComboView))
+        if (_createCharacterWindow.FindChildById<ComboView>(CLASS_COMBO_VIEW, out var classComboView))
         {
             _classComboView = classComboView;
             _classComboView.SelectedIndexChanged += ClassComboBoxItemSelected;
         }
 
         // Male Checkbox
-        if (Interface.GetChildById<CheckButton>(MALE_CHECK, out var maleChk))
+        if (_createCharacterWindow.FindChildById<CheckButton>(MALE_CHECK, out var maleChk))
         {
             _chkMale = maleChk;
             _chkMale.TouchDown += maleChk_Checked;
         }
 
         // Female Checkbox
-        if (Interface.GetChildById<CheckButton>(FEMALE_CHECK, out var femaleChk))
+        if (_createCharacterWindow.FindChildById<CheckButton>(FEMALE_CHECK, out var femaleChk))
         {
             _chkFemale = femaleChk;
             _chkFemale.TouchDown += femaleChk_Checked;
         }
 
         // Character Portrait
-        if (Interface.GetChildById<Image>(CHARACTER_IMAGE, out var charPortrait))
+        if (_createCharacterWindow.FindChildById<Image>(CHARACTER_IMAGE, out var charPortrait))
         {
             _charImage = charPortrait;
         }
 
         // Previous Sprite Button
-        if (Interface.GetChildById<Button>(PREVIOUS_SPRITE_BUTTON, out var prevSpriteButton))
+        if (_createCharacterWindow.FindChildById<Button>(PREVIOUS_SPRITE_BUTTON, out var prevSpriteButton))
         {
             _prevSpriteButton = prevSpriteButton;
             _prevSpriteButton.Click += _prevSpriteButton_Clicked;
         }
 
         // Next Sprite Button
-        if (Interface.GetChildById<Button>(NEXT_SPRITE_BUTTON, out var nextSpriteButton))
+        if (_createCharacterWindow.FindChildById<Button>(NEXT_SPRITE_BUTTON, out var nextSpriteButton))
         {
             _nextSpriteButton = nextSpriteButton;
             _nextSpriteButton.Click += _nextSpriteButton_Clicked;
         }
 
         // Create Button
-        if (Interface.GetChildById<Button>(CREATE_BUTTON, out var createButton))
+        if (_createCharacterWindow.FindChildById<Button>(CREATE_BUTTON, out var createButton))
         {
             _createButton = createButton;
             _createButton.Click += CreateButton_Clicked;
         }
 
         // Back Button
-        if (Interface.GetChildById<Button>(BACK_BUTTON, out var backButton))
+        if (_createCharacterWindow.FindChildById<Button>(BACK_BUTTON, out var backButton))
         {
             _backButton = backButton;
             _backButton.Click += BackButton_Clicked;
