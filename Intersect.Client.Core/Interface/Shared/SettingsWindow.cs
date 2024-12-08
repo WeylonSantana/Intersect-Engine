@@ -51,6 +51,7 @@ public class SettingsWindow : IWindow
     // Video Settings.
     private ComboView? _resolutionList;
     private ComboView? _fpsList;
+    private Label? _worldScaleLabel;
     private HorizontalSlider? _worldScale;
     private CheckButton? _fullscreenCheckbox;
     private CheckButton? _lightingEnabledCheckbox;
@@ -74,6 +75,7 @@ public class SettingsWindow : IWindow
     private long _keybindingListeningTimer;
 
     private bool _returnToMenu;
+    private readonly float[] _worldScaleNotches = new float[] { 1, 2, 4 }.Select(n => n * Graphics.BaseWorldScale).ToArray();
 
     public bool Visible
     {
@@ -294,9 +296,23 @@ public class SettingsWindow : IWindow
             _fpsList.SelectByKey(Globals.Database.TargetFps.ToString());
         }
 
-        videoTabContent?.FindChildById<Label>(WORLD_SCALE_LABEL)?.SetText(Strings.Settings.WorldScale);
         _worldScale = videoTabContent?.FindChildById<HorizontalSlider>(WORLD_SCALE_SLIDER);
-        _worldScale?.SetValue(Globals.Database.WorldZoom);
+        if (_worldScale != default)
+        {
+            _worldScale.SetValue(Globals.Database.WorldZoom);
+            _worldScale.ValueChangedByUser += (s, e) =>
+            {
+                if (s is Slider slider)
+                {
+                    var value = _worldScale.FindNearestNotch(_worldScaleNotches, slider.Value);
+                    _worldScale.SetValue(value);
+                    _worldScaleLabel?.SetText(Strings.Settings.WorldScale.ToString(value));
+                }
+            };
+        }
+
+        _worldScaleLabel = videoTabContent?.FindChildById<Label>(WORLD_SCALE_LABEL);
+        _worldScaleLabel?.SetText(Strings.Settings.WorldScale.ToString(Globals.Database.WorldZoom));
 
         _fullscreenCheckbox = videoTabContent?.FindChildById<CheckButton>(FULLSCREEN_CHECK);
         _fullscreenCheckbox?.SetText(Strings.Settings.Fullscreen);
@@ -464,20 +480,15 @@ public class SettingsWindow : IWindow
             _tabControl.SelectedIndex = 0;
         }
 
-        var worldScaleNotches = new float[]
-        {
-            1, 2, 4,
-        }.Select(n => n * Graphics.BaseWorldScale).ToArray();
-
         Globals.Database.WorldZoom = MathHelper.Clamp(
             Globals.Database.WorldZoom,
-            worldScaleNotches.Min(),
-            worldScaleNotches.Max()
+            _worldScaleNotches.Min(),
+            _worldScaleNotches.Max()
         );
 
         if (_worldScale != default)
         {
-            _worldScale.SetRange(worldScaleNotches.Min(), worldScaleNotches.Max());
+            _worldScale.SetRange(_worldScaleNotches.Min(), _worldScaleNotches.Max());
             _worldScale.SetValue(Globals.Database.WorldZoom);
         }
     }

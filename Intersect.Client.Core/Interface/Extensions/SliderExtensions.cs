@@ -24,4 +24,14 @@ public static class SliderExtensions
 
         slider.Value = value;
     }
+
+    public static float FindNearestNotch(this Slider? slider, float[] notches, float value)
+    {
+        if (slider == default)
+        {
+            return 0;
+        }
+
+        return notches.OrderBy(x => Math.Abs(x - value)).First();
+    }
 }

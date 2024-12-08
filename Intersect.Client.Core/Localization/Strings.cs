@@ -1929,7 +1929,7 @@ public static partial class Strings
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString ShowPlayerOverheadInformation = @"Players";
-        
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString SimplifiedEscapeMenu = @"Simplified escape menu";
 
@@ -1964,7 +1964,7 @@ public static partial class Strings
         public static LocalizedString Vsync = @"V-Sync";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString WorldScale = @"World Scale";
+        public static LocalizedString WorldScale = @"World Scale - {00}x";
     }
 
     public partial struct Parties

@@ -97,7 +97,7 @@
       <!-- Video Container -->
       <TabItem Text="Video" Id="VIDEO_TAB">
         <VerticalStackPanel Spacing="15" Padding="10">
-          <HorizontalStackPanel Spacing="100">
+          <HorizontalStackPanel Spacing="70">
             <VerticalStackPanel Spacing="5" StackPanel.ProportionType="Part">
               <Label Id="RESOLUTION_LABEL" Text="Resolution:" />
               <ComboView Id="RESOLUTION_COMBO_VIEW" HorizontalAlignment="Stretch" />
@@ -107,14 +107,11 @@
               <ComboView Id="FPS_COMBO_VIEW" HorizontalAlignment="Stretch" />
             </VerticalStackPanel>
           </HorizontalStackPanel>
-          <VerticalStackPanel Spacing="5">
+          <VerticalStackPanel Spacing="5" Width="300">
             <Label Id="WORLD_SCALE_LABEL" Text="World Scale:" />
-            <HorizontalStackPanel Spacing="5">
-              <HorizontalSlider Id="WORLD_SCALE_SLIDER" Minimum="1" Maximum="4" Value="1" Width="150" />
-              <TextBox Id="settingsWorldScaleValue" Text="1" Width="35" VerticalAlignment="Stretch" />
-            </HorizontalStackPanel>
+            <HorizontalSlider Id="WORLD_SCALE_SLIDER" Minimum="1" Maximum="4" Value="1" />
           </VerticalStackPanel>
-          <HorizontalStackPanel>
+          <HorizontalStackPanel Spacing="70">
             <CheckButton Id="FULLSCREEN_CHECK" StackPanel.ProportionType="Part">
               <Label Text="Fullscreen" Margin="5, 0, 0, 0" />
             </CheckButton>
