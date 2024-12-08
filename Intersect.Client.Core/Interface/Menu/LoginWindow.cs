@@ -13,9 +13,8 @@ using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class LoginWindow : IMainMenuWindow
+public partial class LoginWindow : IWindow
 {
-    private MenuInterface _mainMenu = null!;
     private Widget? _loginWindow;
     private TextBox? _textboxLoginUsername;
     private TextBox? _textboxLoginPassword;
@@ -30,9 +29,13 @@ public partial class LoginWindow : IMainMenuWindow
 
     public bool Visible => _loginWindow?.Visible ?? false;
 
-    public void Load(MenuInterface mainMenu)
+    public LoginWindow()
     {
-        _mainMenu = mainMenu;
+        Load();
+    }
+
+    public void Load()
+    {
         _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
         _loginWindow.FindChildById<Label>(TITLE_LABEL)?.SetText(Strings.LoginWindow.Title);
         _loginWindow.FindChildById<Label>(USERNAME_LABEL)?.SetText(Strings.LoginWindow.Username);
@@ -83,7 +86,7 @@ public partial class LoginWindow : IMainMenuWindow
             {
                 if (Networking.Network.InterruptDisconnectsIfConnected())
                 {
-                    _mainMenu.SwitchToWindow<RegisterWindow>();
+                    Interface.MenuUi?.SwitchToWindow<RegisterWindow>();
                 }
                 else
                 {
@@ -95,13 +98,13 @@ public partial class LoginWindow : IMainMenuWindow
 
         if (_loginWindow.FindChildById<Button>(SETTINGS_BUTTON, out var buttonSettings))
         {
-            buttonSettings.Click += (sender, args) => _mainMenu.SwitchToWindow<SettingsWindow>();
+            buttonSettings.Click += (sender, args) => Interface.MenuUi?.SwitchToWindow<SettingsWindow>();
             buttonSettings.SetText(Strings.LoginWindow.Settings);
         }
 
         if (_loginWindow.FindChildById<Button>(CREDITS_BUTTON, out var buttonCredits))
         {
-            buttonCredits.Click += (sender, args) => _mainMenu.SwitchToWindow<CreditsWindow>();
+            buttonCredits.Click += (sender, args) => Interface.MenuUi?.SwitchToWindow<CreditsWindow>();
             buttonCredits.SetText(Strings.LoginWindow.Credits);
         }
 
@@ -307,7 +310,7 @@ public partial class LoginWindow : IMainMenuWindow
         Globals.WaitingOnServer = true;
         if (Networking.Network.InterruptDisconnectsIfConnected())
         {
-            _mainMenu.SwitchToWindow<LoginWindow>();
+            Interface.MenuUi?.SwitchToWindow<LoginWindow>();
         }
         else
         {
@@ -373,7 +376,7 @@ public partial class LoginWindow : IMainMenuWindow
     private void _registerConnected(object? sender, EventArgs eventArgs)
     {
         _removeRegisterEvents();
-        _mainMenu.SwitchToWindow<RegisterWindow>();
+        Interface.MenuUi?.SwitchToWindow<RegisterWindow>();
     }
 
     #endregion

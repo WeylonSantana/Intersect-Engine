@@ -8,9 +8,8 @@ using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class RegisterWindow : IMainMenuWindow
+public partial class RegisterWindow : IWindow
 {
-    private MenuInterface _mainMenu = null!;
     private Widget? _registerWindow;
     private TextBox? _textboxRegisterUsername;
     private TextBox? _textboxEmail;
@@ -20,9 +19,13 @@ public partial class RegisterWindow : IMainMenuWindow
 
     public bool Visible => _registerWindow?.Visible ?? false;
 
-    public void Load(MenuInterface mainMenu)
+    public RegisterWindow()
     {
-        _mainMenu = mainMenu;
+        Load();
+    }
+
+    public void Load()
+    {
         _registerWindow = Interface.LoadContent(Path.Combine("menu", "RegisterWindow.xmmp"));
         _registerWindow.FindChildById<Label>(TITLE_LABEL)?.SetText(Strings.Registration.Title);
         _registerWindow.FindChildById<Label>(USERNAME_LABEL)?.SetText(Strings.Registration.Username);
@@ -65,7 +68,7 @@ public partial class RegisterWindow : IMainMenuWindow
             buttonRegisterBack.Click += (sender, args) =>
             {
                 Networking.Network.DebounceClose("returning_to_main_menu");
-                _mainMenu.SwitchToWindow<LoginWindow>();
+                Interface.MenuUi?.SwitchToWindow<LoginWindow>();
             };
         }
 
@@ -76,7 +79,7 @@ public partial class RegisterWindow : IMainMenuWindow
     {
         if (!Networking.Network.IsConnected)
         {
-            _mainMenu.SwitchToWindow<LoginWindow>();
+            Interface.MenuUi?.SwitchToWindow<LoginWindow>();
         }
 
         if (_buttonRegister != default)

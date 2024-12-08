@@ -13,9 +13,8 @@ using MathHelper = Intersect.Client.Utilities.MathHelper;
 
 namespace Intersect.Client.Interface.Shared;
 
-public class SettingsWindow : IMainMenuWindow
+public class SettingsWindow : IWindow
 {
-    private MenuInterface _menuInterface = default!;
     private Widget? _settingsWindow;
 
     private TabControl? _tabControl;
@@ -85,9 +84,13 @@ public class SettingsWindow : IMainMenuWindow
     private int _previousMusicVolume;
     private int _previousSoundVolume;
 
-    public void Load(MenuInterface menu)
+    public SettingsWindow()
     {
-        _menuInterface = menu;
+        Load();
+    }
+
+    public void Load()
+    {
         _settingsWindow = Interface.LoadContent(Path.Combine("shared", "SettingsWindow.xmmp"));
         _keybindingEditControls = new Controls(Controls.ActiveControls);
 
@@ -441,7 +444,7 @@ public class SettingsWindow : IMainMenuWindow
         switch (Globals.GameState)
         {
             case GameStates.Menu:
-                _menuInterface?.SwitchToWindow<LoginWindow>();
+                Interface.MenuUi?.SwitchToWindow<LoginWindow>();
                 break;
 
             case GameStates.InGame:

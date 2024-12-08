@@ -37,9 +37,6 @@ public partial class MenuInterface
 
     public MenuInterface()
     {
-        _loginWindow = new LoginWindow();
-        _loginWindow.Load(this);
-
         var _serverStatusArea = Interface.LoadContent(Path.Combine("menu", "ServerStatus.xmmp"));
         if (Interface.GetChildById<Label>("_serverStatusLabel", out var label))
         {
@@ -50,23 +47,15 @@ public partial class MenuInterface
 
         NetworkStatusChanged += HandleNetworkStatusChanged;
 
+        _loginWindow = new LoginWindow();
         _registerWindow = new RegisterWindow();
-        _registerWindow.Load(this);
+        SelectCharacterWindow = new SelectCharacterWindow();
+        _createCharacterWindow = new CreateCharacterWindow();
+        _settingsWindow = new SettingsWindow();
+        _creditsWindow = new CreditsWindow();
 
         //_forgotPasswordWindow = new ForgotPasswordWindow(_menuCanvas, this);
         //_resetPasswordWindow = new ResetPasswordWindow(_menuCanvas, this);
-
-        SelectCharacterWindow = new SelectCharacterWindow();
-        SelectCharacterWindow.Load(this);
-
-        _createCharacterWindow = new CreateCharacterWindow();
-        _createCharacterWindow.Load(this);
-
-        _settingsWindow = new SettingsWindow();
-        _settingsWindow.Load(this);
-
-        _creditsWindow = new CreditsWindow();
-        _creditsWindow.Load(this);
 
         SwitchToWindow<LoginWindow>();
     }
@@ -178,7 +167,7 @@ public partial class MenuInterface
         mShouldOpenCharacterCreation = false;
     }
 
-    internal void SwitchToWindow<TMainMenuWindow>() where TMainMenuWindow : IMainMenuWindow
+    internal void SwitchToWindow<TMainMenuWindow>() where TMainMenuWindow : IWindow
     {
         Reset();
         if (typeof(TMainMenuWindow) == typeof(LoginWindow))

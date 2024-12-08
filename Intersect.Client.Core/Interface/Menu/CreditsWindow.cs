@@ -4,15 +4,19 @@ using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class CreditsWindow : IMainMenuWindow
+public partial class CreditsWindow : IWindow
 {
-    private MenuInterface _mainMenu = null!;
     private Widget? _creditsPanel;
 
-    public void Load(MenuInterface menu)
-    {
-        _mainMenu = menu;
+    public bool Visible => _creditsPanel?.Visible ?? false;
 
+    public CreditsWindow()
+    {
+        Load();
+    }
+
+    public void Load()
+    {
         _creditsPanel = Interface.LoadContent(Path.Combine("menu", "CreditsWindow.xmmp"));
         _creditsPanel.FindChildById<Label>(TITLE_LABEL)?.SetText(Strings.Credits.Title);
 
@@ -27,7 +31,7 @@ public partial class CreditsWindow : IMainMenuWindow
 
     private void BackBtn_Clicked(object? sender, EventArgs e)
     {
-        _mainMenu.SwitchToWindow<LoginWindow>();
+        Interface.MenuUi?.SwitchToWindow<LoginWindow>();
     }
 
     public void Show()

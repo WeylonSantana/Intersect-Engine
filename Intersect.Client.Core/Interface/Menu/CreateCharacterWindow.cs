@@ -12,10 +12,9 @@ using Myra.Graphics2D;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class CreateCharacterWindow : IMainMenuWindow
+public partial class CreateCharacterWindow : IWindow
 {
     // Parent
-    private MenuInterface _mainMenu = null!;
     private Widget? _createCharacterWindow;
     private TextBox? _charNameTextbox;
     private ComboView? _classComboView;
@@ -32,9 +31,13 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
     public bool Visible => _createCharacterWindow?.Visible ?? false;
 
-    public void Load(MenuInterface mainMenu)
+    public CreateCharacterWindow()
     {
-        _mainMenu = mainMenu;
+        Load();
+    }
+
+    public void Load()
+    {
         _createCharacterWindow = Interface.LoadContent(Path.Combine("menu", "CreateCharacterWindow.xmmp"));
         _createCharacterWindow.FindChildById<Label>(CREATE_CHARACTER_TITLE_LABEL)?.SetText(Strings.CharacterCreation.Title);
 
@@ -136,7 +139,7 @@ public partial class CreateCharacterWindow : IMainMenuWindow
     {
         if (!Networking.Network.IsConnected)
         {
-            _mainMenu.SwitchToWindow<LoginWindow>();
+            Interface.MenuUi?.SwitchToWindow<LoginWindow>();
             return;
         }
 
@@ -426,11 +429,11 @@ public partial class CreateCharacterWindow : IMainMenuWindow
     {
         if (Options.Player.MaxCharacters <= 1)
         {
-            _mainMenu.SwitchToWindow<LoginWindow>();
+            Interface.MenuUi?.SwitchToWindow<LoginWindow>();
         }
         else
         {
-            _mainMenu.SwitchToWindow<SelectCharacterWindow>();
+            Interface.MenuUi?.SwitchToWindow<SelectCharacterWindow>();
         }
     }
 

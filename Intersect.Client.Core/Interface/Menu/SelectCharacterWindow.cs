@@ -12,9 +12,8 @@ using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class SelectCharacterWindow : IMainMenuWindow
+public partial class SelectCharacterWindow : IWindow
 {
-    private MenuInterface _mainMenu = null!;
     private Widget? _selectCharacterWindow;
     private Label? _labelCharname;
     private Label? _labelInfo;
@@ -32,9 +31,13 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
     public bool Visible => _selectCharacterWindow?.Visible ?? false;
 
-    public void Load(MenuInterface mainMenu)
+    public SelectCharacterWindow()
     {
-        _mainMenu = mainMenu;
+        Load();
+    }
+
+    public void Load()
+    {
         _selectCharacterWindow = Interface.LoadContent(Path.Combine("menu", "SelectCharacterWindow.xmmp"));
 
         //Menu Header
@@ -81,7 +84,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
             _editorMode.SetText("Editor Mode");
             _editorMode.Click += (sender, args) =>
             {
-                _mainMenu.Reset();
+                Interface.MenuUi?.Reset();
                 _ = new EditorInterface();
             };
             //_editorMode.Visible = Globals.Me.AccessLevel = 2;
@@ -164,7 +167,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
     {
         if (!Networking.Network.IsConnected)
         {
-            _mainMenu.SwitchToWindow<LoginWindow>();
+            Interface.MenuUi?.SwitchToWindow<LoginWindow>();
         }
 
         // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
@@ -281,7 +284,7 @@ public partial class SelectCharacterWindow : IMainMenuWindow
     private void _buttonLogout_Clicked(object? sender, EventArgs? arguments)
     {
         Main.Logout(false, skipFade: true);
-        _mainMenu.SwitchToWindow<LoginWindow>();
+        Interface.MenuUi?.SwitchToWindow<LoginWindow>();
     }
 
     private void _buttonPrevChar_Clicked(object? sender, EventArgs? arguments)

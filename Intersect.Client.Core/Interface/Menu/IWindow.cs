@@ -1,8 +1,8 @@
 namespace Intersect.Client.Interface.Menu;
 
-public interface IMainMenuWindow
+public interface IWindow
 {
-    void Load(MenuInterface mainMenu);
+    bool Visible { get; }
 
     void Show();
 
