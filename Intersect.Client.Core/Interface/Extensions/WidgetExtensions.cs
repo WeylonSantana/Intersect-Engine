@@ -6,24 +6,24 @@ namespace Intersect.Client.Interface.Extensions;
 
 public static class WidgetExtensions
 {
-    public static void ToggleVisible(this Widget? widget, bool? visible = null)
+    public static void SetVisible(this Widget? widget, bool visible)
     {
         if (widget == default)
         {
             return;
         }
 
-        widget.Visible = visible ?? !widget.Visible;
+        widget.Visible = visible;
     }
 
-    public static void ToggleEnabled(this Widget? widget, bool? enabled = null)
+    public static void SetEnabled(this Widget? widget, bool enabled)
     {
         if (widget == default)
         {
             return;
         }
 
-        widget.Enabled = enabled ?? !widget.Enabled;
+        widget.Enabled = enabled;
     }
 
     public static bool FindChildById<T>(this Widget parent, string id, [NotNullWhen(true)] out T? widget) where T : BaseObject

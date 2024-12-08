@@ -168,10 +168,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
-        _buttonPlay.ToggleEnabled(!Globals.WaitingOnServer);
-        _buttonNew.ToggleEnabled(!Globals.WaitingOnServer);
-        _buttonDelete.ToggleEnabled(!Globals.WaitingOnServer);
-        _buttonLogout.ToggleEnabled(!Globals.WaitingOnServer);
+        _buttonPlay.SetEnabled(!Globals.WaitingOnServer);
+        _buttonNew.SetEnabled(!Globals.WaitingOnServer);
+        _buttonDelete.SetEnabled(!Globals.WaitingOnServer);
+        _buttonLogout.SetEnabled(!Globals.WaitingOnServer);
     }
 
     private void UpdateDisplay()
@@ -186,8 +186,8 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         }
 
         var charCount = Characters.Length >= 1;
-        _buttonNextChar.ToggleVisible(charCount);
-        _buttonPrevChar.ToggleVisible(charCount);
+        _buttonNextChar.SetVisible(charCount);
+        _buttonPrevChar.SetVisible(charCount);
         if (charCount)
         {
             _buttonNextChar?.BringToFront();
@@ -201,9 +201,9 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
         if (Characters?[SelectedChar] == default)
         {
-            _buttonPlay.ToggleVisible(false);
-            _buttonDelete.ToggleVisible(false);
-            _buttonNew.ToggleVisible(true);
+            _buttonPlay.SetVisible(false);
+            _buttonDelete.SetVisible(false);
+            _buttonNew.SetVisible(true);
             _labelCharname.SetText(Strings.CharacterSelection.Empty);
             _labelInfo.SetText(string.Empty);
             return;
@@ -211,9 +211,9 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
         _labelCharname.SetText(Strings.CharacterSelection.Name.ToString(Characters[SelectedChar].Name));
         _labelInfo.SetText(Strings.CharacterSelection.Info.ToString(Characters[SelectedChar].Level, Characters[SelectedChar].Class));
-        _buttonPlay.ToggleVisible(true);
-        _buttonDelete.ToggleVisible(true);
-        _buttonNew.ToggleVisible(false);
+        _buttonPlay.SetVisible(true);
+        _buttonDelete.SetVisible(true);
+        _buttonNew.SetVisible(false);
         if (_renderLayers == default)
         {
             _renderLayers = new Image[Options.Equipment.Paperdoll.Down.Count];
@@ -340,10 +340,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
         PacketSender.SendDeleteCharacter(Characters[SelectedChar].Id);
         Globals.WaitingOnServer = true;
-        _buttonPlay.ToggleEnabled(false);
-        _buttonNew.ToggleEnabled(false);
-        _buttonDelete.ToggleEnabled(false);
-        _buttonLogout.ToggleEnabled(false);
+        _buttonPlay.SetEnabled(false);
+        _buttonNew.SetEnabled(false);
+        _buttonDelete.SetEnabled(false);
+        _buttonLogout.SetEnabled(false);
         SelectedChar = 0;
         UpdateDisplay();
     }
@@ -357,10 +357,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
 
         PacketSender.SendNewCharacter();
         Globals.WaitingOnServer = true;
-        _buttonPlay.ToggleEnabled(false);
-        _buttonNew.ToggleEnabled(false);
-        _buttonDelete.ToggleEnabled(false);
-        _buttonLogout.ToggleEnabled(false);
+        _buttonPlay.SetEnabled(false);
+        _buttonNew.SetEnabled(false);
+        _buttonDelete.SetEnabled(false);
+        _buttonLogout.SetEnabled(false);
     }
 
     public void ButtonPlay_Clicked(object? sender, EventArgs? arguments)
@@ -373,10 +373,10 @@ public partial class SelectCharacterWindow : IMainMenuWindow
         //ChatboxMsg.ClearMessages();
         PacketSender.SendSelectCharacter(Characters[SelectedChar].Id);
         Globals.WaitingOnServer = true;
-        _buttonPlay.ToggleEnabled(false);
-        _buttonNew.ToggleEnabled(false);
-        _buttonDelete.ToggleEnabled(false);
-        _buttonLogout.ToggleEnabled(false);
+        _buttonPlay.SetEnabled(false);
+        _buttonNew.SetEnabled(false);
+        _buttonDelete.SetEnabled(false);
+        _buttonLogout.SetEnabled(false);
     }
 
     #region Constants

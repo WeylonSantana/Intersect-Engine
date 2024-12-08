@@ -79,7 +79,7 @@ public class SettingsWindow : IMainMenuWindow
     public bool Visible
     {
         get => _settingsWindow?.Visible ?? false;
-        set => _settingsWindow?.ToggleVisible(value);
+        set => _settingsWindow?.SetVisible(value);
     }
 
     private int _previousMusicVolume;
@@ -98,7 +98,7 @@ public class SettingsWindow : IMainMenuWindow
             _tabControl = tabControl;
             _tabControl.SelectedIndexChanged += (s, e) =>
             {
-                _keybindingRestoreBtn.ToggleVisible(_tabControl.SelectedItem.Id == KEYBINDING_TAB);
+                _keybindingRestoreBtn.SetVisible(_tabControl.SelectedItem.Id == KEYBINDING_TAB);
             };
 
             foreach (var tab in _tabControl.Items)
@@ -393,7 +393,7 @@ public class SettingsWindow : IMainMenuWindow
         if (_keybindingRestoreBtn != default)
         {
             _keybindingRestoreBtn.SetText(Strings.Settings.Restore);
-            _keybindingRestoreBtn.ToggleVisible(false);
+            _keybindingRestoreBtn.SetVisible(false);
             _keybindingRestoreBtn.Click += (s, e) =>
             {
                 ResetKeybindingListener();

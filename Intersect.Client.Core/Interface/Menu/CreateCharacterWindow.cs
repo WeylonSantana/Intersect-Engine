@@ -108,7 +108,7 @@ public partial class CreateCharacterWindow : IMainMenuWindow
             return;
         }
 
-        _createCharacterWindow.ToggleVisible(true);
+        _createCharacterWindow.SetVisible(true);
         _classComboView?.Widgets.Clear();
         var classCount = 0;
         foreach (ClassBase cls in ClassBase.Lookup.Values.Cast<ClassBase>())
@@ -129,7 +129,7 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
     public void Hide()
     {
-        _createCharacterWindow?.ToggleVisible(false);
+        _createCharacterWindow?.SetVisible(false);
     }
 
     public void Update()
@@ -142,7 +142,7 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
         if (!Globals.WaitingOnServer)
         {
-            _createButton?.ToggleEnabled(true);
+            _createButton?.SetEnabled(true);
         }
     }
 
@@ -151,11 +151,11 @@ public partial class CreateCharacterWindow : IMainMenuWindow
         var cls = GetClass();
         if (cls == default || _displaySpriteIndex == -1)
         {
-            _charImage.ToggleVisible(false);
+            _charImage.SetVisible(false);
             return;
         }
 
-        _charImage.ToggleVisible(true);
+        _charImage.SetVisible(true);
         if (cls.Sprites.Count <= 0)
         {
             return;
@@ -233,8 +233,8 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
     private void ResetSprite()
     {
-        _nextSpriteButton.ToggleVisible(true);
-        _prevSpriteButton.ToggleVisible(true);
+        _nextSpriteButton.SetVisible(true);
+        _prevSpriteButton.SetVisible(true);
         if (_chkMale?.IsChecked == true)
         {
             if (_maleSprites.Count > 0)
@@ -242,8 +242,8 @@ public partial class CreateCharacterWindow : IMainMenuWindow
                 _displaySpriteIndex = 0;
                 if (_maleSprites.Count > 1)
                 {
-                    _nextSpriteButton.ToggleVisible(true);
-                    _prevSpriteButton.ToggleVisible(true);
+                    _nextSpriteButton.SetVisible(true);
+                    _prevSpriteButton.SetVisible(true);
                 }
             }
             else
@@ -258,8 +258,8 @@ public partial class CreateCharacterWindow : IMainMenuWindow
                 _displaySpriteIndex = 0;
                 if (_femaleSprites.Count > 1)
                 {
-                    _nextSpriteButton.ToggleVisible(true);
-                    _prevSpriteButton.ToggleVisible(true);
+                    _nextSpriteButton.SetVisible(true);
+                    _prevSpriteButton.SetVisible(true);
                 }
             }
             else
@@ -365,7 +365,7 @@ public partial class CreateCharacterWindow : IMainMenuWindow
 
         PacketSender.SendCreateCharacter(charName, cls.Id, spriteKey);
         Globals.WaitingOnServer = true;
-        _createButton.ToggleEnabled(false);
+        _createButton.SetEnabled(false);
         //ChatboxMsg.ClearMessages();
     }
 
