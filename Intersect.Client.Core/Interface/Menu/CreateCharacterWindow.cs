@@ -430,6 +430,7 @@ public partial class CreateCharacterWindow : IWindow
         if (Options.Player.MaxCharacters <= 1)
         {
             Interface.MenuUi?.SwitchToWindow<LoginWindow>();
+            Networking.Network.DebounceClose("Returning to Login Window");
         }
         else
         {

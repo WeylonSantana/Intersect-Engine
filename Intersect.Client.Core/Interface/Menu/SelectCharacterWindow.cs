@@ -285,6 +285,7 @@ public partial class SelectCharacterWindow : IWindow
     {
         Main.Logout(false, skipFade: true);
         Interface.MenuUi?.SwitchToWindow<LoginWindow>();
+        Networking.Network.DebounceClose("Returning to Login Window");
     }
 
     private void _buttonPrevChar_Clicked(object? sender, EventArgs? arguments)
