@@ -8,7 +8,8 @@ using Intersect.GameObjects;
 using Intersect.Logging;
 using Intersect.Utilities;
 using Myra.Graphics2D.UI;
-using Myra.Graphics2D;
+using Intersect.Client.Interface.Components;
+using Microsoft.Xna.Framework;
 
 namespace Intersect.Client.Interface.Menu;
 
@@ -112,20 +113,31 @@ public partial class CreateCharacterWindow : IWindow
         }
 
         _createCharacterWindow.SetVisible(true);
-        _classComboView?.Widgets.Clear();
-        var classCount = 0;
-        foreach (ClassBase cls in ClassBase.Lookup.Values.Cast<ClassBase>())
+
+        if (_classComboView != default)
         {
-            if (cls.Locked)
+            _classComboView.Widgets.Clear();
+            var classCount = 0;
+
+            foreach (ClassBase cls in ClassBase.Lookup.Values.Cast<ClassBase>())
             {
-                continue;
+                if (cls.Locked)
+                {
+                    continue;
+                }
+
+                _classComboView.Widgets.Add(new Label() { Text = cls.Name });
+                classCount++;
             }
 
-            _classComboView?.Widgets.Add(new Label() { Text = cls.Name });
-            classCount++;
+            if (classCount > 0)
+            {
+                _classComboView.SelectedIndex = 0;
+            }
+
+            Log.Debug($"Added {classCount} classes to {nameof(CreateCharacterWindow)}");
         }
 
-        Log.Debug($"Added {classCount} classes to {nameof(CreateCharacterWindow)}");
         LoadClass();
         UpdateDisplay();
     }
@@ -164,34 +176,33 @@ public partial class CreateCharacterWindow : IWindow
             return;
         }
 
-        bool isFace;
         var source = _chkMale?.IsChecked == true ? _maleSprites[_displaySpriteIndex] : _femaleSprites[_displaySpriteIndex];
-        var faceTex = Globals.ContentManager.GetTexture(TextureType.Face, source.Value.Face).GetTexture();
-        var entityTex = Globals.ContentManager.GetTexture(TextureType.Entity, source.Value.Sprite).GetTexture();
+        var faceTex = Globals.ContentManager.GetTexture(TextureType.Face, source.Value.Face);
+        var entityTex = Globals.ContentManager.GetTexture(TextureType.Entity, source.Value.Sprite);
 
-        isFace = faceTex != null;
-
-        if (_charImage?.Renderable == null)
+        if (_charImage == null)
         {
             return;
         }
 
-        _charImage.Renderable = isFace ? (IImage)faceTex : (IImage)entityTex;
-        var imgWidth = _charImage.Width;
-        var imgHeight = _charImage.Height;
-        var textureWidth = isFace ? imgWidth : imgWidth / Options.Instance.Sprites.NormalFrames;
-        var textureHeight = isFace ? imgHeight : imgHeight / Options.Instance.Sprites.Directions;
+        bool isFace = faceTex != null;
+        var image = new MyraImage(isFace ? faceTex! : entityTex);
 
-        var scale = Math.Min(_charImage.Width / (double?)imgWidth ?? 0, _charImage.Height / (double?)imgHeight ?? 0);
-        var sizeX = isFace ? (int)(imgWidth * scale) : textureWidth;
-        var sizeY = isFace ? (int)(imgHeight * scale) : textureHeight;
-        _charImage.Width = sizeX;
-        _charImage.Height = sizeY;
+        var imgWidth = image.Size.X;
+        var imgHeight = image.Size.Y;
+        var spriteWidth = isFace ? imgWidth : imgWidth / Options.Instance.Sprites.NormalFrames;
+        var spriteHeight = isFace ? imgHeight : imgHeight / Options.Instance.Sprites.Directions;
 
-        var centerX = (_charImage.Parent.Width / 2) - (_charImage.Width / 2);
-        var centerY = (_charImage.Parent.Height / 2) - (_charImage.Height / 2);
-        _charImage.Left = centerX ?? 0;
-        _charImage.Top = centerY ?? 0;
+        var sourceRect = new Rectangle(0, 0, spriteWidth, spriteHeight);
+        var destRect = new Rectangle(
+            Math.Abs((spriteWidth / 2) - ((int)_charImage.Width! / 2)),
+            Math.Abs((spriteHeight / 2) - ((int)_charImage.Height! / 2)),
+            spriteWidth,
+            spriteHeight
+        );
+
+        image.SetTextureRegion(sourceRect, destRect);
+        _charImage.Renderable = image;
     }
 
     private ClassBase? GetClass()
@@ -201,9 +212,14 @@ public partial class CreateCharacterWindow : IWindow
             return null;
         }
 
+        if (_classComboView.SelectedItem is not Label label)
+        {
+            return null;
+        }
+
         return ClassBase.Lookup.Values.OfType<ClassBase>().FirstOrDefault(
             descriptor => !descriptor.Locked && string.Equals(
-                _classComboView.SelectedItem.ToString(),
+                label.Text,
                 descriptor.Name,
                 StringComparison.Ordinal
             )
