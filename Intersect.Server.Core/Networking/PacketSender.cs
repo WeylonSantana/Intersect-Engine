@@ -1298,6 +1298,12 @@ public static partial class PacketSender
         player.SendPacket(new HotbarPacket(hotbarData));
     }
 
+    //Login Error Debounce Disconnect
+    public static void LoginError(Client client, string title, string message)
+    {
+        client.Send(new LoginErrorPacket(title, message));
+    }
+
     //CreateCharacterPacket
     public static void SendCreateCharacter(Client client)
     {

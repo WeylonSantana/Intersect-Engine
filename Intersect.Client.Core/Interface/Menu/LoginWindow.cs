@@ -283,12 +283,6 @@ public partial class LoginWindow : IMainMenuWindow
             return;
         }
 
-        if (!Networking.Network.IsConnected)
-        {
-            Interface.ShowError(Strings.Errors.NotConnected);
-            return;
-        }
-
         if (!FieldChecking.IsValidUsername(_textboxLoginUsername?.Text, Strings.Regex.Username))
         {
             Interface.ShowError(Strings.Errors.UsernameInvalid);
@@ -336,14 +330,12 @@ public partial class LoginWindow : IMainMenuWindow
         Networking.Network.Socket.Disconnected -= _loginDisconnected;
     }
 
-    private void _loginConnectionFailed(
-        INetworkLayerInterface nli,
-        ConnectionEventArgs args,
-        bool denied
-    ) => _removeLoginEvents();
-
-    private void _loginDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) =>
+    private void _loginConnectionFailed(INetworkLayerInterface nli, ConnectionEventArgs args, bool denied)
+    {
         _removeLoginEvents();
+    }
+
+    private void _loginDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) => _removeLoginEvents();
 
     private void _loginConnected(object? sender, EventArgs eventArgs)
     {
@@ -372,11 +364,8 @@ public partial class LoginWindow : IMainMenuWindow
         Networking.Network.Socket.Disconnected -= _registerDisconnected;
     }
 
-    private void _registerConnectionFailed(
-        INetworkLayerInterface nli,
-        ConnectionEventArgs args,
-        bool denied
-    ) => _removeRegisterEvents();
+    private void _registerConnectionFailed(INetworkLayerInterface nli, ConnectionEventArgs args, bool denied)
+        => _removeRegisterEvents();
 
     private void _registerDisconnected(INetworkLayerInterface nli, ConnectionEventArgs args) =>
         _removeRegisterEvents();

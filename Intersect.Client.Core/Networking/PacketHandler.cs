@@ -1196,10 +1196,15 @@ internal sealed partial class PacketHandler
     //ErrorMessagePacket
     public void HandlePacket(IPacketSender packetSender, ErrorMessagePacket packet)
     {
-        //Fade.FadeIn(ClientConfiguration.Instance.FadeDurationMs); why tf we used to fade here?!, annoying !
         Globals.WaitingOnServer = false;
         Interface.Interface.ShowError(packet.Error, packet.Header);
-        Interface.Interface.MenuUi?.Reset();
+    }
+
+    public void HandlePacket(IPacketSender packetSender, LoginErrorPacket packet)
+    {
+        Globals.WaitingOnServer = false;
+        Interface.Interface.ShowError(packet.Message, packet.Title);
+        Network.DebounceClose("Login Error");
     }
 
     //MapItemsPacket

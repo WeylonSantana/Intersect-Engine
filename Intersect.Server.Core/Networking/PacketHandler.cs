@@ -504,9 +504,8 @@ internal sealed partial class PacketHandler
     {
         if (client.AccountAttempts > 3 && client.TimeoutMs > Timing.Global.Milliseconds)
         {
-            PacketSender.SendError(client, Strings.Errors.ErrorTimeout, Strings.General.NoticeError);
+            PacketSender.LoginError(client, Strings.General.NoticeError, Strings.Errors.ErrorTimeout);
             client.ResetTimeout();
-
             return;
         }
 
@@ -516,8 +515,7 @@ internal sealed partial class PacketHandler
         // Are we at capacity yet, or can this user still log in?
         if (Globals.OnlineList.Count >= Options.MaxLoggedinUsers)
         {
-            PacketSender.SendError(client, Strings.Networking.ServerFull, Strings.General.NoticeError);
-
+            PacketSender.LoginError(client, Strings.General.NoticeError, Strings.Networking.ServerFull);
             return;
         }
 
@@ -527,8 +525,7 @@ internal sealed partial class PacketHandler
             UserActivityHistory.LogActivity(Guid.Empty, Guid.Empty, client?.Ip, UserActivityHistory.PeerType.Client, UserActivityHistory.UserAction.FailedLogin, packet.Username);
 
             client.FailedAttempt();
-            PacketSender.SendError(client, Strings.Account.BadLogin, Strings.General.NoticeError);
-
+            PacketSender.LoginError(client, Strings.General.NoticeError, Strings.Account.BadLogin);
             return;
         }
 
@@ -574,8 +571,7 @@ internal sealed partial class PacketHandler
         {
             client.SetUser(null);
             client.Banned = true;
-            PacketSender.SendError(client, isBanned, Strings.General.NoticeError);
-
+            PacketSender.LoginError(client, Strings.General.NoticeError, isBanned);
             return;
         }
 
@@ -584,8 +580,7 @@ internal sealed partial class PacketHandler
         {
             if (client.Power == UserRights.None)
             {
-                PacketSender.SendError(client, Strings.Account.AdminOnly, Strings.General.NoticeError);
-
+                PacketSender.LoginError(client, Strings.General.NoticeError, Strings.Account.AdminOnly);
                 return;
             }
         }
