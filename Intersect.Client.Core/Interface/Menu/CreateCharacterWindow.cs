@@ -8,8 +8,8 @@ using Intersect.GameObjects;
 using Intersect.Logging;
 using Intersect.Utilities;
 using Myra.Graphics2D.UI;
-using Intersect.Client.Interface.Components;
 using Microsoft.Xna.Framework;
+using Intersect.Client.MonoGame.Graphics;
 
 namespace Intersect.Client.Interface.Menu;
 
@@ -186,7 +186,10 @@ public partial class CreateCharacterWindow : IWindow
         }
 
         bool isFace = faceTex != null;
-        var image = new MyraImage(isFace ? faceTex! : entityTex);
+        if ((isFace ? faceTex! : entityTex) is not MonoTexture image)
+        {
+            return;
+        }
 
         var imgWidth = image.Size.X;
         var imgHeight = image.Size.Y;
