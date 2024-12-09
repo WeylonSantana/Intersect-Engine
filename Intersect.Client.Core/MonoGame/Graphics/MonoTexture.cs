@@ -4,8 +4,6 @@ using Intersect.Client.Localization;
 using Intersect.Compression;
 using Intersect.IO.Files;
 using Intersect.Logging;
-using Intersect.Utilities;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Myra.Graphics2D;
@@ -23,8 +21,6 @@ public partial class MonoTexture : GameTexture, IImage
     private Texture2D? _texture;
     private Rectangle _source = new();
     private Rectangle _dest = new();
-    private bool _doNotFree = false;
-    private long _lastAccessTime;
     private bool _loadError;
 
     public Microsoft.Xna.Framework.Point Size { get; set; } = new();
@@ -35,7 +31,6 @@ public partial class MonoTexture : GameTexture, IImage
         _path = assetName;
         _name = assetName;
         _texture = texture2D;
-        _doNotFree = true;
     }
 
     public MonoTexture(GraphicsDevice graphicsDevice, string filename, string realPath)
@@ -66,8 +61,6 @@ public partial class MonoTexture : GameTexture, IImage
     public override string GetName() => _name;
 
     public override GameTexturePackFrame GetTexturePackFrame() => _packFrame;
-
-    public void ResetAccessTime() => _lastAccessTime = Timing.Global.MillisecondsUtc + 15000;
 
     public static MonoTexture CreateFromTexture2D(Texture2D texture2D, string assetName) => new(texture2D, assetName);
 
@@ -152,7 +145,6 @@ public partial class MonoTexture : GameTexture, IImage
 
     public override int GetWidth()
     {
-        ResetAccessTime();
         if (Size.X != -1)
         {
             return Size.X;
@@ -173,7 +165,6 @@ public partial class MonoTexture : GameTexture, IImage
 
     public override int GetHeight()
     {
-        ResetAccessTime();
         if (Size.Y != -1)
         {
             return Size.Y;
@@ -198,8 +189,6 @@ public partial class MonoTexture : GameTexture, IImage
         {
             return _packFrame.PackTexture.GetTexture();
         }
-
-        ResetAccessTime();
 
         if (_texture == null)
         {
@@ -246,27 +235,6 @@ public partial class MonoTexture : GameTexture, IImage
         return new Color(pixel[0].A, pixel[0].R, pixel[0].G, pixel[0].B);
     }
 
-    public void Update()
-    {
-        if (_doNotFree)
-        {
-            return;
-        }
-
-        if (_texture == null)
-        {
-            return;
-        }
-
-        if (_lastAccessTime >= Timing.Global.MillisecondsUtc)
-        {
-            return;
-        }
-
-        _texture.Dispose();
-        _texture = null;
-    }
-
     // inherited from Myra IBrush, called by the Myra
     public void Draw(RenderContext context, Rectangle dest, Microsoft.Xna.Framework.Color color)
     {
@@ -302,6 +270,5 @@ public partial class MonoTexture : GameTexture, IImage
 
         _source = source;
         _dest = dest;
-        _doNotFree = true;
     }
 }
