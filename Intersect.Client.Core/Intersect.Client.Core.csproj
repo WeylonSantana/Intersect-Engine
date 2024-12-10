@@ -46,16 +46,19 @@
 
   <ItemGroup Label="Project Embedded Resources">
     <EmbeddedResource Include="$(NetworkHandshakePublicKey)" />
-    <EmbeddedResource Include="Resources\interface\editor\EditorPanel.xmmp" />
-    <EmbeddedResource Include="Resources\interface\menu\CreateCharacterWindow.xmmp" />
-    <EmbeddedResource Include="Resources\interface\menu\CreditsWindow.xmmp" />
-		<EmbeddedResource Include="Resources\interface\menu\LoginWindow.xmmp" />
-		<EmbeddedResource Include="Resources\interface\menu\RegisterWindow.xmmp" />
-		<EmbeddedResource Include="Resources\interface\menu\SelectCharacterWindow.xmmp" />
-    <EmbeddedResource Include="Resources\interface\menu\ServerStatus.xmmp" />
     <EmbeddedResource Include="Resources\MonoGame.Framework.dll.config" />
     <EmbeddedResource Include="Resources\openal32.dll" />
     <EmbeddedResource Include="Resources\Shaders\radialgradient.xnb" />
+  </ItemGroup>
+
+  <ItemGroup Label="Default User Interface Markup">
+    <EmbeddedResource Include="Resources\interface\editor\EditorPanel.xmmp" />
+    <EmbeddedResource Include="Resources\interface\menu\CreateCharacterWindow.xmmp" />
+    <EmbeddedResource Include="Resources\interface\menu\CreditsWindow.xmmp" />
+    <EmbeddedResource Include="Resources\interface\menu\LoginWindow.xmmp" />
+    <EmbeddedResource Include="Resources\interface\menu\RegisterWindow.xmmp" />
+    <EmbeddedResource Include="Resources\interface\menu\SelectCharacterWindow.xmmp" />
+    <EmbeddedResource Include="Resources\interface\menu\ServerStatus.xmmp" />
     <EmbeddedResource Include="Resources\interface\shared\SettingsWindow.xmmp" />
   </ItemGroup>
 
