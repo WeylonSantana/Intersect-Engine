@@ -2,12 +2,12 @@ using Intersect.Client.Framework.Gwen.Control;
 
 namespace Intersect.Client.Interface;
 
-public abstract class Window : WindowControl
+public abstract class GwenWindow : WindowControl
 {
     private readonly object _initializationLock = new();
     private volatile bool _initialized;
 
-    protected Window(
+    protected GwenWindow(
         Base parent,
         string? title = default,
         bool modal = false,

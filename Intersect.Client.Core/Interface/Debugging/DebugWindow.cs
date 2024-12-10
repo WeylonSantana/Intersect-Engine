@@ -12,7 +12,7 @@ using static Intersect.Client.Framework.File_Management.GameContentManager;
 
 namespace Intersect.Client.Interface.Debugging;
 
-internal sealed partial class DebugWindow : Window
+internal sealed partial class DebugWindow : GwenWindow
 {
     private readonly List<IDisposable> _disposables;
     private bool _wasParentDrawDebugOutlinesEnabled;
