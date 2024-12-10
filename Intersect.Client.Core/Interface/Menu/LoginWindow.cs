@@ -13,56 +13,55 @@ using Myra.Graphics2D.UI;
 
 namespace Intersect.Client.Interface.Menu;
 
-public partial class LoginWindow : IWindow
+public sealed partial class LoginWindow : Window
 {
-    private Widget? _loginWindow;
-    private TextBox? _textboxLoginUsername;
-    private TextBox? _textboxLoginPassword;
+    private TextBox? _textboxUsername;
+    private TextBox? _textboxPassword;
     private CheckButton? _checkboxSave;
     private Button? _buttonLogin;
     private Button? _buttonForgotPassword;
     private Button? _buttonRegister;
 
-    private bool _useSavedPass;
-    private string _savedPass = string.Empty;
-    private string _storedPassword = string.Empty;
+    private string? _username;
+    private string? _passwordHash;
 
-    public bool Visible => _loginWindow?.Visible ?? false;
-
-    public LoginWindow()
+    public LoginWindow(Desktop? desktop = default) : base(Path.Combine("menu", "LoginWindow.xmmp"), desktop)
     {
-        Load();
+        Connect(reloading: false);
     }
 
-    public void Load()
+    private void Connect(bool reloading)
     {
-        _loginWindow = Interface.LoadContent(Path.Combine("menu", "LoginWindow.xmmp"));
-        _loginWindow.FindChildById<Label>(TITLE_LABEL)?.SetText(Strings.LoginWindow.Title);
-        _loginWindow.FindChildById<Label>(USERNAME_LABEL)?.SetText(Strings.LoginWindow.Username);
-        _loginWindow.FindChildById<Label>(PASSWORD_LABEL)?.SetText(Strings.LoginWindow.Password);
+        Root.FindChildById<Label>(TITLE_LABEL)?.SetText(Strings.LoginWindow.Title);
+        Root.FindChildById<Label>(USERNAME_LABEL)?.SetText(Strings.LoginWindow.Username);
+        Root.FindChildById<Label>(PASSWORD_LABEL)?.SetText(Strings.LoginWindow.Password);
 
-        if (_loginWindow.FindChildById<TextBox>(USERNAME_TEXTBOX, out var textboxUsername))
+        if (Root.FindChildById<TextBox>(USERNAME_TEXTBOX, out var textboxUsername))
         {
-            _textboxLoginUsername = textboxUsername;
-            _textboxLoginUsername.TouchDown += _textboxUsername_Clicked;
-            Interface.SetInputFocus(_textboxLoginUsername);
+            _textboxUsername = textboxUsername;
+            _textboxUsername.TouchDown += _textboxUsername_Clicked;
+            _textboxUsername.TextChanged += _textboxUsername_TextChanged;
+            if (!reloading)
+            {
+                Interface.SetInputFocus(_textboxUsername);
+            }
         }
 
-        if (_loginWindow.FindChildById<TextBox>(PASSWORD_TEXTBOX, out var textboxPassword))
+        if (Root.FindChildById<TextBox>(PASSWORD_TEXTBOX, out var textboxPassword))
         {
-            _textboxLoginPassword = textboxPassword;
-            _textboxLoginPassword.PasswordField = true;
-            _textboxLoginPassword.TouchDown += _textboxPassword_Clicked;
-            _textboxLoginPassword.TextChanged += _textboxPassword_TextChanged;
+            _textboxPassword = textboxPassword;
+            _textboxPassword.PasswordField = true;
+            _textboxPassword.TouchDown += _textboxPassword_Clicked;
+            _textboxPassword.TextChanged += _textboxPassword_TextChanged;
         }
 
-        if (_loginWindow.FindChildById<CheckButton>(SAVE_CREDENTIALS_CHECK, out var checkboxSave))
+        if (Root.FindChildById<CheckButton>(SAVE_CREDENTIALS_CHECK, out var checkboxSave))
         {
             _checkboxSave = checkboxSave;
             _checkboxSave.SetText(Strings.LoginWindow.SavePassword);
         }
 
-        if (_loginWindow.FindChildById<Button>(LOGIN_BUTTON, out var buttonLogin))
+        if (Root.FindChildById<Button>(LOGIN_BUTTON, out var buttonLogin))
         {
             _buttonLogin = buttonLogin;
             _buttonLogin.Enabled = false;
@@ -70,14 +69,14 @@ public partial class LoginWindow : IWindow
             _buttonLogin.SetText(Strings.LoginWindow.Login);
         }
 
-        if (_loginWindow.FindChildById<Button>(FORGOT_PASSWORD_BUTTON, out var buttonForgotPassword))
+        if (Root.FindChildById<Button>(FORGOT_PASSWORD_BUTTON, out var buttonForgotPassword))
         {
             _buttonForgotPassword = buttonForgotPassword;
             _buttonForgotPassword.Click += _buttonForgotPassword_Clicked;
             _buttonForgotPassword.SetText(Strings.LoginWindow.ForgotPassword);
         }
 
-        if (_loginWindow.FindChildById<Button>(REGISTER_BUTTON, out var buttonRegister))
+        if (Root.FindChildById<Button>(REGISTER_BUTTON, out var buttonRegister))
         {
             _buttonRegister = buttonRegister;
             _buttonRegister.Enabled = false;
@@ -96,19 +95,19 @@ public partial class LoginWindow : IWindow
             };
         }
 
-        if (_loginWindow.FindChildById<Button>(SETTINGS_BUTTON, out var buttonSettings))
+        if (Root.FindChildById<Button>(SETTINGS_BUTTON, out var buttonSettings))
         {
             buttonSettings.Click += (sender, args) => Interface.MenuUi?.SwitchToWindow<SettingsWindow>();
             buttonSettings.SetText(Strings.LoginWindow.Settings);
         }
 
-        if (_loginWindow.FindChildById<Button>(CREDITS_BUTTON, out var buttonCredits))
+        if (Root.FindChildById<Button>(CREDITS_BUTTON, out var buttonCredits))
         {
             buttonCredits.Click += (sender, args) => Interface.MenuUi?.SwitchToWindow<CreditsWindow>();
             buttonCredits.SetText(Strings.LoginWindow.Credits);
         }
 
-        if (_loginWindow.FindChildById<Button>(EXIT_BUTTON, out var buttonExit))
+        if (Root.FindChildById<Button>(EXIT_BUTTON, out var buttonExit))
         {
             buttonExit.SetText(Strings.LoginWindow.Exit);
             buttonExit.Click += (sender, args) =>
@@ -119,40 +118,49 @@ public partial class LoginWindow : IWindow
         }
 
         LoadCredentials();
+
+        if (reloading)
+        {
+            var focusedKeyboardWidget = Interface.FocusedKeyboardWidget;
+            if (!string.IsNullOrWhiteSpace(focusedKeyboardWidget?.Id))
+            {
+                var existingWidget = Root.FindChildById(focusedKeyboardWidget.Id);
+                if (existingWidget != default)
+                {
+                    Interface.FocusedKeyboardWidget = existingWidget;
+                }
+            }
+        }
     }
 
-    public void Show()
+    protected override void OnReload()
     {
-        if (_loginWindow == default)
-        {
-            return;
-        }
+        base.OnReload();
 
-        _loginWindow.Visible = true;
+        Connect(reloading: true);
+    }
 
-        if (_buttonForgotPassword?.Visible == false)
+    public override void Show()
+    {
+        base.Show();
+
+        if (_buttonForgotPassword != default)
         {
             _buttonForgotPassword.Visible = !Options.Instance.SmtpValid;
         }
 
-        if (string.IsNullOrWhiteSpace(_textboxLoginUsername?.Text))
+        if (_textboxUsername != default && string.IsNullOrWhiteSpace(_textboxUsername.Text))
         {
-            Interface.SetInputFocus(_textboxLoginUsername);
+            Interface.FocusedKeyboardWidget = _textboxUsername;
         }
-        else
+        else if (_textboxPassword != default && string.IsNullOrWhiteSpace(_textboxPassword.Text))
         {
-            Interface.SetInputFocus(_textboxLoginPassword);
+            Interface.FocusedKeyboardWidget = _textboxPassword;
         }
-    }
-
-    public void Hide()
-    {
-        if (_loginWindow == default)
+        else if (_buttonLogin != default)
         {
-            return;
+            Interface.FocusedKeyboardWidget = _buttonLogin;
         }
-
-        _loginWindow.Visible = false;
     }
 
     public void Update()
@@ -174,48 +182,47 @@ public partial class LoginWindow : IWindow
 
     private void SaveCredentials()
     {
-        string username = string.Empty,
-            password = string.Empty;
+        string? username = _username;
+        string? passwordHash = _passwordHash;
 
-        if (_textboxLoginUsername == default || _textboxLoginPassword == default)
+        if (_textboxUsername == default || _textboxPassword == default || _checkboxSave == default)
         {
             return;
         }
 
-        if (_checkboxSave?.IsChecked == true)
+        if (!_checkboxSave.IsChecked)
         {
-            username = _textboxLoginUsername.Text.Trim();
-            password = _useSavedPass
-                ? _savedPass
-                : PasswordUtils.ComputePasswordHash(_textboxLoginPassword.Text.Trim());
+            username = default;
+            passwordHash = default;
         }
 
-        Globals.Database.SavePreference("Username", username);
-        Globals.Database.SavePreference("Password", password);
+        Globals.Database.SavePreference("Username", username ?? string.Empty);
+        Globals.Database.SavePreference("Password", passwordHash ?? string.Empty);
     }
 
     private void LoadCredentials()
     {
-        var name = Globals.Database.LoadPreference("Username");
-        if (
-            string.IsNullOrEmpty(name)
-            || _textboxLoginUsername == default
-            || _textboxLoginPassword == default
-        )
+        _username = Globals.Database.LoadPreference("Username");
+        if (string.IsNullOrWhiteSpace(_username))
         {
             return;
         }
 
-        _textboxLoginUsername.Text = name;
-        var pass = Globals.Database.LoadPreference("Password");
-        if (string.IsNullOrEmpty(pass))
+        if (_textboxUsername == default || _textboxPassword == default)
         {
             return;
         }
 
-        _textboxLoginPassword.Text = "****************";
-        _savedPass = pass;
-        _useSavedPass = true;
+        _textboxUsername.Text = _username;
+
+        _passwordHash = Globals.Database.LoadPreference("Password");
+        if (string.IsNullOrEmpty(_passwordHash))
+        {
+            return;
+        }
+
+        _textboxPassword.Text = "************************";
+
         if (_checkboxSave != default)
         {
             _checkboxSave.IsChecked = true;
@@ -226,43 +233,60 @@ public partial class LoginWindow : IWindow
 
     private void _textboxUsername_Clicked(object? sender, EventArgs e)
     {
-        if (_textboxLoginUsername == default)
+        if (_textboxUsername == default)
         {
             return;
         }
 
         Globals.InputManager.OpenKeyboard(
             KeyboardType.Normal,
-            text => _textboxLoginUsername.Text = text ?? string.Empty,
+            text => _textboxUsername.Text = text ?? string.Empty,
             Strings.LoginWindow.Username,
-            _textboxLoginUsername.Text,
+            _textboxUsername.Text,
             inputBounds: new Framework.GenericClasses.Rectangle(
-                _textboxLoginUsername.Bounds.X,
-                _textboxLoginUsername.Bounds.Y,
-                _textboxLoginUsername.Bounds.Width,
-                _textboxLoginUsername.Bounds.Height
+                _textboxUsername.Bounds.X,
+                _textboxUsername.Bounds.Y,
+                _textboxUsername.Bounds.Width,
+                _textboxUsername.Bounds.Height
             )
         );
     }
 
     private void _textboxPassword_Clicked(object? sender, EventArgs e)
     {
-        if (_textboxLoginPassword == default)
+        if (_textboxPassword == default)
         {
             return;
         }
 
         Globals.InputManager.OpenKeyboard(
             KeyboardType.Password,
-            text => _textboxLoginPassword.Text = text ?? string.Empty,
+            text => _textboxPassword.Text = text ?? string.Empty,
             Strings.LoginWindow.Password,
-            _textboxLoginPassword.Text
+            _textboxPassword.Text
         );
+    }
+
+    private void _textboxUsername_TextChanged(object? sender, EventArgs e)
+    {
+        _username = _textboxUsername?.Text;
+
+        if (_passwordHash == default)
+        {
+            return;
+        }
+
+        if (_textboxPassword != default)
+        {
+            _textboxPassword.Text = string.Empty;
+        }
+
+        _passwordHash = default;
     }
 
     private void _textboxPassword_TextChanged(object? sender, EventArgs e)
     {
-        _useSavedPass = false;
+        _passwordHash = default;
     }
 
     private static void _buttonForgotPassword_Clicked(object? sender, EventArgs e)
@@ -281,30 +305,28 @@ public partial class LoginWindow : IWindow
             return;
         }
 
-        if (_textboxLoginUsername == default || _textboxLoginPassword == default)
+        if (_textboxPassword == default)
         {
             return;
         }
 
-        if (!FieldChecking.IsValidUsername(_textboxLoginUsername?.Text, Strings.Regex.Username))
+        if (!FieldChecking.IsValidUsername(_username, Strings.Regex.Username))
         {
             Interface.ShowError(Strings.Errors.UsernameInvalid);
             return;
         }
 
-        if (!FieldChecking.IsValidPassword(_textboxLoginPassword?.Text, Strings.Regex.Password))
+        if (_passwordHash == default)
         {
-            if (!_useSavedPass)
+            var password = _textboxPassword.Text;
+
+            if (!FieldChecking.IsValidPassword(password, Strings.Regex.Password))
             {
                 Interface.ShowError(Strings.Errors.PasswordInvalid);
                 return;
             }
-        }
 
-        _storedPassword = _savedPass;
-        if (!_useSavedPass)
-        {
-            _storedPassword = PasswordUtils.ComputePasswordHash(_textboxLoginPassword?.Text.Trim());
+            _passwordHash = PasswordUtils.ComputePasswordHash(password);
         }
 
         Globals.WaitingOnServer = true;
@@ -342,7 +364,19 @@ public partial class LoginWindow : IWindow
 
     private void _loginConnected(object? sender, EventArgs eventArgs)
     {
-        PacketSender.SendLogin(_textboxLoginUsername!.Text, _storedPassword);
+        if (_username == default)
+        {
+            Log.Error("Attempted to log in with null username");
+            return;
+        }
+
+        if (_passwordHash == default)
+        {
+            Log.Error("Attempted to log in with null password hash");
+            return;
+        }
+
+        PacketSender.SendLogin(_username, _passwordHash);
         SaveCredentials();
         //MYRA-TODO
         //ChatboxMsg.ClearMessages();

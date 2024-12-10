@@ -47,7 +47,7 @@ public partial class MenuInterface
 
         NetworkStatusChanged += HandleNetworkStatusChanged;
 
-        _loginWindow = new LoginWindow();
+        _loginWindow = new LoginWindow(Interface.Desktop);
         _registerWindow = new RegisterWindow();
         SelectCharacterWindow = new SelectCharacterWindow();
         _createCharacterWindow = new CreateCharacterWindow();

@@ -111,7 +111,24 @@ public static partial class AssemblyExtensions
         }
 
         manifestResourceName = assembly.GetManifestResourceNames()
-            .FirstOrDefault(name => name?.Contains(resourceName, StringComparison.CurrentCulture) ?? false);
+            .FirstOrDefault(name => name.Contains(resourceName, StringComparison.CurrentCulture));
+        return manifestResourceName != default;
+    }
+
+    public static bool TryFindResourceEndsWith(
+        this Assembly assembly,
+        string resourceName,
+        [NotNullWhen(true)] out string? manifestResourceName
+    )
+    {
+        if (assembly.IsDynamic)
+        {
+            manifestResourceName = default;
+            return false;
+        }
+
+        manifestResourceName = assembly.GetManifestResourceNames()
+            .FirstOrDefault(name => name.EndsWith(resourceName, StringComparison.CurrentCulture));
         return manifestResourceName != default;
     }
 

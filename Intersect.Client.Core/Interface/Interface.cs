@@ -1,11 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Resources;
 using Intersect.Client.Core;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
 using Intersect.Client.Interface.Game;
 using Intersect.Client.Interface.Menu;
 using Intersect.Client.Interface.Shared;
+using Intersect.Framework.Reflection;
+using Microsoft.Xna.Framework.Content;
 using Myra;
 using Myra.Graphics2D.UI;
 
@@ -13,6 +16,8 @@ namespace Intersect.Client.Interface;
 
 public static partial class Interface
 {
+    private static readonly Assembly IntersectClientCoreAssembly = typeof(Interface).Assembly;
+
     public static Desktop Desktop { get; set; } = new Desktop();
 
     public static GameInterface? GameUi { get; private set; }
@@ -81,6 +86,12 @@ public static partial class Interface
         }
     }
 
+    public static Widget? FocusedKeyboardWidget
+    {
+        get => Desktop.FocusedKeyboardWidget;
+        set => Desktop.FocusedKeyboardWidget = value;
+    }
+
     public static void SetInputFocus(Widget? widget)
     {
         Desktop.FocusedKeyboardWidget = widget;
@@ -104,6 +115,60 @@ public static partial class Interface
     public static void Render()
     {
         Desktop.Render();
+    }
+
+    public static Project LoadProjectFrom(string name)
+    {
+        var project = LoadProjectFromFile(name) ?? LoadProjectFromEmbeddedResource(name);
+        if (project == default)
+        {
+            throw new ContentLoadException($"Failed to load Myra project for '{name}'");
+        }
+
+        return project;
+    }
+
+    public static Project? LoadProjectFromFile(string fileName)
+    {
+        if (!File.Exists(fileName))
+        {
+            return default;
+        }
+
+        var xml = File.ReadAllText(fileName);
+        return LoadProjectFromXml(xml, fileName);
+    }
+
+    public static Project? LoadProjectFromEmbeddedResource(string resourceName)
+    {
+        MyraEnvironment.
+        resourceName = resourceName.Replace(Path.DirectorySeparatorChar, '.')
+            .Replace(Path.AltDirectorySeparatorChar, '.');
+
+        if (!IntersectClientCoreAssembly.TryFindResourceEndsWith(resourceName, out var fullResourceName))
+        {
+            throw new MissingManifestResourceException($"No resource found that ends with '{resourceName}'.");
+        }
+
+        using var resourceStream = IntersectClientCoreAssembly.GetManifestResourceStream(fullResourceName);
+        if (resourceStream == default)
+        {
+            throw new MissingManifestResourceException($"Null resource stream for '{fullResourceName}' ('{resourceName}')");
+        }
+
+        using StreamReader resourceStreamReader = new(resourceStream);
+        var xml = resourceStreamReader.ReadToEnd();
+        return LoadProjectFromXml(xml, fullResourceName);
+    }
+
+    private static Project? LoadProjectFromXml(string xml, string fileName)
+    {
+        if (xml.Length < 19)
+        {
+            throw new FileLoadException("Specified file is too short to contain at least '<project></project>'", fileName);
+        }
+
+        return Project.LoadFromXml(xml);
     }
 
     public static Widget LoadContent(string filepath)
