@@ -141,7 +141,6 @@ public static partial class Interface
 
     public static Project? LoadProjectFromEmbeddedResource(string resourceName)
     {
-        MyraEnvironment.
         resourceName = resourceName.Replace(Path.DirectorySeparatorChar, '.')
             .Replace(Path.AltDirectorySeparatorChar, '.');
 
