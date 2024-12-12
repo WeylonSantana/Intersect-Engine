@@ -70,7 +70,8 @@ public static partial class Interface
     {
         // Preserve the debug window
         MutableInterface.DetachDebugWindow();
-        Dispose();
+        //Dispose(); // this is crashing the client when entering the game.
+        Desktop.Widgets.Clear();
 
         //MYRA-TODO: Check if this is still needed
         if (Globals.Me != null)
