@@ -17,7 +17,7 @@ using Intersect.GameObjects;
 namespace Intersect.Client.Interface.Game;
 
 
-public partial class GameInterface : MutableInterface
+public partial class GameInterface
 {
 
     public bool FocusChat;
@@ -89,7 +89,7 @@ public partial class GameInterface : MutableInterface
 
     public PlayerStatusWindow PlayerStatusWindow;
 
-    public GameInterface(Canvas canvas) : base(null)
+    public GameInterface(Canvas canvas)
     {
         GameCanvas = canvas;
         EscapeMenu = new EscapeMenu(GameCanvas) {IsHidden = true};

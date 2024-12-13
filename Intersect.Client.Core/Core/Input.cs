@@ -7,6 +7,7 @@ using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
 using Intersect.Client.Interface;
 using Intersect.Client.Interface.Game;
+using Intersect.Client.Interface.Menu;
 using Intersect.Client.Interface.Shared;
 using Intersect.Client.Maps;
 using Intersect.Client.Networking;
@@ -209,7 +210,7 @@ public static partial class Input
                         }
 
                         case Control.OpenDebugger:
-                            _ = MutableInterface.ToggleDebug();
+                            MenuInterface.ToggleDebugWindow();
                             break;
                     }
 

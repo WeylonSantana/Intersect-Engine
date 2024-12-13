@@ -863,10 +863,16 @@ public static partial class Strings
         public static LocalizedString ControlUnderCursor = @"Control Under Cursor";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString DrawDebugOutlines = @"Draw Debug Outlines";
+        public static LocalizedString Draws = @"Draws";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Draws = @"Draws";
+        public static LocalizedString DrawUiBorders = @"Draw UI Borders";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString DrawUiHoveredBorders = @"Draw Hovered UI Borders";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public static LocalizedString DrawUiTextBorders = @"Draw UI Text Borders";
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString EnableLayoutHotReloading = @"Enable Experimental Layout Hot Reloading";

@@ -48,9 +48,6 @@ public static partial class Interface
 
     public static void Initialization()
     {
-        // Preserve the debug window
-        MutableInterface.DetachDebugWindow();
-
         if (Globals.GameState is GameStates.Intro or GameStates.Menu)
         {
             MenuUi = new MenuInterface();
@@ -69,21 +66,15 @@ public static partial class Interface
     public static void DestroyInterface(bool exiting = false)
     {
         // Preserve the debug window
-        MutableInterface.DetachDebugWindow();
         //Dispose(); // this is crashing the client when entering the game.
         Desktop.Widgets.Clear();
 
-        //MYRA-TODO: Check if this is still needed
+        //MYRA-TODO: update target box from gwen to myra
         if (Globals.Me != null)
         {
             _ = Globals.Me.ClearTarget();
             Globals.Me.TargetBox?.Dispose();
             Globals.Me.TargetBox = null;
-        }
-
-        if (exiting)
-        {
-            MutableInterface.DisposeDebugWindow();
         }
     }
 

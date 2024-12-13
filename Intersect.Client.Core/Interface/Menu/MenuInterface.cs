@@ -16,6 +16,7 @@ public partial class MenuInterface
     private readonly ResetPasswordWindow _resetPasswordWindow;
     private readonly CreateCharacterWindow _createCharacterWindow;
     private readonly SettingsWindow _settingsWindow;
+    private static DebugWindow _debugUi;
     private readonly CreditsWindow _creditsWindow;
     public readonly SelectCharacterWindow SelectCharacterWindow;
 
@@ -52,6 +53,7 @@ public partial class MenuInterface
         SelectCharacterWindow = new SelectCharacterWindow();
         _createCharacterWindow = new CreateCharacterWindow();
         _settingsWindow = new SettingsWindow();
+        _debugUi = new DebugWindow();
         _creditsWindow = new CreditsWindow();
 
         //_forgotPasswordWindow = new ForgotPasswordWindow(_menuCanvas, this);
@@ -98,9 +100,14 @@ public partial class MenuInterface
             _registerWindow.Update();
         }
 
-        if (_settingsWindow.Visible)
+        if (_settingsWindow.Visible) // shouldn't this be at "SharedInterface" or something?
         {
             _settingsWindow.Update();
+        }
+        
+        if (_debugUi.Visible) // shouldn't this be at "SharedInterface" or something?
+        {
+            _debugUi.Update();
         }
 
         if (_createCharacterWindow.Visible)
@@ -194,6 +201,11 @@ public partial class MenuInterface
         {
             _createCharacterWindow.Show();
         }
+    }
+    
+    public static void ToggleDebugWindow()
+    {
+        _debugUi.Toggle();
     }
 
     public static void SetNetworkStatus(NetworkStatus networkStatus, bool resetStatusCheck = false)

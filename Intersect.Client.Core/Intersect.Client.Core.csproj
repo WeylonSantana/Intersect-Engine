@@ -24,6 +24,7 @@
     <None Remove="Resources\interface\menu\SelectCharacterWindow.xmmp" />
     <None Remove="Resources\interface\menu\ServerStatus.xmmp" />
     <None Remove="Resources\interface\shared\SettingsWindow.xmmp"/>
+    <None Remove="Resources\interface\shared\DebugWindow.xmmp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +61,7 @@
     <EmbeddedResource Include="Resources\interface\menu\SelectCharacterWindow.xmmp" />
     <EmbeddedResource Include="Resources\interface\menu\ServerStatus.xmmp" />
     <EmbeddedResource Include="Resources\interface\shared\SettingsWindow.xmmp" />
+    <EmbeddedResource Include="Resources\interface\shared\DebugWindow.xmmp" />
   </ItemGroup>
 
   <ItemGroup Label="Package Embedded Resources">

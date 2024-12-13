@@ -1,0 +1,74 @@
+<Project>
+  <Window Title="Debug Window" Left="256" Top="6" MinWidth="420" MinHeight="420" Padding="10" Id="DebugWindow">
+    <Grid ColumnSpacing="2" RowSpacing="2" Id="Root">
+      <Grid.ColumnsProportions>
+        <Proportion Type="Fill" />
+      </Grid.ColumnsProportions>
+      <Grid.RowsProportions>
+        <Proportion Type="Auto" />
+        <Proportion Type="Auto" />
+        <Proportion Type="Auto" />
+        <Proportion Type="Auto" />
+      </Grid.RowsProportions>
+      <CheckButton Margin="0, 5" Id="DRAW_WIDGET_FRAMES_CHECKBUTTON">
+        <Label Text="DRAW_WIDGET_FRAMES_CHECKBUTTON" Margin="5, 0, 0, 0" />
+      </CheckButton>
+      <CheckButton Margin="0, 5" Id="DRAW_MOUSE_HOVERED_WIDGET_FRAME_CHECKBUTTON" Grid.Row="1">
+        <Label Text="DRAW_MOUSE_HOVERED_WIDGET_FRAME_CHECKBUTTON" Margin="5, 0, 0, 0" />
+      </CheckButton>
+      <CheckButton Margin="0, 5" Id="DRAW_TEXT_GLYPHS_FRAMES_CHECKBUTTON" Grid.Row="2">
+        <Label Text="DRAW_TEXT_GLYPHS_FRAMES_CHECKBUTTON" Margin="5, 0, 0, 0" />
+      </CheckButton>      
+      <CheckButton Margin="0, 5" Id="HOT_RELOAD_CHECKBUTTON" Grid.Row="3">
+        <Label Text="Enable Layout Hot Reloading" Margin="5, 0, 0, 0" />
+      </CheckButton>
+      <Grid ShowGridLines="True" ColumnSpacing="8" RowSpacing="2" Border="#FFFFFFFF" BorderThickness="1" Id="TABLE_DEBUG_STATS" Grid.Row="4">
+        <Grid.ColumnsProportions>
+          <Proportion Type="Auto" />
+          <Proportion Type="Fill" />
+        </Grid.ColumnsProportions>
+        <Grid.RowsProportions>
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+          <Proportion Type="Auto" />
+        </Grid.RowsProportions>
+        <Label Text="FPS" Id="FPS_LABEL" />
+        <Label Id="FPS_VALUE_LABEL" Grid.Column="1" />
+        <Label Text="Ping" Id="PING_LABEL" Grid.Row="1" />
+        <Label Id="PING_VALUE_LABEL" Grid.Column="1" Grid.Row="1" />
+        <Label Text="Draw Calls" Id="DRAW_CALLS_LABEL" Grid.Row="2" />
+        <Label Id="DRAW_CALLS_VALUE_LABEL" Grid.Column="1" Grid.Row="2" />
+        <Label Text="Map" Id="MAP_LABEL" Grid.Row="3" />
+        <Label Id="MAP_VALUE_LABEL" Grid.Column="1" Grid.Row="3" />
+        <Label Text="Coordinate X" Id="COORDINATE_X_LABEL" Grid.Row="4" />
+        <Label Id="COORDINATE_X_VALUE_LABEL" Grid.Column="1" Grid.Row="4" />
+        <Label Text="Coordinate Y" Id="COORDINATE_Y_LABEL" Grid.Row="5" />
+        <Label Id="COORDINATE_Y_VALUE_LABEL" Grid.Column="1" Grid.Row="5" />
+        <Label Text="Coordinate Z" Id="COORDINATE_Z_LABEL" Grid.Row="6" />
+        <Label Id="COORDINATE_Z_VALUE_LABEL" Grid.Column="1" Grid.Row="6" />
+        <Label Text="Known Entities" Id="KNOWN_ENTITIES_LABEL" Grid.Row="7" />
+        <Label Id="KNOWN_ENTITIES_VALUE_LABEL" Grid.Column="1" Grid.Row="7" />
+        <Label Text="Known Maps" Id="KNOWN_MAPS_LABEL" Grid.Row="8" />
+        <Label Id="KNOWN_MAPS_VALUE_LABEL" Grid.Column="1" Grid.Row="8" />
+        <Label Text="Maps Drawn" Id="MAPS_DRAWN_LABEL" Grid.Row="9" />
+        <Label Id="MAPS_DRAWN_VALUE_LABEL" Grid.Column="1" Grid.Row="9" />
+        <Label Text="Entities Drawn" Id="ENTITIES_DRAWN_LABEL" Grid.Row="10" />
+        <Label Id="ENTITIES_DRAWN_VALUE_LABEL" Grid.Column="1" Grid.Row="10" />
+        <Label Text="Lights Drawn" Id="LIGHTS_DRAWN_LABEL" Grid.Row="11" />
+        <Label Id="LIGHTS_DRAWN_VALUE_LABEL" Grid.Column="1" Grid.Row="11" />
+        <Label Text="Time" Id="TIME_LABEL" Grid.Row="12" />
+        <Label Id="TIME_VALUE_LABEL" Grid.Column="1" Grid.Row="12" />
+      </Grid>
+    </Grid>
+  </Window>
+</Project>

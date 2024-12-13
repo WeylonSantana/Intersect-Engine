@@ -74,14 +74,17 @@ public static partial class Time
         return val;
     }
 
-    public static string GetTime()
+    public static string ServerTime
     {
-        return sServerTime.ToString("h:mm:ss tt");
+        get
+        {
+            Update();
+            return sServerTime.ToString("h:mm:ss tt");
+        }
     }
 
     public static ColorF GetTintColor()
     {
         return sCurrentColor;
     }
-
 }
