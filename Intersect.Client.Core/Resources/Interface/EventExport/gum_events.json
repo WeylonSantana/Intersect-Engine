@@ -1,0 +1,20 @@
+{
+  "UserEvents": {
+    "0a1585bc6b3f2fcaa0380ea73c3b07379cd938f75270f178094586fda35d8e62": [
+      {
+        "NewName": "Menu/MainMenuWindow",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-16T21:51:20.103594Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ButtonStandardInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-16T21:51:49.5499448Z"
+      }
+    ]
+  }
+}

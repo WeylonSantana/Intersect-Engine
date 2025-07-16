@@ -22,6 +22,7 @@ using Intersect.Framework.SystemInformation;
 using Intersect.Framework.Utilities;
 using Microsoft.Extensions.Logging;
 using Exception = System.Exception;
+using Intersect.Client.Interface;
 
 namespace Intersect.Client.MonoGame;
 
@@ -30,6 +31,8 @@ namespace Intersect.Client.MonoGame;
 /// </summary>
 internal partial class IntersectGame : Game
 {
+    public static IntersectGame Instance = default!;
+
     private bool mInitialized;
 
     private double mLastUpdateTime = 0;
@@ -62,6 +65,7 @@ internal partial class IntersectGame : Game
 
     private IntersectGame(IClientContext context, Action postStartupAction)
     {
+        Instance = this;
         Context = context;
         PostStartupAction = postStartupAction;
 
@@ -167,6 +171,7 @@ internal partial class IntersectGame : Game
             mGraphics.PreferredBackBufferHeight = displayResolution.Y;
         }
 
+        Window.ClientSizeChanged += InterfaceCore.HandleUiSizeChanged;
         mGraphics.ApplyChanges();
     }
 
@@ -186,7 +191,6 @@ internal partial class IntersectGame : Game
         Main.Start(Context);
 
         mInitialized = true;
-
         PostStartupAction();
     }
 
@@ -222,7 +226,7 @@ internal partial class IntersectGame : Game
                     {
                         lock (Globals.GameLock)
                         {
-                            Main.Update(gameTime.ElapsedGameTime);
+                            Main.Update(gameTime);
                         }
 
                         ///mLastUpdateTime = gameTime.TotalGameTime.TotalMilliseconds + (1000/60f);
@@ -336,6 +340,7 @@ internal partial class IntersectGame : Game
     {
         ApplicationContext.Context.Value?.Logger.LogInformation("System window closing (due to user interaction most likely).");
 
+        InterfaceCore.Clear();
         if (Globals.Me != null && Globals.Me.CombatTimer > Timing.Global?.Milliseconds)
         {
             //Try to prevent SDL Window Close
@@ -390,18 +395,6 @@ internal partial class IntersectGame : Game
             ApplicationContext.Context.Value?.Logger.LogWarning(
                 exception,
                 "Exception thrown while stopping the updater on game close"
-            );
-        }
-
-        try
-        {
-            //Interface.Interface.DestroyGwen();
-        }
-        catch (Exception exception)
-        {
-            ApplicationContext.Context.Value?.Logger.LogWarning(
-                exception,
-                "Exception thrown while destroying GWEN on game close"
             );
         }
 

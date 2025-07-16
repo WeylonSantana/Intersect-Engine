@@ -1,4 +1,4 @@
-﻿namespace Intersect.Client.Framework.Content;
+namespace Intersect.Client.Framework.Content;
 
 public enum TextureType
 {
@@ -23,7 +23,7 @@ public enum TextureType
 
     Paperdoll,
 
-    Gui,
+    Interface,
 
     Misc,
 

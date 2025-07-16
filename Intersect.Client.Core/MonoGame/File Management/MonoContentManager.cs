@@ -119,7 +119,9 @@ public partial class MonoContentManager : GameContentManager
     public void LoadTextureGroup(string directory, Dictionary<string, IAsset> dict)
     {
         dict.Clear();
-        var dir = Path.Combine(ClientConfiguration.ResourcesDirectory, directory);
+        var dir = directory != "interface"
+            ? Path.Combine(ClientConfiguration.ResourcesDirectory, directory)
+            : Path.Combine(ClientConfiguration.ResourcesDirectory, "interface", "textures");
         if (!Directory.Exists(dir))
         {
             if (!Directory.Exists(Path.Combine(ClientConfiguration.ResourcesDirectory, "packs")))
@@ -193,9 +195,9 @@ public partial class MonoContentManager : GameContentManager
         LoadTextureGroup("paperdolls", mPaperdollDict);
     }
 
-    public override void LoadGui()
+    public override void LoadInterface()
     {
-        LoadTextureGroup("gui", mGuiDict);
+        LoadTextureGroup("interface", mInterfaceDict);
     }
 
     public override void LoadMisc()

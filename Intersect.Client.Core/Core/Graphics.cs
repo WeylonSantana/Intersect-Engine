@@ -6,6 +6,7 @@ using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
+using Intersect.Client.Interface;
 using Intersect.Client.Maps;
 using Intersect.Configuration;
 using Intersect.Enums;
@@ -13,14 +14,12 @@ using Intersect.Framework;
 using Intersect.Framework.Core;
 using Intersect.Framework.Core.GameObjects.Lighting;
 using Intersect.Framework.Core.GameObjects.Maps;
-using Intersect.GameObjects;
 using Intersect.Utilities;
 
 namespace Intersect.Client.Core;
 
 public static partial class Graphics
 {
-
     public static IFont? ActionMsgFont { get; set; }
     public static int ActionMsgFontSize { get; set; }
 
@@ -191,7 +190,7 @@ public static partial class Graphics
         if (ClientConfiguration.Instance.MenuBackground.Count > 1)
         {
             sMenuBackground = sContentManager.GetTexture(
-                TextureType.Gui, ClientConfiguration.Instance.MenuBackground[sMenuBackgroundIndex]
+                TextureType.Interface, ClientConfiguration.Instance.MenuBackground[sMenuBackgroundIndex]
             );
 
             if (sMenuBackground == null)
@@ -214,7 +213,7 @@ public static partial class Graphics
         else
         {
             sMenuBackground = sContentManager.GetTexture(
-                TextureType.Gui, ClientConfiguration.Instance.MenuBackground[0]
+                TextureType.Interface, ClientConfiguration.Instance.MenuBackground[0]
             );
 
             if (sMenuBackground == null)
@@ -557,7 +556,6 @@ public static partial class Graphics
         }
 
         var gameState = Globals.GameState;
-
         renderer.Scale = gameState == GameStates.InGame ? Globals.Database.WorldZoom : 1.0f;
 
         if (!renderer.Begin())
@@ -570,8 +568,6 @@ public static partial class Graphics
             renderer.DisplayModeChanged())
         {
             sDarknessTexture = null;
-            //Interface.Interface.DestroyGwen();
-            //Interface.Interface.InitGwen();
             sOldWidth = renderer.ScreenWidth;
             sOldHeight = renderer.ScreenHeight;
         }
@@ -609,8 +605,7 @@ public static partial class Graphics
         }
 
         renderer.Scale = Globals.Database.UIScale;
-
-        //Interface.Interface.DrawGui(deltaTime, totalTime);
+        InterfaceCore.DrawUI();
 
         DrawGameTexture(
             tex: renderer.WhitePixel,

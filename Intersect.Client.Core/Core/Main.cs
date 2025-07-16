@@ -1,5 +1,6 @@
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
+using Intersect.Client.Interface;
 using Intersect.Client.Maps;
 using Intersect.Client.Networking;
 using Intersect.Configuration;
@@ -7,7 +8,7 @@ using Intersect.Enums;
 using Intersect.Framework.Core;
 using Intersect.Framework.Core.GameObjects.Mapping.Tilesets;
 using Intersect.Framework.Core.GameObjects.Maps;
-using Intersect.GameObjects;
+using Microsoft.Xna.Framework;
 
 // ReSharper disable All
 
@@ -32,6 +33,7 @@ internal static partial class Main
         //Init Network
         Networking.Network.InitNetwork(context);
         Fade.FadeIn(ClientConfiguration.Instance.FadeDurationMs);
+        InterfaceCore.InitializeUI();
 
         //Make Json.Net Familiar with Our Object Types
         var id = Guid.NewGuid();
@@ -57,12 +59,13 @@ internal static partial class Main
         Graphics.Renderer?.Close();
     }
 
-    public static void Update(TimeSpan deltaTime)
+    public static void Update(GameTime gameTime)
     {
         lock (Globals.GameLock)
         {
             Networking.Network.Update();
             Fade.Update();
+            InterfaceCore.UpdateUI(gameTime);
             //Interface.Interface.SetHandleInput(Globals.GameState != GameStates.Intro);
 
             switch (Globals.GameState)
@@ -96,10 +99,9 @@ internal static partial class Main
                     );
             }
 
-            Globals.InputManager.Update(deltaTime);
+            Globals.InputManager.Update(gameTime.ElapsedGameTime);
             Audio.Update();
-
-            Globals.OnGameUpdate(deltaTime);
+            Globals.OnGameUpdate(gameTime.ElapsedGameTime);
         }
     }
 
