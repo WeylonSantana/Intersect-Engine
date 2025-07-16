@@ -1,5 +1,4 @@
 using Intersect.Client.Framework.GenericClasses;
-using Intersect.Client.Framework.Gwen.DragDrop;
 using Newtonsoft.Json;
 
 namespace Intersect.Client.Framework.Input;
@@ -35,7 +34,7 @@ public partial class ControlBinding(Keys modifier, Keys key)
 
         if (IsMouseKey && Key.TryGetMouseButton(out var mouseButton))
         {
-            return gameInput.IsMouseButtonDown(mouseButton) && !DragAndDrop.IsDragging;
+            //return gameInput.IsMouseButtonDown(mouseButton) && !DragAndDrop.IsDragging;
         }
 
         return gameInput.IsKeyDown(Key);
@@ -53,7 +52,7 @@ public partial class ControlBinding(Keys modifier, Keys key)
 
         if (IsMouseKey && Key.TryGetMouseButton(out var mouseButton))
         {
-            return gameInput.WasMouseButtonDown(mouseButton) && !DragAndDrop.IsDragging;
+            //return gameInput.WasMouseButtonDown(mouseButton) && !DragAndDrop.IsDragging;
         }
 
         return gameInput.WasKeyDown(Key);
