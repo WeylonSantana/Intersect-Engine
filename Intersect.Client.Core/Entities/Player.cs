@@ -4,15 +4,9 @@ using Intersect.Client.Entities.Events;
 using Intersect.Client.Entities.Projectiles;
 using Intersect.Client.Framework.Entities;
 using Intersect.Client.Framework.GenericClasses;
-using Intersect.Client.Framework.Gwen.Control;
-using Intersect.Client.Framework.Gwen.Control.EventArguments;
-using Intersect.Client.Framework.Gwen.Control.EventArguments.InputSubmissionEvent;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.Framework.Items;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Game.Chat;
-using Intersect.Client.Interface.Game.EntityPanel;
-using Intersect.Client.Interface.Shared;
 using Intersect.Client.Items;
 using Intersect.Client.Localization;
 using Intersect.Client.Maps;
@@ -28,10 +22,8 @@ using Intersect.Framework.Core.GameObjects.Items;
 using Intersect.Framework.Core.GameObjects.Maps;
 using Intersect.Framework.Core.GameObjects.Maps.Attributes;
 using Intersect.Framework.Core.GameObjects.PlayerClass;
-using Intersect.Framework.Reflection;
 using Intersect.GameObjects;
 using Intersect.Network.Packets.Server;
-using Intersect.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Intersect.Client.Entities;
@@ -114,9 +106,9 @@ public partial class Player : Entity, IPlayer
 
     public int StatPoints { get; set; } = 0;
 
-    public EntityBox? TargetBox { get; set; }
+    //public EntityBox? TargetBox { get; set; }
 
-    public PlayerStatusWindow? StatusWindow { get; set; }
+    //public PlayerStatusWindow? StatusWindow { get; set; }
 
     public Guid TargetId { get; set; }
 
@@ -253,8 +245,8 @@ public partial class Player : Entity, IPlayer
                  Globals.GameShop == null &&
                  Globals.InBank == false &&
                  Globals.InCraft == false &&
-                 Globals.InTrade == false &&
-                 !Interface.Interface.HasInputFocus());
+                 Globals.InTrade == false);
+                 //&& !Interface.Interface.HasInputFocus());
 
     public override bool Update()
     {
@@ -278,8 +270,8 @@ public partial class Player : Entity, IPlayer
                     if (IsCastingCheckTimer < Timing.Global.Milliseconds &&
                         Options.Instance.Combat.EnableCombatChatMessages)
                     {
-                        ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Combat.AttackWhileCastingDeny,
-                            CustomColors.Alerts.Declined, ChatMessageType.Combat));
+                        //ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Combat.AttackWhileCastingDeny,
+                        //    CustomColors.Alerts.Declined, ChatMessageType.Combat));
                         IsCastingCheckTimer = Timing.Global.Milliseconds + 350;
                     }
                 }
@@ -299,33 +291,33 @@ public partial class Player : Entity, IPlayer
             }
         }
 
-        if (TargetBox == default && this == Globals.Me && Interface.Interface.HasInGameUI)
-        {
-            // If for WHATEVER reason the box hasn't been created, create it.
-            TargetBox = new EntityBox(Interface.Interface.GameUi.GameCanvas, EntityType.Player, null);
-            TargetBox.Hide();
-        }
-        else if (TargetId != default)
-        {
-            if (!Globals.Entities.TryGetValue(TargetId, out var foundEntity))
-            {
-                foundEntity = TargetBox?.MyEntity?.MapInstance?.Entities.FirstOrDefault(entity => entity.Id == TargetId) as Entity;
-            }
+        //if (TargetBox == default && this == Globals.Me && Interface.Interface.HasInGameUI)
+        //{
+        //    // If for WHATEVER reason the box hasn't been created, create it.
+        //    TargetBox = new EntityBox(Interface.Interface.GameUi.GameCanvas, EntityType.Player, null);
+        //    TargetBox.Hide();
+        //}
+        //else if (TargetId != default)
+        //{
+        //    if (!Globals.Entities.TryGetValue(TargetId, out var foundEntity))
+        //    {
+        //        foundEntity = TargetBox?.MyEntity?.MapInstance?.Entities.FirstOrDefault(entity => entity.Id == TargetId) as Entity;
+        //    }
 
-            if (foundEntity == default || foundEntity.IsHidden || foundEntity.IsStealthed)
-            {
-                _ = ClearTarget();
-            }
-        }
+        //    if (foundEntity == default || foundEntity.IsHidden || foundEntity.IsStealthed)
+        //    {
+        //        _ = ClearTarget();
+        //    }
+        //}
 
-        TargetBox?.Update();
-        StatusWindow?.Update();
+        //TargetBox?.Update();
+        //StatusWindow?.Update();
 
-        // Hide our Guild window if we're not in a guild!
-        if (this == Globals.Me && string.IsNullOrEmpty(Guild) && Interface.Interface.HasInGameUI)
-        {
-            Interface.Interface.GameUi.HideGuildWindow();
-        }
+        //// Hide our Guild window if we're not in a guild!
+        //if (this == Globals.Me && string.IsNullOrEmpty(Guild) && Interface.Interface.HasInGameUI)
+        //{
+        //    Interface.Interface.GameUi.HideGuildWindow();
+        //}
 
         if (IsBlocking && !IsAttacking && !IsMoving)
         {
@@ -367,11 +359,11 @@ public partial class Player : Entity, IPlayer
             }
         }
 
-        if (this == Globals.Me && TargetBox == null && Interface.Interface.HasInGameUI)
-        {
-            TargetBox = new EntityBox(Interface.Interface.GameUi.GameCanvas, EntityType.Player, null);
-            TargetBox.Hide();
-        }
+        //if (this == Globals.Me && TargetBox == null && Interface.Interface.HasInGameUI)
+        //{
+        //    TargetBox = new EntityBox(Interface.Interface.GameUi.GameCanvas, EntityType.Player, null);
+        //    TargetBox.Hide();
+        //}
     }
 
     //Item Processing
@@ -416,69 +408,69 @@ public partial class Player : Entity, IPlayer
 
         var quantity = inventorySlot.Quantity;
         var canDropMultiple = quantity > 1;
-        var inputType = canDropMultiple ? InputType.NumericSliderInput : InputType.YesNo;
-        var prompt = canDropMultiple ? Strings.Inventory.DropItemPrompt : Strings.Inventory.DropPrompt;
-        _ = new InputBox(
-            title: Strings.Inventory.DropItemTitle,
-            prompt: prompt.ToString(itemDescriptor.Name),
-            inputType: inputType,
-            quantity: quantity,
-            maximumQuantity: GetQuantityOfItemInInventory(itemDescriptor.Id),
-            userData: inventorySlotIndex,
-            onSubmit: (sender, args) =>
-            {
-                if (sender is not InputBox { UserData: int slotIndex })
-                {
-                    return;
-                }
+        //var inputType = canDropMultiple ? InputType.NumericSliderInput : InputType.YesNo;
+        //var prompt = canDropMultiple ? Strings.Inventory.DropItemPrompt : Strings.Inventory.DropPrompt;
+        //_ = new InputBox(
+        //    title: Strings.Inventory.DropItemTitle,
+        //    prompt: prompt.ToString(itemDescriptor.Name),
+        //    inputType: inputType,
+        //    quantity: quantity,
+        //    maximumQuantity: GetQuantityOfItemInInventory(itemDescriptor.Id),
+        //    userData: inventorySlotIndex,
+        //    onSubmit: (sender, args) =>
+        //    {
+        //        if (sender is not InputBox { UserData: int slotIndex })
+        //        {
+        //            return;
+        //        }
 
-                var promptQuantity = 0;
-                switch (args.Value)
-                {
-                    case BooleanSubmissionValue booleanSubmission:
-                        promptQuantity = booleanSubmission.Value ? 1 : 0;
-                        break;
+        //        var promptQuantity = 0;
+        //        switch (args.Value)
+        //        {
+        //            case BooleanSubmissionValue booleanSubmission:
+        //                promptQuantity = booleanSubmission.Value ? 1 : 0;
+        //                break;
 
-                    case NumericalSubmissionValue numericalSubmission:
-                        promptQuantity = (int)Math.Round(numericalSubmission.Value);
-                        break;
-                }
+        //            case NumericalSubmissionValue numericalSubmission:
+        //                promptQuantity = (int)Math.Round(numericalSubmission.Value);
+        //                break;
+        //        }
 
-                if (promptQuantity < 1)
-                {
-                    return;
-                }
+        //        if (promptQuantity < 1)
+        //        {
+        //            return;
+        //        }
 
-                // Check if the item can be dropped in multiple quantities or if value is less than or equal to the quantity in the initial slot
-                if (!canDropMultiple || promptQuantity <= quantity)
-                {
-                    PacketSender.SendDropItem(slotIndex, !canDropMultiple ? 1 : promptQuantity);
-                    return;
-                }
+        //        // Check if the item can be dropped in multiple quantities or if value is less than or equal to the quantity in the initial slot
+        //        if (!canDropMultiple || promptQuantity <= quantity)
+        //        {
+        //            PacketSender.SendDropItem(slotIndex, !canDropMultiple ? 1 : promptQuantity);
+        //            return;
+        //        }
 
-                // Find all slots containing the item.
-                var itemSlots = Inventory.Where(s => s.ItemId == itemDescriptor.Id).ToList();
+        //        // Find all slots containing the item.
+        //        var itemSlots = Inventory.Where(s => s.ItemId == itemDescriptor.Id).ToList();
 
-                // Send the drop item packet for the initial slot.
-                PacketSender.SendDropItem(slotIndex, quantity);
-                promptQuantity -= quantity;
-                _ = itemSlots.Remove(inventorySlot); // Remove the initial slot from the list of item slots
+        //        // Send the drop item packet for the initial slot.
+        //        PacketSender.SendDropItem(slotIndex, quantity);
+        //        promptQuantity -= quantity;
+        //        _ = itemSlots.Remove(inventorySlot); // Remove the initial slot from the list of item slots
 
-                // Iterate through the remaining slots containing the item
-                foreach (var slot in itemSlots)
-                {
-                    var dropAmount = Math.Min(promptQuantity, slot.Quantity);
+        //        // Iterate through the remaining slots containing the item
+        //        foreach (var slot in itemSlots)
+        //        {
+        //            var dropAmount = Math.Min(promptQuantity, slot.Quantity);
 
-                    if (dropAmount <= 0)
-                    {
-                        break;
-                    }
+        //            if (dropAmount <= 0)
+        //            {
+        //                break;
+        //            }
 
-                    PacketSender.SendDropItem(Inventory.IndexOf(slot), dropAmount);
-                    promptQuantity -= dropAmount;
-                }
-            }
-        );
+        //            PacketSender.SendDropItem(Inventory.IndexOf(slot), dropAmount);
+        //            promptQuantity -= dropAmount;
+        //        }
+        //    }
+        //);
     }
 
     public int FindItem(Guid itemId, int itemVal = 1)
@@ -730,132 +722,132 @@ public partial class Player : Entity, IPlayer
             || shop?.BuyingWhitelist == false && !shop.BuyingItems.Any(buyingItem => buyingItem.ItemId == itemDescriptor.Id);
 
         var prompt = Strings.Shop.SellPrompt;
-        var inputType = InputType.YesNo;
-        Base.GwenEventHandler<InputSubmissionEventArgs>? onSuccess = (sender, args) =>
-        {
-            if (sender is not InputBox { UserData: int slotIndex })
-            {
-                return;
-            }
+        //var inputType = InputType.YesNo;
+        //Base.GwenEventHandler<InputSubmissionEventArgs>? onSuccess = (sender, args) =>
+        //{
+        //    if (sender is not InputBox { UserData: int slotIndex })
+        //    {
+        //        return;
+        //    }
 
-            PacketSender.SendSellItem(slotIndex, 1);
-        };
-        var userData = inventorySlotIndex;
-        var slotQuantity = inventorySlot.Quantity;
-        var maxQuantity = slotQuantity;
+        //    PacketSender.SendSellItem(slotIndex, 1);
+        //};
+        //var userData = inventorySlotIndex;
+        //var slotQuantity = inventorySlot.Quantity;
+        //var maxQuantity = slotQuantity;
 
-        if (!shopCanBuyItem)
-        {
-            prompt = Strings.Shop.CannotSell;
-            inputType = InputType.Okay;
-            onSuccess = null;
-            userData = -1;
-        }
-        else if (itemDescriptor.IsStackable || slotQuantity > 1)
-        {
-            var inventoryQuantity = GetQuantityOfItemInInventory(itemDescriptor.Id);
-            if (inventoryQuantity > 1)
-            {
-                maxQuantity = inventoryQuantity;
-                prompt = Strings.Shop.SellItemPrompt;
-                inputType = InputType.NumericSliderInput;
-                onSuccess = TrySellItemOnSubmit;
-                userData = inventorySlotIndex;
-            }
-        }
+        //if (!shopCanBuyItem)
+        //{
+        //    prompt = Strings.Shop.CannotSell;
+        //    inputType = InputType.Okay;
+        //    onSuccess = null;
+        //    userData = -1;
+        //}
+        //else if (itemDescriptor.IsStackable || slotQuantity > 1)
+        //{
+        //    var inventoryQuantity = GetQuantityOfItemInInventory(itemDescriptor.Id);
+        //    if (inventoryQuantity > 1)
+        //    {
+        //        maxQuantity = inventoryQuantity;
+        //        prompt = Strings.Shop.SellItemPrompt;
+        //        inputType = InputType.NumericSliderInput;
+        //        onSuccess = TrySellItemOnSubmit;
+        //        userData = inventorySlotIndex;
+        //    }
+        //}
 
-        _ = new InputBox(
-            title: Strings.Shop.SellItem,
-            prompt: prompt.ToString(itemDescriptor.Name),
-            inputType: inputType,
-            quantity: slotQuantity,
-            maximumQuantity: maxQuantity,
-            userData: userData,
-            onSubmit: onSuccess
-        );
+        //_ = new InputBox(
+        //    title: Strings.Shop.SellItem,
+        //    prompt: prompt.ToString(itemDescriptor.Name),
+        //    inputType: inputType,
+        //    quantity: slotQuantity,
+        //    maximumQuantity: maxQuantity,
+        //    userData: userData,
+        //    onSubmit: onSuccess
+        //);
     }
 
-    private static void TrySellItemOnSubmit(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: int slotIndex })
-        {
-            return;
-        }
+    //private static void TrySellItemOnSubmit(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: int slotIndex })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendSellItem(slotIndex, value);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendSellItem(slotIndex, value);
+    //    }
+    //}
 
-    public void TryBuyItem(int shopSlotIndex)
-    {
-        //Confirm the purchase
-        var shopSlot = Globals.GameShop?.SellingItems[shopSlotIndex];
-        if (shopSlot == default || !ItemDescriptor.TryGet(shopSlot.ItemId, out var itemDescriptor))
-        {
-            return;
-        }
+    //public void TryBuyItem(int shopSlotIndex)
+    //{
+    //    //Confirm the purchase
+    //    var shopSlot = Globals.GameShop?.SellingItems[shopSlotIndex];
+    //    if (shopSlot == default || !ItemDescriptor.TryGet(shopSlot.ItemId, out var itemDescriptor))
+    //    {
+    //        return;
+    //    }
 
-        var maxBuyAmount = 0;
-        if (shopSlot.CostItemQuantity < 1)
-        {
-            var emptySlots = Inventory.Count(inventorySlot => inventorySlot.ItemId == default);
-            var slotsWithItem = Inventory.Count(inventorySlot => inventorySlot.ItemId == itemDescriptor.Id);
-            var currentItemQuantity = GetQuantityOfItemInInventory(shopSlot.ItemId);
-            var stackSize = itemDescriptor.IsStackable ? itemDescriptor.MaxInventoryStack : 1;
-            var itemQuantityLimitInCurrentStacks = slotsWithItem * stackSize;
-            var partialStackEmptyQuantity = itemQuantityLimitInCurrentStacks - currentItemQuantity;
-            maxBuyAmount = emptySlots * stackSize + partialStackEmptyQuantity;
-        }
-        else
-        {
-            var currencyCount = GetQuantityOfItemInInventory(shopSlot.CostItemId);
-            maxBuyAmount = (int)Math.Floor(currencyCount / (float)shopSlot.CostItemQuantity);
-        }
+    //    var maxBuyAmount = 0;
+    //    if (shopSlot.CostItemQuantity < 1)
+    //    {
+    //        var emptySlots = Inventory.Count(inventorySlot => inventorySlot.ItemId == default);
+    //        var slotsWithItem = Inventory.Count(inventorySlot => inventorySlot.ItemId == itemDescriptor.Id);
+    //        var currentItemQuantity = GetQuantityOfItemInInventory(shopSlot.ItemId);
+    //        var stackSize = itemDescriptor.IsStackable ? itemDescriptor.MaxInventoryStack : 1;
+    //        var itemQuantityLimitInCurrentStacks = slotsWithItem * stackSize;
+    //        var partialStackEmptyQuantity = itemQuantityLimitInCurrentStacks - currentItemQuantity;
+    //        maxBuyAmount = emptySlots * stackSize + partialStackEmptyQuantity;
+    //    }
+    //    else
+    //    {
+    //        var currencyCount = GetQuantityOfItemInInventory(shopSlot.CostItemId);
+    //        maxBuyAmount = (int)Math.Floor(currencyCount / (float)shopSlot.CostItemQuantity);
+    //    }
 
-        // If our max buy amount is 0 or the item isn't stackable, let the server handle it
-        if (!itemDescriptor.IsStackable || maxBuyAmount == 0)
-        {
-            PacketSender.SendBuyItem(shopSlotIndex, 1);
-            return;
-        }
+    //    // If our max buy amount is 0 or the item isn't stackable, let the server handle it
+    //    if (!itemDescriptor.IsStackable || maxBuyAmount == 0)
+    //    {
+    //        PacketSender.SendBuyItem(shopSlotIndex, 1);
+    //        return;
+    //    }
 
-        _ = new InputBox(
-            title: Strings.Shop.BuyItem,
-            prompt: Strings.Shop.BuyItemPrompt.ToString(itemDescriptor.Name),
-            inputType: InputType.NumericSliderInput,
-            quantity: maxBuyAmount,
-            maximumQuantity: maxBuyAmount,
-            userData: shopSlotIndex,
-            onSubmit: TryBuyItemOnSubmit
-        );
-    }
+    //    _ = new InputBox(
+    //        title: Strings.Shop.BuyItem,
+    //        prompt: Strings.Shop.BuyItemPrompt.ToString(itemDescriptor.Name),
+    //        inputType: InputType.NumericSliderInput,
+    //        quantity: maxBuyAmount,
+    //        maximumQuantity: maxBuyAmount,
+    //        userData: shopSlotIndex,
+    //        onSubmit: TryBuyItemOnSubmit
+    //    );
+    //}
 
-    private static void TryBuyItemOnSubmit(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: int slotIndex })
-        {
-            return;
-        }
+    //private static void TryBuyItemOnSubmit(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: int slotIndex })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendBuyItem(slotIndex, value);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendBuyItem(slotIndex, value);
+    //    }
+    //}
 
     /// <summary>
     /// Attempts to deposit the item from the inventory into the bank.
@@ -877,7 +869,7 @@ public partial class Player : Entity, IPlayer
         // Permission Check for Guild Bank
         if (Globals.IsGuildBank && !IsGuildBankDepositAllowed())
         {
-            ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Guilds.NotAllowedDeposit.ToString(Globals.Me?.Guild), CustomColors.Alerts.Error, ChatMessageType.Bank));
+            //ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Guilds.NotAllowedDeposit.ToString(Globals.Me?.Guild), CustomColors.Alerts.Error, ChatMessageType.Bank));
             return false;
         }
 
@@ -912,11 +904,11 @@ public partial class Player : Entity, IPlayer
 
         if (movableQuantity < 1)
         {
-            ChatboxMsg.AddMessage(new ChatboxMsg(
-                Strings.Bank.NoSpace,
-                CustomColors.Alerts.Error,
-                ChatMessageType.Bank
-            ));
+            //ChatboxMsg.AddMessage(new ChatboxMsg(
+            //    Strings.Bank.NoSpace,
+            //    CustomColors.Alerts.Error,
+            //    ChatMessageType.Bank
+            //));
             return false;
         }
 
@@ -946,37 +938,37 @@ public partial class Player : Entity, IPlayer
             return true;
         }
 
-        _ = new InputBox(
-            title: Strings.Bank.DepositItem,
-            prompt: Strings.Bank.DepositItemPrompt.ToString(itemDescriptor.Name),
-            inputType: InputType.NumericSliderInput,
-            quantity: movableQuantity,
-            maximumQuantity: maximumQuantity,
-            userData: new Tuple<int, int>(inventorySlotIndex, bankSlotIndex),
-            onSubmit: TryDepositItemOnSubmitted
-        );
+        //_ = new InputBox(
+        //    title: Strings.Bank.DepositItem,
+        //    prompt: Strings.Bank.DepositItemPrompt.ToString(itemDescriptor.Name),
+        //    inputType: InputType.NumericSliderInput,
+        //    quantity: movableQuantity,
+        //    maximumQuantity: maximumQuantity,
+        //    userData: new Tuple<int, int>(inventorySlotIndex, bankSlotIndex),
+        //    onSubmit: TryDepositItemOnSubmitted
+        //);
 
         return true;
     }
 
-    private static void TryDepositItemOnSubmitted(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: (int inventorySlotIndex, int bankSlotIndex) })
-        {
-            return;
-        }
+    //private static void TryDepositItemOnSubmitted(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: (int inventorySlotIndex, int bankSlotIndex) })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendDepositItem(inventorySlotIndex, value, bankSlotIndex);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendDepositItem(inventorySlotIndex, value, bankSlotIndex);
+    //    }
+    //}
 
     private static bool IsGuildBankDepositAllowed()
     {
@@ -1004,7 +996,7 @@ public partial class Player : Entity, IPlayer
         // Permission Check for Guild Bank
         if (Globals.IsGuildBank && !IsGuildBankWithdrawAllowed())
         {
-            ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Guilds.NotAllowedWithdraw.ToString(Globals.Me?.Guild), CustomColors.Alerts.Error, ChatMessageType.Bank));
+            //ChatboxMsg.AddMessage(new ChatboxMsg(Strings.Guilds.NotAllowedWithdraw.ToString(Globals.Me?.Guild), CustomColors.Alerts.Error, ChatMessageType.Bank));
             return false;
         }
 
@@ -1038,11 +1030,11 @@ public partial class Player : Entity, IPlayer
 
         if (movableQuantity < 1)
         {
-            ChatboxMsg.AddMessage(new ChatboxMsg(
-                Strings.Bank.WithdrawItemNoSpace,
-                CustomColors.Alerts.Error,
-                ChatMessageType.Bank
-            ));
+            //ChatboxMsg.AddMessage(new ChatboxMsg(
+            //    Strings.Bank.WithdrawItemNoSpace,
+            //    CustomColors.Alerts.Error,
+            //    ChatMessageType.Bank
+            //));
             return false;
         }
 
@@ -1072,37 +1064,37 @@ public partial class Player : Entity, IPlayer
             return true;
         }
 
-        _ = new InputBox(
-            title: Strings.Bank.WithdrawItem,
-            prompt: Strings.Bank.WithdrawItemPrompt.ToString(itemDescriptor.Name),
-            inputType: InputType.NumericSliderInput,
-            quantity: movableQuantity,
-            maximumQuantity: maximumQuantity,
-            userData: new Tuple<int, int>(bankSlotIndex, inventorySlotIndex),
-            onSubmit: TryWithdrawItemOnSubmitted
-        );
+        //_ = new InputBox(
+        //    title: Strings.Bank.WithdrawItem,
+        //    prompt: Strings.Bank.WithdrawItemPrompt.ToString(itemDescriptor.Name),
+        //    inputType: InputType.NumericSliderInput,
+        //    quantity: movableQuantity,
+        //    maximumQuantity: maximumQuantity,
+        //    userData: new Tuple<int, int>(bankSlotIndex, inventorySlotIndex),
+        //    onSubmit: TryWithdrawItemOnSubmitted
+        //);
 
         return true;
     }
 
-    private static void TryWithdrawItemOnSubmitted(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: (int bankSlotIndex, int inventorySlotIndex) })
-        {
-            return;
-        }
+    //private static void TryWithdrawItemOnSubmitted(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: (int bankSlotIndex, int inventorySlotIndex) })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendWithdrawItem(bankSlotIndex, value, inventorySlotIndex);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendWithdrawItem(bankSlotIndex, value, inventorySlotIndex);
+    //    }
+    //}
 
     private static bool IsGuildBankWithdrawAllowed()
     {
@@ -1128,35 +1120,35 @@ public partial class Player : Entity, IPlayer
             return;
         }
 
-        _ = new InputBox(
-            title: Strings.Bags.StoreItem,
-            prompt: Strings.Bags.StoreItemPrompt.ToString(itemDescriptor.Name),
-            inputType: InputType.NumericSliderInput,
-            quantity: quantity,
-            maximumQuantity: maxQuantity,
-            userData: new Tuple<int, int>(inventorySlotIndex, bagSlotIndex),
-            onSubmit: TryStoreItemInBagOnSubmit
-        );
+        //_ = new InputBox(
+        //    title: Strings.Bags.StoreItem,
+        //    prompt: Strings.Bags.StoreItemPrompt.ToString(itemDescriptor.Name),
+        //    inputType: InputType.NumericSliderInput,
+        //    quantity: quantity,
+        //    maximumQuantity: maxQuantity,
+        //    userData: new Tuple<int, int>(inventorySlotIndex, bagSlotIndex),
+        //    onSubmit: TryStoreItemInBagOnSubmit
+        //);
     }
 
-    private static void TryStoreItemInBagOnSubmit(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: (int inventorySlotIndex, int bagSlotIndex) })
-        {
-            return;
-        }
+    //private static void TryStoreItemInBagOnSubmit(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: (int inventorySlotIndex, int bagSlotIndex) })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendStoreBagItem(inventorySlotIndex, value, bagSlotIndex);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendStoreBagItem(inventorySlotIndex, value, bagSlotIndex);
+    //    }
+    //}
 
     public void TryRetrieveItemFromBag(int bagSlotIndex, int inventorySlotIndex)
     {
@@ -1180,35 +1172,35 @@ public partial class Player : Entity, IPlayer
             return;
         }
 
-        _ = new InputBox(
-            title: Strings.Bags.RetrieveItem,
-            prompt: Strings.Bags.RetrieveItemPrompt.ToString(itemDescriptor.Name),
-            inputType: InputType.NumericSliderInput,
-            quantity: quantity,
-            maximumQuantity: maxQuantity,
-            userData: new Tuple<int, int>(bagSlotIndex, inventorySlotIndex),
-            onSubmit: TryRetrieveItemFromBagOnSubmit
-        );
+        //_ = new InputBox(
+        //    title: Strings.Bags.RetrieveItem,
+        //    prompt: Strings.Bags.RetrieveItemPrompt.ToString(itemDescriptor.Name),
+        //    inputType: InputType.NumericSliderInput,
+        //    quantity: quantity,
+        //    maximumQuantity: maxQuantity,
+        //    userData: new Tuple<int, int>(bagSlotIndex, inventorySlotIndex),
+        //    onSubmit: TryRetrieveItemFromBagOnSubmit
+        //);
     }
 
-    private static void TryRetrieveItemFromBagOnSubmit(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: (int bagSlotIndex, int inventorySlotIndex) })
-        {
-            return;
-        }
+    //private static void TryRetrieveItemFromBagOnSubmit(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: (int bagSlotIndex, int inventorySlotIndex) })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendRetrieveBagItem(bagSlotIndex, value, inventorySlotIndex);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendRetrieveBagItem(bagSlotIndex, value, inventorySlotIndex);
+    //    }
+    //}
 
     //Trade
     public void TryOfferItemToTrade(int index)
@@ -1227,35 +1219,35 @@ public partial class Player : Entity, IPlayer
             return;
         }
 
-        _ = new InputBox(
-            title: Strings.Trading.OfferItem,
-            prompt: Strings.Trading.OfferItemPrompt.ToString(tradingItem.Name),
-            inputType: InputType.NumericSliderInput,
-            quantity: quantity,
-            maximumQuantity: quantity,
-            userData: index,
-            onSubmit: TryOfferItemToTradeOnSubmit
-        );
+        //_ = new InputBox(
+        //    title: Strings.Trading.OfferItem,
+        //    prompt: Strings.Trading.OfferItemPrompt.ToString(tradingItem.Name),
+        //    inputType: InputType.NumericSliderInput,
+        //    quantity: quantity,
+        //    maximumQuantity: quantity,
+        //    userData: index,
+        //    onSubmit: TryOfferItemToTradeOnSubmit
+        //);
     }
 
-    private static void TryOfferItemToTradeOnSubmit(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: int slotIndex })
-        {
-            return;
-        }
+    //private static void TryOfferItemToTradeOnSubmit(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: int slotIndex })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendOfferTradeItem(slotIndex, value);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendOfferTradeItem(slotIndex, value);
+    //    }
+    //}
 
     public void TryCancelOfferToTradeItem(int index)
     {
@@ -1273,35 +1265,35 @@ public partial class Player : Entity, IPlayer
             return;
         }
 
-        _ = new InputBox(
-            title: Strings.Trading.RevokeItem,
-            prompt: Strings.Trading.RevokeItemPrompt.ToString(revokedItem.Name),
-            inputType: InputType.NumericSliderInput,
-            quantity: quantity,
-            maximumQuantity: quantity,
-            userData: index,
-            onSubmit: TryCancelOfferToTradeItemOnSubmit
-        );
+        //_ = new InputBox(
+        //    title: Strings.Trading.RevokeItem,
+        //    prompt: Strings.Trading.RevokeItemPrompt.ToString(revokedItem.Name),
+        //    inputType: InputType.NumericSliderInput,
+        //    quantity: quantity,
+        //    maximumQuantity: quantity,
+        //    userData: index,
+        //    onSubmit: TryCancelOfferToTradeItemOnSubmit
+        //);
     }
 
-    private static void TryCancelOfferToTradeItemOnSubmit(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: int slotIndex })
-        {
-            return;
-        }
+    //private static void TryCancelOfferToTradeItemOnSubmit(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: int slotIndex })
+    //    {
+    //        return;
+    //    }
 
-        if (args.Value is not NumericalSubmissionValue submissionValue)
-        {
-            return;
-        }
+    //    if (args.Value is not NumericalSubmissionValue submissionValue)
+    //    {
+    //        return;
+    //    }
 
-        var value = (int)Math.Round(submissionValue.Value);
-        if (value > 0)
-        {
-            PacketSender.SendRevokeTradeItem(slotIndex, value);
-        }
-    }
+    //    var value = (int)Math.Round(submissionValue.Value);
+    //    if (value > 0)
+    //    {
+    //        PacketSender.SendRevokeTradeItem(slotIndex, value);
+    //    }
+    //}
 
     //Spell Processing
     public void SwapSpells(int fromSpellIndex, int toSpellIndex)
@@ -1315,25 +1307,25 @@ public partial class Player : Entity, IPlayer
         var spellSlot = Spells[spellIndex];
         if (SpellDescriptor.TryGet(spellSlot.Id, out var spellDescriptor))
         {
-            _ = new InputBox(
-                title: Strings.Spells.ForgetSpell,
-                prompt: Strings.Spells.ForgetSpellPrompt.ToString(spellDescriptor.Name),
-                inputType: InputType.YesNo,
-                userData: spellIndex,
-                onSubmit: TryForgetSpellOnSubmit
-            );
+            //_ = new InputBox(
+            //    title: Strings.Spells.ForgetSpell,
+            //    prompt: Strings.Spells.ForgetSpellPrompt.ToString(spellDescriptor.Name),
+            //    inputType: InputType.YesNo,
+            //    userData: spellIndex,
+            //    onSubmit: TryForgetSpellOnSubmit
+            //);
         }
     }
 
-    private static void TryForgetSpellOnSubmit(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: int slotIndex })
-        {
-            return;
-        }
+    //private static void TryForgetSpellOnSubmit(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: int slotIndex })
+    //    {
+    //        return;
+    //    }
 
-        PacketSender.SendForgetSpell(slotIndex);
-    }
+    //    PacketSender.SendForgetSpell(slotIndex);
+    //}
 
     public void TryUseSpell(int index)
     {
@@ -1502,10 +1494,10 @@ public partial class Player : Entity, IPlayer
 
     private Direction GetInputDirection()
     {
-        if (Interface.Interface.HasInputFocus())
-        {
-            return Direction.None;
-        }
+        //if (Interface.Interface.HasInputFocus())
+        //{
+        //    return Direction.None;
+        //}
 
         var inputX = 0;
         var inputY = 0;
@@ -1635,17 +1627,17 @@ public partial class Player : Entity, IPlayer
             castInput = slotIndex;
         }
 
-        if (!Interface.Interface.HasInGameUI)
-        {
-            return;
+        //if (!Interface.Interface.HasInGameUI)
+        //{
+        //    return;
 
-        }
+        //}
         // ReSharper disable once InvertIf
-        if (0 <= castInput && castInput < Interface.Interface.GameUi.Hotbar?.Items?.Count && mLastHotbarUseTime[castInput] < Timing.Global.Milliseconds)
-        {
-            Interface.Interface.GameUi.Hotbar?.Items?[castInput]?.Activate();
-            mLastHotbarUseTime[castInput] = Timing.Global.Milliseconds + mHotbarUseDelay;
-        }
+        //if (0 <= castInput && castInput < Interface.Interface.GameUi.Hotbar?.Items?.Count && mLastHotbarUseTime[castInput] < Timing.Global.Milliseconds)
+        //{
+        //    Interface.Interface.GameUi.Hotbar?.Items?[castInput]?.Activate();
+        //    mLastHotbarUseTime[castInput] = Timing.Global.Milliseconds + mHotbarUseDelay;
+        //}
     }
 
     protected int GetDistanceTo(IEntity target)
@@ -1840,34 +1832,34 @@ public partial class Player : Entity, IPlayer
 
     private void SetTargetBox(IEntity? targetEntity)
     {
-        switch (targetEntity)
-        {
-            case null:
-            {
-                // ReSharper disable once InvertIf
-                if (TargetBox is { } targetBox)
-                {
-                    TargetBox.SetEntity(null);
-                    if (targetBox.IsVisible)
-                    {
-                        TargetBox.Hide();
-                    }
-                }
-                return;
-            }
+        //switch (targetEntity)
+        //{
+        //    case null:
+        //    {
+        //        // ReSharper disable once InvertIf
+        //        if (TargetBox is { } targetBox)
+        //        {
+        //            TargetBox.SetEntity(null);
+        //            if (targetBox.IsVisible)
+        //            {
+        //                TargetBox.Hide();
+        //            }
+        //        }
+        //        return;
+        //    }
 
-            case Player:
-                TargetBox?.SetEntity(targetEntity, EntityType.Player);
-                break;
-            case Event:
-                TargetBox?.SetEntity(targetEntity, EntityType.Event);
-                break;
-            default:
-                TargetBox?.SetEntity(targetEntity, EntityType.GlobalEntity);
-                break;
-        }
+        //    case Player:
+        //        TargetBox?.SetEntity(targetEntity, EntityType.Player);
+        //        break;
+        //    case Event:
+        //        TargetBox?.SetEntity(targetEntity, EntityType.Event);
+        //        break;
+        //    default:
+        //        TargetBox?.SetEntity(targetEntity, EntityType.GlobalEntity);
+        //        break;
+        //}
 
-        TargetBox?.Show();
+        //TargetBox?.Show();
         PacketSender.SendTarget(targetEntity.Id);
     }
 
@@ -1927,7 +1919,7 @@ public partial class Player : Entity, IPlayer
     {
         if (Globals.InputManager.IsMouseButtonDown(MouseButton.Right))
         {
-            Interface.Interface.GameUi.TargetContextMenu.ToggleHidden(en);
+            //Interface.Interface.GameUi.TargetContextMenu.ToggleHidden(en);
         }
     }
 
@@ -2200,11 +2192,11 @@ public partial class Player : Entity, IPlayer
                         {
                             Target = bestMatch;
 
-                            if (bestMatch is Player && Interface.Interface.GameUi.IsAdminWindowOpen)
-                            {
-                                // Select in admin window if open
-                                Interface.Interface.GameUi.AdminWindowSelectName(bestMatch.Name);
-                            }
+                            //if (bestMatch is Player && Interface.Interface.GameUi.IsAdminWindowOpen)
+                            //{
+                            //    // Select in admin window if open
+                            //    Interface.Interface.GameUi.AdminWindowSelectName(bestMatch.Name);
+                            //}
 
                             return true;
                         }
@@ -2241,20 +2233,20 @@ public partial class Player : Entity, IPlayer
         }
 
         // Are we already targetting this?
-        if (TargetBox != null && TargetBox.MyEntity == entity)
-        {
-            return true;
-        }
+        //if (TargetBox != null && TargetBox.MyEntity == entity)
+        //{
+        //    return true;
+        //}
 
         var targetType = entity is Event ? 1 : 0;
 
         if (entity is Player)
         {
             //Select in admin window if open
-            if (Interface.Interface.GameUi.IsAdminWindowOpen)
-            {
-                Interface.Interface.GameUi.AdminWindowSelectName(entity.Name);
-            }
+            //if (Interface.Interface.GameUi.IsAdminWindowOpen)
+            //{
+            //    Interface.Interface.GameUi.AdminWindowSelectName(entity.Name);
+            //}
         }
 
         if (TargetId != entity.Id)
@@ -2909,72 +2901,72 @@ public partial class Player : Entity, IPlayer
             }
         }
 
-        if (!Interface.Interface.DoesMouseHitInterface())
-        {
-            var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.GetMousePosition());
-            foreach (MapInstance map in Maps.MapInstance.Lookup.Values.Cast<MapInstance>())
-            {
-                if (mouseInWorld.X >= map.X && mouseInWorld.X <= map.X + MapWidth * TileWidth)
-                {
-                    if (mouseInWorld.Y >= map.Y &&
-                        mouseInWorld.Y <= map.Y + MapHeight * TileHeight)
-                    {
-                        var mapId = map.Id;
+        //if (!Interface.Interface.DoesMouseHitInterface())
+        //{
+        //    var mouseInWorld = Graphics.ConvertToWorldPoint(Globals.InputManager.GetMousePosition());
+        //    foreach (MapInstance map in Maps.MapInstance.Lookup.Values.Cast<MapInstance>())
+        //    {
+        //        if (mouseInWorld.X >= map.X && mouseInWorld.X <= map.X + MapWidth * TileWidth)
+        //        {
+        //            if (mouseInWorld.Y >= map.Y &&
+        //                mouseInWorld.Y <= map.Y + MapHeight * TileHeight)
+        //            {
+        //                var mapId = map.Id;
 
-                        foreach (var en in Globals.Entities)
-                        {
-                            if (en.Value == null)
-                            {
-                                continue;
-                            }
+        //                foreach (var en in Globals.Entities)
+        //                {
+        //                    if (en.Value == null)
+        //                    {
+        //                        continue;
+        //                    }
 
-                            if (en.Value.MapId == mapId &&
-                                !en.Value.HideName &&
-                                (!en.Value.IsStealthed ||
-                                 en.Value is Player player && Globals.Me?.IsInMyParty(player) == true) &&
-                                en.Value.WorldPos.Contains(mouseInWorld.X, mouseInWorld.Y))
-                            {
-                                if (en.Value is not (Projectile or Resource))
-                                {
-                                    if (TargetType != 0 || TargetId != en.Value.Id)
-                                    {
-                                        en.Value.DrawTarget((int)Enums.TargetType.Hover);
-                                        ToggleTargetContextMenu(en.Value);
-                                    }
-                                }
-                            }
-                        }
+        //                    if (en.Value.MapId == mapId &&
+        //                        !en.Value.HideName &&
+        //                        (!en.Value.IsStealthed ||
+        //                         en.Value is Player player && Globals.Me?.IsInMyParty(player) == true) &&
+        //                        en.Value.WorldPos.Contains(mouseInWorld.X, mouseInWorld.Y))
+        //                    {
+        //                        if (en.Value is not (Projectile or Resource))
+        //                        {
+        //                            if (TargetType != 0 || TargetId != en.Value.Id)
+        //                            {
+        //                                en.Value.DrawTarget((int)Enums.TargetType.Hover);
+        //                                ToggleTargetContextMenu(en.Value);
+        //                            }
+        //                        }
+        //                    }
+        //                }
 
-                        foreach (MapInstance eventMap in Maps.MapInstance.Lookup.Values.Cast<MapInstance>())
-                        {
-                            foreach (var en in eventMap.LocalEntities)
-                            {
-                                if (en.Value == null)
-                                {
-                                    continue;
-                                }
+        //                foreach (MapInstance eventMap in Maps.MapInstance.Lookup.Values.Cast<MapInstance>())
+        //                {
+        //                    foreach (var en in eventMap.LocalEntities)
+        //                    {
+        //                        if (en.Value == null)
+        //                        {
+        //                            continue;
+        //                        }
 
-                                if (en.Value.MapId == mapId &&
-                                    !((Event)en.Value).DisablePreview &&
-                                    !en.Value.IsHidden &&
-                                    (!en.Value.IsStealthed ||
-                                     en.Value is Player player && Globals.Me?.IsInMyParty(player) == true) &&
-                                    en.Value.WorldPos.Contains(mouseInWorld.X, mouseInWorld.Y))
-                                {
-                                    if (TargetType != 1 || TargetId != en.Value.Id)
-                                    {
-                                        en.Value.DrawTarget((int)Enums.TargetType.Hover);
-                                        ToggleTargetContextMenu(en.Value);
-                                    }
-                                }
-                            }
-                        }
+        //                        if (en.Value.MapId == mapId &&
+        //                            !((Event)en.Value).DisablePreview &&
+        //                            !en.Value.IsHidden &&
+        //                            (!en.Value.IsStealthed ||
+        //                             en.Value is Player player && Globals.Me?.IsInMyParty(player) == true) &&
+        //                            en.Value.WorldPos.Contains(mouseInWorld.X, mouseInWorld.Y))
+        //                        {
+        //                            if (TargetType != 1 || TargetId != en.Value.Id)
+        //                            {
+        //                                en.Value.DrawTarget((int)Enums.TargetType.Hover);
+        //                                ToggleTargetContextMenu(en.Value);
+        //                            }
+        //                        }
+        //                    }
+        //                }
 
-                        break;
-                    }
-                }
-            }
-        }
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     private class TargetInfo

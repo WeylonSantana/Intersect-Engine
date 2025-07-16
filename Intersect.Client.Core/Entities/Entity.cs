@@ -499,39 +499,39 @@ public partial class Entity : IEntity
         {
             if (Id == Globals.Me.Id)
             {
-                Interface.Interface.EnqueueInGame(
-                    gameInterface =>
-                    {
-                        if (gameInterface.PlayerStatusWindow == null)
-                        {
-                            ApplicationContext.Context.Value?.Logger.LogWarning(
-                                $"'{nameof(gameInterface.PlayerStatusWindow)}' is null."
-                            );
-                        }
-                        else
-                        {
-                            gameInterface.PlayerStatusWindow.ShouldUpdateStatuses = true;
-                        }
-                    },
-                    (entityId, entityName) => ApplicationContext.CurrentContext.Logger.LogWarning(
-                        "Tried to load entity {EntityId} ({EntityName}) from packet before in-game UI was ready",
-                        entityId,
-                        entityName
-                    ),
-                    packet.EntityId,
-                    packet.Name
-                );
+                //Interface.Interface.EnqueueInGame(
+                //    gameInterface =>
+                //    {
+                //        if (gameInterface.PlayerStatusWindow == null)
+                //        {
+                //            ApplicationContext.Context.Value?.Logger.LogWarning(
+                //                $"'{nameof(gameInterface.PlayerStatusWindow)}' is null."
+                //            );
+                //        }
+                //        else
+                //        {
+                //            gameInterface.PlayerStatusWindow.ShouldUpdateStatuses = true;
+                //        }
+                //    },
+                //    (entityId, entityName) => ApplicationContext.CurrentContext.Logger.LogWarning(
+                //        "Tried to load entity {EntityId} ({EntityName}) from packet before in-game UI was ready",
+                //        entityId,
+                //        entityName
+                //    ),
+                //    packet.EntityId,
+                //    packet.Name
+                //);
             }
             else if (Id != Guid.Empty && Id == Globals.Me.TargetId)
             {
-                if (Globals.Me.TargetBox == null)
-                {
-                    ApplicationContext.Context.Value?.Logger.LogWarning($"'{nameof(Globals.Me.TargetBox)}' is null.");
-                }
-                else
-                {
-                    Globals.Me.TargetBox.ShouldUpdateStatuses = true;
-                }
+                //if (Globals.Me.TargetBox == null)
+                //{
+                //    ApplicationContext.Context.Value?.Logger.LogWarning($"'{nameof(Globals.Me.TargetBox)}' is null.");
+                //}
+                //else
+                //{
+                //    Globals.Me.TargetBox.ShouldUpdateStatuses = true;
+                //}
             }
         }
     }
@@ -1037,7 +1037,7 @@ public partial class Entity : IEntity
             var mousePos = Graphics.ConvertToWorldPoint(Globals.InputManager.MousePosition);
 
             // Entity is considered hovered if the mouse is over its world position and not hovering over the GUI.
-            IsHovered = WorldPos.Contains(mousePos.X, mousePos.Y) && !Interface.Interface.DoesMouseHitInterface();
+            //IsHovered = WorldPos.Contains(mousePos.X, mousePos.Y) && !Interface.Interface.DoesMouseHitInterface();
 
             // Check the type of entity and return whether its name should be drawn based on settings and conditions.
             switch (this)

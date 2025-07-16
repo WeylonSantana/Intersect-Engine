@@ -1,4 +1,3 @@
-using Intersect.Client.Interface.Menu;
 using Intersect.Core;
 using Intersect.Network;
 using Intersect.Network.Packets.Unconnected.Server;
@@ -13,7 +12,7 @@ public class ServerStatusResponsePacketHandler : AbstractPacketHandler<ServerSta
     {
         try
         {
-            MainMenu.SetNetworkStatus(packet.Status);
+            //MainMenu.SetNetworkStatus(packet.Status);
             return true;
         }
         catch (Exception exception)

@@ -53,7 +53,7 @@ internal static partial class Main
         //Destroy Game
         //TODO - Destroy Graphics and Networking peacefully
         //Network.Close();
-        Interface.Interface.DestroyGwen(true);
+        //Interface.Interface.DestroyGwen(true);
         Graphics.Renderer?.Close();
     }
 
@@ -63,7 +63,7 @@ internal static partial class Main
         {
             Networking.Network.Update();
             Fade.Update();
-            Interface.Interface.SetHandleInput(Globals.GameState != GameStates.Intro);
+            //Interface.Interface.SetHandleInput(Globals.GameState != GameStates.Intro);
 
             switch (Globals.GameState)
             {
@@ -164,7 +164,7 @@ internal static partial class Main
         //if (GameGraphics.FadeAmt != 255f) return;
         //Check if maps are loaded and ready
         Globals.GameState = GameStates.Loading;
-        Interface.Interface.DestroyGwen();
+        //Interface.Interface.DestroyGwen();
     }
 
     private static void ProcessLoading()
@@ -309,7 +309,7 @@ internal static partial class Main
         Globals.EventDialogs?.Clear();
         Globals.InCraft = false;
 
-        Interface.Interface.HideUi = false;
+        //Interface.Interface.HideUi = false;
 
         //Dump Game Objects
         Globals.Me = null;
@@ -335,7 +335,7 @@ internal static partial class Main
         Globals.EventHolds.Clear();
         Globals.PendingEvents.Clear();
 
-        Interface.Interface.InitGwen();
+        //Interface.Interface.InitGwen();
 
         if (ClientContext.IsSinglePlayer)
         {

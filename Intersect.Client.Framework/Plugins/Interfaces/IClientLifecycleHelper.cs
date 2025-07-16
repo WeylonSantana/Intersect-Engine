@@ -1,7 +1,6 @@
-﻿using Intersect.Client.Framework.Entities;
+using Intersect.Client.Framework.Entities;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
-using Intersect.Client.Interface;
 using Intersect.Plugins.Interfaces;
 
 namespace Intersect.Client.Plugins.Interfaces;
@@ -35,7 +34,7 @@ public interface IClientLifecycleHelper : ILifecycleHelper
     /// <summary>
     /// A reference to the currently active interface if one is loaded.
     /// </summary>
-    IMutableInterface Interface { get; }
+    //IMutableInterface Interface { get; }
 
     /// <summary>
     /// Invokes <see cref="LifecycleChangedState"/> handlers for <paramref name="state"/>.

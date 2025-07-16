@@ -1,5 +1,3 @@
-﻿using Intersect.Client.Framework.Gwen.Control.EventArguments;
-
 namespace Intersect.Client.Framework.Audio;
 
 
@@ -60,14 +58,14 @@ public abstract partial class GameAudioInstance
             _volume = newVolume;
 
             OnVolumeChanged(oldVolume: oldVolume, newVolume: newVolume);
-            VolumeChanged?.Invoke(
-                this,
-                new ValueChangedEventArgs<int>
-                {
-                    Value = newVolume,
-                    OldValue = oldVolume,
-                }
-            );
+            //VolumeChanged?.Invoke(
+            //    this,
+            //    new ValueChangedEventArgs<int>
+            //    {
+            //        Value = newVolume,
+            //        OldValue = oldVolume,
+            //    }
+            //);
         }
     }
 
@@ -75,7 +73,7 @@ public abstract partial class GameAudioInstance
 
     protected abstract void OnVolumeChanged(int oldVolume, int newVolume);
 
-    public EventHandler<ValueChangedEventArgs<int>>? VolumeChanged;
+    //public EventHandler<ValueChangedEventArgs<int>>? VolumeChanged;
 
     public abstract AudioInstanceState State { get; }
 

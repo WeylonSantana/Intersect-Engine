@@ -5,8 +5,6 @@ using Intersect.Client.Entities.Projectiles;
 using Intersect.Client.Framework.Entities;
 using Intersect.Client.Framework.Items;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Game.Chat;
-using Intersect.Client.Interface.Menu;
 using Intersect.Client.Items;
 using Intersect.Client.Localization;
 using Intersect.Client.Maps;
@@ -17,10 +15,8 @@ using Intersect.GameObjects;
 using Intersect.Network;
 using Intersect.Network.Packets;
 using Intersect.Network.Packets.Server;
-using Intersect.Utilities;
 using Intersect.Framework;
 using Intersect.Models;
-using Intersect.Client.Interface.Shared;
 using Intersect.Framework.Core;
 using Intersect.Framework.Core.GameObjects.Animations;
 using Intersect.Framework.Core.GameObjects.Crafting;
@@ -30,7 +26,6 @@ using Intersect.Framework.Core.GameObjects.Maps;
 using Intersect.Framework.Core.GameObjects.Maps.Attributes;
 using Intersect.Framework.Core.GameObjects.Maps.MapList;
 using Intersect.Framework.Core.Security;
-using Intersect.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace Intersect.Client.Networking;
@@ -173,7 +168,7 @@ internal sealed partial class PacketHandler
         ApplicationContext.Context.Value?.Logger.LogDebug("Received configuration from server.");
         Options.LoadFromServer(packet.Config);
         Globals.WaitingOnServer = false;
-        MainMenu.HandleReceivedConfiguration();
+        //MainMenu.HandleReceivedConfiguration();
         try
         {
             Strings.Load();
@@ -610,20 +605,20 @@ internal sealed partial class PacketHandler
     //ChatMsgPacket
     public void HandlePacket(IPacketSender packetSender, Intersect.Network.Packets.Server.ChatMsgPacket packet)
     {
-        ChatboxMsg.AddMessage(
-            new ChatboxMsg(
-                packet.Message ?? "", new Color(packet.Color.A, packet.Color.R, packet.Color.G, packet.Color.B), packet.Type,
-                packet.Target
-            )
-        );
+        //ChatboxMsg.AddMessage(
+        //    new ChatboxMsg(
+        //        packet.Message ?? "", new Color(packet.Color.A, packet.Color.R, packet.Color.G, packet.Color.B), packet.Type,
+        //        packet.Target
+        //    )
+        //);
     }
 
     //AnnouncementPacket
     public void HandlePacket(IPacketSender packetSender, AnnouncementPacket packet)
     {
-        Interface.Interface.EnqueueInGame(
-            gameInterface => gameInterface.AnnouncementWindow.ShowAnnouncement(packet.Message, packet.Duration)
-        );
+        //Interface.Interface.EnqueueInGame(
+        //    gameInterface => gameInterface.AnnouncementWindow.ShowAnnouncement(packet.Message, packet.Duration)
+        //);
     }
 
     //ActionMsgPackets
@@ -668,7 +663,7 @@ internal sealed partial class PacketHandler
         MapList.List.JsonData = packet.MapListData;
         MapList.List.PostLoad(MapDescriptor.Lookup, false, true);
 
-        Interface.Interface.GameUi.UpdateAdminWindowMapList();
+        //Interface.Interface.GameUi.UpdateAdminWindowMapList();
     }
 
     //EntityMovementPackets
@@ -933,20 +928,20 @@ internal sealed partial class PacketHandler
 
             entity.SortStatuses();
 
-            if (!Interface.Interface.HasInGameUI)
-            {
-                continue;
-            }
+            //if (!Interface.Interface.HasInGameUI)
+            //{
+            //    continue;
+            //}
 
             //If its you or your target, update the entity box.
-            if (en.Id == Globals.Me.Id && Interface.Interface.GameUi.PlayerStatusWindow != null)
-            {
-                Interface.Interface.GameUi.PlayerStatusWindow.ShouldUpdateStatuses = true;
-            }
-            else if (en.Id == Globals.Me.TargetId && Globals.Me.TargetBox != null)
-            {
-                Globals.Me.TargetBox.ShouldUpdateStatuses = true;
-            }
+            //if (en.Id == Globals.Me.Id && Interface.Interface.GameUi.PlayerStatusWindow != null)
+            //{
+            //    Interface.Interface.GameUi.PlayerStatusWindow.ShouldUpdateStatuses = true;
+            //}
+            //else if (en.Id == Globals.Me.TargetId && Globals.Me.TargetBox != null)
+            //{
+            //    Globals.Me.TargetBox.ShouldUpdateStatuses = true;
+            //}
         }
     }
 
@@ -1020,20 +1015,20 @@ internal sealed partial class PacketHandler
 
         en.SortStatuses();
 
-        if (!Interface.Interface.HasInGameUI)
-        {
-            return;
-        }
+        //if (!Interface.Interface.HasInGameUI)
+        //{
+        //    return;
+        //}
 
         //If its you or your target, update the entity box.
-        if (id == Globals.Me.Id && Interface.Interface.GameUi.PlayerStatusWindow != null)
-        {
-            Interface.Interface.GameUi.PlayerStatusWindow.ShouldUpdateStatuses = true;
-        }
-        else if (id == Globals.Me.TargetId && Globals.Me.TargetBox != null)
-        {
-            Globals.Me.TargetBox.ShouldUpdateStatuses = true;
-        }
+        //if (id == Globals.Me.Id && Interface.Interface.GameUi.PlayerStatusWindow != null)
+        //{
+        //    Interface.Interface.GameUi.PlayerStatusWindow.ShouldUpdateStatuses = true;
+        //}
+        //else if (id == Globals.Me.TargetId && Globals.Me.TargetBox != null)
+        //{
+        //    Globals.Me.TargetBox.ShouldUpdateStatuses = true;
+        //}
     }
 
     //EntityStatsPacket
@@ -1227,21 +1222,21 @@ internal sealed partial class PacketHandler
     //InputVariablePacket
     public void HandlePacket(IPacketSender packetSender, InputVariablePacket packet)
     {
-        var type = packet.Type switch
-        {
-            VariableDataType.String => InputType.TextInput,
-            VariableDataType.Boolean => InputType.YesNoCancel,
-            _ => InputType.NumericInput,
-        };
+        //var type = packet.Type switch
+        //{
+        //    VariableDataType.String => InputType.TextInput,
+        //    VariableDataType.Boolean => InputType.YesNoCancel,
+        //    _ => InputType.NumericInput,
+        //};
 
-        _ = new InputBox(
-            title: packet.Title,
-            prompt: packet.Prompt,
-            inputType: type,
-            userData: packet.EventId,
-            onSubmit: PacketSender.SendEventInputVariable,
-            onCancel: PacketSender.SendEventInputVariableCancel
-        );
+        //_ = new InputBox(
+        //    title: packet.Title,
+        //    prompt: packet.Prompt,
+        //    inputType: type,
+        //    userData: packet.EventId,
+        //    onSubmit: PacketSender.SendEventInputVariable,
+        //    onCancel: PacketSender.SendEventInputVariableCancel
+        //);
     }
 
     //ErrorMessagePacket
@@ -1249,8 +1244,8 @@ internal sealed partial class PacketHandler
     {
         Fade.FadeIn(ClientConfiguration.Instance.FadeDurationMs);
         Globals.WaitingOnServer = false;
-        Interface.Interface.ShowAlert(packet.Error, packet.Header, alertType: AlertType.Error);
-        Interface.Interface.MenuUi?.Reset();
+        //Interface.Interface.ShowAlert(packet.Error, packet.Header, alertType: AlertType.Error);
+        //Interface.Interface.MenuUi?.Reset();
     }
 
     //MapItemsPacket
@@ -1416,7 +1411,7 @@ internal sealed partial class PacketHandler
     public void HandlePacket(IPacketSender packetSender, CharacterCreationPacket packet)
     {
         Globals.WaitingOnServer = false;
-        Interface.Interface.MenuUi.MainMenu.NotifyOpenCharacterCreation(packet.Force);
+        //Interface.Interface.MenuUi.MainMenu.NotifyOpenCharacterCreation(packet.Force);
     }
 
     //SpellCastPacket
@@ -1708,62 +1703,62 @@ internal sealed partial class PacketHandler
     //ShopPacket
     public void HandlePacket(IPacketSender packetSender, ShopPacket packet)
     {
-        if (!Interface.Interface.HasInGameUI)
-        {
-            throw new ArgumentNullException(nameof(Interface.Interface.GameUi));
-        }
+        //if (!Interface.Interface.HasInGameUI)
+        //{
+        //    throw new ArgumentNullException(nameof(Interface.Interface.GameUi));
+        //}
 
-        if (packet == null)
-        {
-            throw new ArgumentNullException(nameof(packet));
-        }
+        //if (packet == null)
+        //{
+        //    throw new ArgumentNullException(nameof(packet));
+        //}
 
-        if (packet.ShopData != null)
-        {
-            Globals.GameShop = new ShopDescriptor();
-            Globals.GameShop.Load(packet.ShopData);
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenShop());
-        }
-        else
-        {
-            Globals.GameShop = null;
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseShop());
-        }
+        //if (packet.ShopData != null)
+        //{
+        //    Globals.GameShop = new ShopDescriptor();
+        //    Globals.GameShop.Load(packet.ShopData);
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenShop());
+        //}
+        //else
+        //{
+        //    Globals.GameShop = null;
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseShop());
+        //}
     }
 
     //CraftingTablePacket
     public void HandlePacket(IPacketSender packetSender, CraftingTablePacket packet)
     {
-        if (!packet.Close)
-        {
-            Globals.ActiveCraftingTable = new CraftingTableDescriptor();
-            Globals.ActiveCraftingTable.Load(packet.TableData);
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenCraftingTable(packet.JournalMode));
-        }
-        else
-        {
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseCraftingTable());
-        }
+        //if (!packet.Close)
+        //{
+        //    Globals.ActiveCraftingTable = new CraftingTableDescriptor();
+        //    Globals.ActiveCraftingTable.Load(packet.TableData);
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenCraftingTable(packet.JournalMode));
+        //}
+        //else
+        //{
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseCraftingTable());
+        //}
     }
 
     //BankPacket
     public void HandlePacket(IPacketSender packetSender, BankPacket packet)
     {
-        if (!packet.Close)
-        {
-            Globals.IsGuildBank = packet.Guild;
-            Globals.BankSlots = new Item[packet.Slots];
-            foreach (var itm in packet.Items)
-            {
-                HandlePacket(itm);
-            }
-            Globals.BankSlotCount = packet.Slots;
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenBank());
-        }
-        else
-        {
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseBank());
-        }
+        //if (!packet.Close)
+        //{
+        //    Globals.IsGuildBank = packet.Guild;
+        //    Globals.BankSlots = new Item[packet.Slots];
+        //    foreach (var itm in packet.Items)
+        //    {
+        //        HandlePacket(itm);
+        //    }
+        //    Globals.BankSlotCount = packet.Slots;
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenBank());
+        //}
+        //else
+        //{
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseBank());
+        //}
     }
 
     //BankUpdatePacket
@@ -1930,14 +1925,14 @@ internal sealed partial class PacketHandler
     //PartyInvitePacket
     public void HandlePacket(IPacketSender packetSender, Intersect.Network.Packets.Server.PartyInvitePacket packet)
     {
-        _ = new InputBox(
-            title: Strings.Parties.PartyInvite,
-            prompt: Strings.Parties.InvitePrompt.ToString(packet.LeaderName),
-            inputType: InputType.YesNo,
-            userData: packet.LeaderId,
-            onSubmit: PacketSender.SendPartyAccept,
-            onCancel: PacketSender.SendPartyDecline
-        );
+        //_ = new InputBox(
+        //    title: Strings.Parties.PartyInvite,
+        //    prompt: Strings.Parties.InvitePrompt.ToString(packet.LeaderName),
+        //    inputType: InputType.YesNo,
+        //    userData: packet.LeaderId,
+        //    onSubmit: PacketSender.SendPartyAccept,
+        //    onCancel: PacketSender.SendPartyDecline
+        //);
     }
 
     //ChatBubblePacket
@@ -2018,7 +2013,7 @@ internal sealed partial class PacketHandler
 
             Globals.Me.HiddenQuests = packet.HiddenQuests;
 
-            Interface.Interface.EnqueueInGame(uiInGame => uiInGame.NotifyQuestsUpdated());
+            //Interface.Interface.EnqueueInGame(uiInGame => uiInGame.NotifyQuestsUpdated());
         }
     }
 
@@ -2038,11 +2033,11 @@ internal sealed partial class PacketHandler
                 }
             }
 
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenTrading(packet.TradePartner));
+            //Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenTrading(packet.TradePartner));
         }
         else
         {
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseTrading());
+            //Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseTrading());
         }
     }
 
@@ -2071,14 +2066,14 @@ internal sealed partial class PacketHandler
     //TradeRequestPacket
     public void HandlePacket(IPacketSender packetSender, Intersect.Network.Packets.Server.TradeRequestPacket packet)
     {
-        _ = new InputBox(
-            title: Strings.Trading.TradeRequest,
-            prompt: Strings.Trading.RequestPrompt.ToString(packet.PartnerName),
-            inputType: InputType.YesNo,
-            userData: packet.PartnerId,
-            onSubmit: PacketSender.SendTradeRequestAccept,
-            onCancel: PacketSender.SendTradeRequestDecline
-        );
+        //_ = new InputBox(
+        //    title: Strings.Trading.TradeRequest,
+        //    prompt: Strings.Trading.RequestPrompt.ToString(packet.PartnerName),
+        //    inputType: InputType.YesNo,
+        //    userData: packet.PartnerId,
+        //    onSubmit: PacketSender.SendTradeRequestAccept,
+        //    onCancel: PacketSender.SendTradeRequestDecline
+        //);
     }
 
     //NpcAggressionPacket
@@ -2114,15 +2109,15 @@ internal sealed partial class PacketHandler
     //BagPacket
     public void HandlePacket(IPacketSender packetSender, BagPacket packet)
     {
-        if (!packet.Close)
-        {
-            Globals.BagSlots = new Item[packet.Slots];
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenBag());
-        }
-        else
-        {
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseBag());
-        }
+        //if (!packet.Close)
+        //{
+        //    Globals.BagSlots = new Item[packet.Slots];
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyOpenBag());
+        //}
+        //else
+        //{
+        //    Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyCloseBag());
+        //}
     }
 
     //BagUpdatePacket
@@ -2173,52 +2168,52 @@ internal sealed partial class PacketHandler
             Globals.Me?.Friends.Add(f);
         }
 
-        if (!Interface.Interface.HasInGameUI)
-        {
-            return;
-        }
+        //if (!Interface.Interface.HasInGameUI)
+        //{
+        //    return;
+        //}
 
-        Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyUpdateFriendsList());
+        //Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyUpdateFriendsList());
     }
 
     //FriendRequestPacket
     public void HandlePacket(IPacketSender packetSender, FriendRequestPacket packet)
     {
-        _ = new InputBox(
-            title: Strings.Friends.Request,
-            prompt: Strings.Friends.RequestPrompt.ToString(packet.FriendName),
-            inputType: InputType.YesNo,
-            userData: packet.FriendId,
-            onSubmit: PacketSender.SendFriendRequestAccept,
-            onCancel: PacketSender.SendFriendRequestDecline
-        );
+        //_ = new InputBox(
+        //    title: Strings.Friends.Request,
+        //    prompt: Strings.Friends.RequestPrompt.ToString(packet.FriendName),
+        //    inputType: InputType.YesNo,
+        //    userData: packet.FriendId,
+        //    onSubmit: PacketSender.SendFriendRequestAccept,
+        //    onCancel: PacketSender.SendFriendRequestDecline
+        //);
     }
 
     //CharactersPacket
     public void HandlePacket(IPacketSender packetSender, CharactersPacket packet)
     {
-        List<CharacterSelectionPreviewMetadata> characterSelectionPreviews =
-        [
-            ..packet.Characters.Select(
-                characterPacket => new CharacterSelectionPreviewMetadata(
-                    characterPacket.Id,
-                    characterPacket.Name,
-                    characterPacket.Sprite,
-                    characterPacket.Face,
-                    characterPacket.Level,
-                    characterPacket.ClassName,
-                    characterPacket.Equipment
-                )
-            ),
-        ];
+        //List<CharacterSelectionPreviewMetadata> characterSelectionPreviews =
+        //[
+        //    ..packet.Characters.Select(
+        //        characterPacket => new CharacterSelectionPreviewMetadata(
+        //            characterPacket.Id,
+        //            characterPacket.Name,
+        //            characterPacket.Sprite,
+        //            characterPacket.Face,
+        //            characterPacket.Level,
+        //            characterPacket.ClassName,
+        //            characterPacket.Equipment
+        //        )
+        //    ),
+        //];
 
-        if (packet.FreeSlot)
-        {
-            characterSelectionPreviews.Add(default);
-        }
+        //if (packet.FreeSlot)
+        //{
+        //    characterSelectionPreviews.Add(default);
+        //}
 
-        Globals.WaitingOnServer = false;
-        Interface.Interface.MenuUi.MainMenu.NotifyOpenCharacterSelection(characterSelectionPreviews, packet.Username);
+        //Globals.WaitingOnServer = false;
+        //Interface.Interface.MenuUi.MainMenu.NotifyOpenCharacterSelection(characterSelectionPreviews, packet.Username);
     }
 
     //PasswordResetResultPacket
@@ -2227,21 +2222,21 @@ internal sealed partial class PacketHandler
         var passwordResetResultType = packet.ResultType;
         var responseMessage = Strings.PasswordChange.ResponseMessages[passwordResetResultType];
         var requestSuccessful = passwordResetResultType == PasswordResetResultType.Success;
-        var alertType = requestSuccessful
-            ? AlertType.Information
-            : AlertType.Error;
-        var alertTitle = requestSuccessful ? Strings.PasswordChange.AlertTitleSuccess : Strings.PasswordChange.AlertTitleError;
+        //var alertType = requestSuccessful
+        //    ? AlertType.Information
+        //    : AlertType.Error;
+        //var alertTitle = requestSuccessful ? Strings.PasswordChange.AlertTitleSuccess : Strings.PasswordChange.AlertTitleError;
 
-        Interface.Interface.ShowAlert(
-            message: responseMessage,
-            title: alertTitle,
-            alertType: alertType
-        );
+        //Interface.Interface.ShowAlert(
+        //    message: responseMessage,
+        //    title: alertTitle,
+        //    alertType: alertType
+        //);
 
-        if (requestSuccessful)
-        {
-            Interface.Interface.MenuUi.MainMenu.NotifyOpenLogin();
-        }
+        //if (requestSuccessful)
+        //{
+        //    Interface.Interface.MenuUi.MainMenu.NotifyOpenLogin();
+        //}
 
         Globals.WaitingOnServer = false;
     }
@@ -2338,7 +2333,7 @@ internal sealed partial class PacketHandler
         if (hasUpdates)
         {
             Globals.Me.GuildMembers = updatedGuildMembers;
-            Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyUpdateGuildList());
+            //Interface.Interface.EnqueueInGame(gameInterface => gameInterface.NotifyUpdateGuildList());
         }
     }
 
@@ -2346,20 +2341,20 @@ internal sealed partial class PacketHandler
     //GuildInvitePacket
     public void HandlePacket(IPacketSender packetSender, GuildInvitePacket packet)
     {
-        Interface.Interface.EnqueueInGame(
-            () =>
-            {
-                _ = new InputBox(
-                    title: Strings.Guilds.InviteRequestTitle,
-                    prompt: (string.IsNullOrWhiteSpace(packet.GuildName)
-                        ? Strings.Guilds.InviteRequestPromptMissingGuild
-                        : Strings.Guilds.InviteRequestPrompt).ToString(packet.Inviter, packet.GuildName),
-                    inputType: InputType.YesNo,
-                    onSubmit: PacketSender.SendGuildInviteAccept,
-                    onCancel: PacketSender.SendGuildInviteDecline
-                );
-            }
-        );
+        //Interface.Interface.EnqueueInGame(
+        //    () =>
+        //    {
+        //        _ = new InputBox(
+        //            title: Strings.Guilds.InviteRequestTitle,
+        //            prompt: (string.IsNullOrWhiteSpace(packet.GuildName)
+        //                ? Strings.Guilds.InviteRequestPromptMissingGuild
+        //                : Strings.Guilds.InviteRequestPrompt).ToString(packet.Inviter, packet.GuildName),
+        //            inputType: InputType.YesNo,
+        //            onSubmit: PacketSender.SendGuildInviteAccept,
+        //            onCancel: PacketSender.SendGuildInviteDecline
+        //        );
+        //    }
+        //);
     }
 
     public void HandlePacket(IPacketSender packetSender, FadePacket packet)

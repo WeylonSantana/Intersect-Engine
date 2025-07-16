@@ -1,6 +1,4 @@
 using Intersect.Client.Core;
-using Intersect.Client.Framework.Gwen.Input;
-using Intersect.Client.Framework.Gwen.Renderer;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
 using Intersect.Client.Localization;
@@ -11,13 +9,10 @@ using Intersect.Client.MonoGame.Network;
 using Intersect.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 using System.Reflection;
 using Intersect.Client.Framework.Database;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.ThirdParty;
-using MainMenu = Intersect.Client.Interface.Menu.MainMenu;
-using Intersect.Client.Interface.Shared;
 using Intersect.Client.MonoGame.NativeInterop;
 using Intersect.Client.MonoGame.NativeInterop.OpenGL;
 using Intersect.Core;
@@ -117,8 +112,8 @@ internal partial class IntersectGame : Game
 
         Core.Graphics.Renderer = _gameRenderer;
 
-        Interface.Interface.GwenRenderer = new IntersectRenderer(null, Core.Graphics.Renderer);
-        Interface.Interface.GwenInput = new IntersectInput();
+        //Interface.Interface.GwenRenderer = new IntersectRenderer(null, Core.Graphics.Renderer);
+        //Interface.Interface.GwenInput = new IntersectInput();
 
         // Windows
         Window.Position = new Microsoft.Xna.Framework.Point(
@@ -181,12 +176,12 @@ internal partial class IntersectGame : Game
 
         // TODO: Remove old netcode
         Networking.Network.Socket = new MonoSocket(Context);
-        Networking.Network.Socket.Connected += (_, connectionEventArgs) =>
-            MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
-        Networking.Network.Socket.ConnectionFailed += (_, connectionEventArgs, _) =>
-            MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
-        Networking.Network.Socket.Disconnected += (_, connectionEventArgs) =>
-            MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus, resetStatusCheck: true);
+        //Networking.Network.Socket.Connected += (_, connectionEventArgs) =>
+        //    MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
+        //Networking.Network.Socket.ConnectionFailed += (_, connectionEventArgs, _) =>
+        //    MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
+        //Networking.Network.Socket.Disconnected += (_, connectionEventArgs) =>
+        //    MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus, resetStatusCheck: true);
 
         Main.Start(Context);
 
@@ -365,20 +360,20 @@ internal partial class IntersectGame : Game
             if (!exception)
             {
                 //Show Message Getting Exit Confirmation From Player to Leave in Combat
-                _ = new InputBox(
-                    title: Strings.Combat.WarningTitle,
-                    prompt: Strings.Combat.WarningCharacterSelect,
-                    inputType: InputType.YesNo,
-                    onSubmit: (s, e) =>
-                    {
-                        if (Globals.Me != null)
-                        {
-                            Globals.Me.CombatTimer = 0;
-                        }
+                //_ = new InputBox(
+                //    title: Strings.Combat.WarningTitle,
+                //    prompt: Strings.Combat.WarningCharacterSelect,
+                //    inputType: InputType.YesNo,
+                //    onSubmit: (s, e) =>
+                //    {
+                //        if (Globals.Me != null)
+                //        {
+                //            Globals.Me.CombatTimer = 0;
+                //        }
 
-                        Globals.IsRunning = false;
-                    }
-                );
+                //        Globals.IsRunning = false;
+                //    }
+                //);
 
                 //Restart the MonoGame RunLoop
                 Run();
@@ -400,7 +395,7 @@ internal partial class IntersectGame : Game
 
         try
         {
-            Interface.Interface.DestroyGwen();
+            //Interface.Interface.DestroyGwen();
         }
         catch (Exception exception)
         {

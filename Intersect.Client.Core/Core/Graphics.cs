@@ -570,8 +570,8 @@ public static partial class Graphics
             renderer.DisplayModeChanged())
         {
             sDarknessTexture = null;
-            Interface.Interface.DestroyGwen();
-            Interface.Interface.InitGwen();
+            //Interface.Interface.DestroyGwen();
+            //Interface.Interface.InitGwen();
             sOldWidth = renderer.ScreenWidth;
             sOldHeight = renderer.ScreenHeight;
         }
@@ -610,7 +610,7 @@ public static partial class Graphics
 
         renderer.Scale = Globals.Database.UIScale;
 
-        Interface.Interface.DrawGui(deltaTime, totalTime);
+        //Interface.Interface.DrawGui(deltaTime, totalTime);
 
         DrawGameTexture(
             tex: renderer.WhitePixel,

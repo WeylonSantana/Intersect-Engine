@@ -986,10 +986,10 @@ public partial class MapInstance : MapDescriptor, IGameObject<Guid, MapInstance>
     /// </summary>
     public void DrawItemNames()
     {
-        if (Interface.Interface.DoesMouseHitInterface())
-        {
-            return;
-        }
+        //if (Interface.Interface.DoesMouseHitInterface())
+        //{
+        //    return;
+        //}
 
         if (Globals.Me is not { } player)
         {

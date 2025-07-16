@@ -1,9 +1,5 @@
 using Intersect.Client.Entities.Events;
-using Intersect.Client.Framework.Gwen.Control;
-using Intersect.Client.Framework.Gwen.Control.EventArguments;
-using Intersect.Client.Framework.Gwen.Control.EventArguments.InputSubmissionEvent;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Shared;
 using Intersect.Client.Maps;
 using Intersect.Enums;
 using Intersect.Framework;
@@ -145,36 +141,36 @@ public static partial class PacketSender
         Network.SendPacket(new EventResponsePacket(ed.EventId, response));
     }
 
-    public static void SendEventInputVariable(Base sender, InputSubmissionEventArgs args)
-    {
-        if (sender is not InputBox { UserData: Guid eventId })
-        {
-            return;
-        }
+    //public static void SendEventInputVariable(Base sender, InputSubmissionEventArgs args)
+    //{
+    //    if (sender is not InputBox { UserData: Guid eventId })
+    //    {
+    //        return;
+    //    }
 
-        var booleanValue = args.Value is BooleanSubmissionValue booleanSubmissionValue
-            ? booleanSubmissionValue.Value
-            : default;
+    //    var booleanValue = args.Value is BooleanSubmissionValue booleanSubmissionValue
+    //        ? booleanSubmissionValue.Value
+    //        : default;
 
-        var numericalValue = args.Value is NumericalSubmissionValue numericalSubmissionValue
-            ? (int)numericalSubmissionValue.Value
-            : default;
+    //    var numericalValue = args.Value is NumericalSubmissionValue numericalSubmissionValue
+    //        ? (int)numericalSubmissionValue.Value
+    //        : default;
 
-        var stringValue = args.Value is StringSubmissionValue stringSubmissionValue
-            ? stringSubmissionValue.Value
-            : default;
+    //    var stringValue = args.Value is StringSubmissionValue stringSubmissionValue
+    //        ? stringSubmissionValue.Value
+    //        : default;
 
-        Network.SendPacket(new EventInputVariablePacket(eventId, booleanValue, numericalValue, stringValue));
-    }
+    //    Network.SendPacket(new EventInputVariablePacket(eventId, booleanValue, numericalValue, stringValue));
+    //}
 
     public static void SendEventInputVariableCancel(object? sender, EventArgs e)
     {
-        if (sender is not InputBox { UserData: Guid eventId } inputBox)
-        {
-            return;
-        }
+        //if (sender is not InputBox { UserData: Guid eventId } inputBox)
+        //{
+        //    return;
+        //}
 
-        Network.SendPacket(new EventInputVariablePacket(eventId, default, default, default, true));
+        //Network.SendPacket(new EventInputVariablePacket(eventId, default, default, default, true));
     }
 
     public static void SendUserRegistration(string username, string password, string email)
@@ -316,18 +312,18 @@ public static partial class PacketSender
 
     public static void SendPartyAccept(object? sender, EventArgs e)
     {
-        if (sender is InputBox inputBox && inputBox.UserData is Guid partyId)
-        {
-            Network.SendPacket(new PartyInviteResponsePacket(partyId, true));
-        }
+        //if (sender is InputBox inputBox && inputBox.UserData is Guid partyId)
+        //{
+        //    Network.SendPacket(new PartyInviteResponsePacket(partyId, true));
+        //}
     }
 
     public static void SendPartyDecline(object? sender, EventArgs e)
     {
-        if (sender is InputBox inputBox && inputBox.UserData is Guid partyId)
-        {
-            Network.SendPacket(new PartyInviteResponsePacket(partyId, false));
-        }
+        //if (sender is InputBox inputBox && inputBox.UserData is Guid partyId)
+        //{
+        //    Network.SendPacket(new PartyInviteResponsePacket(partyId, false));
+        //}
     }
 
     public static void SendAcceptQuest(Guid questId)
@@ -372,18 +368,18 @@ public static partial class PacketSender
 
     public static void SendTradeRequestAccept(object? sender, EventArgs e)
     {
-        if (sender is InputBox inputBox && inputBox.UserData is Guid tradeId)
-        {
-            Network.SendPacket(new TradeRequestResponsePacket(tradeId, true));
-        }
+        //if (sender is InputBox inputBox && inputBox.UserData is Guid tradeId)
+        //{
+        //    Network.SendPacket(new TradeRequestResponsePacket(tradeId, true));
+        //}
     }
 
     public static void SendTradeRequestDecline(object? sender, EventArgs e)
     {
-        if (sender is InputBox inputBox && inputBox.UserData is Guid tradeId)
-        {
-            Network.SendPacket(new TradeRequestResponsePacket(tradeId, false));
-        }
+        //if (sender is InputBox inputBox && inputBox.UserData is Guid tradeId)
+        //{
+        //    Network.SendPacket(new TradeRequestResponsePacket(tradeId, false));
+        //}
     }
 
     public static void SendStoreBagItem(int invSlot, int amount, int bagSlot)
@@ -423,18 +419,18 @@ public static partial class PacketSender
 
     public static void SendFriendRequestAccept(Object? sender, EventArgs e)
     {
-        if (sender is InputBox inputBox && inputBox.UserData is Guid requestId)
-        {
-            Network.SendPacket(new FriendRequestResponsePacket(requestId, true));
-        }
+        //if (sender is InputBox inputBox && inputBox.UserData is Guid requestId)
+        //{
+        //    Network.SendPacket(new FriendRequestResponsePacket(requestId, true));
+        //}
     }
 
     public static void SendFriendRequestDecline(Object? sender, EventArgs e)
     {
-        if (sender is InputBox inputBox && inputBox.UserData is Guid requestId)
-        {
-            Network.SendPacket(new FriendRequestResponsePacket(requestId, false));
-        }
+        //if (sender is InputBox inputBox && inputBox.UserData is Guid requestId)
+        //{
+        //    Network.SendPacket(new FriendRequestResponsePacket(requestId, false));
+        //}
     }
 
     public static void SendSelectCharacter(Guid charId)

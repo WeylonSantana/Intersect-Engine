@@ -2,13 +2,8 @@ using Intersect.Admin.Actions;
 using Intersect.Client.Entities;
 using Intersect.Client.Framework.GenericClasses;
 using Intersect.Client.Framework.Graphics;
-using Intersect.Client.Framework.Gwen.DragDrop;
-using Intersect.Client.Framework.Gwen.Input;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
-using Intersect.Client.Interface;
-using Intersect.Client.Interface.Game;
-using Intersect.Client.Interface.Shared;
 using Intersect.Client.Maps;
 using Intersect.Client.Networking;
 using Intersect.Configuration;
@@ -90,102 +85,102 @@ public static partial class Input
                 return;
 
             case Keys.Enter:
-                var components = Interface.Interface.InputBlockingComponents.ToArray();
-                for (int i = components.Length - 1; i >= 0; i--)
-                {
-                    var inputBlockingComponent = components[i];
-                    try
-                    {
-                        if (inputBlockingComponent is InputBox { IsHidden: false } inputBox)
-                        {
-                            inputBox.SubmitInput();
-                            consumeKey = true;
-                            canFocusChat = false;
-                            break;
-                        }
-                    }
-                    catch { }
+                //var components = Interface.Interface.InputBlockingComponents.ToArray();
+                //for (int i = components.Length - 1; i >= 0; i--)
+                //{
+                //    var inputBlockingComponent = components[i];
+                //    try
+                //    {
+                //        if (inputBlockingComponent is InputBox { IsHidden: false } inputBox)
+                //        {
+                //            inputBox.SubmitInput();
+                //            consumeKey = true;
+                //            canFocusChat = false;
+                //            break;
+                //        }
+                //    }
+                //    catch { }
 
-                    try
-                    {
-                        if (inputBlockingComponent is EventWindow { IsHidden: false } eventWindow && Globals.EventDialogs.Count > 0)
-                        {
-                            eventWindow.CloseEventResponse(EventResponseType.OneOption);
-                            consumeKey = true;
-                            canFocusChat = false;
+                //    try
+                //    {
+                //        if (inputBlockingComponent is EventWindow { IsHidden: false } eventWindow && Globals.EventDialogs.Count > 0)
+                //        {
+                //            eventWindow.CloseEventResponse(EventResponseType.OneOption);
+                //            consumeKey = true;
+                //            canFocusChat = false;
 
-                            break;
-                        }
-                    }
-                    catch { }
-                }
+                //            break;
+                //        }
+                //    }
+                //    catch { }
+                //}
 
-                if (!consumeKey)
-                {
+                //if (!consumeKey)
+                //{
 
-                }
+                //}
                 break;
         }
 
         if (Controls.Controls.ControlHasKey(Control.OpenMenu, modifier, key))
         {
-            if (currentGameState != GameStates.InGame)
-            {
-                return;
-            }
+            //if (currentGameState != GameStates.InGame)
+            //{
+            //    return;
+            //}
 
-            if (!Interface.Interface.HasInGameUI)
-            {
-                return;
-            }
+            //if (!Interface.Interface.HasInGameUI)
+            //{
+            //    return;
+            //}
 
-            if (DragAndDrop.IsDragging)
-            {
-                return;
-            }
+            //if (DragAndDrop.IsDragging)
+            //{
+            //    return;
+            //}
 
-            var gameUi = Interface.Interface.GameUi;
+            //var gameUi = Interface.Interface.GameUi;
 
             // First try and unfocus chat then close all UI elements, then untarget our target.. and THEN open the escape menu.
             // Most games do this, why not this?
-            if (gameUi.ChatFocussed)
-            {
-                gameUi.UnfocusChat = true;
-            }
-            else if (gameUi.CloseAllWindows())
-            {
+            //if (gameUi.ChatFocussed)
+            //{
+            //    gameUi.UnfocusChat = true;
+            //}
+            //else if (gameUi.CloseAllWindows())
+            //{
                 // We've closed our windows, don't do anything else. :)
-            }
-            else if (Globals.Me is {} me && me.TargetId != default && me.Status.All(s => s.Type != SpellEffect.Taunt))
-            {
-                _ = me.ClearTarget();
-            }
-            else
-            {
-                var simplifiedEscapeMenuSetting = Globals.Database.SimplifiedEscapeMenu;
+            //}
+            //else if (Globals.Me is {} me && me.TargetId != default && me.Status.All(s => s.Type != SpellEffect.Taunt))
+            //{
+            //    _ = me.ClearTarget();
+            //}
+            //else
+            //{
+            //    var simplifiedEscapeMenuSetting = Globals.Database.SimplifiedEscapeMenu;
 
-                if (simplifiedEscapeMenuSetting)
-                {
-                    if (gameUi.EscapeMenu.IsVisibleInTree)
-                    {
-                        gameUi.EscapeMenu.ToggleHidden();
-                    }
-                    else
-                    {
-                        gameUi.GameMenu.ToggleSimplifiedEscapeMenu();
-                    }
-                }
-                else
-                {
-                    gameUi.EscapeMenu.ToggleHidden();
-                }
-            }
+            //    if (simplifiedEscapeMenuSetting)
+            //    {
+            //        if (gameUi.EscapeMenu.IsVisibleInTree)
+            //        {
+            //            gameUi.EscapeMenu.ToggleHidden();
+            //        }
+            //        else
+            //        {
+            //            gameUi.GameMenu.ToggleSimplifiedEscapeMenu();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        gameUi.EscapeMenu.ToggleHidden();
+            //    }
+            //}
         }
 
-        if (Interface.Interface.HasInputFocus())
-        {
-            return;
-        }
+        //if (Interface.Interface.HasInputFocus())
+        //{
+        //    return;
+        //}
 
         // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
         foreach (var control in Controls.Controls.GetControlsFor(modifier, key))
@@ -202,10 +197,10 @@ public static partial class Input
                     break;
 
                 case Control.ToggleGui:
-                    if (currentGameState == GameStates.InGame && !DragAndDrop.IsDragging)
-                    {
-                        Interface.Interface.HideUi = !Interface.Interface.HideUi;
-                    }
+                    //if (currentGameState == GameStates.InGame && !DragAndDrop.IsDragging)
+                    //{
+                    //    Interface.Interface.HideUi = !Interface.Interface.HideUi;
+                    //}
                     break;
 
                 case Control.HoldToZoomIn:
@@ -237,7 +232,7 @@ public static partial class Input
                 }
 
                 case Control.OpenDebugger:
-                    Interface.Interface.CurrentInterface.ToggleDebug();
+                    //Interface.Interface.CurrentInterface.ToggleDebug();
                     break;
             }
 
@@ -250,15 +245,15 @@ public static partial class Input
                     break;
 
                 case GameStates.InGame:
-                    if (!Interface.Interface.HasInGameUI)
-                    {
-                        break;
-                    }
+                    //if (!Interface.Interface.HasInGameUI)
+                    //{
+                    //    break;
+                    //}
 
-                    if (DragAndDrop.IsDragging)
-                    {
-                        break;
-                    }
+                    //if (DragAndDrop.IsDragging)
+                    //{
+                    //    break;
+                    //}
 
                     switch (control)
                     {
@@ -291,48 +286,48 @@ public static partial class Input
                         case Control.Enter:
                             if (canFocusChat)
                             {
-                                Interface.Interface.GameUi.FocusChat = true;
+                                //Interface.Interface.GameUi.FocusChat = true;
                                 consumeKey = true;
                             }
                             continue;
 
                         case Control.OpenInventory:
-                            Interface.Interface.GameUi.GameMenu?.ToggleInventoryWindow();
+                            //Interface.Interface.GameUi.GameMenu?.ToggleInventoryWindow();
                             break;
 
                         case Control.OpenQuests:
-                            Interface.Interface.GameUi.GameMenu?.ToggleQuestsWindow();
+                            //Interface.Interface.GameUi.GameMenu?.ToggleQuestsWindow();
                             break;
 
                         case Control.OpenCharacterInfo:
-                            Interface.Interface.GameUi.GameMenu?.ToggleCharacterWindow();
+                            //Interface.Interface.GameUi.GameMenu?.ToggleCharacterWindow();
                             break;
 
                         case Control.OpenParties:
-                            Interface.Interface.GameUi.GameMenu?.TogglePartyWindow();
+                            //Interface.Interface.GameUi.GameMenu?.TogglePartyWindow();
                             break;
 
                         case Control.OpenSpells:
-                            Interface.Interface.GameUi.GameMenu?.ToggleSpellsWindow();
+                            //Interface.Interface.GameUi.GameMenu?.ToggleSpellsWindow();
                             break;
 
                         case Control.OpenFriends:
-                            _ = (Interface.Interface.GameUi.GameMenu?.ToggleFriendsWindow());
+                            //_ = (Interface.Interface.GameUi.GameMenu?.ToggleFriendsWindow());
                             break;
 
                         case Control.OpenSettings:
-                            Interface.Interface.GameUi.EscapeMenu?.OpenSettingsWindow();
+                            //Interface.Interface.GameUi.EscapeMenu?.OpenSettingsWindow();
                             break;
 
                         case Control.OpenAdminPanel:
-                            if (Interface.Interface.GameUi.ToggleAdminWindow())
-                            {
-                                PacketSender.SendOpenAdminWindow();
-                            }
+                            //if (Interface.Interface.GameUi.ToggleAdminWindow())
+                            //{
+                            //    PacketSender.SendOpenAdminWindow();
+                            //}
                             break;
 
                         case Control.OpenGuild:
-                            _ = Interface.Interface.GameUi.GameMenu?.ToggleGuildWindow();
+                            //_ = Interface.Interface.GameUi.GameMenu?.ToggleGuildWindow();
                             break;
                     }
                     break;
@@ -354,10 +349,10 @@ public static partial class Input
     public static void OnKeyReleased(Keys modifier, Keys key)
     {
         KeyUp?.Invoke(modifier, key);
-        if (Interface.Interface.HasInputFocus())
-        {
-            return;
-        }
+        //if (Interface.Interface.HasInputFocus())
+        //{
+        //    return;
+        //}
 
         if (Controls.Controls.ControlHasKey(Control.HoldToZoomIn, modifier, key))
         {
@@ -431,20 +426,20 @@ public static partial class Input
         }
 
         MouseDown?.Invoke(modifier, key);
-        if (Interface.Interface.HasInputFocus())
-        {
-            return;
-        }
+        //if (Interface.Interface.HasInputFocus())
+        //{
+        //    return;
+        //}
 
         if (Globals.GameState != GameStates.InGame || Globals.Me == null)
         {
             return;
         }
 
-        if (Interface.Interface.DoesMouseHitInterface())
-        {
-            return;
-        }
+        //if (Interface.Interface.DoesMouseHitInterface())
+        //{
+        //    return;
+        //}
 
         if (Globals.Me == null)
         {
@@ -510,10 +505,10 @@ public static partial class Input
         }
 
         MouseUp?.Invoke(modifier, key);
-        if (Interface.Interface.HasInputFocus())
-        {
-            return;
-        }
+        //if (Interface.Interface.HasInputFocus())
+        //{
+        //    return;
+        //}
 
         if (Controls.Controls.ControlHasKey(Control.HoldToZoomIn, modifier, key))
         {
