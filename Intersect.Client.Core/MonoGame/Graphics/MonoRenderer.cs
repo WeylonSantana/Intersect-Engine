@@ -175,12 +175,12 @@ internal partial class MonoRenderer : GameRenderer
             {
                 Globals.Database.FullScreen = false;
                 Globals.Database.SavePreferences();
-                Interface.Interface.ShowAlert(
-                    Strings.Errors.DisplayNotSupportedError.ToString(
-                        Strings.Internals.ResolutionXByY.ToString(width, height)
-                    ),
-                    Strings.Errors.DisplayNotSupported
-                );
+                //Interface.Interface.ShowAlert(
+                //    Strings.Errors.DisplayNotSupportedError.ToString(
+                //        Strings.Internals.ResolutionXByY.ToString(width, height)
+                //    ),
+                //    Strings.Errors.DisplayNotSupported
+                //);
             }
         }
 

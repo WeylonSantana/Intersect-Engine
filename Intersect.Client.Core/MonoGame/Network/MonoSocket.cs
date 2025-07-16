@@ -8,11 +8,8 @@ using Intersect.Client.Framework.Network;
 using Intersect.Configuration;
 using Intersect.Network;
 using Intersect.Network.Packets;
-using Intersect.Utilities;
 using Intersect.Client.Core;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Menu;
-using Intersect.Client.Interface.Shared;
 using Intersect.Client.Localization;
 using Intersect.Core;
 using Intersect.Framework.Core;
@@ -166,7 +163,7 @@ internal partial class MonoSocket : GameSocket
             }
 
             ClientNetwork.UnresolvableHostNames.Add(_lastHost);
-            Interface.Interface.ShowAlert(Strings.Errors.HostNotFound, alertType: AlertType.Error);
+            //Interface.Interface.ShowAlert(Strings.Errors.HostNotFound, alertType: AlertType.Error);
             ApplicationContext.Context.Value?.Logger.LogError(socketException, $"Failed to resolve host: '{_lastHost}'");
             endPoint = default;
             return false;
@@ -215,7 +212,7 @@ internal partial class MonoSocket : GameSocket
         {
             var now = Timing.Global.MillisecondsUtc;
             // ReSharper disable once InvertIf
-            if (_nextServerStatusPing <= now || MainMenu.LastNetworkStatusChangeTime < 0)
+            if (_nextServerStatusPing <= now) // || MainMenu.LastNetworkStatusChangeTime < 0
             {
                 if (!_resolvingHost)
                 {
@@ -258,10 +255,10 @@ internal partial class MonoSocket : GameSocket
                     );
                 }
 
-                if (MainMenu.LastNetworkStatusChangeTime + (int)(ServerStatusPingInterval * 1.5f) < now)
-                {
-                    MainMenu.SetNetworkStatus(NetworkStatus.Offline);
-                }
+                //if (MainMenu.LastNetworkStatusChangeTime + (int)(ServerStatusPingInterval * 1.5f) < now)
+                //{
+                //    MainMenu.SetNetworkStatus(NetworkStatus.Offline);
+                //}
 
                 _nextServerStatusPing = now + ServerStatusPingInterval;
             }

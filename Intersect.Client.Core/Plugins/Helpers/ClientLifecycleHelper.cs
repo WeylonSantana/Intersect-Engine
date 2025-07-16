@@ -1,7 +1,6 @@
-﻿using Intersect.Client.Framework.Entities;
+using Intersect.Client.Framework.Entities;
 using Intersect.Client.Framework.Graphics;
 using Intersect.Client.General;
-using Intersect.Client.Interface;
 using Intersect.Client.Plugins.Interfaces;
 using Intersect.Plugins.Helpers;
 
@@ -33,7 +32,7 @@ internal sealed partial class ClientLifecycleHelper : ContextHelper<IClientPlugi
     }
 
     /// <inheritdoc />
-    public IMutableInterface Interface => Client.Interface.Interface.CurrentInterface;
+    //public IMutableInterface Interface => Client.Interface.Interface.CurrentInterface;
 
     /// <inheritdoc />
     public void EmitLifecycleChangedState(GameStates state)

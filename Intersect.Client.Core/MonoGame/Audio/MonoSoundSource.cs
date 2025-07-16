@@ -1,6 +1,5 @@
 using Intersect.Client.Framework.Audio;
 using Intersect.Client.General;
-using Intersect.Client.Interface.Game.Chat;
 using Intersect.Client.Localization;
 using Intersect.Core;
 using Intersect.Enums;
@@ -96,13 +95,13 @@ public partial class MonoSoundSource : GameAudioSource
         catch (Exception exception)
         {
             ApplicationContext.Context.Value?.Logger.LogError(exception, $"Error loading '{mPath}'.");
-            ChatboxMsg.AddMessage(
-                new ChatboxMsg(
-                    $"{Strings.Errors.LoadFile.ToString(Strings.Words.LcaseSound)} [{mPath}]",
-                    new Color(0xBF, 0x0, 0x0),
-                    ChatMessageType.Error
-                )
-            );
+            //ChatboxMsg.AddMessage(
+            //    new ChatboxMsg(
+            //        $"{Strings.Errors.LoadFile.ToString(Strings.Words.LcaseSound)} [{mPath}]",
+            //        new Color(0xBF, 0x0, 0x0),
+            //        ChatMessageType.Error
+            //    )
+            //);
         }
     }
 }
