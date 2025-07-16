@@ -222,6 +222,7 @@ static class Program
         }
 
         ExportDependency("MonoGame.Framework.dll", "", "MonoGame.Framework.Client.dll");
+        ExportInterfaceAssets();
     }
 
     private static void ExportDependency(string filename, string? folder = default, string? nameoverride = default)
@@ -287,6 +288,72 @@ static class Program
                 var read = memoryStream.Read(data, 0, (int)memoryStream.Length);
                 Debug.Assert(read == memoryStream.Length);
                 fs.Write(data, 0, read);
+            }
+        }
+    }
+
+    private static void ExportInterfaceAssets()
+    {
+        var interfaceDirectory = Path.Combine(ClientConfiguration.ResourcesDirectory, "interface");
+        if (!Directory.Exists(interfaceDirectory))
+        {
+            Directory.CreateDirectory(interfaceDirectory);
+        }
+
+        var assembly = Assembly.GetExecutingAssembly();
+        var interfaceResourcePrefix = "Intersect.Client.Resources.Interface.";
+
+        var resourceNames = assembly.GetManifestResourceNames()
+            .Where(name => name.StartsWith(interfaceResourcePrefix, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        foreach (var resourceName in resourceNames)
+        {
+            var relativePath = resourceName[interfaceResourcePrefix.Length..];
+            var lastDotIndex = relativePath.LastIndexOf('.');
+
+            if (lastDotIndex > 0)
+            {
+                var pathPart = relativePath[..lastDotIndex].Replace('.', Path.DirectorySeparatorChar);
+                var extension = relativePath[lastDotIndex..];
+                relativePath = pathPart + extension;
+            }
+
+            var targetPath = Path.Combine(interfaceDirectory, relativePath);
+
+            var targetDir = Path.GetDirectoryName(targetPath);
+            if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            if (File.Exists(targetPath))
+            {
+                // If the file already exists, skip it
+                continue;
+            }
+
+            try
+            {
+                using var resourceStream = assembly.GetManifestResourceStream(resourceName);
+                if (resourceStream != null)
+                {
+                    using var fileStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write);
+                    resourceStream.CopyTo(fileStream);
+                    ApplicationContext.Context.Value?.Logger.LogInformation(
+                        "Exported interface asset: {ResourceName} to {TargetPath}",
+                        resourceName,
+                        targetPath
+                    );
+                }
+            }
+            catch (Exception exception)
+            {
+                ApplicationContext.Context.Value?.Logger.LogWarning(
+                    exception,
+                    "Failed to export interface asset: {ResourceName}",
+                    resourceName
+                );
             }
         }
     }

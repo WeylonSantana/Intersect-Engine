@@ -41,7 +41,7 @@ public abstract partial class GameContentManager : IContentManager
 
     protected readonly Dictionary<string, IFont> mFontDict = [];
 
-    protected readonly Dictionary<string, IAsset> mGuiDict = [];
+    protected readonly Dictionary<string, IAsset> mInterfaceDict = [];
 
     protected readonly Dictionary<string, IAsset> mImageDict = [];
 
@@ -78,7 +78,7 @@ public abstract partial class GameContentManager : IContentManager
         { ContentType.Face, mFaceDict.Values },
         { ContentType.Fog, mFogDict.Values },
         { ContentType.Image, mImageDict.Values },
-        { ContentType.Interface, mGuiDict.Values },
+        { ContentType.Interface, mInterfaceDict.Values },
         { ContentType.Item, mItemDict.Values },
         { ContentType.Miscellaneous, mMiscDict.Values },
         { ContentType.Paperdoll, mPaperdollDict.Values },
@@ -120,7 +120,7 @@ public abstract partial class GameContentManager : IContentManager
         LoadResources();
         LoadPaperdolls();
         LoadMisc();
-        LoadGui();
+        LoadInterface();
         LoadFonts();
         LoadShaders();
     }
@@ -147,7 +147,7 @@ public abstract partial class GameContentManager : IContentManager
 
     public abstract void LoadPaperdolls();
 
-    public abstract void LoadGui();
+    public abstract void LoadInterface();
 
     public abstract void LoadMisc();
 
@@ -213,8 +213,8 @@ public abstract partial class GameContentManager : IContentManager
             case TextureType.Paperdoll:
                 return mPaperdollDict.Keys.ToArray();
 
-            case TextureType.Gui:
-                return mGuiDict.Keys.ToArray();
+            case TextureType.Interface:
+                return mInterfaceDict.Keys.ToArray();
 
             case TextureType.Misc:
                 return mMiscDict.Keys.ToArray();
@@ -290,8 +290,8 @@ public abstract partial class GameContentManager : IContentManager
 
                 break;
 
-            case TextureType.Gui:
-                textureDict = mGuiDict;
+            case TextureType.Interface:
+                textureDict = mInterfaceDict;
 
                 break;
 
@@ -553,7 +553,7 @@ public abstract partial class GameContentManager : IContentManager
                 return mImageDict;
 
             case ContentType.Interface:
-                return mGuiDict;
+                return mInterfaceDict;
 
             case ContentType.Item:
                 return mItemDict;
