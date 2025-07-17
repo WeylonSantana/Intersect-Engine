@@ -1435,6 +1435,76 @@
         "ElementType": "Screens",
         "EventType": 7,
         "TimestampUtc": "2025-07-17T19:02:09.840624Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T19:13:50.4679306Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.WindowInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:13:56.2294164Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:14:00.1976816Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.WindowTitle",
+        "OldName": "Menu/CreditsWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:14:10.3598398Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.WindowInnerPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:14:49.7584471Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.InnerPanel",
+        "OldName": "Menu/CreditsWindow.WindowInnerPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:14:54.746919Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.ScrollViewerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:15:02.2090352Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:16:49.2198211Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.ContentPanel",
+        "OldName": "Menu/CreditsWindow.ScrollViewerInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:17:03.3555635Z"
+      },
+      {
+        "NewName": "Menu/CreditsWindow.BackButton",
+        "OldName": "Menu/CreditsWindow.ButtonInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:17:30.996558Z"
       }
     ]
   }
