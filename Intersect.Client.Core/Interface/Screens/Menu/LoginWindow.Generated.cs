@@ -40,8 +40,8 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
     public Window WindowInstance { get; protected set; }
     public Label WindowTitle { get; protected set; }
     public WindowInnerPanel InnerPanel { get; protected set; }
-    public StackPanel UsernameContainer { get; protected set; }
-    public StackPanel PasswordContainer { get; protected set; }
+    public InputContainer UsernameContainer { get; protected set; }
+    public InputContainer PasswordContainer { get; protected set; }
     public Label UsernameLabel { get; protected set; }
     public Label PasswordLabel { get; protected set; }
     public InputText UsernameInput { get; protected set; }
@@ -64,8 +64,8 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
         WindowInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Window>(this.Visual,"WindowInstance");
         WindowTitle = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"WindowTitle");
         InnerPanel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<WindowInnerPanel>(this.Visual,"InnerPanel");
-        UsernameContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"UsernameContainer");
-        PasswordContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"PasswordContainer");
+        UsernameContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputContainer>(this.Visual,"UsernameContainer");
+        PasswordContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputContainer>(this.Visual,"PasswordContainer");
         UsernameLabel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"UsernameLabel");
         PasswordLabel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"PasswordLabel");
         UsernameInput = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputText>(this.Visual,"UsernameInput");
