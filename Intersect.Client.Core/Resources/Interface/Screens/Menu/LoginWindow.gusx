@@ -436,6 +436,12 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>StyleCategory</Type>
+      <Name>WindowTitle.Style</Name>
+      <Value xsi:type="xsd:string">H2</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>HorizontalAlignment</Type>
       <Name>WindowTitle.XOrigin</Name>
       <Value xsi:type="xsd:int">1</Value>
@@ -450,7 +456,7 @@
     <Variable>
       <Type>float</Type>
       <Name>WindowTitle.Y</Name>
-      <Value xsi:type="xsd:float">7</Value>
+      <Value xsi:type="xsd:float">5</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -472,7 +478,7 @@
   </Instance>
   <Instance>
     <Name>InnerPanel</Name>
-    <BaseType>Controls/StackPanel</BaseType>
+    <BaseType>Controls/WindowInnerPanel</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>

@@ -39,7 +39,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
     }
     public Window WindowInstance { get; protected set; }
     public Label WindowTitle { get; protected set; }
-    public StackPanel InnerPanel { get; protected set; }
+    public WindowInnerPanel InnerPanel { get; protected set; }
     public StackPanel UsernameContainer { get; protected set; }
     public StackPanel PasswordContainer { get; protected set; }
     public Label UsernameLabel { get; protected set; }
@@ -63,7 +63,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
         base.ReactToVisualChanged();
         WindowInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Window>(this.Visual,"WindowInstance");
         WindowTitle = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"WindowTitle");
-        InnerPanel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"InnerPanel");
+        InnerPanel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<WindowInnerPanel>(this.Visual,"InnerPanel");
         UsernameContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"UsernameContainer");
         PasswordContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"PasswordContainer");
         UsernameLabel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"UsernameLabel");
