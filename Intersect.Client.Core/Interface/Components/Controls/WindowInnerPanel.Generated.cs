@@ -43,7 +43,7 @@ partial class WindowInnerPanel : StackPanel
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        base.AfterFullCreation();
+        //base.AfterFullCreation();
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code
