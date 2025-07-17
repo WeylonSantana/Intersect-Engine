@@ -780,7 +780,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -819,7 +819,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -858,7 +858,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -897,7 +897,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -936,7 +936,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -975,7 +975,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -1014,7 +1014,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -1053,7 +1053,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -1092,7 +1092,7 @@
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>

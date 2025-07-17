@@ -1,9 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ComponentSave xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Name>Controls/ButtonTab</Name>
+  <Name>Controls/Button</Name>
   <BaseType>Container</BaseType>
   <State>
     <Name>Default</Name>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.Alpha</Name>
+      <Value xsi:type="xsd:int">255</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>Blend</Type>
+      <Name>Background.Blend</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
     <Variable>
       <Type>int</Type>
       <Name>Background.Blue</Name>
@@ -23,6 +35,18 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>float</Type>
+      <Name>Background.Height</Name>
+      <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>Background.HeightUnits</Name>
+      <Value xsi:type="xsd:int">2</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>int</Type>
       <Name>Background.Red</Name>
       <Value xsi:type="xsd:int">255</Value>
@@ -38,49 +62,61 @@
     <Variable>
       <Type>StyleCategory</Type>
       <Name>Background.StyleCategoryState</Name>
-      <Value xsi:type="xsd:string">TabBordered</Value>
+      <Value xsi:type="xsd:string">Bordered</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>TextureAddress</Type>
       <Name>Background.TextureAddress</Name>
-      <Value xsi:type="xsd:int">1</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>int</Type>
-      <Name>Background.TextureHeight</Name>
-      <Value xsi:type="xsd:int">25</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>int</Type>
-      <Name>Background.TextureLeft</Name>
       <Value xsi:type="xsd:int">0</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>int</Type>
-      <Name>Background.TextureTop</Name>
-      <Value xsi:type="xsd:int">0</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>int</Type>
-      <Name>Background.TextureWidth</Name>
-      <Value xsi:type="xsd:int">92</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
       <Name>Background.Width</Name>
-      <Value xsi:type="xsd:float">32</Value>
+      <Value xsi:type="xsd:float">0</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
       <Name>Background.WidthUnits</Name>
-      <Value xsi:type="xsd:int">4</Value>
+      <Value xsi:type="xsd:int">2</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>Background.X</Name>
+      <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>HorizontalAlignment</Type>
+      <Name>Background.XOrigin</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>Background.XUnits</Name>
+      <Value xsi:type="xsd:int">6</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>Background.Y</Name>
+      <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>VerticalAlignment</Type>
+      <Name>Background.YOrigin</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>Background.YUnits</Name>
+      <Value xsi:type="xsd:int">7</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -109,7 +145,6 @@
     <Variable>
       <Type>string</Type>
       <Name>FocusedIndicator.Parent</Name>
-      <Value xsi:type="xsd:string">Background</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -122,12 +157,6 @@
       <Type>bool</Type>
       <Name>FocusedIndicator.Visible</Name>
       <Value xsi:type="xsd:boolean">false</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>float</Type>
-      <Name>FocusedIndicator.Width</Name>
-      <Value xsi:type="xsd:float">-8</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -175,99 +204,57 @@
     </Variable>
     <Variable>
       <Type>ColorCategory</Type>
-      <Name>TabText.ColorCategoryState</Name>
+      <Name>TextInstance.ColorCategoryState</Name>
       <Value xsi:type="xsd:string">White</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
-      <Name>TabText.HeightUnits</Name>
+      <Name>TextInstance.HeightUnits</Name>
       <Value xsi:type="xsd:int">2</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>HorizontalAlignment</Type>
-      <Name>TabText.HorizontalAlignment</Name>
+      <Name>TextInstance.HorizontalAlignment</Name>
       <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
-      <Type>string</Type>
-      <Name>TabText.Parent</Name>
-      <Value xsi:type="xsd:string">Background</Value>
+      <Type>SizeCategory</Type>
+      <Name>TextInstance.SizeCategoryState</Name>
+      <Value xsi:type="xsd:string">Strong</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>StyleCategory</Type>
-      <Name>TabText.StyleCategoryState</Name>
+      <Name>TextInstance.StyleCategoryState</Name>
       <Value xsi:type="xsd:string">Strong</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>string</Type>
-      <Name>TabText.Text</Name>
-      <Value xsi:type="xsd:string">Tab 1</Value>
-      <ExposedAsName>TabDisplayText</ExposedAsName>
+      <Name>TextInstance.Text</Name>
+      <Value xsi:type="xsd:string">Click Me</Value>
+      <ExposedAsName>ButtonDisplayText</ExposedAsName>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>VerticalAlignment</Type>
-      <Name>TabText.VerticalAlignment</Name>
+      <Name>TextInstance.VerticalAlignment</Name>
       <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
-      <Type>HorizontalAlignment</Type>
-      <Name>TabText.XOrigin</Name>
-      <Value xsi:type="xsd:int">1</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>PositionUnitType</Type>
-      <Name>TabText.XUnits</Name>
-      <Value xsi:type="xsd:int">6</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>VerticalAlignment</Type>
-      <Name>TabText.YOrigin</Name>
-      <Value xsi:type="xsd:int">1</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>PositionUnitType</Type>
-      <Name>TabText.YUnits</Name>
-      <Value xsi:type="xsd:int">7</Value>
+      <Type>DimensionUnitType</Type>
+      <Name>TextInstance.WidthUnits</Name>
+      <Value xsi:type="xsd:int">2</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
       <Name>Width</Name>
-      <Value xsi:type="xsd:float">0</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>DimensionUnitType</Type>
-      <Name>WidthUnits</Name>
-      <Value xsi:type="xsd:int">4</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>HorizontalAlignment</Type>
-      <Name>XOrigin</Name>
-      <Value xsi:type="xsd:int">1</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>PositionUnitType</Type>
-      <Name>XUnits</Name>
-      <Value xsi:type="xsd:int">6</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>VerticalAlignment</Type>
-      <Name>YOrigin</Name>
-      <Value xsi:type="xsd:int">2</Value>
+      <Value xsi:type="xsd:float">128</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <VariableList xsi:type="VariableListSaveOfString">
@@ -297,7 +284,7 @@
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
-        <Name>TabText.ColorCategoryState</Name>
+        <Name>TextInstance.ColorCategoryState</Name>
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -319,7 +306,7 @@
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
-        <Name>TabText.ColorCategoryState</Name>
+        <Name>TextInstance.ColorCategoryState</Name>
         <Value xsi:type="xsd:string">DarkGray</Value>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -348,7 +335,7 @@
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
-        <Name>TabText.ColorCategoryState</Name>
+        <Name>TextInstance.ColorCategoryState</Name>
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -377,7 +364,7 @@
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
-        <Name>TabText.ColorCategoryState</Name>
+        <Name>TextInstance.ColorCategoryState</Name>
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -406,7 +393,7 @@
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
-        <Name>TabText.ColorCategoryState</Name>
+        <Name>TextInstance.ColorCategoryState</Name>
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -435,7 +422,7 @@
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
-        <Name>TabText.ColorCategoryState</Name>
+        <Name>TextInstance.ColorCategoryState</Name>
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -457,7 +444,7 @@
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
-        <Name>TabText.ColorCategoryState</Name>
+        <Name>TextInstance.ColorCategoryState</Name>
         <Value xsi:type="xsd:string">DarkGray</Value>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -476,7 +463,7 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>TabText</Name>
+    <Name>TextInstance</Name>
     <BaseType>Text</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

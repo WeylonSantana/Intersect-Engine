@@ -145,13 +145,13 @@
     <Variable>
       <Type>int</Type>
       <Name>DarkGray.Blue</Name>
-      <Value xsi:type="xsd:int">80</Value>
+      <Value xsi:type="xsd:int">48</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>DarkGray.Green</Name>
-      <Value xsi:type="xsd:int">70</Value>
+      <Value xsi:type="xsd:int">48</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -163,7 +163,7 @@
     <Variable>
       <Type>int</Type>
       <Name>DarkGray.Red</Name>
-      <Value xsi:type="xsd:int">70</Value>
+      <Value xsi:type="xsd:int">48</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -193,13 +193,13 @@
     <Variable>
       <Type>int</Type>
       <Name>Gray.Blue</Name>
-      <Value xsi:type="xsd:int">130</Value>
+      <Value xsi:type="xsd:int">78</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>Gray.Green</Name>
-      <Value xsi:type="xsd:int">130</Value>
+      <Value xsi:type="xsd:int">78</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -211,7 +211,7 @@
     <Variable>
       <Type>int</Type>
       <Name>Gray.Red</Name>
-      <Value xsi:type="xsd:int">130</Value>
+      <Value xsi:type="xsd:int">78</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -301,13 +301,13 @@
     <Variable>
       <Type>int</Type>
       <Name>LightGray.Blue</Name>
-      <Value xsi:type="xsd:int">170</Value>
+      <Value xsi:type="xsd:int">95</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>LightGray.Green</Name>
-      <Value xsi:type="xsd:int">170</Value>
+      <Value xsi:type="xsd:int">95</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -319,7 +319,7 @@
     <Variable>
       <Type>int</Type>
       <Name>LightGray.Red</Name>
-      <Value xsi:type="xsd:int">170</Value>
+      <Value xsi:type="xsd:int">95</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -343,13 +343,13 @@
     <Variable>
       <Type>int</Type>
       <Name>Primary.Blue</Name>
-      <Value xsi:type="xsd:int">177</Value>
+      <Value xsi:type="xsd:int">66</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>Primary.Green</Name>
-      <Value xsi:type="xsd:int">159</Value>
+      <Value xsi:type="xsd:int">49</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -361,19 +361,19 @@
     <Variable>
       <Type>int</Type>
       <Name>Primary.Red</Name>
-      <Value xsi:type="xsd:int">6</Value>
+      <Value xsi:type="xsd:int">39</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>PrimaryDark.Blue</Name>
-      <Value xsi:type="xsd:int">137</Value>
+      <Value xsi:type="xsd:int">52</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>PrimaryDark.Green</Name>
-      <Value xsi:type="xsd:int">120</Value>
+      <Value xsi:type="xsd:int">37</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -385,19 +385,19 @@
     <Variable>
       <Type>int</Type>
       <Name>PrimaryDark.Red</Name>
-      <Value xsi:type="xsd:int">4</Value>
+      <Value xsi:type="xsd:int">28</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>PrimaryLight.Blue</Name>
-      <Value xsi:type="xsd:int">193</Value>
+      <Value xsi:type="xsd:int">81</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
       <Name>PrimaryLight.Green</Name>
-      <Value xsi:type="xsd:int">180</Value>
+      <Value xsi:type="xsd:int">65</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -409,7 +409,7 @@
     <Variable>
       <Type>int</Type>
       <Name>PrimaryLight.Red</Name>
-      <Value xsi:type="xsd:int">74</Value>
+      <Value xsi:type="xsd:int">56</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -653,7 +653,22 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>DarkGray</Name>
+    <Name>White</Name>
+    <BaseType>ColoredRectangle</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>Primary</Name>
+    <BaseType>ColoredRectangle</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>PrimaryLight</Name>
+    <BaseType>ColoredRectangle</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>PrimaryDark</Name>
     <BaseType>ColoredRectangle</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
@@ -668,22 +683,7 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>White</Name>
-    <BaseType>ColoredRectangle</BaseType>
-    <DefinedByBase>false</DefinedByBase>
-  </Instance>
-  <Instance>
-    <Name>PrimaryDark</Name>
-    <BaseType>ColoredRectangle</BaseType>
-    <DefinedByBase>false</DefinedByBase>
-  </Instance>
-  <Instance>
-    <Name>Primary</Name>
-    <BaseType>ColoredRectangle</BaseType>
-    <DefinedByBase>false</DefinedByBase>
-  </Instance>
-  <Instance>
-    <Name>PrimaryLight</Name>
+    <Name>DarkGray</Name>
     <BaseType>ColoredRectangle</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

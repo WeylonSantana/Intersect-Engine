@@ -1,4 +1,4 @@
-//Code for Menu/MainMenuWindow
+//Code for Controls/Background (NineSlice)
 using GumRuntime;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
@@ -11,8 +11,8 @@ using RenderingLibrary.Graphics;
 
 using System.Linq;
 
-namespace Intersect.Client.Interface.Screens;
-partial class MainMenuWindow : MonoGameGum.Forms.Controls.FrameworkElement
+namespace Intersect.Client.Interface.Components;
+partial class Background : NineSlice
 {
     [System.Runtime.CompilerServices.ModuleInitializer]
     public static void RegisterRuntimeType()
@@ -20,25 +20,21 @@ partial class MainMenuWindow : MonoGameGum.Forms.Controls.FrameworkElement
         var template = new MonoGameGum.Forms.VisualTemplate((vm, createForms) =>
         {
             var visual = new MonoGameGum.GueDeriving.ContainerRuntime();
-            var element = ObjectFinder.Self.GetElementSave("Menu/MainMenuWindow");
+            var element = ObjectFinder.Self.GetElementSave("Controls/Background");
             element.SetGraphicalUiElement(visual, RenderingLibrary.SystemManagers.Default);
-            if(createForms) visual.FormsControlAsObject = new MainMenuWindow(visual);
-            visual.Width = 0;
-            visual.WidthUnits = Gum.DataTypes.DimensionUnitType.RelativeToParent;
-            visual.Height = 0;
-            visual.HeightUnits = Gum.DataTypes.DimensionUnitType.RelativeToParent;
+            if(createForms) visual.FormsControlAsObject = new Background(visual);
             return visual;
         });
-        MonoGameGum.Forms.Controls.FrameworkElement.DefaultFormsTemplates[typeof(MainMenuWindow)] = template;
-        ElementSaveExtensions.RegisterGueInstantiation("Menu/MainMenuWindow", () => 
+        MonoGameGum.Forms.Controls.FrameworkElement.DefaultFormsTemplates[typeof(Background)] = template;
+        ElementSaveExtensions.RegisterGueInstantiation("Controls/Background", () => 
         {
             var gue = template.CreateContent(null, true) as InteractiveGue;
             return gue;
         });
     }
 
-    public MainMenuWindow(InteractiveGue visual) : base(visual) { }
-    public MainMenuWindow()
+    public Background(InteractiveGue visual) : base(visual) { }
+    public Background()
     {
 
 
