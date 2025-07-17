@@ -1176,6 +1176,265 @@
         "ElementType": "Components",
         "EventType": 0,
         "TimestampUtc": "2025-07-17T18:48:42.7740317Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T18:52:18.9991039Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.WindowInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:52:30.5833039Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:52:38.140642Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.WindowTitle",
+        "OldName": "Menu/RegisterWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:52:46.3080141Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.WindowInnerPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:53:39.4758298Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.WindowInnerPanel",
+        "OldName": "Menu/RegisterWindow.WindowInnerPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:53:47.9344985Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:53:56.996974Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:54:11.6449235Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputTextInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:54:19.5184508Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.UsernameLabel",
+        "OldName": "Menu/RegisterWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:54:28.2216904Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.UsernameInput",
+        "OldName": "Menu/RegisterWindow.InputTextInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:54:34.6369958Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.UsernameContainer",
+        "OldName": "Menu/RegisterWindow.InputContainerInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:56:44.2722694Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:57:01.5883657Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:58:00.0501438Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:58:17.271977Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputPasswordInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:58:21.794448Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.PasswordContainer",
+        "OldName": "Menu/RegisterWindow.InputContainerInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:58:28.5910951Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.PasswordLabel",
+        "OldName": "Menu/RegisterWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:58:35.1343246Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.PasswordInput",
+        "OldName": "Menu/RegisterWindow.InputPasswordInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:58:42.8575134Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:58:52.7834572Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:58:58.8988844Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputPasswordInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:59:04.6000095Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.ConfirmPasswordContainer",
+        "OldName": "Menu/RegisterWindow.InputContainerInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:59:15.3618828Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.ConfirmPasswordLabel",
+        "OldName": "Menu/RegisterWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:59:27.887329Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.ConfirmPasswordInput",
+        "OldName": "Menu/RegisterWindow.InputPasswordInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:59:36.5917623Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:00:23.3928622Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:00:29.2430509Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputTextInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:00:32.2099408Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.EmailContainer",
+        "OldName": "Menu/RegisterWindow.InputContainerInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:00:40.3951258Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.EmailLabel",
+        "OldName": "Menu/RegisterWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:00:49.558479Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.EmailInput",
+        "OldName": "Menu/RegisterWindow.InputTextInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:01:03.5079746Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:01:20.0543752Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.ButtonsContainer",
+        "OldName": "Menu/RegisterWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:01:29.8025867Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:01:43.7932017Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.ButtonInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T19:01:46.170444Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.BackButton",
+        "OldName": "Menu/RegisterWindow.ButtonInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:02:02.9039158Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.RegisterButton",
+        "OldName": "Menu/RegisterWindow.ButtonInstance1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T19:02:09.840624Z"
       }
     ]
   }
