@@ -1057,6 +1057,118 @@
         "ElementType": "Components",
         "EventType": 7,
         "TimestampUtc": "2025-07-17T18:18:17.3216493Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T18:33:49.3407498Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.WindowInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:33:58.8622767Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:34:39.7179893Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.WindowTitle",
+        "OldName": "Menu/RegisterWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:34:45.1984291Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:35:50.7383262Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InnerPanel",
+        "OldName": "Menu/RegisterWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:35:59.0071802Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:39:29.6115386Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.UsernameContainer",
+        "OldName": "Menu/RegisterWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:39:40.7600991Z"
+      },
+      {
+        "NewName": "Controls/StackPanelHorizontal",
+        "OldName": "Controls/StackPanel",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T18:41:06.2711862Z"
+      },
+      {
+        "NewName": "Controls/StackPanelVertical",
+        "OldName": "Controls/StackPanelHorizontal",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T18:41:19.9303954Z"
+      },
+      {
+        "NewName": "Controls/StackPanel",
+        "OldName": "Controls/StackPanelVertical",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T18:42:01.3800649Z"
+      },
+      {
+        "NewName": "Controls/WindowInnerPanel",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T18:42:39.1848285Z"
+      },
+      {
+        "NewName": "Controls/WindowInnerPanel (Container).ScrollViewerInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T18:43:02.4707002Z"
+      },
+      {
+        "NewName": "Controls/WindowInnerPanel (Container).InnerPanel",
+        "OldName": "Controls/WindowInnerPanel (Container).ScrollViewerInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:43:10.3976936Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/WindowInnerPanel (Container).Controls/ScrollViewer InnerPanel in Controls/WindowInnerPanel (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T18:43:20.8676498Z"
+      },
+      {
+        "NewName": "Controls/WindowInnerPanel",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T18:43:52.1827894Z"
       }
     ]
   }
