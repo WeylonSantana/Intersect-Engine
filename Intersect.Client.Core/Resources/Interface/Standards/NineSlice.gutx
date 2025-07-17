@@ -327,21 +327,21 @@
       <Variable>
         <Type>int</Type>
         <Name>Blue</Name>
-        <Value xsi:type="xsd:int">80</Value>
+        <Value xsi:type="xsd:int">48</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Green</Name>
-        <Value xsi:type="xsd:int">70</Value>
+        <Value xsi:type="xsd:int">48</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Red</Name>
-        <Value xsi:type="xsd:int">70</Value>
+        <Value xsi:type="xsd:int">48</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -363,21 +363,21 @@
       <Variable>
         <Type>int</Type>
         <Name>Blue</Name>
-        <Value xsi:type="xsd:int">130</Value>
+        <Value xsi:type="xsd:int">78</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Green</Name>
-        <Value xsi:type="xsd:int">130</Value>
+        <Value xsi:type="xsd:int">78</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Red</Name>
-        <Value xsi:type="xsd:int">130</Value>
+        <Value xsi:type="xsd:int">78</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -399,21 +399,21 @@
       <Variable>
         <Type>int</Type>
         <Name>Blue</Name>
-        <Value xsi:type="xsd:int">170</Value>
+        <Value xsi:type="xsd:int">95</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Green</Name>
-        <Value xsi:type="xsd:int">170</Value>
+        <Value xsi:type="xsd:int">95</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Red</Name>
-        <Value xsi:type="xsd:int">170</Value>
+        <Value xsi:type="xsd:int">95</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -471,21 +471,21 @@
       <Variable>
         <Type>int</Type>
         <Name>Blue</Name>
-        <Value xsi:type="xsd:int">137</Value>
+        <Value xsi:type="xsd:int">52</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Green</Name>
-        <Value xsi:type="xsd:int">120</Value>
+        <Value xsi:type="xsd:int">37</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Red</Name>
-        <Value xsi:type="xsd:int">4</Value>
+        <Value xsi:type="xsd:int">28</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -507,21 +507,21 @@
       <Variable>
         <Type>int</Type>
         <Name>Blue</Name>
-        <Value xsi:type="xsd:int">177</Value>
+        <Value xsi:type="xsd:int">66</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Green</Name>
-        <Value xsi:type="xsd:int">159</Value>
+        <Value xsi:type="xsd:int">49</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Red</Name>
-        <Value xsi:type="xsd:int">6</Value>
+        <Value xsi:type="xsd:int">39</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
@@ -543,21 +543,21 @@
       <Variable>
         <Type>int</Type>
         <Name>Blue</Name>
-        <Value xsi:type="xsd:int">193</Value>
+        <Value xsi:type="xsd:int">81</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Green</Name>
-        <Value xsi:type="xsd:int">180</Value>
+        <Value xsi:type="xsd:int">65</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>int</Type>
         <Name>Red</Name>
-        <Value xsi:type="xsd:int">74</Value>
+        <Value xsi:type="xsd:int">56</Value>
         <Category>Rendering</Category>
         <SetsValue>true</SetsValue>
       </Variable>

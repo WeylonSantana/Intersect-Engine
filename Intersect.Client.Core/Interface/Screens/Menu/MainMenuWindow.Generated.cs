@@ -2,7 +2,6 @@
 using GumRuntime;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
-using Intersect.Client.Interface.Components;
 using Gum.Converters;
 using Gum.DataTypes;
 using Gum.Managers;
@@ -37,7 +36,6 @@ partial class MainMenuWindow : MonoGameGum.Forms.Controls.FrameworkElement
             return gue;
         });
     }
-    public ButtonStandard ButtonStandardInstance { get; protected set; }
 
     public MainMenuWindow(InteractiveGue visual) : base(visual) { }
     public MainMenuWindow()
@@ -49,7 +47,6 @@ partial class MainMenuWindow : MonoGameGum.Forms.Controls.FrameworkElement
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        ButtonStandardInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ButtonStandard>(this.Visual,"ButtonStandardInstance");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

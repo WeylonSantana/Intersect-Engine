@@ -5,15 +5,70 @@
   <State>
     <Name>Default</Name>
     <Variable>
+      <Type>int</Type>
+      <Name>Background.Blue</Name>
+      <Value xsi:type="xsd:int">255</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>ColorCategory</Type>
       <Name>Background.ColorCategoryState</Name>
       <Value xsi:type="xsd:string">Primary</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>int</Type>
+      <Name>Background.Green</Name>
+      <Value xsi:type="xsd:int">255</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.Red</Name>
+      <Value xsi:type="xsd:int">255</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <IsFile>true</IsFile>
+      <Type>string</Type>
+      <Name>Background.SourceFile</Name>
+      <Value xsi:type="xsd:string">Textures\button.png</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>StyleCategory</Type>
       <Name>Background.StyleCategoryState</Name>
       <Value xsi:type="xsd:string">TabBordered</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>TextureAddress</Type>
+      <Name>Background.TextureAddress</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureHeight</Name>
+      <Value xsi:type="xsd:int">25</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureLeft</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureTop</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureWidth</Name>
+      <Value xsi:type="xsd:int">92</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -215,15 +270,23 @@
       <Value xsi:type="xsd:int">2</Value>
       <SetsValue>true</SetsValue>
     </Variable>
+    <VariableList xsi:type="VariableListSaveOfString">
+      <Type>string</Type>
+      <Name>Background.AnimationFrames</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value />
+    </VariableList>
   </State>
   <Category>
     <Name>ButtonCategory</Name>
     <State>
       <Name>Enabled</Name>
       <Variable>
-        <Type>ColorCategory</Type>
-        <Name>Background.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">Primary</Value>
+        <IsFile>true</IsFile>
+        <Type>string</Type>
+        <Name>Background.SourceFile</Name>
+        <Value xsi:type="xsd:string">Textures\button.png</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -242,9 +305,10 @@
     <State>
       <Name>Disabled</Name>
       <Variable>
-        <Type>ColorCategory</Type>
-        <Name>Background.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">DarkGray</Value>
+        <IsFile>true</IsFile>
+        <Type>string</Type>
+        <Name>Background.SourceFile</Name>
+        <Value xsi:type="xsd:string">Textures\button_disabled.png</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -256,16 +320,24 @@
       <Variable>
         <Type>ColorCategory</Type>
         <Name>TabText.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">Gray</Value>
+        <Value xsi:type="xsd:string">DarkGray</Value>
         <SetsValue>true</SetsValue>
       </Variable>
+      <VariableList xsi:type="VariableListSaveOfString">
+        <Type>string</Type>
+        <Name>Background.AnimationFrames</Name>
+        <IsFile>false</IsFile>
+        <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+        <Value />
+      </VariableList>
     </State>
     <State>
       <Name>Highlighted</Name>
       <Variable>
-        <Type>ColorCategory</Type>
-        <Name>Background.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">PrimaryLight</Value>
+        <IsFile>true</IsFile>
+        <Type>string</Type>
+        <Name>Background.SourceFile</Name>
+        <Value xsi:type="xsd:string">Textures\button_hovered.png</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -280,13 +352,21 @@
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
+      <VariableList xsi:type="VariableListSaveOfString">
+        <Type>string</Type>
+        <Name>Background.AnimationFrames</Name>
+        <IsFile>false</IsFile>
+        <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+        <Value />
+      </VariableList>
     </State>
     <State>
       <Name>Pushed</Name>
       <Variable>
-        <Type>ColorCategory</Type>
-        <Name>Background.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">PrimaryDark</Value>
+        <IsFile>true</IsFile>
+        <Type>string</Type>
+        <Name>Background.SourceFile</Name>
+        <Value xsi:type="xsd:string">Textures\button_clicked.png</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -301,19 +381,27 @@
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
+      <VariableList xsi:type="VariableListSaveOfString">
+        <Type>string</Type>
+        <Name>Background.AnimationFrames</Name>
+        <IsFile>false</IsFile>
+        <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+        <Value />
+      </VariableList>
     </State>
     <State>
       <Name>HighlightedFocused</Name>
       <Variable>
-        <Type>ColorCategory</Type>
-        <Name>Background.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">PrimaryLight</Value>
+        <IsFile>true</IsFile>
+        <Type>string</Type>
+        <Name>Background.SourceFile</Name>
+        <Value xsi:type="xsd:string">Textures\button_hovered.png</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -322,19 +410,27 @@
         <Value xsi:type="xsd:string">White</Value>
         <SetsValue>true</SetsValue>
       </Variable>
+      <VariableList xsi:type="VariableListSaveOfString">
+        <Type>string</Type>
+        <Name>Background.AnimationFrames</Name>
+        <IsFile>false</IsFile>
+        <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+        <Value />
+      </VariableList>
     </State>
     <State>
       <Name>Focused</Name>
       <Variable>
-        <Type>ColorCategory</Type>
-        <Name>Background.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">Primary</Value>
+        <IsFile>true</IsFile>
+        <Type>string</Type>
+        <Name>Background.SourceFile</Name>
+        <Value xsi:type="xsd:string">Textures\button.png</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -347,23 +443,31 @@
     <State>
       <Name>DisabledFocused</Name>
       <Variable>
-        <Type>ColorCategory</Type>
-        <Name>Background.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">DarkGray</Value>
+        <IsFile>true</IsFile>
+        <Type>string</Type>
+        <Name>Background.SourceFile</Name>
+        <Value xsi:type="xsd:string">Textures\button_disabled.png</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>ColorCategory</Type>
         <Name>TabText.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">Gray</Value>
+        <Value xsi:type="xsd:string">DarkGray</Value>
         <SetsValue>true</SetsValue>
       </Variable>
+      <VariableList xsi:type="VariableListSaveOfString">
+        <Type>string</Type>
+        <Name>Background.AnimationFrames</Name>
+        <IsFile>false</IsFile>
+        <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+        <Value />
+      </VariableList>
     </State>
   </Category>
   <Instance>

@@ -7,7 +7,7 @@
   <Version>1</Version>
   <DefaultCanvasWidth>800</DefaultCanvasWidth>
   <DefaultCanvasHeight>600</DefaultCanvasHeight>
-  <ShowOutlines>true</ShowOutlines>
+  <ShowOutlines>false</ShowOutlines>
   <ShowCanvasOutline>true</ShowCanvasOutline>
   <ShowRuler>true</ShowRuler>
   <ShowCheckerBackground>true</ShowCheckerBackground>
@@ -24,32 +24,12 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ScreenReference>
   <ComponentReference>
-    <Name>Controls/ButtonClose</Name>
+    <Name>Controls/Background</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
-    <Name>Controls/ButtonConfirm</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/ButtonDeny</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/ButtonIcon</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/ButtonStandard</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/ButtonStandardIcon</Name>
+    <Name>Controls/Button</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
@@ -69,27 +49,12 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
-    <Name>Controls/DialogBox</Name>
+    <Name>Controls/InputPassword</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
-    <Name>Controls/InputDeviceSelectionItem</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/InputDeviceSelector</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/Keyboard</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/KeyboardKey</Name>
+    <Name>Controls/InputText</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
@@ -124,21 +89,6 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
-    <Name>Controls/PasswordBox</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/PlayerJoinView</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/PlayerJoinViewItem</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
     <Name>Controls/RadioButton</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
@@ -154,11 +104,6 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
-    <Name>Controls/SettingsView</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
     <Name>Controls/Slider</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
@@ -170,16 +115,6 @@
   </ComponentReference>
   <ComponentReference>
     <Name>Controls/StackPanel</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/TextBox</Name>
-    <ElementType>Component</ElementType>
-    <LinkType>ReferenceOriginal</LinkType>
-  </ComponentReference>
-  <ComponentReference>
-    <Name>Controls/Toast</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
@@ -308,15 +243,6 @@
     <Name>ComboBoxBehavior</Name>
   </BehaviorReference>
   <BehaviorReference>
-    <Name>DialogBoxBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
-    <Name>InputDeviceSelectionItemBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
-    <Name>InputDeviceSelectorBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
     <Name>LabelBehavior</Name>
   </BehaviorReference>
   <BehaviorReference>
@@ -332,19 +258,10 @@
     <Name>MenuItemBehavior</Name>
   </BehaviorReference>
   <BehaviorReference>
-    <Name>OnScreenKeyboardBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
     <Name>PanelBehavior</Name>
   </BehaviorReference>
   <BehaviorReference>
     <Name>PasswordBoxBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
-    <Name>PlayerJoinViewBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
-    <Name>PlayerJoinViewItemBehavior</Name>
   </BehaviorReference>
   <BehaviorReference>
     <Name>RadioButtonBehavior</Name>
@@ -354,9 +271,6 @@
   </BehaviorReference>
   <BehaviorReference>
     <Name>ScrollViewerBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
-    <Name>SettingsViewBehavior</Name>
   </BehaviorReference>
   <BehaviorReference>
     <Name>SliderBehavior</Name>
@@ -369,9 +283,6 @@
   </BehaviorReference>
   <BehaviorReference>
     <Name>TextBoxBehavior</Name>
-  </BehaviorReference>
-  <BehaviorReference>
-    <Name>ToastBehavior</Name>
   </BehaviorReference>
   <BehaviorReference>
     <Name>ToggleBehavior</Name>

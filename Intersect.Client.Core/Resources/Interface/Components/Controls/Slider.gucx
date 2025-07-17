@@ -313,7 +313,7 @@
   </Instance>
   <Instance>
     <Name>ThumbInstance</Name>
-    <BaseType>Controls/ButtonStandard</BaseType>
+    <BaseType>Controls/Button</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>

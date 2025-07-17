@@ -14,6 +14,216 @@
         "ElementType": "Screens",
         "EventType": 5,
         "TimestampUtc": "2025-07-16T21:51:49.5499448Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/ButtonStandard ButtonStandardInstance in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T02:08:56.8421461Z"
+      },
+      {
+        "NewName": "Controls/Background",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T02:14:06.0404474Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T02:18:22.1258001Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.MainMenuContainer",
+        "OldName": "Menu/MainMenuWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T02:18:50.9909281Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ButtonConfirm",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:20:57.9040181Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ButtonDeny",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:21:03.7732135Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ButtonIcon",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:21:15.0251317Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ButtonClose",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:21:22.9089201Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ButtonStandardIcon",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:21:29.3376214Z"
+      },
+      {
+        "NewName": "Controls/Button",
+        "OldName": "Controls/ButtonStandard",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T02:21:46.9368309Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/DialogBox",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:22:18.7841796Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/InputDeviceSelectionItem",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:22:22.2091228Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/InputDeviceSelector",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:22:26.4725764Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Keyboard",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:22:29.7672884Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/KeyboardKey",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:22:34.6132402Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/PlayerJoinView",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:24:10.9956408Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/PlayerJoinViewItem",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:24:14.3649271Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/SettingsView",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:24:46.6908826Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Toast",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T02:25:09.7784902Z"
+      },
+      {
+        "NewName": "Controls/InputText",
+        "OldName": "Controls/TextBox",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T02:26:45.2303407Z"
+      },
+      {
+        "NewName": "Controls/InputPassword",
+        "OldName": "Controls/PasswordBox",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T02:26:55.141167Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/StackPanel MainMenuContainer in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T02:27:42.343082Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.7927329Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.7947261Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.795726Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.7967257Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.7987242Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.7997234Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.8007231Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBox",
+        "OldName": "Controls/ComboBox (Container).ListBoxInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T03:10:00.802722Z"
       }
     ]
   }
