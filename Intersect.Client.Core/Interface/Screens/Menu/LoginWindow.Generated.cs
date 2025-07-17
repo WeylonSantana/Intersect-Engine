@@ -45,7 +45,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
     public Label UsernameLabel { get; protected set; }
     public Label PasswordLabel { get; protected set; }
     public InputText UsernameInput { get; protected set; }
-    public InputText PasswordInput { get; protected set; }
+    public InputPassword PasswordInput { get; protected set; }
     public CheckBox SaveCredentialsCheckbox { get; protected set; }
     public Panel ButtonsContainer { get; protected set; }
     public Button RegisterButton { get; protected set; }
@@ -69,7 +69,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
         UsernameLabel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"UsernameLabel");
         PasswordLabel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"PasswordLabel");
         UsernameInput = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputText>(this.Visual,"UsernameInput");
-        PasswordInput = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputText>(this.Visual,"PasswordInput");
+        PasswordInput = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputPassword>(this.Visual,"PasswordInput");
         SaveCredentialsCheckbox = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<CheckBox>(this.Visual,"SaveCredentialsCheckbox");
         ButtonsContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Panel>(this.Visual,"ButtonsContainer");
         RegisterButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"RegisterButton");

@@ -508,7 +508,7 @@
   </Instance>
   <Instance>
     <Name>PasswordInput</Name>
-    <BaseType>Controls/InputText</BaseType>
+    <BaseType>Controls/InputPassword</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
