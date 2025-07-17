@@ -28,6 +28,13 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <IsFile>true</IsFile>
+      <Type>string</Type>
+      <Name>FocusedIndicator.SourceFile</Name>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>StyleCategory</Type>
       <Name>FocusedIndicator.StyleCategoryState</Name>
       <Value xsi:type="xsd:string">Solid</Value>
@@ -74,42 +81,6 @@
       <Type>bool</Type>
       <Name>IsXamarinFormsControl</Name>
       <Category>Xamarin Forms</Category>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>ColorCategory</Type>
-      <Name>NineSliceInstance.ColorCategoryState</Name>
-      <Value xsi:type="xsd:string">DarkGray</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>float</Type>
-      <Name>NineSliceInstance.Height</Name>
-      <Value xsi:type="xsd:float">8</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>DimensionUnitType</Type>
-      <Name>NineSliceInstance.HeightUnits</Name>
-      <Value xsi:type="xsd:int">0</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>string</Type>
-      <Name>NineSliceInstance.Parent</Name>
-      <Value xsi:type="xsd:string">TrackInstance</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>StyleCategory</Type>
-      <Name>NineSliceInstance.StyleCategoryState</Name>
-      <Value xsi:type="xsd:string">Bordered</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>float</Type>
-      <Name>NineSliceInstance.Width</Name>
-      <Value xsi:type="xsd:float">0</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -184,6 +155,49 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>ColorCategory</Type>
+      <Name>TrackBackground.ColorCategoryState</Name>
+      <Value xsi:type="xsd:string">PrimaryDark</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>TrackBackground.Height</Name>
+      <Value xsi:type="xsd:float">8</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>TrackBackground.HeightUnits</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>TrackBackground.Parent</Name>
+      <Value xsi:type="xsd:string">TrackInstance</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <IsFile>true</IsFile>
+      <Type>string</Type>
+      <Name>TrackBackground.SourceFile</Name>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>StyleCategory</Type>
+      <Name>TrackBackground.StyleCategoryState</Name>
+      <Value xsi:type="xsd:string">Bordered</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>TrackBackground.Width</Name>
+      <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>float</Type>
       <Name>TrackInstance.Height</Name>
       <Value xsi:type="xsd:float">0</Value>
@@ -237,6 +251,20 @@
       <Value xsi:type="xsd:float">128</Value>
       <SetsValue>true</SetsValue>
     </Variable>
+    <VariableList xsi:type="VariableListSaveOfString">
+      <Type>string</Type>
+      <Name>TrackBackground.AnimationFrames</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value />
+    </VariableList>
+    <VariableList xsi:type="VariableListSaveOfString">
+      <Type>string</Type>
+      <Name>FocusedIndicator.AnimationFrames</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value />
+    </VariableList>
   </State>
   <Category>
     <Name>SliderCategory</Name>
@@ -254,19 +282,31 @@
         <Value xsi:type="xsd:string">Enabled</Value>
         <SetsValue>true</SetsValue>
       </Variable>
+      <Variable>
+        <Type>ColorCategory</Type>
+        <Name>TrackBackground.ColorCategoryState</Name>
+        <Value xsi:type="xsd:string">PrimaryDark</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
     </State>
     <State>
       <Name>Focused</Name>
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>ButtonCategory</Type>
         <Name>ThumbInstance.ButtonCategoryState</Name>
         <Value xsi:type="xsd:string">Enabled</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>ColorCategory</Type>
+        <Name>TrackBackground.ColorCategoryState</Name>
+        <Value xsi:type="xsd:string">PrimaryDark</Value>
         <SetsValue>true</SetsValue>
       </Variable>
     </State>
@@ -284,19 +324,31 @@
         <Value xsi:type="xsd:string">Highlighted</Value>
         <SetsValue>true</SetsValue>
       </Variable>
+      <Variable>
+        <Type>ColorCategory</Type>
+        <Name>TrackBackground.ColorCategoryState</Name>
+        <Value xsi:type="xsd:string">Primary</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
     </State>
     <State>
       <Name>HighlightedFocused</Name>
       <Variable>
         <Type>bool</Type>
         <Name>FocusedIndicator.Visible</Name>
-        <Value xsi:type="xsd:boolean">true</Value>
+        <Value xsi:type="xsd:boolean">false</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
         <Type>ButtonCategory</Type>
         <Name>ThumbInstance.ButtonCategoryState</Name>
         <Value xsi:type="xsd:string">Highlighted</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>ColorCategory</Type>
+        <Name>TrackBackground.ColorCategoryState</Name>
+        <Value xsi:type="xsd:string">Primary</Value>
         <SetsValue>true</SetsValue>
       </Variable>
     </State>
@@ -307,7 +359,7 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>NineSliceInstance</Name>
+    <Name>TrackBackground</Name>
     <BaseType>NineSlice</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

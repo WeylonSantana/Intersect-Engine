@@ -77,9 +77,40 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <IsFile>true</IsFile>
+      <Type>string</Type>
+      <Name>CheckboxBackground.SourceFile</Name>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>StyleCategory</Type>
       <Name>CheckboxBackground.StyleCategoryState</Name>
       <Value xsi:type="xsd:string">Bordered</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>CheckboxBackground.TextureHeight</Name>
+      <Value xsi:type="xsd:int">24</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>CheckboxBackground.TextureLeft</Name>
+      <Value xsi:type="xsd:int">24</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>CheckboxBackground.TextureTop</Name>
+      <Value xsi:type="xsd:int">48</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>CheckboxBackground.TextureWidth</Name>
+      <Value xsi:type="xsd:int">24</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -132,6 +163,13 @@
     <Variable>
       <Type>string</Type>
       <Name>FocusedIndicator.Parent</Name>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <IsFile>true</IsFile>
+      <Type>string</Type>
+      <Name>FocusedIndicator.SourceFile</Name>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -280,6 +318,20 @@
       <Value xsi:type="xsd:float">128</Value>
       <SetsValue>true</SetsValue>
     </Variable>
+    <VariableList xsi:type="VariableListSaveOfString">
+      <Type>string</Type>
+      <Name>CheckboxBackground.AnimationFrames</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value />
+    </VariableList>
+    <VariableList xsi:type="VariableListSaveOfString">
+      <Type>string</Type>
+      <Name>FocusedIndicator.AnimationFrames</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value />
+    </VariableList>
   </State>
   <Category>
     <Name>CheckBoxCategory</Name>
@@ -657,7 +709,7 @@
       <Variable>
         <Type>ColorCategory</Type>
         <Name>CheckboxBackground.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">PrimaryLight</Value>
+        <Value xsi:type="xsd:string">PrimaryDark</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -696,7 +748,7 @@
       <Variable>
         <Type>ColorCategory</Type>
         <Name>CheckboxBackground.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">PrimaryLight</Value>
+        <Value xsi:type="xsd:string">PrimaryDark</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -735,7 +787,7 @@
       <Variable>
         <Type>ColorCategory</Type>
         <Name>CheckboxBackground.ColorCategoryState</Name>
-        <Value xsi:type="xsd:string">PrimaryLight</Value>
+        <Value xsi:type="xsd:string">PrimaryDark</Value>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>

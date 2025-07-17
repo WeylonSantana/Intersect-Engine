@@ -224,6 +224,839 @@
         "ElementType": "Components",
         "EventType": 7,
         "TimestampUtc": "2025-07-17T03:10:00.802722Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBar",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T11:41:33.4127654Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBar",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T11:41:33.4155557Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBar",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T11:41:33.4165553Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBar",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T11:41:33.4175545Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBar",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T11:41:33.4185539Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Container).ButtonInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T11:41:56.4948691Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Container).ButtonInstance1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T11:42:02.7180089Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ScrollBar (Container).Controls/ButtonIcon UpButtonInstance in Controls/ScrollBar (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T11:42:20.2218243Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ScrollBar (Container).Controls/ButtonIcon DownButtonInstance in Controls/ScrollBar (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T11:42:20.2238232Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Container).UpButton",
+        "OldName": "Controls/ScrollBar (Container).ButtonInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T11:42:25.8511131Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Container).DownButton",
+        "OldName": "Controls/ScrollBar (Container).ButtonInstance1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T11:42:32.7139137Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).IconInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T11:45:27.3347281Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Button (Container).Elements/Icon IconInstance in Controls/Button (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T11:57:32.7828369Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Container).IconInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T11:57:39.768381Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Controls/StackPanel).UpButton1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T12:13:48.863842Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Controls/StackPanel).IconInstance1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T12:13:49.0188769Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/ScrollBar (Controls/StackPanel).Controls/Button DownButton in Controls/ScrollBar (Controls/StackPanel)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T12:15:50.4311264Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Controls/StackPanel).DownButton",
+        "OldName": "Controls/ScrollBar (Controls/StackPanel).UpButton1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T12:15:56.2549038Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Controls/StackPanel).IconUp",
+        "OldName": "Controls/ScrollBar (Controls/StackPanel).IconInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T12:20:04.674173Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Controls/StackPanel).IconDown",
+        "OldName": "Controls/ScrollBar (Controls/StackPanel).IconInstance1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T12:20:10.8305554Z"
+      },
+      {
+        "NewName": "Controls/Slider (Container).TrackBackground",
+        "OldName": "Controls/Slider (Container).NineSliceInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T13:41:15.0479681Z"
+      },
+      {
+        "NewName": "Controls/Slider (Container).TrackBackground",
+        "OldName": "Controls/Slider (Container).NineSliceInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T13:41:15.0490789Z"
+      },
+      {
+        "NewName": "Controls/Slider (Container).TrackBackground",
+        "OldName": "Controls/Slider (Container).NineSliceInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T13:41:15.0505023Z"
+      },
+      {
+        "NewName": "Controls/Slider (Container).TrackBackground",
+        "OldName": "Controls/Slider (Container).NineSliceInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T13:41:15.0515049Z"
+      },
+      {
+        "NewName": "Controls/Slider (Container).TrackBackground",
+        "OldName": "Controls/Slider (Container).NineSliceInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T13:41:15.0535039Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T13:54:23.5088482Z"
+      },
+      {
+        "NewName": "Controls/Splitter",
+        "OldName": "Controls/SplitterStandard",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T14:03:25.7272365Z"
+      },
+      {
+        "NewName": "Controls/Window",
+        "OldName": "Controls/WindowStandard",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-17T14:04:54.2699062Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.2344486Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.2354299Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.2374331Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.2384334Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.2404316Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.2414311Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.24343Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).BackgroundInstance",
+        "OldName": "Controls/Button (Container).Background",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:09:28.2444297Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderTopLeftInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:14.4051262Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderTopRightInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:26.2520222Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderBottomLeftInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:26.2540215Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderBottomRightInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:26.2550211Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderTopInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:26.2560208Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderBottomInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:26.2600174Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderLeftInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:26.2620184Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/Panel BorderRightInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:20:26.2630175Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Background",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T14:24:34.8998572Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/Button ButtonInstance in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:25:10.9760462Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.NineSliceInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:25:22.2445384Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.Background",
+        "OldName": "Menu/MainMenuWindow.NineSliceInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:25:30.2620508Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.NineSlice Background in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:26:07.3514929Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.SpriteInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:26:09.5468173Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.PanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:26:57.1702089Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.Container",
+        "OldName": "Menu/MainMenuWindow.PanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:27:14.4820315Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.Background",
+        "OldName": "Menu/MainMenuWindow.SpriteInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:27:34.4334748Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.SpriteInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:27:41.604764Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.Logo",
+        "OldName": "Menu/MainMenuWindow.SpriteInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:27:49.275326Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.PanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:30:39.4373414Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.SpriteInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:32:07.579998Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Sprite SpriteInstance in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:32:10.607732Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.NineSliceInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:32:12.8545367Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:35:06.8835875Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.InnerPanel",
+        "OldName": "Menu/MainMenuWindow.PanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:35:22.791684Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.InnerPanelBackground",
+        "OldName": "Menu/MainMenuWindow.NineSliceInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:35:35.598771Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/Button ButtonInstance in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T14:37:12.0592313Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:37:20.2600591Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ButtonsContainer",
+        "OldName": "Menu/MainMenuWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T14:37:26.2561598Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T14:38:05.4320723Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/StackPanel ButtonsContainer in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:16:47.1340055Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/Button ButtonInstance in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:16:47.3328455Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:17:25.1367863Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.NineSlice InnerPanelBackground in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:18:03.5733718Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/StackPanel StackPanelInstance in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:18:09.4154244Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T16:18:51.6454082Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.WindowInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:19:03.4109665Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:19:33.2456997Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.InnerPanel",
+        "OldName": "Menu/LoginWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:19:39.4409538Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/LoginWindow.Controls/Window WindowInstance in Menu/LoginWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:20:10.0044254Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/LoginWindow.Controls/StackPanel InnerPanel in Menu/LoginWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:20:10.0653925Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/LoginWindow",
+        "ElementType": "Screens",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-17T16:20:18.2115884Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-17T16:20:35.0105698Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.WindowInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:20:38.6324348Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:21:04.3383156Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.InnerPanel",
+        "OldName": "Menu/LoginWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:21:14.2026159Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:21:30.3357555Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:23:12.0996597Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.UsernameContainer",
+        "OldName": "Menu/LoginWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:23:22.6527558Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.LabelInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:23:43.4228297Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.InputTextInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:23:57.2528615Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.UsernameContainer1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:25:13.6426767Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.LabelInstance2",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:25:13.8235646Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.InputTextInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:25:13.9285008Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.PasswordContainer",
+        "OldName": "Menu/LoginWindow.UsernameContainer1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:25:24.0502733Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.PasswordLabel",
+        "OldName": "Menu/LoginWindow.LabelInstance2",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:25:31.4170561Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.UsernameLabel",
+        "OldName": "Menu/LoginWindow.LabelInstance1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:25:38.2758891Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.UsernameInput",
+        "OldName": "Menu/LoginWindow.InputTextInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:25:44.3565928Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.PasswordInput",
+        "OldName": "Menu/LoginWindow.InputTextInstance1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:25:50.3618698Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.CheckBoxInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:26:51.2335583Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.SaveCredentialsCheckbox",
+        "OldName": "Menu/LoginWindow.CheckBoxInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:27:19.8598177Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/StackPanel InnerPanelInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:28:04.0134473Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:29:25.9010769Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.ButtonsContainer",
+        "OldName": "Menu/LoginWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:29:34.4114988Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.WindowTitle",
+        "OldName": "Menu/LoginWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:30:15.6566538Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:33:12.9453982Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.ButtonInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:33:14.7194492Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.LoginButton",
+        "OldName": "Menu/LoginWindow.ButtonInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:33:21.3256914Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.RegisterButton",
+        "OldName": "Menu/LoginWindow.ButtonInstance1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:33:26.9194251Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Controls/Panel InnerPanel in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T16:41:52.5797682Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.PanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:42:01.000468Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ServerStatusContainer",
+        "OldName": "Menu/MainMenuWindow.PanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T16:42:09.0850729Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:42:31.8595787Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.RectangleInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-17T16:43:20.0797861Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/MainMenuWindow.Sprite Background in Menu/MainMenuWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-17T17:45:17.3927224Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.307753Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.3096537Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.3116555Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.3136549Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.3156534Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.3176519Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.3196503Z"
+      },
+      {
+        "NewName": "Controls/Button (Container).Background",
+        "OldName": "Controls/Button (Container).BackgroundInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-17T18:18:17.3216493Z"
       }
     ]
   }

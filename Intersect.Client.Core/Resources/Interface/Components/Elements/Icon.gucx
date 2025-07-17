@@ -38,7 +38,7 @@
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>IconSprite.SourceFile</Name>
-      <Value xsi:type="xsd:string">UISpriteSheet.png</Value>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -2515,6 +2515,74 @@
         <Type>bool</Type>
         <Name>IconSprite.Visible</Name>
         <Value xsi:type="xsd:boolean">true</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+    </State>
+    <State>
+      <Name>ScrollUp</Name>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureHeight</Name>
+        <Value xsi:type="xsd:int">32</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureLeft</Name>
+        <Value xsi:type="xsd:int">480</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureTop</Name>
+        <Value xsi:type="xsd:int">256</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureWidth</Name>
+        <Value xsi:type="xsd:int">32</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>bool</Type>
+        <Name>IconSprite.Visible</Name>
+        <Value xsi:type="xsd:boolean">true</Value>
+        <Category>States and Visibility</Category>
+        <SetsValue>true</SetsValue>
+      </Variable>
+    </State>
+    <State>
+      <Name>ScrollDown</Name>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureHeight</Name>
+        <Value xsi:type="xsd:int">32</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureLeft</Name>
+        <Value xsi:type="xsd:int">480</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureTop</Name>
+        <Value xsi:type="xsd:int">288</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>IconSprite.TextureWidth</Name>
+        <Value xsi:type="xsd:int">32</Value>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>bool</Type>
+        <Name>IconSprite.Visible</Name>
+        <Value xsi:type="xsd:boolean">true</Value>
+        <Category>States and Visibility</Category>
         <SetsValue>true</SetsValue>
       </Variable>
     </State>

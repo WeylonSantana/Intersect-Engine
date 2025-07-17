@@ -56,7 +56,7 @@
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>Background.SourceFile</Name>
-      <Value xsi:type="xsd:string">Textures\button.png</Value>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -68,7 +68,31 @@
     <Variable>
       <Type>TextureAddress</Type>
       <Name>Background.TextureAddress</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureHeight</Name>
+      <Value xsi:type="xsd:int">16</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureLeft</Name>
       <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureTop</Name>
+      <Value xsi:type="xsd:int">112</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Background.TextureWidth</Name>
+      <Value xsi:type="xsd:int">16</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -145,6 +169,13 @@
     <Variable>
       <Type>string</Type>
       <Name>FocusedIndicator.Parent</Name>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <IsFile>true</IsFile>
+      <Type>string</Type>
+      <Name>FocusedIndicator.SourceFile</Name>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -257,9 +288,22 @@
       <Value xsi:type="xsd:float">128</Value>
       <SetsValue>true</SetsValue>
     </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>WidthUnits</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
     <VariableList xsi:type="VariableListSaveOfString">
       <Type>string</Type>
       <Name>Background.AnimationFrames</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value />
+    </VariableList>
+    <VariableList xsi:type="VariableListSaveOfString">
+      <Type>string</Type>
+      <Name>FocusedIndicator.AnimationFrames</Name>
       <IsFile>false</IsFile>
       <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
       <Value />
@@ -270,10 +314,10 @@
     <State>
       <Name>Enabled</Name>
       <Variable>
-        <IsFile>true</IsFile>
-        <Type>string</Type>
-        <Name>Background.SourceFile</Name>
-        <Value xsi:type="xsd:string">Textures\button.png</Value>
+        <Type>int</Type>
+        <Name>Background.TextureLeft</Name>
+        <Value xsi:type="xsd:int">0</Value>
+        <ExposedAsName>TextureLeft</ExposedAsName>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -292,10 +336,10 @@
     <State>
       <Name>Disabled</Name>
       <Variable>
-        <IsFile>true</IsFile>
-        <Type>string</Type>
-        <Name>Background.SourceFile</Name>
-        <Value xsi:type="xsd:string">Textures\button_disabled.png</Value>
+        <Type>int</Type>
+        <Name>Background.TextureLeft</Name>
+        <Value xsi:type="xsd:int">48</Value>
+        <ExposedAsName>TextureLeft</ExposedAsName>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -321,10 +365,10 @@
     <State>
       <Name>Highlighted</Name>
       <Variable>
-        <IsFile>true</IsFile>
-        <Type>string</Type>
-        <Name>Background.SourceFile</Name>
-        <Value xsi:type="xsd:string">Textures\button_hovered.png</Value>
+        <Type>int</Type>
+        <Name>Background.TextureLeft</Name>
+        <Value xsi:type="xsd:int">16</Value>
+        <ExposedAsName>TextureLeft</ExposedAsName>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -350,10 +394,10 @@
     <State>
       <Name>Pushed</Name>
       <Variable>
-        <IsFile>true</IsFile>
-        <Type>string</Type>
-        <Name>Background.SourceFile</Name>
-        <Value xsi:type="xsd:string">Textures\button_clicked.png</Value>
+        <Type>int</Type>
+        <Name>Background.TextureLeft</Name>
+        <Value xsi:type="xsd:int">32</Value>
+        <ExposedAsName>TextureLeft</ExposedAsName>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -379,10 +423,10 @@
     <State>
       <Name>HighlightedFocused</Name>
       <Variable>
-        <IsFile>true</IsFile>
-        <Type>string</Type>
-        <Name>Background.SourceFile</Name>
-        <Value xsi:type="xsd:string">Textures\button_hovered.png</Value>
+        <Type>int</Type>
+        <Name>Background.TextureLeft</Name>
+        <Value xsi:type="xsd:int">16</Value>
+        <ExposedAsName>TextureLeft</ExposedAsName>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -408,10 +452,10 @@
     <State>
       <Name>Focused</Name>
       <Variable>
-        <IsFile>true</IsFile>
-        <Type>string</Type>
-        <Name>Background.SourceFile</Name>
-        <Value xsi:type="xsd:string">Textures\button.png</Value>
+        <Type>int</Type>
+        <Name>Background.TextureLeft</Name>
+        <Value xsi:type="xsd:int">0</Value>
+        <ExposedAsName>TextureLeft</ExposedAsName>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
@@ -430,10 +474,10 @@
     <State>
       <Name>DisabledFocused</Name>
       <Variable>
-        <IsFile>true</IsFile>
-        <Type>string</Type>
-        <Name>Background.SourceFile</Name>
-        <Value xsi:type="xsd:string">Textures\button_disabled.png</Value>
+        <Type>int</Type>
+        <Name>Background.TextureLeft</Name>
+        <Value xsi:type="xsd:int">48</Value>
+        <ExposedAsName>TextureLeft</ExposedAsName>
         <SetsValue>true</SetsValue>
       </Variable>
       <Variable>
