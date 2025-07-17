@@ -49,6 +49,11 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
+    <Name>Controls/InputContainer</Name>
+    <ElementType>Component</ElementType>
+    <LinkType>ReferenceOriginal</LinkType>
+  </ComponentReference>
+  <ComponentReference>
     <Name>Controls/InputPassword</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>

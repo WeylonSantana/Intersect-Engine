@@ -483,12 +483,12 @@
   </Instance>
   <Instance>
     <Name>UsernameContainer</Name>
-    <BaseType>Controls/StackPanel</BaseType>
+    <BaseType>Controls/InputContainer</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
     <Name>PasswordContainer</Name>
-    <BaseType>Controls/StackPanel</BaseType>
+    <BaseType>Controls/InputContainer</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
