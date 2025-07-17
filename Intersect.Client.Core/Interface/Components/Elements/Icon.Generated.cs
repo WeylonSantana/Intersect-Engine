@@ -106,6 +106,8 @@ partial class Icon : MonoGameGum.Forms.Controls.FrameworkElement
         UserRemove,
         Warning,
         Wrench,
+        ScrollUp,
+        ScrollDown,
     }
 
     IconCategory? _iconCategoryState;

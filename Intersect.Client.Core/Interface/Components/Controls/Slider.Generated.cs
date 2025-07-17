@@ -67,7 +67,7 @@ partial class Slider : MonoGameGum.Forms.Controls.Slider
         }
     }
     public ContainerRuntime TrackInstance { get; protected set; }
-    public NineSliceRuntime NineSliceInstance { get; protected set; }
+    public NineSliceRuntime TrackBackground { get; protected set; }
     public Button ThumbInstance { get; protected set; }
     public NineSliceRuntime FocusedIndicator { get; protected set; }
 
@@ -88,7 +88,7 @@ partial class Slider : MonoGameGum.Forms.Controls.Slider
     {
         base.ReactToVisualChanged();
         TrackInstance = this.Visual?.GetGraphicalUiElementByName("TrackInstance") as ContainerRuntime;
-        NineSliceInstance = this.Visual?.GetGraphicalUiElementByName("NineSliceInstance") as NineSliceRuntime;
+        TrackBackground = this.Visual?.GetGraphicalUiElementByName("TrackBackground") as NineSliceRuntime;
         ThumbInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"ThumbInstance");
         FocusedIndicator = this.Visual?.GetGraphicalUiElementByName("FocusedIndicator") as NineSliceRuntime;
         CustomInitialize();

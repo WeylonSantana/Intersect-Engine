@@ -1,4 +1,4 @@
-//Code for Controls/ScrollBar (Container)
+//Code for Controls/ScrollBar (Controls/StackPanel)
 using GumRuntime;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
@@ -13,7 +13,7 @@ using RenderingLibrary.Graphics;
 using System.Linq;
 
 namespace Intersect.Client.Interface.Components;
-partial class ScrollBar : MonoGameGum.Forms.Controls.ScrollBar
+partial class ScrollBar : StackPanel
 {
     [System.Runtime.CompilerServices.ModuleInitializer]
     public static void RegisterRuntimeType()
@@ -62,11 +62,13 @@ partial class ScrollBar : MonoGameGum.Forms.Controls.ScrollBar
             }
         }
     }
-    public ButtonIconRuntime UpButtonInstance { get; protected set; }
-    public ButtonIconRuntime DownButtonInstance { get; protected set; }
+    public Button UpButton { get; protected set; }
     public ContainerRuntime TrackInstance { get; protected set; }
+    public Button DownButton { get; protected set; }
     public NineSliceRuntime TrackBackground { get; protected set; }
     public Button ThumbInstance { get; protected set; }
+    public Icon IconUp { get; protected set; }
+    public Icon IconDown { get; protected set; }
 
     public ScrollBar(InteractiveGue visual) : base(visual) { }
     public ScrollBar()
@@ -78,11 +80,14 @@ partial class ScrollBar : MonoGameGum.Forms.Controls.ScrollBar
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        UpButtonInstance = this.Visual?.GetGraphicalUiElementByName("UpButtonInstance") as ButtonIconRuntime;
-        DownButtonInstance = this.Visual?.GetGraphicalUiElementByName("DownButtonInstance") as ButtonIconRuntime;
+        //base.AfterFullCreation();
+        UpButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"UpButton");
         TrackInstance = this.Visual?.GetGraphicalUiElementByName("TrackInstance") as ContainerRuntime;
+        DownButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"DownButton");
         TrackBackground = this.Visual?.GetGraphicalUiElementByName("TrackBackground") as NineSliceRuntime;
         ThumbInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"ThumbInstance");
+        IconUp = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Icon>(this.Visual,"IconUp");
+        IconDown = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Icon>(this.Visual,"IconDown");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

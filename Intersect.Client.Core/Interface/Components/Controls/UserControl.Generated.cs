@@ -1,4 +1,4 @@
-//Code for Controls/Background (NineSlice)
+//Code for Controls/UserControl (Container)
 using GumRuntime;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
@@ -12,7 +12,7 @@ using RenderingLibrary.Graphics;
 using System.Linq;
 
 namespace Intersect.Client.Interface.Components;
-partial class Background : NineSlice
+partial class UserControl : MonoGameGum.Forms.Controls.FrameworkElement
 {
     [System.Runtime.CompilerServices.ModuleInitializer]
     public static void RegisterRuntimeType()
@@ -20,21 +20,22 @@ partial class Background : NineSlice
         var template = new MonoGameGum.Forms.VisualTemplate((vm, createForms) =>
         {
             var visual = new MonoGameGum.GueDeriving.ContainerRuntime();
-            var element = ObjectFinder.Self.GetElementSave("Controls/Background");
+            var element = ObjectFinder.Self.GetElementSave("Controls/UserControl");
             element.SetGraphicalUiElement(visual, RenderingLibrary.SystemManagers.Default);
-            if(createForms) visual.FormsControlAsObject = new Background(visual);
+            if(createForms) visual.FormsControlAsObject = new UserControl(visual);
             return visual;
         });
-        MonoGameGum.Forms.Controls.FrameworkElement.DefaultFormsTemplates[typeof(Background)] = template;
-        ElementSaveExtensions.RegisterGueInstantiation("Controls/Background", () => 
+        MonoGameGum.Forms.Controls.FrameworkElement.DefaultFormsTemplates[typeof(UserControl)] = template;
+        ElementSaveExtensions.RegisterGueInstantiation("Controls/UserControl", () => 
         {
             var gue = template.CreateContent(null, true) as InteractiveGue;
             return gue;
         });
     }
+    public NineSliceRuntime Background { get; protected set; }
 
-    public Background(InteractiveGue visual) : base(visual) { }
-    public Background()
+    public UserControl(InteractiveGue visual) : base(visual) { }
+    public UserControl()
     {
 
 
@@ -43,6 +44,7 @@ partial class Background : NineSlice
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
+        Background = this.Visual?.GetGraphicalUiElementByName("Background") as NineSliceRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

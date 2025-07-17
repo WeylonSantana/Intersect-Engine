@@ -22,6 +22,7 @@ public static class InterfaceCore
             "interface",
             "interface.gumx"
         );
+
         Gum.Initialize(IntersectGame.Instance, projectPath);
         Gum.ContentLoader!.XnaContentManager = IntersectGame.Instance.Content;
         FrameworkElement.KeyboardsForUiControl.Add(Gum.Keyboard);
@@ -50,7 +51,9 @@ public static class InterfaceCore
 
     public static void DrawUI()
     {
+        Core.Graphics.Renderer.Begin();
         Gum.Draw();
+        Core.Graphics.Renderer.End();
     }
 
     public static void HandleUiSizeChanged(object? sender, EventArgs? e)

@@ -1,6 +1,6 @@
 namespace Intersect.Client.Interface.Components;
 
-public partial class Background
+public partial class Menu
 {
     partial void CustomInitialize()
     {
