@@ -80,7 +80,6 @@ partial class ScrollBar : StackPanel
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        //base.AfterFullCreation();
         UpButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"UpButton");
         TrackInstance = this.Visual?.GetGraphicalUiElementByName("TrackInstance") as ContainerRuntime;
         DownButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"DownButton");
