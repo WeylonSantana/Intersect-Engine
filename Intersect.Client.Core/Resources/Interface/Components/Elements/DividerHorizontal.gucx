@@ -5,6 +5,11 @@
   <State>
     <Name>Default</Name>
     <Variable>
+      <Name>AccentLeft.AnimationFrames</Name>
+      <Value xsi:type="ArrayOfString" />
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>ColorCategory</Type>
       <Name>AccentLeft.ColorCategoryState</Name>
       <Value xsi:type="xsd:string">Gray</Value>
@@ -26,7 +31,7 @@
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>AccentLeft.SourceFile</Name>
-      <Value xsi:type="xsd:string">UISpriteSheet.png</Value>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -66,6 +71,11 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Name>AccentRight.AnimationFrames</Name>
+      <Value xsi:type="ArrayOfString" />
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>ColorCategory</Type>
       <Name>AccentRight.ColorCategoryState</Name>
       <Value xsi:type="xsd:string">Gray</Value>
@@ -87,7 +97,7 @@
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>AccentRight.SourceFile</Name>
-      <Value xsi:type="xsd:string">UISpriteSheet.png</Value>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -164,6 +174,11 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Name>Line.AnimationFrames</Name>
+      <Value xsi:type="ArrayOfString" />
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>ColorCategory</Type>
       <Name>Line.ColorCategoryState</Name>
       <Value xsi:type="xsd:string">Gray</Value>
@@ -185,7 +200,7 @@
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>Line.SourceFile</Name>
-      <Value xsi:type="xsd:string">UISpriteSheet.png</Value>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>

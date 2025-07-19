@@ -36,6 +36,11 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Name>LinesSprite.AnimationFrames</Name>
+      <Value xsi:type="ArrayOfString" />
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>ColorCategory</Type>
       <Name>LinesSprite.ColorCategoryState</Name>
       <ExposedAsName>LineColor</ExposedAsName>
@@ -45,7 +50,7 @@
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>LinesSprite.SourceFile</Name>
-      <Value xsi:type="xsd:string">UISpriteSheet.png</Value>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>

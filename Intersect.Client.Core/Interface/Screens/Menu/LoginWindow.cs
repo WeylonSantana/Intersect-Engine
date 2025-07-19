@@ -4,6 +4,6 @@ public partial class LoginWindow
 {
     partial void CustomInitialize()
     {
-    
+
     }
 }

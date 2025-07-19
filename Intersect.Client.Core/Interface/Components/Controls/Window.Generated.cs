@@ -35,6 +35,7 @@ partial class Window : MonoGameGum.Forms.Window
     }
     public NineSliceRuntime Background { get; protected set; }
     public Panel TitleBarInstance { get; protected set; }
+    public StackPanel InnerPanelInstance { get; protected set; }
 
     public Window(InteractiveGue visual) : base(visual) { }
     public Window()
@@ -48,6 +49,7 @@ partial class Window : MonoGameGum.Forms.Window
         base.ReactToVisualChanged();
         Background = this.Visual?.GetGraphicalUiElementByName("Background") as NineSliceRuntime;
         TitleBarInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Panel>(this.Visual,"TitleBarInstance");
+        InnerPanelInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"InnerPanelInstance");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

@@ -18,6 +18,11 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Name>AnimationFrames</Name>
+      <Value xsi:type="ArrayOfString" />
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>Blend</Type>
       <Name>Blend</Name>
       <Value xsi:type="xsd:int">0</Value>
@@ -158,7 +163,7 @@
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>SourceFile</Name>
-      <Value xsi:type="xsd:string">UISpriteSheet.png</Value>
+      <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <Category>Source</Category>
       <SetsValue>true</SetsValue>
     </Variable>

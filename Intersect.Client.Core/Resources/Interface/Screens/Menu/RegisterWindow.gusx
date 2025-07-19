@@ -84,7 +84,7 @@
     <Variable>
       <Type>string</Type>
       <Name>ButtonsContainer.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -120,7 +120,7 @@
     <Variable>
       <Type>string</Type>
       <Name>ConfirmPasswordContainer.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -150,7 +150,7 @@
     <Variable>
       <Type>string</Type>
       <Name>EmailContainer.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -178,9 +178,45 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>float</Type>
+      <Name>InputsContainer.Height</Name>
+      <Value xsi:type="xsd:float">16</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>InputsContainer.HeightUnits</Name>
+      <Value xsi:type="xsd:int">4</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>InputsContainer.Parent</Name>
+      <Value xsi:type="xsd:string">WindowInstance.InnerPanelInstance</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>InputsContainer.StackSpacing</Name>
+      <Value xsi:type="xsd:float">8</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>InputsContainer.Width</Name>
+      <Value xsi:type="xsd:float">32</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>InputsContainer.WidthUnits</Name>
+      <Value xsi:type="xsd:int">4</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>string</Type>
       <Name>PasswordContainer.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -276,7 +312,7 @@
     <Variable>
       <Type>string</Type>
       <Name>UsernameContainer.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -310,18 +346,6 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
-      <Type>string</Type>
-      <Name>WindowInnerPanel.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInstance</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>float</Type>
-      <Name>WindowInnerPanel.StackSpacing</Name>
-      <Value xsi:type="xsd:float">10</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
       <Type>HorizontalAlignment</Type>
       <Name>WindowTitle.HorizontalAlignment</Name>
       <Value xsi:type="xsd:int">1</Value>
@@ -336,7 +360,7 @@
     <Variable>
       <Type>string</Type>
       <Name>WindowTitle.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInstance</Value>
+      <Value xsi:type="xsd:string">WindowInstance.TitleBarInstance</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -372,11 +396,6 @@
   <Instance>
     <Name>WindowTitle</Name>
     <BaseType>Controls/Label</BaseType>
-    <DefinedByBase>false</DefinedByBase>
-  </Instance>
-  <Instance>
-    <Name>WindowInnerPanel</Name>
-    <BaseType>Controls/WindowInnerPanel</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
@@ -452,6 +471,11 @@
   <Instance>
     <Name>RegisterButton</Name>
     <BaseType>Controls/Button</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>InputsContainer</Name>
+    <BaseType>Controls/StackPanel</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Behaviors />

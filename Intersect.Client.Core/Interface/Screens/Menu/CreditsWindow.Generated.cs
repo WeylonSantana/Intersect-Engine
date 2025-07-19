@@ -2,7 +2,6 @@
 using GumRuntime;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
-using Intersect.Client.Interface.Components;
 using Gum.Converters;
 using Gum.DataTypes;
 using Gum.Managers;
@@ -37,11 +36,6 @@ partial class CreditsWindow : MonoGameGum.Forms.Controls.FrameworkElement
             return gue;
         });
     }
-    public Window WindowInstance { get; protected set; }
-    public Label WindowTitle { get; protected set; }
-    public WindowInnerPanel InnerPanel { get; protected set; }
-    public ScrollViewer ContentPanel { get; protected set; }
-    public Button BackButton { get; protected set; }
 
     public CreditsWindow(InteractiveGue visual) : base(visual) { }
     public CreditsWindow()
@@ -53,11 +47,6 @@ partial class CreditsWindow : MonoGameGum.Forms.Controls.FrameworkElement
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        WindowInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Window>(this.Visual,"WindowInstance");
-        WindowTitle = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"WindowTitle");
-        InnerPanel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<WindowInnerPanel>(this.Visual,"InnerPanel");
-        ContentPanel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ScrollViewer>(this.Visual,"ContentPanel");
-        BackButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"BackButton");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code
