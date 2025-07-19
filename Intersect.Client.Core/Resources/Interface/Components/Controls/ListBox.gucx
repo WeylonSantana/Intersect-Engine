@@ -349,25 +349,25 @@
     </Variable>
     <Variable>
       <Type>HorizontalAlignment</Type>
-      <Name>VerticalScrollBar.XOrigin</Name>
+      <Name>VerticalScrollBarInstance.XOrigin</Name>
       <Value xsi:type="xsd:int">2</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>PositionUnitType</Type>
-      <Name>VerticalScrollBar.XUnits</Name>
+      <Name>VerticalScrollBarInstance.XUnits</Name>
       <Value xsi:type="xsd:int">4</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>VerticalAlignment</Type>
-      <Name>VerticalScrollBar.YOrigin</Name>
+      <Name>VerticalScrollBarInstance.YOrigin</Name>
       <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>PositionUnitType</Type>
-      <Name>VerticalScrollBar.YUnits</Name>
+      <Name>VerticalScrollBarInstance.YUnits</Name>
       <Value xsi:type="xsd:int">7</Value>
       <SetsValue>true</SetsValue>
     </Variable>
@@ -437,7 +437,7 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>VerticalScrollBar</Name>
+    <Name>VerticalScrollBarInstance</Name>
     <BaseType>Controls/ScrollBar</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

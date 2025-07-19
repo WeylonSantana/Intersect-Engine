@@ -71,7 +71,7 @@ partial class ComboBox : MonoGameGum.Forms.Controls.ComboBox
     }
     public NineSliceRuntime Background { get; protected set; }
     public TextRuntime TextInstance { get; protected set; }
-    public ListBox ListBox { get; protected set; }
+    public ListBox ListBoxInstance { get; protected set; }
     public Icon IconInstance { get; protected set; }
     public NineSliceRuntime FocusedIndicator { get; protected set; }
 
@@ -87,7 +87,7 @@ partial class ComboBox : MonoGameGum.Forms.Controls.ComboBox
         base.ReactToVisualChanged();
         Background = this.Visual?.GetGraphicalUiElementByName("Background") as NineSliceRuntime;
         TextInstance = this.Visual?.GetGraphicalUiElementByName("TextInstance") as TextRuntime;
-        ListBox = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ListBox>(this.Visual,"ListBox");
+        ListBoxInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ListBox>(this.Visual,"ListBoxInstance");
         IconInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Icon>(this.Visual,"IconInstance");
         FocusedIndicator = this.Visual?.GetGraphicalUiElementByName("FocusedIndicator") as NineSliceRuntime;
         CustomInitialize();

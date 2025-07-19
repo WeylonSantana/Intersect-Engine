@@ -67,7 +67,7 @@ partial class ListBox : MonoGameGum.Forms.Controls.ListBox
         }
     }
     public NineSliceRuntime Background { get; protected set; }
-    public ScrollBar VerticalScrollBar { get; protected set; }
+    public ScrollBar VerticalScrollBarInstance { get; protected set; }
     public ContainerRuntime ClipContainerInstance { get; protected set; }
     public ContainerRuntime InnerPanelInstance { get; protected set; }
     public NineSliceRuntime FocusedIndicator { get; protected set; }
@@ -83,7 +83,7 @@ partial class ListBox : MonoGameGum.Forms.Controls.ListBox
     {
         base.ReactToVisualChanged();
         Background = this.Visual?.GetGraphicalUiElementByName("Background") as NineSliceRuntime;
-        VerticalScrollBar = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ScrollBar>(this.Visual,"VerticalScrollBar");
+        VerticalScrollBarInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ScrollBar>(this.Visual,"VerticalScrollBarInstance");
         ClipContainerInstance = this.Visual?.GetGraphicalUiElementByName("ClipContainerInstance") as ContainerRuntime;
         InnerPanelInstance = this.Visual?.GetGraphicalUiElementByName("InnerPanelInstance") as ContainerRuntime;
         FocusedIndicator = this.Visual?.GetGraphicalUiElementByName("FocusedIndicator") as NineSliceRuntime;

@@ -1666,6 +1666,111 @@
         "ElementType": "Components",
         "EventType": 1,
         "TimestampUtc": "2025-07-19T18:47:46.9966512Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Controls/StackPanel).UpButtonInstance",
+        "OldName": "Controls/ScrollBar (Controls/StackPanel).UpButton",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:22:48.3838778Z"
+      },
+      {
+        "NewName": "Controls/ScrollBar (Controls/StackPanel).DownButtonInstance",
+        "OldName": "Controls/ScrollBar (Controls/StackPanel).DownButton",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:22:54.0133007Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.736367Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.7383651Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.7403645Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.7433625Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.7453629Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.7473607Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.7503589Z"
+      },
+      {
+        "NewName": "Controls/ComboBox (Container).ListBoxInstance",
+        "OldName": "Controls/ComboBox (Container).ListBox",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:21.7523572Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBar",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:42.6483267Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBar",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:42.6504533Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBar",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:42.6604501Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBar",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:42.6624488Z"
+      },
+      {
+        "NewName": "Controls/ListBox (Container).VerticalScrollBarInstance",
+        "OldName": "Controls/ListBox (Container).VerticalScrollBar",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T19:23:42.6654473Z"
       }
     ]
   }
