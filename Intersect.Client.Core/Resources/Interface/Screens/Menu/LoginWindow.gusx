@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScreenSave xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>Menu/LoginWindow</Name>
+  <BaseType />
   <State>
     <Name>Default</Name>
     <Variable>
@@ -24,7 +25,7 @@
     <Variable>
       <Type>string</Type>
       <Name>ButtonsContainer.Parent</Name>
-      <Value xsi:type="xsd:string">InnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -59,44 +60,44 @@
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>InnerPanel.Height</Name>
+      <Name>InputsContainer.Height</Name>
       <Value xsi:type="xsd:float">16</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
-      <Name>InnerPanel.HeightUnits</Name>
+      <Name>InputsContainer.HeightUnits</Name>
       <Value xsi:type="xsd:int">4</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>string</Type>
-      <Name>InnerPanel.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInstance</Value>
+      <Name>InputsContainer.Parent</Name>
+      <Value xsi:type="xsd:string">WindowInstance.InnerPanelInstance</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>InnerPanel.StackSpacing</Name>
+      <Name>InputsContainer.StackSpacing</Name>
       <Value xsi:type="xsd:float">16</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>InnerPanel.Width</Name>
-      <Value xsi:type="xsd:float">50</Value>
+      <Name>InputsContainer.Width</Name>
+      <Value xsi:type="xsd:float">32</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
-      <Name>InnerPanel.WidthUnits</Name>
+      <Name>InputsContainer.WidthUnits</Name>
       <Value xsi:type="xsd:int">4</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>InnerPanel.Y</Name>
-      <Value xsi:type="xsd:float">32</Value>
+      <Name>InputsContainer.Y</Name>
+      <Value xsi:type="xsd:float">0</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -174,7 +175,7 @@
     <Variable>
       <Type>string</Type>
       <Name>PasswordContainer.Parent</Name>
-      <Value xsi:type="xsd:string">InnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -264,7 +265,7 @@
     <Variable>
       <Type>string</Type>
       <Name>SaveCredentialsCheckbox.Parent</Name>
-      <Value xsi:type="xsd:string">InnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -312,7 +313,7 @@
     <Variable>
       <Type>string</Type>
       <Name>UsernameContainer.Parent</Name>
-      <Value xsi:type="xsd:string">InnerPanel</Value>
+      <Value xsi:type="xsd:string">InputsContainer</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -432,7 +433,7 @@
     <Variable>
       <Type>string</Type>
       <Name>WindowTitle.Parent</Name>
-      <Value xsi:type="xsd:string">WindowInstance</Value>
+      <Value xsi:type="xsd:string">WindowInstance.TitleBarInstance</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -460,6 +461,12 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>VerticalAlignment</Type>
+      <Name>WindowTitle.YOrigin</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>PositionUnitType</Type>
       <Name>WindowTitle.YUnits</Name>
       <Value xsi:type="xsd:int">1</Value>
@@ -474,11 +481,6 @@
   <Instance>
     <Name>WindowTitle</Name>
     <BaseType>Controls/Label</BaseType>
-    <DefinedByBase>false</DefinedByBase>
-  </Instance>
-  <Instance>
-    <Name>InnerPanel</Name>
-    <BaseType>Controls/WindowInnerPanel</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
@@ -529,6 +531,11 @@
   <Instance>
     <Name>LoginButton</Name>
     <BaseType>Controls/Button</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>InputsContainer</Name>
+    <BaseType>Controls/StackPanel</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Behaviors />

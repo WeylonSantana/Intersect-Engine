@@ -1505,6 +1505,139 @@
         "ElementType": "Screens",
         "EventType": 7,
         "TimestampUtc": "2025-07-17T19:17:30.996558Z"
+      },
+      {
+        "NewName": "Controls/Window (Container).WindowInnerPanelInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-19T13:05:09.8436118Z"
+      },
+      {
+        "NewName": "Controls/Window (Container).InnerPanelInstance",
+        "OldName": "Controls/Window (Container).WindowInnerPanelInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T13:05:14.4468385Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/Window (Container).Controls/WindowInnerPanel InnerPanelInstance in Controls/Window (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T13:06:28.8618896Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.InnerPanelInstance",
+        "OldName": "Menu/LoginWindow.InnerPanel",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T13:06:43.1891003Z"
+      },
+      {
+        "NewName": "Controls/Window (Container).WindowInnerPanelInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-19T13:08:25.1092003Z"
+      },
+      {
+        "NewName": "Controls/Window (Container).InnerPanelInstance",
+        "OldName": "Controls/Window (Container).WindowInnerPanelInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T13:08:27.792029Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.Container",
+        "OldName": "Menu/LoginWindow.InnerPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T13:17:32.3898618Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Controls/WindowInnerPanel",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-19T14:43:24.3552997Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-19T14:44:17.4711638Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/LoginWindow.Controls/WindowInnerPanel Container in Menu/LoginWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T14:44:31.8222868Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.InputsContainer",
+        "OldName": "Menu/LoginWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T14:47:02.4858264Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-19T14:56:22.1354357Z"
+      },
+      {
+        "NewName": "Menu/RegisterWindow.InputsContainer",
+        "OldName": "Menu/RegisterWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-19T14:56:35.7626037Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/RegisterWindow.Controls/WindowInnerPanel WindowInnerPanel in Menu/RegisterWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T14:56:53.6759287Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/CreditsWindow.Controls/WindowInnerPanel InnerPanel in Menu/CreditsWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T14:58:15.6882379Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/CreditsWindow.Controls/Window WindowInstance in Menu/CreditsWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T14:58:22.6313297Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/CreditsWindow.Controls/Label WindowTitle in Menu/CreditsWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T14:58:22.7727Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/CreditsWindow.Controls/Button BackButton in Menu/CreditsWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T14:58:26.5488715Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Menu/CreditsWindow.Controls/ScrollViewer ContentPanel in Menu/CreditsWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-19T14:58:29.3558411Z"
       }
     ]
   }
