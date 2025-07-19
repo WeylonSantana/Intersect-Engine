@@ -139,7 +139,7 @@
     <Variable>
       <Type>string</Type>
       <Name>DefaultChildContainer</Name>
-      <Value xsi:type="xsd:string">ListBox</Value>
+      <Value xsi:type="xsd:string">ListBoxInstance</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -289,31 +289,31 @@
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>ListBox.Height</Name>
+      <Name>ListBoxInstance.Height</Name>
       <Value xsi:type="xsd:float">128</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>bool</Type>
-      <Name>ListBox.Visible</Name>
+      <Name>ListBoxInstance.Visible</Name>
       <Value xsi:type="xsd:boolean">false</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>ListBox.Width</Name>
+      <Name>ListBoxInstance.Width</Name>
       <Value xsi:type="xsd:float">0</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
-      <Name>ListBox.WidthUnits</Name>
+      <Name>ListBoxInstance.WidthUnits</Name>
       <Value xsi:type="xsd:int">2</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>ListBox.Y</Name>
+      <Name>ListBoxInstance.Y</Name>
       <Value xsi:type="xsd:float">28</Value>
       <SetsValue>true</SetsValue>
     </Variable>
@@ -613,7 +613,7 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>ListBox</Name>
+    <Name>ListBoxInstance</Name>
     <BaseType>Controls/ListBox</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

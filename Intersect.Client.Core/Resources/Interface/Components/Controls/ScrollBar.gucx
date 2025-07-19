@@ -7,78 +7,78 @@
     <Variable>
       <IsFile>true</IsFile>
       <Type>string</Type>
-      <Name>DownButton.ButtonBackground</Name>
+      <Name>DownButtonInstance.ButtonBackground</Name>
       <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>string</Type>
-      <Name>DownButton.ButtonDisplayText</Name>
+      <Name>DownButtonInstance.ButtonDisplayText</Name>
       <Value xsi:type="xsd:string"></Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>DownButton.Height</Name>
+      <Name>DownButtonInstance.Height</Name>
       <Value xsi:type="xsd:float">14</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>IconCategory</Type>
-      <Name>DownButton.Icon</Name>
+      <Name>DownButtonInstance.Icon</Name>
       <Value xsi:type="xsd:string">ScrollUp</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>bool</Type>
-      <Name>DownButton.IconVisible</Name>
+      <Name>DownButtonInstance.IconVisible</Name>
       <Value xsi:type="xsd:boolean">true</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>string</Type>
-      <Name>DownButton.Parent</Name>
+      <Name>DownButtonInstance.Parent</Name>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>TextureAddress</Type>
-      <Name>DownButton.TextureAddress</Name>
+      <Name>DownButtonInstance.TextureAddress</Name>
       <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
-      <Name>DownButton.TextureHeight</Name>
+      <Name>DownButtonInstance.TextureHeight</Name>
       <Value xsi:type="xsd:int">14</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
-      <Name>DownButton.TextureLeft</Name>
+      <Name>DownButtonInstance.TextureLeft</Name>
       <Value xsi:type="xsd:int">32</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
-      <Name>DownButton.TextureTop</Name>
+      <Name>DownButtonInstance.TextureTop</Name>
       <Value xsi:type="xsd:int">114</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
-      <Name>DownButton.TextureWidth</Name>
+      <Name>DownButtonInstance.TextureWidth</Name>
       <Value xsi:type="xsd:int">16</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>DownButton.Width</Name>
+      <Name>DownButtonInstance.Width</Name>
       <Value xsi:type="xsd:float">16</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
-      <Name>DownButton.WidthUnits</Name>
+      <Name>DownButtonInstance.WidthUnits</Name>
       <Value xsi:type="xsd:int">0</Value>
       <SetsValue>true</SetsValue>
     </Variable>
@@ -115,7 +115,7 @@
     <Variable>
       <Type>string</Type>
       <Name>IconDown.Parent</Name>
-      <Value xsi:type="xsd:string">DownButton</Value>
+      <Value xsi:type="xsd:string">DownButtonInstance</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -175,7 +175,7 @@
     <Variable>
       <Type>string</Type>
       <Name>IconUp.Parent</Name>
-      <Value xsi:type="xsd:string">UpButton</Value>
+      <Value xsi:type="xsd:string">UpButtonInstance</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -476,61 +476,61 @@
     <Variable>
       <IsFile>true</IsFile>
       <Type>string</Type>
-      <Name>UpButton.ButtonBackground</Name>
+      <Name>UpButtonInstance.ButtonBackground</Name>
       <Value xsi:type="xsd:string">Textures\UISpriteSheet.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>string</Type>
-      <Name>UpButton.ButtonDisplayText</Name>
+      <Name>UpButtonInstance.ButtonDisplayText</Name>
       <Value xsi:type="xsd:string"></Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>UpButton.Height</Name>
+      <Name>UpButtonInstance.Height</Name>
       <Value xsi:type="xsd:float">14</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>IconCategory</Type>
-      <Name>UpButton.Icon</Name>
+      <Name>UpButtonInstance.Icon</Name>
       <Value xsi:type="xsd:string">ScrollUp</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>bool</Type>
-      <Name>UpButton.IconVisible</Name>
+      <Name>UpButtonInstance.IconVisible</Name>
       <Value xsi:type="xsd:boolean">true</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>TextureAddress</Type>
-      <Name>UpButton.TextureAddress</Name>
+      <Name>UpButtonInstance.TextureAddress</Name>
       <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
-      <Name>UpButton.TextureHeight</Name>
+      <Name>UpButtonInstance.TextureHeight</Name>
       <Value xsi:type="xsd:int">14</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>int</Type>
-      <Name>UpButton.TextureLeft</Name>
+      <Name>UpButtonInstance.TextureLeft</Name>
       <Value xsi:type="xsd:int">32</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
-      <Name>UpButton.Width</Name>
+      <Name>UpButtonInstance.Width</Name>
       <Value xsi:type="xsd:float">16</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
-      <Name>UpButton.WidthUnits</Name>
+      <Name>UpButtonInstance.WidthUnits</Name>
       <Value xsi:type="xsd:int">0</Value>
       <SetsValue>true</SetsValue>
     </Variable>
@@ -552,7 +552,7 @@
     <Name>ScrollBarCategory</Name>
   </Category>
   <Instance>
-    <Name>UpButton</Name>
+    <Name>UpButtonInstance</Name>
     <BaseType>Controls/Button</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
@@ -562,7 +562,7 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>DownButton</Name>
+    <Name>DownButtonInstance</Name>
     <BaseType>Controls/Button</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
