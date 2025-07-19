@@ -1638,6 +1638,34 @@
         "ElementType": "Screens",
         "EventType": 6,
         "TimestampUtc": "2025-07-19T14:58:29.3558411Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Elements/CautionLines",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-19T18:47:15.4975512Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Elements/PercentBar",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-19T18:47:38.4721504Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Elements/PercentBarIcon",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-19T18:47:42.4111526Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Elements/VerticalLines",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-19T18:47:46.9966512Z"
       }
     ]
   }
