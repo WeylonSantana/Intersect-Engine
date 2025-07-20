@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MathHelper = Intersect.Utilities.MathHelper;
 using XNARectangle = Microsoft.Xna.Framework.Rectangle;
 using XNAColor = Microsoft.Xna.Framework.Color;
+using Intersect.Client.Interface;
 
 namespace Intersect.Client.MonoGame.Graphics;
 
@@ -175,12 +176,12 @@ internal partial class MonoRenderer : GameRenderer
             {
                 Globals.Database.FullScreen = false;
                 Globals.Database.SavePreferences();
-                //Interface.Interface.ShowAlert(
-                //    Strings.Errors.DisplayNotSupportedError.ToString(
-                //        Strings.Internals.ResolutionXByY.ToString(width, height)
-                //    ),
-                //    Strings.Errors.DisplayNotSupported
-                //);
+                InterfaceCore.AlertWindow.ShowError(
+                    Strings.Errors.DisplayNotSupportedError.ToString(
+                        Strings.Internals.ResolutionXByY.ToString(width, height)
+                    ),
+                    Strings.Errors.DisplayNotSupported
+                );
             }
         }
 

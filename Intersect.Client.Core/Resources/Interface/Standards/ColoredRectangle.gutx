@@ -668,6 +668,30 @@
         <SetsValue>true</SetsValue>
       </Variable>
     </State>
+    <State>
+      <Name>Info</Name>
+      <Variable>
+        <Type>int</Type>
+        <Name>Blue</Name>
+        <Value xsi:type="xsd:int">170</Value>
+        <Category>Rendering</Category>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>Green</Name>
+        <Value xsi:type="xsd:int">125</Value>
+        <Category>Rendering</Category>
+        <SetsValue>true</SetsValue>
+      </Variable>
+      <Variable>
+        <Type>int</Type>
+        <Name>Red</Name>
+        <Value xsi:type="xsd:int">70</Value>
+        <Category>Rendering</Category>
+        <SetsValue>true</SetsValue>
+      </Variable>
+    </State>
   </Category>
   <Behaviors />
 </StandardElementSave>

@@ -4,6 +4,6 @@ public partial class RegisterWindow
 {
     partial void CustomInitialize()
     {
-
+        IsVisible = false;
     }
 }

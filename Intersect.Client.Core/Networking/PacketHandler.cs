@@ -5,6 +5,7 @@ using Intersect.Client.Entities.Projectiles;
 using Intersect.Client.Framework.Entities;
 using Intersect.Client.Framework.Items;
 using Intersect.Client.General;
+using Intersect.Client.Interface;
 using Intersect.Client.Items;
 using Intersect.Client.Localization;
 using Intersect.Client.Maps;
@@ -1245,7 +1246,7 @@ internal sealed partial class PacketHandler
     {
         Fade.FadeIn(ClientConfiguration.Instance.FadeDurationMs);
         Globals.WaitingOnServer = false;
-        //Interface.Interface.ShowAlert(packet.Error, packet.Header, alertType: AlertType.Error);
+        InterfaceCore.AlertWindow.ShowError(packet.Error, packet.Header);
         //Interface.Interface.MenuUi?.Reset();
     }
 
@@ -2221,18 +2222,14 @@ internal sealed partial class PacketHandler
     public void HandlePacket(IPacketSender packetSender, PasswordChangeResultPacket packet)
     {
         var passwordResetResultType = packet.ResultType;
-        var responseMessage = Strings.PasswordChange.ResponseMessages[passwordResetResultType];
+        var message = Strings.PasswordChange.ResponseMessages[passwordResetResultType];
         var requestSuccessful = passwordResetResultType == PasswordResetResultType.Success;
-        //var alertType = requestSuccessful
-        //    ? AlertType.Information
-        //    : AlertType.Error;
-        //var alertTitle = requestSuccessful ? Strings.PasswordChange.AlertTitleSuccess : Strings.PasswordChange.AlertTitleError;
+        Interface.Screens.AlertWindow.AlertType type = requestSuccessful
+            ? Interface.Screens.AlertWindow.AlertType.Info
+            : Interface.Screens.AlertWindow.AlertType.Error;
 
-        //Interface.Interface.ShowAlert(
-        //    message: responseMessage,
-        //    title: alertTitle,
-        //    alertType: alertType
-        //);
+        var title = requestSuccessful ? Strings.PasswordChange.AlertTitleSuccess : Strings.PasswordChange.AlertTitleError;
+        InterfaceCore.AlertWindow.Show(title, message, type);
 
         //if (requestSuccessful)
         //{
