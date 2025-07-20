@@ -2463,36 +2463,6 @@ If you are sure you want to hand over your guild enter '\c{{#ff8080}}{02}\c{{}}'
         public static LocalizedString Title = @"Password Reset";
     }
 
-    public partial struct Server
-    {
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Connecting = @"Connecting...";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Failed = @"Network Error";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString HandshakeFailure = @"Handshake Error";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Offline = @"Offline";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Online = @"Online";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString ServerFull = @"Server is Full";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString StatusLabel = @"Server Status: {00}";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Unknown = @"Unknown";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString VersionMismatch = @"Version Mismatch";
-    }
-
     public partial struct Shop
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

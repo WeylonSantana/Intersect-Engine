@@ -1,4 +1,6 @@
+using Intersect.Client.MonoGame.Network;
 using Intersect.Core;
+using Intersect.Framework.Core;
 using Intersect.Network;
 using Intersect.Network.Packets.Unconnected.Server;
 using Microsoft.Extensions.Logging;
@@ -12,7 +14,8 @@ public class ServerStatusResponsePacketHandler : AbstractPacketHandler<ServerSta
     {
         try
         {
-            //MainMenu.SetNetworkStatus(packet.Status);
+            MonoSocket.Instance.CurrentNetworkStatus = packet.Status;
+            MonoSocket.Instance.LastNetworkStatusChangeTime = Timing.Global.MillisecondsUtc;
             return true;
         }
         catch (Exception exception)

@@ -12,7 +12,6 @@ public static class InterfaceCore
 {
     public static GumService Gum => GumService.Default;
     public static InteractiveGue Root => Gum.Root;
-    public static MainMenuInterface? MainMenuInterface { get; set; }
 
     internal static void InitializeUI()
     {
@@ -26,27 +25,13 @@ public static class InterfaceCore
         Gum.Initialize(IntersectGame.Instance, projectPath);
         Gum.ContentLoader!.XnaContentManager = IntersectGame.Instance.Content;
         FrameworkElement.KeyboardsForUiControl.Add(Gum.Keyboard);
-        InitializeMainMenuInterface();
-    }
-
-    public static void InitializeMainMenuInterface()
-    {
-        //GameInterface?.Clear();
-        //GameInterface = default;
-        MainMenuInterface ??= new MainMenuInterface();
-    }
-
-    public static void InitializeGameInterface()
-    {
-        MainMenuInterface?.Clear();
-        MainMenuInterface = default;
-        //GameInterface ??= new GameInterface();
+        MainMenuInterface.Initialize();
     }
 
     public static void UpdateUI(GameTime gameTime)
     {
         Gum.Update(gameTime);
-        MainMenuInterface?.Update();
+        MainMenuInterface.Update();
     }
 
     public static void DrawUI()
@@ -65,8 +50,6 @@ public static class InterfaceCore
 
     public static void Clear()
     {
-        MainMenuInterface?.Clear();
-        MainMenuInterface = null;
         Gum.Root.Children.Clear();
     }
 }

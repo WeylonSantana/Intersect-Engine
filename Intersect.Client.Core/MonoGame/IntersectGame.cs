@@ -181,12 +181,23 @@ internal partial class IntersectGame : Game
 
         // TODO: Remove old netcode
         Networking.Network.Socket = new MonoSocket(Context);
-        //Networking.Network.Socket.Connected += (_, connectionEventArgs) =>
-        //    MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
-        //Networking.Network.Socket.ConnectionFailed += (_, connectionEventArgs, _) =>
-        //    MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
-        //Networking.Network.Socket.Disconnected += (_, connectionEventArgs) =>
-        //    MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus, resetStatusCheck: true);
+        Networking.Network.Socket.Connected += (_, connectionEventArgs) =>
+        {
+            MonoSocket.Instance.CurrentNetworkStatus = connectionEventArgs.NetworkStatus;
+            MonoSocket.Instance.LastNetworkStatusChangeTime = Timing.Global.MillisecondsUtc;
+        };
+
+        Networking.Network.Socket.ConnectionFailed += (_, connectionEventArgs, _) =>
+        {
+            MonoSocket.Instance.CurrentNetworkStatus = connectionEventArgs.NetworkStatus;
+            MonoSocket.Instance.LastNetworkStatusChangeTime = Timing.Global.MillisecondsUtc;
+        };
+
+        Networking.Network.Socket.Disconnected += (_, connectionEventArgs) =>
+        {
+            MonoSocket.Instance.CurrentNetworkStatus = connectionEventArgs.NetworkStatus;
+            MonoSocket.Instance.LastNetworkStatusChangeTime = -1;
+        };
 
         Main.Start(Context);
 

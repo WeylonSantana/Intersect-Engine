@@ -1771,6 +1771,20 @@
         "ElementType": "Components",
         "EventType": 7,
         "TimestampUtc": "2025-07-19T19:23:42.6654473Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ServerStatusLabel",
+        "OldName": "Menu/MainMenuWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T02:24:20.0951477Z"
+      },
+      {
+        "NewName": "Menu/MainMenuWindow.ServerStatusLabelBackground",
+        "OldName": "Menu/MainMenuWindow.RectangleInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T02:24:32.3197944Z"
       }
     ]
   }

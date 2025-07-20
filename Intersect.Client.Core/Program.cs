@@ -330,7 +330,8 @@ static class Program
             if (File.Exists(targetPath))
             {
                 // If the file already exists, skip it
-                continue;
+                // TODO: for god's sake, don't do this in production weylon! Uncomment this line to skip existing files.
+                //continue;
             }
 
             try
