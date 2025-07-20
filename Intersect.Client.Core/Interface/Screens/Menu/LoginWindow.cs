@@ -2,6 +2,8 @@ using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.Client.MonoGame.Network;
 using Intersect.Client.Networking;
+using Intersect.Network;
+using Intersect.Network.Events;
 using Intersect.Security;
 using Intersect.Utilities;
 using Microsoft.Xna.Framework.Input;
@@ -50,8 +52,16 @@ public partial class LoginWindow
 
         RegisterButton.Click += (sender, args) =>
         {
-            IsVisible = false;
-            MainMenuInterface.MainMenuWindow.RegisterWindow.IsVisible = true;
+            if (Networking.Network.InterruptDisconnectsIfConnected())
+            {
+                ShowRegisterWindow();
+                return;
+            }
+
+            Networking.Network.Socket.ReceivedConfiguration += ShowRegisterWindow;
+            Networking.Network.Socket.ConnectionFailed += RemoveRegisterEvents;
+            Networking.Network.Socket.Disconnected += RemoveRegisterEvents;
+            Networking.Network.TryConnect();
         };
 
         LoadCredentials();
@@ -113,22 +123,15 @@ public partial class LoginWindow
             return;
         }
 
-        Networking.Network.Socket.ReceivedConfiguration += (s, a) => TryLogin();
-        Networking.Network.Socket.ConnectionFailed += (n, a, d) => _removeLoginEvents();
-        Networking.Network.Socket.Disconnected += (n, a) => _removeLoginEvents();
+        Networking.Network.Socket.ReceivedConfiguration += TryLogin;
+        Networking.Network.Socket.ConnectionFailed += RemoveLoginEvents;
+        Networking.Network.Socket.Disconnected += RemoveLoginEvents;
         Networking.Network.TryConnect();
     }
 
-    private void _removeLoginEvents()
+    private void TryLogin(object? sender = default, EventArgs? args = default)
     {
-        Networking.Network.Socket.ReceivedConfiguration -= (s, a) => TryLogin();
-        Networking.Network.Socket.ConnectionFailed -= (n, a, d) => _removeLoginEvents();
-        Networking.Network.Socket.Disconnected -= (n, a) => _removeLoginEvents();
-    }
-
-    private void TryLogin()
-    {
-        _removeLoginEvents();
+        RemoveLoginEvents();
 
         if (!Networking.Network.IsConnected)
         {
@@ -143,11 +146,54 @@ public partial class LoginWindow
         }
 
         PacketSender.SendLogin(UsernameInput.Text, password);
+        InterfaceCore.AlertWindow.OnOpened += OnLoginError;
         SaveCredentials();
     }
 
+    private void RemoveLoginEvents(INetworkLayerInterface? network, ConnectionEventArgs? args, bool denied)
+    {
+        Networking.Network.Socket.ReceivedConfiguration -= TryLogin;
+        Networking.Network.Socket.ConnectionFailed -= RemoveLoginEvents;
+        Networking.Network.Socket.Disconnected -= RemoveLoginEvents;
+    }
+
+    private void RemoveLoginEvents(INetworkLayerInterface? network = default, ConnectionEventArgs? args = default)
+        => RemoveLoginEvents(network, args, false);
+
+    private void OnLoginError(object? sender, EventArgs e)
+    {
+        // if the alert window shows an error, we want to reset the login window
+        InterfaceCore.AlertWindow.OnOpened -= OnLoginError;
+
+        // keep waiting until debounce resets
+        Globals.WaitingOnServer = true;
+        Networking.Network.DebounceClose("login_failed");
+    }
+
+    private void ShowRegisterWindow(object? sender = default, EventArgs? e = default)
+    {
+        RemoveRegisterEvents();
+        IsVisible = false;
+        MainMenuInterface.MainMenuWindow.RegisterWindow.IsVisible = true;
+    }
+
+    private void RemoveRegisterEvents(INetworkLayerInterface? network, ConnectionEventArgs? args, bool denied)
+    {
+        Networking.Network.Socket.ReceivedConfiguration -= ShowRegisterWindow;
+        Networking.Network.Socket.ConnectionFailed -= RemoveRegisterEvents;
+        Networking.Network.Socket.Disconnected -= RemoveRegisterEvents;
+    }
+
+    private void RemoveRegisterEvents(INetworkLayerInterface? network = default, ConnectionEventArgs? args = default)
+        => RemoveRegisterEvents(network, args, false);
+
     public void Update()
     {
+        if (!IsVisible)
+        {
+            return;
+        }
+
         bool shouldEnableButtons =
             !Globals.WaitingOnServer &&
             MonoSocket.Instance.CurrentNetworkStatus == Network.NetworkStatus.Online;
