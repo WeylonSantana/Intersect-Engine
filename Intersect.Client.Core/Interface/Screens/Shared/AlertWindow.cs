@@ -5,6 +5,8 @@ namespace Intersect.Client.Interface.Screens;
 
 public partial class AlertWindow
 {
+    public event EventHandler? OnOpened;
+
     partial void CustomInitialize()
     {
         this.AddToRoot();
@@ -22,6 +24,7 @@ public partial class AlertWindow
         WindowTitle.Text = title;
         ContentLabel.Text = message;
         AlertTypeState = type;
+        OnOpened?.Invoke(this, EventArgs.Empty);
     }
 
     public void ShowError(string message, string? title = default)

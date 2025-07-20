@@ -352,6 +352,12 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>float</Type>
+      <Name>WindowInstance.Y</Name>
+      <Value xsi:type="xsd:float">120</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>HorizontalAlignment</Type>
       <Name>WindowTitle.HorizontalAlignment</Name>
       <Value xsi:type="xsd:int">1</Value>

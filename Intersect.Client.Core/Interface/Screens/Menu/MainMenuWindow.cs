@@ -34,5 +34,6 @@ public partial class MainMenuWindow
         }
 
         LoginWindow.Update();
+        RegisterWindow.Update();
     }
 }
