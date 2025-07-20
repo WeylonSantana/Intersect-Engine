@@ -1,4 +1,4 @@
-﻿using Intersect.Network;
+using Intersect.Network;
 using Intersect.Network.Events;
 
 namespace Intersect.Client.Framework.Network;
@@ -28,6 +28,8 @@ public abstract partial class GameSocket
 
     public event DisconnectedHandler Disconnected;
 
+    public event EventHandler? ReceivedConfiguration;
+
     protected void OnDataReceived(IPacket packet)
     {
         DataReceived?.Invoke(packet);
@@ -46,6 +48,11 @@ public abstract partial class GameSocket
     protected void OnDisconnected(INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs)
     {
         Disconnected?.Invoke(sender, connectionEventArgs);
+    }
+
+    public void OnReceivedConfiguration()
+    {
+        ReceivedConfiguration?.Invoke(this, EventArgs.Empty);
     }
 
     public abstract INetwork Network { get; }

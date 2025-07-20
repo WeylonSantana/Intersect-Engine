@@ -1785,6 +1785,34 @@
         "ElementType": "Screens",
         "EventType": 7,
         "TimestampUtc": "2025-07-20T02:24:32.3197944Z"
+      },
+      {
+        "NewName": "Styles (Container).PrimaryLight1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T12:15:26.990358Z"
+      },
+      {
+        "NewName": "Styles (Container).PrimaryLighter",
+        "OldName": "Styles (Container).PrimaryLight1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T12:15:35.2652007Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T13:03:38.380804Z"
+      },
+      {
+        "NewName": "Menu/LoginWindow.ForgotPasswordButton",
+        "OldName": "Menu/LoginWindow.ButtonInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T13:04:43.3926494Z"
       }
     ]
   }

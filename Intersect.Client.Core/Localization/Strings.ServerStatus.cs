@@ -5,7 +5,7 @@ namespace Intersect.Client.Localization;
 
 public static partial class Strings
 {
-    public partial struct Server
+    public partial struct ServerStatus
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public static LocalizedString Connecting = @"Connecting...";
