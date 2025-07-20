@@ -54,6 +54,18 @@ partial class Label : MonoGameGum.Forms.Controls.Label
         set => TextInstance.VerticalAlignment = value;
     }
 
+    public float LabelWidth
+    {
+        get => TextInstance.Width;
+        set => TextInstance.Width = value;
+    }
+
+    public DimensionUnitType LabelWidthUnits
+    {
+        get => TextInstance.WidthUnits;
+        set => TextInstance.WidthUnits = value;
+    }
+
     public Label(InteractiveGue visual) : base(visual) { }
     public Label()
     {

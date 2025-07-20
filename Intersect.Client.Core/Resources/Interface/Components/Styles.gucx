@@ -300,6 +300,30 @@
     </Variable>
     <Variable>
       <Type>int</Type>
+      <Name>Info.Blue</Name>
+      <Value xsi:type="xsd:int">170</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Info.Green</Name>
+      <Value xsi:type="xsd:int">125</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>Info.Parent</Name>
+      <Value xsi:type="xsd:string">Colors</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>Info.Red</Name>
+      <Value xsi:type="xsd:int">70</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
       <Name>LightGray.Blue</Name>
       <Value xsi:type="xsd:int">95</Value>
       <SetsValue>true</SetsValue>
@@ -728,6 +752,11 @@
   </Instance>
   <Instance>
     <Name>Danger</Name>
+    <BaseType>ColoredRectangle</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>Info</Name>
     <BaseType>ColoredRectangle</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

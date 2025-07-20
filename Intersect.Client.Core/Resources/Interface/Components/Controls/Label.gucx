@@ -69,9 +69,16 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>float</Type>
+      <Name>TextInstance.Width</Name>
+      <ExposedAsName>LabelWidth</ExposedAsName>
+      <SetsValue>false</SetsValue>
+    </Variable>
+    <Variable>
       <Type>DimensionUnitType</Type>
       <Name>TextInstance.WidthUnits</Name>
       <Value xsi:type="xsd:int">4</Value>
+      <ExposedAsName>LabelWidthUnits</ExposedAsName>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>

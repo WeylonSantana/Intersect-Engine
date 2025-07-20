@@ -1813,6 +1813,223 @@
         "ElementType": "Screens",
         "EventType": 7,
         "TimestampUtc": "2025-07-20T13:04:43.3926494Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-20T14:59:34.7822355Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.WindowInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:01:00.6491227Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:01:52.6805674Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:03:23.36211Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.StackPanelInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:05:06.4242796Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.TitleContainer",
+        "OldName": "shared\\AlertWindow.StackPanelInstance1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:05:15.9424854Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.TitleContainer",
+        "OldName": "shared\\AlertWindow.TitleContainer",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:05:23.0463507Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.WindowTitle",
+        "OldName": "shared\\AlertWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:07:43.3386703Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.ContentContaine",
+        "OldName": "shared\\AlertWindow.StackPanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:08:01.1145805Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.ContentContainer",
+        "OldName": "shared\\AlertWindow.ContentContaine",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:08:58.401343Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.LabelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:11:37.6803387Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:11:50.2663542Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.SubmitButton",
+        "OldName": "shared\\AlertWindow.ButtonInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:13:51.5285057Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.IconInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:24:43.7751513Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.WindowIcon",
+        "OldName": "shared\\AlertWindow.IconInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:29:00.245787Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.PanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:30:03.3687851Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.WindowIconContainer",
+        "OldName": "shared\\AlertWindow.PanelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:30:28.9804452Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.IconInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:30:35.3400162Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.IconBackground",
+        "OldName": "shared\\AlertWindow.IconInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:30:42.624051Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "shared\\AlertWindow.Elements/Icon IconBackground in shared\\AlertWindow",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-20T15:31:05.0509058Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.NineSliceInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:31:14.0373417Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.WindowBackground",
+        "OldName": "shared\\AlertWindow.NineSliceInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:31:22.8140201Z"
+      },
+      {
+        "NewName": "shared\\AlertWindow.WindowIconBackground",
+        "OldName": "shared\\AlertWindow.WindowBackground",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:31:36.2269554Z"
+      },
+      {
+        "NewName": "Shared/AlertWindow",
+        "OldName": "shared\\AlertWindow",
+        "ElementType": "Screens",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-20T15:42:02.4257788Z"
+      },
+      {
+        "NewName": "Shared/AlertWindow.ContentLabel",
+        "OldName": "Shared/AlertWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:50:34.8852273Z"
+      },
+      {
+        "NewName": "Shared/AlertWindow.ContentLabel",
+        "OldName": "Shared/AlertWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:50:34.8875011Z"
+      },
+      {
+        "NewName": "Shared/AlertWindow.ContentLabel",
+        "OldName": "Shared/AlertWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:50:34.8905025Z"
+      },
+      {
+        "NewName": "Shared/AlertWindow.ContentLabel",
+        "OldName": "Shared/AlertWindow.LabelInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:50:34.8925374Z"
+      },
+      {
+        "NewName": "Styles (Container).Danger1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-20T15:54:30.4858502Z"
+      },
+      {
+        "NewName": "Styles (Container).Info",
+        "OldName": "Styles (Container).Danger1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:54:42.8667237Z"
+      },
+      {
+        "NewName": "Styles (Container).Info",
+        "OldName": "Styles (Container).Info",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-20T15:54:44.4388086Z"
       }
     ]
   }

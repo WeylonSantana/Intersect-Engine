@@ -95,9 +95,21 @@ public partial class LoginWindow
 
     private void ConnectAndTryLogin()
     {
-        if (Networking.Network.InterruptDisconnectsIfConnected())
+        if (Globals.WaitingOnServer)
         {
-            // Interface.ShowAlert(Strings.Errors.Disconnected, alertType: AlertType.Error);
+            InterfaceCore.AlertWindow.ShowError(Strings.Errors.WaitingForServer);
+            return;
+        }
+
+        if (!FieldChecking.IsValidUsername(UsernameInput.Text, Strings.Regex.Username))
+        {
+            InterfaceCore.AlertWindow.ShowError(Strings.Errors.UsernameInvalid);
+            return;
+        }
+
+        if (!_useHashedPass && !FieldChecking.IsValidPassword(PasswordInput.Password.ToString(), Strings.Regex.Password))
+        {
+            InterfaceCore.AlertWindow.ShowError(Strings.Errors.PasswordInvalid);
             return;
         }
 
@@ -118,26 +130,9 @@ public partial class LoginWindow
     {
         _removeLoginEvents();
 
-        if (Globals.WaitingOnServer)
-        {
-            return;
-        }
-
         if (!Networking.Network.IsConnected)
         {
-            //Interface.ShowAlert(Strings.Errors.NotConnected, alertType: AlertType.Error);
-            return;
-        }
-
-        if (!FieldChecking.IsValidUsername(UsernameInput.Text, Strings.Regex.Username))
-        {
-            //Interface.ShowAlert(Strings.Errors.UsernameInvalid, alertType: AlertType.Error);
-            return;
-        }
-
-        if (!_useHashedPass && !FieldChecking.IsValidPassword(PasswordInput.Password.ToString(), Strings.Regex.Password))
-        {
-            //Interface.ShowAlert(Strings.Errors.PasswordInvalid, alertType: AlertType.Error);
+            InterfaceCore.AlertWindow.ShowError(Strings.Errors.NotConnected);
             return;
         }
 

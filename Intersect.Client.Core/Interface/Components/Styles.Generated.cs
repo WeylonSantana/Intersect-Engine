@@ -45,6 +45,7 @@ partial class Styles : MonoGameGum.Forms.Controls.FrameworkElement
     public ColoredRectangleRuntime Success { get; protected set; }
     public ColoredRectangleRuntime Warning { get; protected set; }
     public ColoredRectangleRuntime Danger { get; protected set; }
+    public ColoredRectangleRuntime Info { get; protected set; }
     public ColoredRectangleRuntime Accent { get; protected set; }
     public TextRuntime Tiny { get; protected set; }
     public TextRuntime Small { get; protected set; }
@@ -80,6 +81,7 @@ partial class Styles : MonoGameGum.Forms.Controls.FrameworkElement
         Success = this.Visual?.GetGraphicalUiElementByName("Success") as ColoredRectangleRuntime;
         Warning = this.Visual?.GetGraphicalUiElementByName("Warning") as ColoredRectangleRuntime;
         Danger = this.Visual?.GetGraphicalUiElementByName("Danger") as ColoredRectangleRuntime;
+        Info = this.Visual?.GetGraphicalUiElementByName("Info") as ColoredRectangleRuntime;
         Accent = this.Visual?.GetGraphicalUiElementByName("Accent") as ColoredRectangleRuntime;
         Tiny = this.Visual?.GetGraphicalUiElementByName("Tiny") as TextRuntime;
         Small = this.Visual?.GetGraphicalUiElementByName("Small") as TextRuntime;

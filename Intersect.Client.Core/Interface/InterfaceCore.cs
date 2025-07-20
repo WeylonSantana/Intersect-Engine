@@ -13,6 +13,12 @@ public static class InterfaceCore
     public static GumService Gum => GumService.Default;
     public static InteractiveGue Root => Gum.Root;
 
+    #region Shared UI Elements
+
+    public static AlertWindow AlertWindow { get; set; } = default!;
+
+    #endregion
+
     internal static void InitializeUI()
     {
         var projectPath = Path.Combine(
@@ -25,7 +31,9 @@ public static class InterfaceCore
         Gum.Initialize(IntersectGame.Instance, projectPath);
         Gum.ContentLoader!.XnaContentManager = IntersectGame.Instance.Content;
         FrameworkElement.KeyboardsForUiControl.Add(Gum.Keyboard);
+
         MainMenuInterface.Initialize();
+        AlertWindow = new AlertWindow();
     }
 
     public static void UpdateUI(GameTime gameTime)
