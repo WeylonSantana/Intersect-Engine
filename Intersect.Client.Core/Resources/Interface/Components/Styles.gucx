@@ -414,6 +414,30 @@
     </Variable>
     <Variable>
       <Type>int</Type>
+      <Name>PrimaryLighter.Blue</Name>
+      <Value xsi:type="xsd:int">129</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>PrimaryLighter.Green</Name>
+      <Value xsi:type="xsd:int">109</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>PrimaryLighter.Parent</Name>
+      <Value xsi:type="xsd:string">Colors</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>PrimaryLighter.Red</Name>
+      <Value xsi:type="xsd:int">97</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
       <Name>Small.FontSize</Name>
       <Value xsi:type="xsd:int">12</Value>
       <SetsValue>true</SetsValue>
@@ -664,6 +688,11 @@
   </Instance>
   <Instance>
     <Name>PrimaryLight</Name>
+    <BaseType>ColoredRectangle</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>PrimaryLighter</Name>
     <BaseType>ColoredRectangle</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

@@ -37,6 +37,7 @@ partial class Styles : MonoGameGum.Forms.Controls.FrameworkElement
     public ColoredRectangleRuntime White { get; protected set; }
     public ColoredRectangleRuntime Primary { get; protected set; }
     public ColoredRectangleRuntime PrimaryLight { get; protected set; }
+    public ColoredRectangleRuntime PrimaryLighter { get; protected set; }
     public ColoredRectangleRuntime PrimaryDark { get; protected set; }
     public ColoredRectangleRuntime Gray { get; protected set; }
     public ColoredRectangleRuntime LightGray { get; protected set; }
@@ -71,6 +72,7 @@ partial class Styles : MonoGameGum.Forms.Controls.FrameworkElement
         White = this.Visual?.GetGraphicalUiElementByName("White") as ColoredRectangleRuntime;
         Primary = this.Visual?.GetGraphicalUiElementByName("Primary") as ColoredRectangleRuntime;
         PrimaryLight = this.Visual?.GetGraphicalUiElementByName("PrimaryLight") as ColoredRectangleRuntime;
+        PrimaryLighter = this.Visual?.GetGraphicalUiElementByName("PrimaryLighter") as ColoredRectangleRuntime;
         PrimaryDark = this.Visual?.GetGraphicalUiElementByName("PrimaryDark") as ColoredRectangleRuntime;
         Gray = this.Visual?.GetGraphicalUiElementByName("Gray") as ColoredRectangleRuntime;
         LightGray = this.Visual?.GetGraphicalUiElementByName("LightGray") as ColoredRectangleRuntime;

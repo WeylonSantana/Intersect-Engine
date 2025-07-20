@@ -50,6 +50,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
     public Button RegisterButton { get; protected set; }
     public Button LoginButton { get; protected set; }
     public StackPanel InputsContainer { get; protected set; }
+    public Button ForgotPasswordButton { get; protected set; }
 
     public LoginWindow(InteractiveGue visual) : base(visual) { }
     public LoginWindow()
@@ -74,6 +75,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
         RegisterButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"RegisterButton");
         LoginButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"LoginButton");
         InputsContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"InputsContainer");
+        ForgotPasswordButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"ForgotPasswordButton");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

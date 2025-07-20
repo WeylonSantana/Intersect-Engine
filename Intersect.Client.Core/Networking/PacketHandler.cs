@@ -168,7 +168,8 @@ internal sealed partial class PacketHandler
         ApplicationContext.Context.Value?.Logger.LogDebug("Received configuration from server.");
         Options.LoadFromServer(packet.Config);
         Globals.WaitingOnServer = false;
-        //MainMenu.HandleReceivedConfiguration();
+        Network.Socket.OnReceivedConfiguration();
+
         try
         {
             Strings.Load();

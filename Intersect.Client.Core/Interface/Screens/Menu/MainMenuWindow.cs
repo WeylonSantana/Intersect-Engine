@@ -8,10 +8,12 @@ namespace Intersect.Client.Interface.Screens;
 public partial class MainMenuWindow
 {
     public LoginWindow LoginWindow { get; set; } = new();
+    public RegisterWindow RegisterWindow { get; set; } = new() { IsVisible = false };
 
     partial void CustomInitialize()
     {
         AddChild(LoginWindow);
+        AddChild(RegisterWindow);
         this.AddToRoot();
     }
 
@@ -22,7 +24,7 @@ public partial class MainMenuWindow
 
     public void Update()
     {
-        var text = Strings.Server.StatusLabel.ToString(
+        var text = Strings.ServerStatus.StatusLabel.ToString(
             MonoSocket.Instance.CurrentNetworkStatus.ToLocalizedString()
         );
 
@@ -30,5 +32,7 @@ public partial class MainMenuWindow
         {
             ServerStatusLabel.Text = text;
         }
+
+        LoginWindow.Update();
     }
 }
