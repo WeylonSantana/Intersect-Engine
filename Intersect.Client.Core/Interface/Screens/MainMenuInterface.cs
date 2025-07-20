@@ -4,19 +4,20 @@ namespace Intersect.Client.Interface.Screens;
 
 public partial class MainMenuInterface
 {
-    public MainMenuWindow? MainMenuWindow { get; set; } = new();
+    public static MainMenuWindow MainMenuWindow { get; set; } = new();
 
-    public MainMenuInterface()
+    public static void Initialize()
     {
+        MainMenuWindow.Initialize();
     }
 
-    public void Update()
+    public static void Update()
     {
+        MainMenuWindow.Update();
     }
 
-    public void Clear()
+    public static void Clear()
     {
-        MainMenuWindow?.RemoveFromRoot();
-        MainMenuWindow = null;
+        MainMenuWindow.RemoveFromRoot();
     }
 }

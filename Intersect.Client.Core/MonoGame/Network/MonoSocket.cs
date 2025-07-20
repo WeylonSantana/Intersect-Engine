@@ -45,6 +45,9 @@ internal partial class MonoSocket : GameSocket
     private const long ServerStatusPingInterval = 15_000;
 #endif
 
+    public long LastNetworkStatusChangeTime { get; set; } = -1;
+    public NetworkStatus CurrentNetworkStatus { get; set; } = NetworkStatus.Offline;
+
     private const string AsymmetricKeyManifestResourceName = "Intersect.Client.network.handshake.bkey.pub";
 
     private IClient? _network;
@@ -212,7 +215,7 @@ internal partial class MonoSocket : GameSocket
         {
             var now = Timing.Global.MillisecondsUtc;
             // ReSharper disable once InvertIf
-            if (_nextServerStatusPing <= now) // || MainMenu.LastNetworkStatusChangeTime < 0
+            if (_nextServerStatusPing <= now || LastNetworkStatusChangeTime < 0)
             {
                 if (!_resolvingHost)
                 {
@@ -255,10 +258,11 @@ internal partial class MonoSocket : GameSocket
                     );
                 }
 
-                //if (MainMenu.LastNetworkStatusChangeTime + (int)(ServerStatusPingInterval * 1.5f) < now)
-                //{
-                //    MainMenu.SetNetworkStatus(NetworkStatus.Offline);
-                //}
+                if (LastNetworkStatusChangeTime + (int)(ServerStatusPingInterval * 1.5f) < now)
+                {
+                    CurrentNetworkStatus = NetworkStatus.Offline;
+                    LastNetworkStatusChangeTime = Timing.Global.MillisecondsUtc;
+                }
 
                 _nextServerStatusPing = now + ServerStatusPingInterval;
             }

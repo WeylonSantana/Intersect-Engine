@@ -1,46 +1,24 @@
-﻿using Intersect.Client.Localization;
+using Intersect.Client.Localization;
 using Intersect.Network;
 
 namespace Intersect.Client.Networking;
 
-
 public static partial class NetworkStatusExtensions
 {
-
     public static string ToLocalizedString(this NetworkStatus networkStatus)
     {
-        switch (networkStatus)
+        return networkStatus switch
         {
-            case NetworkStatus.Unknown:
-                return Strings.Server.Unknown;
-
-            case NetworkStatus.Connecting:
-                return Strings.Server.Connecting;
-
-            case NetworkStatus.Online:
-                return Strings.Server.Online;
-
-            case NetworkStatus.Offline:
-                return Strings.Server.Offline;
-
-            case NetworkStatus.Failed:
-                return Strings.Server.Failed;
-
-            case NetworkStatus.VersionMismatch:
-                return Strings.Server.VersionMismatch;
-
-            case NetworkStatus.ServerFull:
-                return Strings.Server.ServerFull;
-
-            case NetworkStatus.HandshakeFailure:
-                return Strings.Server.HandshakeFailure;
-
-            case NetworkStatus.Quitting:
-                return "";
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(networkStatus), networkStatus, null);
-        }
+            NetworkStatus.Unknown => (string)Strings.Server.Unknown,
+            NetworkStatus.Connecting => (string)Strings.Server.Connecting,
+            NetworkStatus.Online => (string)Strings.Server.Online,
+            NetworkStatus.Offline => (string)Strings.Server.Offline,
+            NetworkStatus.Failed => (string)Strings.Server.Failed,
+            NetworkStatus.VersionMismatch => (string)Strings.Server.VersionMismatch,
+            NetworkStatus.ServerFull => (string)Strings.Server.ServerFull,
+            NetworkStatus.HandshakeFailure => (string)Strings.Server.HandshakeFailure,
+            NetworkStatus.Quitting => string.Empty,
+            _ => throw new ArgumentOutOfRangeException(nameof(networkStatus), networkStatus, null),
+        };
     }
-
 }

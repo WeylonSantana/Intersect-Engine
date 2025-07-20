@@ -40,8 +40,8 @@ partial class MainMenuWindow : MonoGameGum.Forms.Controls.FrameworkElement
     public Panel Container { get; protected set; }
     public SpriteRuntime Logo { get; protected set; }
     public Panel ServerStatusContainer { get; protected set; }
-    public ColoredRectangleRuntime RectangleInstance { get; protected set; }
-    public Label LabelInstance { get; protected set; }
+    public ColoredRectangleRuntime ServerStatusLabelBackground { get; protected set; }
+    public Label ServerStatusLabel { get; protected set; }
 
     public MainMenuWindow(InteractiveGue visual) : base(visual) { }
     public MainMenuWindow()
@@ -56,8 +56,8 @@ partial class MainMenuWindow : MonoGameGum.Forms.Controls.FrameworkElement
         Container = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Panel>(this.Visual,"Container");
         Logo = this.Visual?.GetGraphicalUiElementByName("Logo") as SpriteRuntime;
         ServerStatusContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Panel>(this.Visual,"ServerStatusContainer");
-        RectangleInstance = this.Visual?.GetGraphicalUiElementByName("RectangleInstance") as ColoredRectangleRuntime;
-        LabelInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"LabelInstance");
+        ServerStatusLabelBackground = this.Visual?.GetGraphicalUiElementByName("ServerStatusLabelBackground") as ColoredRectangleRuntime;
+        ServerStatusLabel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"ServerStatusLabel");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code
