@@ -39,6 +39,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
     }
     public Window WindowInstance { get; protected set; }
     public Label WindowTitle { get; protected set; }
+    public StackPanel OptionsButtonsContainer { get; protected set; }
     public InputContainer UsernameContainer { get; protected set; }
     public InputContainer PasswordContainer { get; protected set; }
     public Label UsernameLabel { get; protected set; }
@@ -51,6 +52,8 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
     public Button LoginButton { get; protected set; }
     public StackPanel InputsContainer { get; protected set; }
     public Button ForgotPasswordButton { get; protected set; }
+    public Button CreditsButton { get; protected set; }
+    public Icon CreditsIcon { get; protected set; }
 
     public LoginWindow(InteractiveGue visual) : base(visual) { }
     public LoginWindow()
@@ -64,6 +67,7 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
         base.ReactToVisualChanged();
         WindowInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Window>(this.Visual,"WindowInstance");
         WindowTitle = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"WindowTitle");
+        OptionsButtonsContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"OptionsButtonsContainer");
         UsernameContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputContainer>(this.Visual,"UsernameContainer");
         PasswordContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<InputContainer>(this.Visual,"PasswordContainer");
         UsernameLabel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Label>(this.Visual,"UsernameLabel");
@@ -76,6 +80,8 @@ partial class LoginWindow : MonoGameGum.Forms.Controls.FrameworkElement
         LoginButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"LoginButton");
         InputsContainer = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"InputsContainer");
         ForgotPasswordButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"ForgotPasswordButton");
+        CreditsButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"CreditsButton");
+        CreditsIcon = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Icon>(this.Visual,"CreditsIcon");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

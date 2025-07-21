@@ -944,17 +944,6 @@ public static partial class Strings
         public static LocalizedString RecipeListEntry = @"{00}) {01}";
     }
 
-    public partial struct Credits
-    {
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Back = @"Back to Main Menu";
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public static LocalizedString Title = @"Credits";
-
-    }
-
     public partial struct Debug
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

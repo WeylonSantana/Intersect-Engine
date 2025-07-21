@@ -128,6 +128,7 @@
       <Type>float</Type>
       <Name>InnerPanelInstance.Height</Name>
       <Value xsi:type="xsd:float">0</Value>
+      <ExposedAsName>InnerPanelHeight</ExposedAsName>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -135,6 +136,12 @@
       <Name>InnerPanelInstance.HeightUnits</Name>
       <Value xsi:type="xsd:int">4</Value>
       <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>InnerPanelInstance.StackSpacing</Name>
+      <ExposedAsName>InnerPanelStackSpacing</ExposedAsName>
+      <SetsValue>false</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>

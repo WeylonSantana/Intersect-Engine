@@ -68,6 +68,7 @@ partial class ScrollViewer : MonoGameGum.Forms.Controls.ScrollViewer
     public ScrollBar VerticalScrollBarInstance { get; protected set; }
     public ContainerRuntime ClipContainerInstance { get; protected set; }
     public ContainerRuntime InnerPanelInstance { get; protected set; }
+    public NineSliceRuntime FocusedIndicator { get; protected set; }
 
     public ScrollViewer(InteractiveGue visual) : base(visual) { }
     public ScrollViewer()
@@ -83,6 +84,7 @@ partial class ScrollViewer : MonoGameGum.Forms.Controls.ScrollViewer
         VerticalScrollBarInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ScrollBar>(this.Visual,"VerticalScrollBarInstance");
         ClipContainerInstance = this.Visual?.GetGraphicalUiElementByName("ClipContainerInstance") as ContainerRuntime;
         InnerPanelInstance = this.Visual?.GetGraphicalUiElementByName("InnerPanelInstance") as ContainerRuntime;
+        FocusedIndicator = this.Visual?.GetGraphicalUiElementByName("FocusedIndicator") as NineSliceRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

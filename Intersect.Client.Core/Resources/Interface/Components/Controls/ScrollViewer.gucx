@@ -120,7 +120,7 @@
     <Variable>
       <Type>float</Type>
       <Name>ClipContainerInstance.Width</Name>
-      <Value xsi:type="xsd:float">-27</Value>
+      <Value xsi:type="xsd:float">-18</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -151,6 +151,72 @@
       <Type>PositionUnitType</Type>
       <Name>ClipContainerInstance.YUnits</Name>
       <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>DefaultChildContainer</Name>
+      <Value xsi:type="xsd:string">InnerPanelInstance</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>FocusedIndicator.Blue</Name>
+      <Value xsi:type="xsd:int">25</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>ColorCategory</Type>
+      <Name>FocusedIndicator.ColorCategoryState</Name>
+      <Value xsi:type="xsd:string">Warning</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>FocusedIndicator.Green</Name>
+      <Value xsi:type="xsd:int">171</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>FocusedIndicator.Height</Name>
+      <Value xsi:type="xsd:float">2</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>FocusedIndicator.HeightUnits</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>FocusedIndicator.Red</Name>
+      <Value xsi:type="xsd:int">232</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>StyleCategory</Type>
+      <Name>FocusedIndicator.StyleCategoryState</Name>
+      <Value xsi:type="xsd:string">Solid</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>bool</Type>
+      <Name>FocusedIndicator.Visible</Name>
+      <Value xsi:type="xsd:boolean">false</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>FocusedIndicator.Y</Name>
+      <Value xsi:type="xsd:float">2</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>FocusedIndicator.YUnits</Name>
+      <Value xsi:type="xsd:int">5</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -249,6 +315,17 @@
       <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
       <Value />
     </VariableList>
+    <VariableList xsi:type="VariableListSaveOfString">
+      <Type>string</Type>
+      <Name>FocusedIndicator.VariableReferences</Name>
+      <IsFile>false</IsFile>
+      <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
+      <Value>
+        <string>Red=Components/Styles.Warning.Red</string>
+        <string>Green=Components/Styles.Warning.Green</string>
+        <string>Blue=Components/Styles.Warning.Blue</string>
+      </Value>
+    </VariableList>
   </State>
   <Category>
     <Name>ScrollBarVisibility</Name>
@@ -289,6 +366,11 @@
   <Instance>
     <Name>InnerPanelInstance</Name>
     <BaseType>Container</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>FocusedIndicator</Name>
+    <BaseType>NineSlice</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Behaviors>
