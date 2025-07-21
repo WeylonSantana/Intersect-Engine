@@ -30,6 +30,12 @@ public partial class LoginWindow
             ForgotPasswordButton.IsVisible = false;
         }
 
+        CreditsButton.Click += (sender, args) =>
+        {
+            IsVisible = false;
+            MainMenuInterface.MainMenuWindow.CreditsWindow.IsVisible = true;
+        };
+
         UsernameInput.KeyDown += (sender, args) =>
         {
             if (args.Key == Keys.Enter) ConnectAndTryLogin();

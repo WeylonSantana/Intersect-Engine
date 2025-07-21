@@ -9,11 +9,13 @@ public partial class MainMenuWindow
 {
     public LoginWindow LoginWindow { get; set; } = new();
     public RegisterWindow RegisterWindow { get; set; } = new();
+    public CreditsWindow CreditsWindow { get; set; } = new();
 
     partial void CustomInitialize()
     {
         AddChild(LoginWindow);
         AddChild(RegisterWindow);
+        AddChild(CreditsWindow);
         this.AddToRoot();
     }
 

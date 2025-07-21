@@ -1,4 +1,4 @@
-//Code for Controls/ScrollBar (Controls/StackPanel)
+//Code for Controls/ScrollBar (Container)
 using GumRuntime;
 using MonoGameGum;
 using MonoGameGum.GueDeriving;
@@ -13,7 +13,7 @@ using RenderingLibrary.Graphics;
 using System.Linq;
 
 namespace Intersect.Client.Interface.Components;
-partial class ScrollBar : StackPanel
+partial class ScrollBar : MonoGameGum.Forms.Controls.ScrollBar
 {
     [System.Runtime.CompilerServices.ModuleInitializer]
     public static void RegisterRuntimeType()
@@ -63,8 +63,8 @@ partial class ScrollBar : StackPanel
         }
     }
     public Button UpButtonInstance { get; protected set; }
-    public ContainerRuntime TrackInstance { get; protected set; }
     public Button DownButtonInstance { get; protected set; }
+    public ContainerRuntime TrackInstance { get; protected set; }
     public NineSliceRuntime TrackBackground { get; protected set; }
     public Button ThumbInstance { get; protected set; }
     public Icon IconUp { get; protected set; }
@@ -81,8 +81,8 @@ partial class ScrollBar : StackPanel
     {
         base.ReactToVisualChanged();
         UpButtonInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"UpButtonInstance");
-        TrackInstance = this.Visual?.GetGraphicalUiElementByName("TrackInstance") as ContainerRuntime;
         DownButtonInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"DownButtonInstance");
+        TrackInstance = this.Visual?.GetGraphicalUiElementByName("TrackInstance") as ContainerRuntime;
         TrackBackground = this.Visual?.GetGraphicalUiElementByName("TrackBackground") as NineSliceRuntime;
         ThumbInstance = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Button>(this.Visual,"ThumbInstance");
         IconUp = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<Icon>(this.Visual,"IconUp");

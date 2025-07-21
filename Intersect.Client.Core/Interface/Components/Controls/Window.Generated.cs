@@ -37,6 +37,18 @@ partial class Window : MonoGameGum.Forms.Window
     public Panel TitleBarInstance { get; protected set; }
     public StackPanel InnerPanelInstance { get; protected set; }
 
+    public float InnerPanelHeight
+    {
+        get => InnerPanelInstance.Visual.Height;
+        set => InnerPanelInstance.Visual.Height = value;
+    }
+
+    public float InnerPanelStackSpacing
+    {
+        get => InnerPanelInstance.Visual.StackSpacing;
+        set => InnerPanelInstance.Visual.StackSpacing = value;
+    }
+
     public Window(InteractiveGue visual) : base(visual) { }
     public Window()
     {
