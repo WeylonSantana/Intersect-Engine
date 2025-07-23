@@ -37,7 +37,7 @@ partial class InputText : MonoGameGum.Forms.Controls.TextBox
         Enabled,
         Disabled,
         Highlighted,
-        Selected,
+        Focused,
     }
     public enum LineModeCategory
     {
