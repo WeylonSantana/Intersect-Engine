@@ -37,7 +37,7 @@ partial class InputPassword : MonoGameGum.Forms.Controls.PasswordBox
         Enabled,
         Disabled,
         Highlighted,
-        Selected,
+        Focused,
     }
 
     PasswordBoxCategory? _passwordBoxCategoryState;

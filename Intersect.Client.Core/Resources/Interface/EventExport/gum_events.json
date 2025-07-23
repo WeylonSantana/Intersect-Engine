@@ -2261,6 +2261,34 @@
         "ElementType": "Screens",
         "EventType": 6,
         "TimestampUtc": "2025-07-21T03:23:32.8098312Z"
+      },
+      {
+        "NewName": "Focused",
+        "OldName": "Selected",
+        "ElementType": null,
+        "EventType": 3,
+        "TimestampUtc": "2025-07-22T14:13:57.9010155Z"
+      },
+      {
+        "NewName": "Focused",
+        "OldName": "Selected",
+        "ElementType": null,
+        "EventType": 3,
+        "TimestampUtc": "2025-07-22T14:14:25.948808Z"
+      },
+      {
+        "NewName": "Focused",
+        "OldName": "Selected",
+        "ElementType": "Components",
+        "EventType": 3,
+        "TimestampUtc": "2025-07-22T14:14:38.4403834Z"
+      },
+      {
+        "NewName": "Focused",
+        "OldName": "Selected",
+        "ElementType": "Components",
+        "EventType": 3,
+        "TimestampUtc": "2025-07-22T14:14:47.3768791Z"
       }
     ]
   }

@@ -680,7 +680,7 @@
       </Variable>
     </State>
     <State>
-      <Name>Selected</Name>
+      <Name>Focused</Name>
       <Variable>
         <Type>int</Type>
         <Name>Background.Alpha</Name>
